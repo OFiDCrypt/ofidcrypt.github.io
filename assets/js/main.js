@@ -25,6 +25,18 @@
 		xxsmall: [null, '360px']
 	});
 
+	// Ensure scrolly function is initialized
+	$(function () {
+		$('.scrolly').scrolly();
+	});
+
+	// Get inner element
+    var $navPanel = $('#navPanel'); // Ensure correct selector
+    if ($navPanel.length > 0) {
+        var $navPanelInner = $navPanel.children('nav');
+    } else {
+        console.error('$navPanel is not defined or empty');
+
 	/**
 	 * Applies parallax scrolling to an element's background image.
 	 * @return {jQuery} jQuery object.
@@ -262,7 +274,7 @@
 					const text = await response.text();
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(text, 'text/html');
-					const imageUrl = doc.querySelector('meta[property="og:image"]').getAttribute('content');
+					const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content');
 					return imageUrl;
 				} catch (error) {
 					console.error('Error fetching the article:', error);
