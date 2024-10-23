@@ -3571,8 +3571,8 @@ input, select, textarea {
 			-ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.5s ease, -ms-transform 0.5s ease, visibility 0.5s;
 			transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
 			pointer-events: auto;
-			border-style: solid;
-			border-color: #ffffff;
+			/* border-style: solid; Uncomment to add solid border-style */
+			/* border-color: #ffffff; Uncomment to add border-colour */
 			border-width: 5px !important;
 			font-family: "Source Sans Pro", Helvetica, sans-serif;
 			font-size: 2.25rem;
