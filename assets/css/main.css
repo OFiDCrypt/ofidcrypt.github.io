@@ -75,7 +75,7 @@ input, select, textarea {
 /* Header */
 
 	#header .logo img {
-    	width: 100px; /* Adjust size as needed */
+    	width: 200px; /* Adjust size as needed */
     	height: auto; /* Keeps the aspect ratio */
     	margin-right: 10px; /* Adds space between the logo and the text */
 	}
