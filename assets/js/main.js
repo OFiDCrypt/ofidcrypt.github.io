@@ -25,6 +25,18 @@
 		xxsmall: [null, '360px']
 	});
 
+	// Ensure scrolly function is initialized
+	$(function () {
+		$('.scrolly').scrolly();
+	});
+
+	// Get inner element
+    var $navPanel = $('#navPanel'); // Ensure correct selector
+    if ($navPanel.length > 0) {
+        var $navPanelInner = $navPanel.children('nav');
+    } else {
+        console.error('$navPanel is not defined or empty');
+
 	/**
 	 * Applies parallax scrolling to an element's background image.
 	 * @return {jQuery} jQuery object.
