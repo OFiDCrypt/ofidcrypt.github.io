@@ -262,7 +262,7 @@
 					const text = await response.text();
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(text, 'text/html');
-					const imageUrl = doc.querySelector('meta[property="og:image"]').getAttribute('content');
+					const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content');
 					return imageUrl;
 				} catch (error) {
 					console.error('Error fetching the article:', error);
