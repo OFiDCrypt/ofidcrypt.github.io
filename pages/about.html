@@ -6,13 +6,23 @@
 -->
 <html>
 	<head>
-		<title>Elements Reference - OFiDCrypt by Tokin ⬢ Cypher</title>
-		<link rel="icon" href="/favicon.png.png" type="image/png"/>
+		<title>OFiDCrypt by Tokin ⬢ Cypher</title>
+		<link rel="icon" href="../favicon.png.png" type="image/png"/>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<!-- Link necessary JS libraries -->
+		<script src="../assets/js/jquery.min.js"></script>
+		<script src="../assets/js/browser.min.js"></script>
+		<script src="../assets/js/jquery.scrollex.min.js"></script>
+		<script src="../assets/js/jquery.scrolly.min.js"></script>
+		<script src="../assets/js/util.js"></script>
+		<script src="../assets/js/breakpoints.min.js"></script>
+		<script src="../assets/js/main.js"></script>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
-	</head>
+	</head>	
+
 	<body class="is-preload">
 
 		<!-- Wrapper -->
@@ -27,8 +37,8 @@
 					<nav id="nav">
 						<ul class="links">
 							<li><a href="../index.html">Home</a></li>
-							<li><a href="generic.html">About</a></li>
-							<li class="active"><a href="elements.html">Elements Reference</a></li>
+							<li><a href="vipwithcode.html">VIP with Code</a></li>
+							<li class="active"><a href="about.html">About Us</a></li>
 						</ul>
 						<ul class="icons">
 							<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-twitter"><span class="label">X</span></a></li>
@@ -431,46 +441,57 @@ print 'It took ' + i + ' iterations to sort the deck.';
 					</div>
 
 				<!-- Footer -->
-					<footer id="footer">
-						<section>
-							<form method="post" action="#">
-								<div class="fields">
-									<div class="field">
-										<label for="name">Name</label>
-										<input type="text" name="name" id="name" />
-									</div>
-									<div class="field">
-										<label for="email">Email</label>
-										<input type="text" name="email" id="email" />
-									</div>
-									<div class="field">
-										<label for="message">Message</label>
-										<textarea name="message" id="message" rows="3"></textarea>
-									</div>
+				<footer id="footer">
+					<section>
+						<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
+							<div class="fields">
+								<div class="field">
+									<label for="name">Name</label>
+									<input type="text" name="name" id="name" required>
 								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
-								</ul>
-							</form>
+								<div class="field">
+									<label for="email">Email</label>
+									<input type="email" name="email" id="email" required>
+								</div>
+								<div class="field">
+									<label for="message">Message</label>
+									<textarea name="message" id="message" rows="3" required></textarea>
+								</div>
+							</div>
+							<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+							<ul class="actions">
+								<li><input type="submit" value="Send Message"></li>
+							</ul>
+						</form>
+						<script>
+							function verifyRecaptcha() {
+								var response = grecaptcha.getResponse();
+								if(response.length == 0) {
+									alert("Please complete the reCAPTCHA.");
+									return false;
+								} else {
+									return true;
+								}
+							}
+						</script>
 						</section>
 						<section class="split contact">
 							<section class="alt">
-								<h3>Address</h3>
-								<p>1234 Somewhere Road #87257<br />
-								Nashville, TN 00000-0000</p>
+								<h3>Remote Offices</h3>
+								<p>British Columbia, Canada</p>
 							</section>
 							<section>
-								<h3>Phone</h3>
-								<p><a href="#">(000) 000-0000</a></p>
+								<h3>Telegram</h3>
+								<p><a href="https://t.me/OFiDCrypt">@OFiDCrypt</a></p>
 							</section>
 							<section>
 								<h3>Email</h3>
-								<p><a href="#">info@untitled.tld</a></p>
+								<p><a href="mailto:me@ofidcrypt.com">me@ofidcrypt.com</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
 								<ul class="icons alt">
-									<li><a href="https://x.com/OFiDCrypt" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="https://x.com/OFiDCrypt" class="icon brands alt fa-twitter"><span class="label">X</span></a></li>
 									<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
 									<li><a href="https://www.instagram.com/OFiDCrypt/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
 									<li><a href="https://github.com/OFiDCrypt/Kin-Perk-Sweeps" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
@@ -480,20 +501,10 @@ print 'It took ' + i + ' iterations to sort the deck.';
 					</footer>
 
 				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+				<div id="copyright">
+					<ul><li>&copy; Tokin ⬢ Cypher 2024</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>
-
-		<!-- Scripts -->
-			<script src="../assets/js/jquery.min.js"></script>
-			<script src="../assets/js/jquery.scrollex.min.js"></script>
-			<script src="../assets/js/jquery.scrolly.min.js"></script>
-			<script src="../assets/js/browser.min.js"></script>
-			<script src="../assets/js/breakpoints.min.js"></script>
-			<script src="../assets/js/util.js"></script>
-			<script src="../assets/js/main.js"></script>
-
 	</body>
 </html>
