@@ -203,8 +203,18 @@
 									<li><input type="submit" value="Send Message"></li>
 								</ul>
 							</form>
-							<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-										
+							
+							<script>
+								function verifyRecaptcha() {
+									var response = grecaptcha.getResponse();
+									if(response.length == 0) {
+										alert("Please complete the reCAPTCHA.");
+										return false;
+									} else {
+										return true;
+									}
+								}
+							
 						</section>
 						<section class="split contact">
 							<section class="alt">
