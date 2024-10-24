@@ -266,42 +266,35 @@
 			});
 
 			// Featured Dynamic Image
-			document.addEventListener("DOMContentLoaded", function () {
+			document.addEventListener("DOMContentLoaded", function() {
 				const proxyUrl = 'https://api.allorigins.win/get?url=';
 				const articleUrl = proxyUrl + encodeURIComponent('https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token');
-
-				async function fetchArticleImage(url) {
+			
+				async function fetchOpenGraphImage(url) {
 					try {
 						const response = await fetch(url);
-						const data = await response.json();
-						const text = data.contents;
-						console.log('Fetched Text:', text); // Debug: Check response content
-
+						const json = await response.json();
 						const parser = new DOMParser();
-						const doc = parser.parseFromString(text, 'text/html');
-						const firstImage = doc.querySelector('img'); // Fetch the first image element
-						const imageUrl = firstImage ? firstImage.src : null;
-						console.log('Extracted Image URL:', imageUrl); // Debug: Ensure URL extraction
-
+						const doc = parser.parseFromString(json.contents, 'text/html');
+						const imageUrl = doc.querySelector('meta[property="og:image"]').getAttribute('content');
+						console.log('Fetched Image URL:', imageUrl); // Log the URL for debugging
 						return imageUrl;
 					} catch (error) {
 						console.error('Error fetching the article:', error);
 						return null;
 					}
 				}
-
-				fetchArticleImage(articleUrl).then(imageUrl => {
-					const dynamicImage = document.querySelector(".post-featured");
+			
+				fetchOpenGraphImage(articleUrl).then(imageUrl => {
 					console.log('Image URL to be set:', imageUrl); // Debug: Ensure URL to be set
-
+					const dynamicImage = document.querySelector(".post.featured .image.main img");
 					if (imageUrl) {
 						dynamicImage.src = imageUrl;
 						console.log('Image source updated successfully');
 					} else {
-						console.error('Failed to update image source');
+						dynamicImage.src = 'assets/images/pic01.png'; // Fallback image
+						console.log('Fallback image used');
 					}
 				});
-			});
-		}
-	}
-})(jQuery); 
+			});			
+	}})(jQuery); 
