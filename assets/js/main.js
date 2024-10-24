@@ -266,13 +266,14 @@
 
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function () {
-				const proxyUrl = 'https://corsproxy.io/';
-				const articleUrl = proxyUrl + 'https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token';
+				const proxyUrl = 'https://api.allorigins.win/get?url=';
+				const articleUrl = proxyUrl + encodeURIComponent('https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token');
 
 				async function fetchArticleImage(url) {
 					try {
 						const response = await fetch(url);
-						const text = await response.text();
+						const data = await response.json();
+						const text = data.contents;
 						console.log('Fetched Text:', text); // Debug: Check response content
 
 						const parser = new DOMParser();
@@ -300,7 +301,6 @@
 					}
 				});
 			});
-
 		}
 	}
 })(jQuery); 
