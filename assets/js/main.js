@@ -31,11 +31,13 @@
 	});
 
 	// Get inner element
-    var $navPanel = $('#navPanel'); // Ensure correct selector
-    if ($navPanel.length > 0) {
-        var $navPanelInner = $navPanel.children('nav');
-    } else {
-        console.error('$navPanel is not defined or empty');
+	var $navPanel = $('#nav');
+	if ($navPanel.length > 0) {
+		var $navPanelInner = $navPanel.children('ul'); // or 'nav' if it’s a direct child
+	} else {
+		console.error('$navPanel is not defined or empty');
+	}
+	
 
 	/**
 	 * Applies parallax scrolling to an element's background image.
