@@ -269,28 +269,31 @@
 		// Featured Dynamic Image
 		document.addEventListener("DOMContentLoaded", function () {
 			const articleUrl = "https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token";
-
+		
 			async function fetchArticleImage(url) {
 				try {
 					const response = await fetch(url, { mode: 'no-cors' });
 					const text = await response.text();
 					const parser = new DOMParser();
 					const doc = parser.parseFromString(text, 'text/html');
-					const imageUrl = doc.querySelector('meta[property="og:image"]')?.getAttribute('content');
+					const firstImage = doc.querySelector('img'); // Fetch the first image element
+					const imageUrl = firstImage ? firstImage.src : null;
 					return imageUrl;
 				} catch (error) {
 					console.error('Error fetching the article:', error);
 					return null;
 				}
 			}
-
+		
 			fetchArticleImage(articleUrl).then(imageUrl => {
 				const dynamicImage = document.querySelector(".post-featured");
 				if (imageUrl) {
 					dynamicImage.src = imageUrl;
+					console.log('Image source updated successfully');
+				} else {
+					console.error('Failed to update image source');
 				}
 			});
-		}); // End of DOMContentLoaded listener
-
+		});		
 	}
 }})(jQuery); 
