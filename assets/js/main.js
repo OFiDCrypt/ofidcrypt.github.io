@@ -264,34 +264,43 @@
 			});
 		});
 
-		// Featured Dynamic Image
-		document.addEventListener("DOMContentLoaded", function () {
-			const articleUrl = "https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token";
-		
-			async function fetchArticleImage(url) {
-				try {
-					const response = await fetch(url, { mode: 'no-cors' });
-					const text = await response.text();
-					const parser = new DOMParser();
-					const doc = parser.parseFromString(text, 'text/html');
-					const firstImage = doc.querySelector('img'); // Fetch the first image element
-					const imageUrl = firstImage ? firstImage.src : null;
-					return imageUrl;
-				} catch (error) {
-					console.error('Error fetching the article:', error);
-					return null;
+			// Featured Dynamic Image
+			document.addEventListener("DOMContentLoaded", function () {
+				const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+				const articleUrl = proxyUrl + 'https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token';
+
+				async function fetchArticleImage(url) {
+					try {
+						const response = await fetch(url);
+						const text = await response.text();
+						console.log('Fetched Text:', text); // Debug: Check response content
+
+						const parser = new DOMParser();
+						const doc = parser.parseFromString(text, 'text/html');
+						const firstImage = doc.querySelector('img'); // Fetch the first image element
+						const imageUrl = firstImage ? firstImage.src : null;
+						console.log('Extracted Image URL:', imageUrl); // Debug: Ensure URL extraction
+
+						return imageUrl;
+					} catch (error) {
+						console.error('Error fetching the article:', error);
+						return null;
+					}
 				}
-			}
-		
-			fetchArticleImage(articleUrl).then(imageUrl => {
-				const dynamicImage = document.querySelector(".post-featured");
-				if (imageUrl) {
-					dynamicImage.src = imageUrl;
-					console.log('Image source updated successfully');
-				} else {
-					console.error('Failed to update image source');
-				}
+
+				fetchArticleImage(articleUrl).then(imageUrl => {
+					const dynamicImage = document.querySelector(".post-featured");
+					console.log('Image URL to be set:', imageUrl); // Debug: Ensure URL to be set
+
+					if (imageUrl) {
+						dynamicImage.src = imageUrl;
+						console.log('Image source updated successfully');
+					} else {
+						console.error('Failed to update image source');
+					}
+				});
 			});
-		});		
+
+		}
 	}
-}})(jQuery); 
+})(jQuery); 
