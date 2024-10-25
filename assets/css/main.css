@@ -156,7 +156,7 @@ input, select, textarea {
 	}
 
 	body, input, select, textarea {
-		font-family: "Merriweather", Georgia, serif;
+		font-family: 'Roboto', sans-serif;
 		font-weight: 300;
 		font-size: 1rem;
 		line-height: 2.375;
@@ -180,7 +180,7 @@ input, select, textarea {
 	}
 
 	em, i {
-		font-style: italic;
+		font-style: normal;
 	}
 
 	p {
@@ -2937,7 +2937,7 @@ ul.icons.alt li .icon:before {
 		}
 
 		header > p {
-			font-style: italic;
+			font-style: normal;
 		}
 
 		header > h1 + p {
@@ -3409,7 +3409,7 @@ ul.icons.alt li .icon:before {
 
 		#intro p {
 			font-size: 1.25rem;
-			font-style: italic;
+			font-style: normal;
 			margin-top: -0.25rem;
 			text-align: center;
 		}
@@ -3592,12 +3592,17 @@ ul.icons.alt li .icon:before {
 			text-transform: uppercase;
 			visibility: visible;
 		}
+		
+		#header .logo:hover {
+			border-color: #18bfef !important;
+			color: #18bfef !important;
+		}
 
-			#header .logo:hover {
-				border-color: #18bfef !important;
-				color: #18bfef !important;
-			}
-
+		/* capitalization rules for lowercase 'i' in OFiDCRYPT using HTML tag OF<span class="i">i</span>DCrypt */
+		.i {
+			text-transform: lowercase;
+		}
+	
 		@media screen and (max-width: 980px) {
 
 			#header {
