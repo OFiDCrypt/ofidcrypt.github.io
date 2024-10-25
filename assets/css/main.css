@@ -2310,7 +2310,7 @@ form > .fields > .field.quarter {
 }
 
 .g-recaptcha {
-    margin-bottom: 35px; /* Adjust the value as needed */
+    margin-bottom: 30px; /* Adjust the value as needed */
     display: flex;
     justify-content: center;
 }
