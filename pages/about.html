@@ -444,6 +444,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				<footer id="footer">
 					<section>
 						<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
+							<h2>Contact Us</h2> <!-- New heading added here -->
 							<div class="fields">
 								<div class="field">
 									<label for="name">Name</label>
@@ -466,7 +467,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 						<script>
 							function verifyRecaptcha() {
 								var response = grecaptcha.getResponse();
-								if(response.length == 0) {
+								if (response.length == 0) {
 									alert("Please complete the reCAPTCHA.");
 									return false;
 								} else {
