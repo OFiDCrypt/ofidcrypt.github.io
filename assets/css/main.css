@@ -3123,123 +3123,111 @@ ul.icons.alt li .icon:before {
 
 /* Pagination */
 .pagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	cursor: default;
-	list-style: none;
-	margin: 2rem auto;
-	padding: 0;
-	width: 100%;
-  }
-  
-  .pagination.top-pagination {
-	border-top: 1px solid #eeeeee;
-	border-bottom: 1px solid #eeeeee;
-  }
-  
-  .pagination a, .pagination span {
-	transition: all 0.2s ease-in-out;
-	border: solid 1px #eeeeee;
-	display: inline-block;
-	font-family: "Source Sans Pro", Helvetica, sans-serif;
-	font-size: 0.8rem;
-	font-weight: 900;
-	height: 2rem;
-	letter-spacing: 0.075em;
-	line-height: calc(2rem - 2px);
-	margin-left: -1px; /* Numbers touching each other */
-	padding: 0 0.75rem;
-	position: relative;
-	text-align: center;
-	text-decoration: none;
-	text-transform: uppercase;
-  }
-  
-  .pagination a:first-child, .pagination span:first-child {
-	margin-left: 0; /* Ensure the first child doesn't have a left margin */
-  }
-  
-  .pagination .next, .pagination .previous {
-	text-decoration: none;
-  }
-  
-  .pagination .next:before, .pagination .previous:before {
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	display: inline-block;
-	font-style: normal;
-	font-variant: normal;
-	text-rendering: auto;
-	line-height: 1;
-	text-transform: none !important;
-	font-family: 'Font Awesome 5 Free';
-	font-weight: 900;
-  }
-  
-  .pagination .next:before, .pagination .previous:before {
-	display: inline-block;
-	color: inherit !important;
-	line-height: inherit;
-  }
-  
-  .pagination .previous:before {
-	content: '\f104';
-	margin-right: 0.5em;
-  }
-  
-  .pagination .next:before {
-	content: '\f105';
-	margin-left: 0.5em;
-  }
-  
-  @media screen and (max-width: 980px) {
-  
-	.pagination a, .pagination span {
-	  font-size: 0.9rem;
-	}
-  
-  }
-  
-  @media screen and (max-width: 480px) {
-  
-	.pagination .page, .pagination .extra {
-	  display: none;
-	}
-  
-  }
-  
-  .pagination a, .pagination span {
-	border-color: #eeeeee;
-  }
-  
-  .pagination a {
-	color: #212931 !important;
-  }
-  
-  .pagination a:hover {
-	color: #18bfef !important;
-	border-color: #18bfef;
-	z-index: 1;
-  }
-  
-  .pagination a:hover + a,
-  .pagination a:hover + span {
-	border-left-color: #18bfef;
-  }
-  
-  .pagination a.active {
-	background-color: #eeeeee;
-  }
-  
-  .pagination span {
-	color: #eeeeee;
-  }
-  
+    display: -moz-inline-flex;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flex;
+    display: inline-flex;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+    list-style: none;
+    margin: 0 0 2rem 2px;
+    padding: 0;
+}
+
+.pagination a, .pagination span {
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+    border: solid 2px;
+    display: inline-block;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    height: 3rem;
+    letter-spacing: 0.075em;
+    line-height: calc(3rem - 4px);
+    margin-left: -2px;
+    min-width: 3rem;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.pagination .next, .pagination .previous {
+    text-decoration: none;
+    padding: 0 1.75rem;
+}
+
+.pagination .next:before, .pagination .previous:before {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    text-transform: none !important;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.pagination .next:before, .pagination .previous:before {
+    display: inline-block;
+    color: inherit !important;
+    line-height: inherit;
+}
+
+.pagination .previous:before {
+    content: '\f104';
+    margin-right: 0.9375em;
+}
+
+.pagination .next:before {
+    content: '\f105';
+    float: right;
+    margin-left: 0.9375em;
+}
+
+@media screen and (max-width: 980px) {
+    .pagination a, .pagination span {
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pagination .page, .pagination .extra {
+        display: none;
+    }
+}
+
+.pagination a, .pagination span {
+    border-color: #eeeeee;
+}
+
+.pagination a {
+    color: #212931 !important;
+}
+
+.pagination a:hover {
+    color: #18bfef !important;
+    border-color: #18bfef;
+    z-index: 1;
+}
+
+.pagination a:hover + a, .pagination a:hover + span {
+    border-left-color: #18bfef;
+}
+
+.pagination a.active {
+    background-color: #eeeeee;
+}
+
+.pagination span {
+    color: #eeeeee;
+}
+
+
+  /* Fade In Out */
   .fade-out {
 	opacity: 0;
 	transition: opacity 0.5s;

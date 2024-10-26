@@ -250,9 +250,17 @@
 			// Pagination
 			document.addEventListener("DOMContentLoaded", function() {
 				const container = document.getElementById('posts-container');
+				let currentPage = '1';
+				let totalPages = 2; // Adjust this to the actual number of pages
 			
 				function loadPage(pageNumber, shouldScroll) {
-					const url = pageNumber === '1' ? 'index.html' : `posts-page${pageNumber}.html`;
+					let url;
+					if (pageNumber === '1') {
+						url = 'index.html';
+					} else {
+						url = `posts-page${pageNumber}.html`;
+					}
+			
 					container.classList.add('fade-out');
 			
 					fetch(url).then(response => response.text()).then(data => {
@@ -295,6 +303,9 @@
 									pageLink.classList.add('active');
 								}
 							});
+			
+							// Update currentPage
+							currentPage = pageNumber;
 						}, 500);
 					}).catch(error => {
 						console.error('Error loading page:', error);
@@ -311,9 +322,28 @@
 					});
 				});
 			
-				loadPage('1', false); // Load the first page on initial load without scrolling
-			});			
+				document.querySelectorAll('.pagination .previous').forEach(prevLink => {
+					prevLink.addEventListener('click', function(event) {
+						event.preventDefault();
+						if (currentPage > '1') {
+							loadPage((parseInt(currentPage) - 1).toString(), true);
+						}
+					});
+				});
 			
+				document.querySelectorAll('.pagination .next').forEach(nextLink => {
+					nextLink.addEventListener('click', function(event) {
+						event.preventDefault();
+						if (parseInt(currentPage) < totalPages) {
+							loadPage((parseInt(currentPage) + 1).toString(), true);
+						}
+					});
+				});
+			
+				loadPage('1', false); // Load the first page on initial load without scrolling
+			});
+			
+						
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
 				const proxyUrl = 'https://api.allorigins.win/get?url=';
