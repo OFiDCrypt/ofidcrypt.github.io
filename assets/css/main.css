@@ -2842,13 +2842,18 @@ ul.icons.alt li .icon:before {
 }
 
 /* Centering the icons specifically */
-.split.contact .icons {
+.split.contact {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center; /* Centers the whole block horizontally */
+    max-width: 100%; /* Ensure it doesn't overflow */
+    margin: 0 auto; /* Centers the block if it's not full width */
 }
 
-.split.contact .icons li {
-    margin: 0 10px;
+.split.contact > section {
+    flex: 1; /* If you want each section to have equal width */
+    margin: 5px; /* Adds some space around each section */
+    text-align: center; /* Centers text within each section */
 }
 
 /* List */
