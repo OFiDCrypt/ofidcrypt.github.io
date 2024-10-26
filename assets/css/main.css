@@ -4291,6 +4291,14 @@ ul.icons.alt li .icon:before {
 				border: none;
 			}
 			
+			.split.contact h2.centered-heading {
+				padding: 4rem 4rem 2rem 4rem; 
+				padding-top: 4rem; 
+				padding-right: 4rem; 
+				padding-bottom: 2rem; 
+				padding-left: 4rem;
+			}
+			
 			/* Add hover effect */
 			.split.contact section a:hover {
 				text-decoration: underline;
