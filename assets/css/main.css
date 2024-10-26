@@ -4240,45 +4240,49 @@ ul.icons.alt li .icon:before {
 				padding: 0;
 			}
 
-			/* Existing styles */
-			#footer>section.split.contact>section {
+			#footer > section.split.contact > section {
 				display: flex;
 				align-items: center;
-				padding: 3.15rem 4rem;
+				padding: 3.15rem 4rem; /* Added padding */
 			}
-
-			#footer>section.split.contact>section>* {
+			
+			#footer > section.split.contact > section:not(:first-child):not(:first-of-type) {
+				border-top: 1px solid #e0e0e0; /* Top border for the bottom 3 sections */
+			}
+			
+			#footer > section.split.contact > section > * {
 				margin-bottom: 0;
 			}
-
-			#footer>section.split.contact>section> :first-child {
+			
+			#footer > section.split.contact > section > :first-child {
 				flex-shrink: 0;
 				flex-grow: 0;
 				width: 6rem;
 			}
-
-			#footer>section.split.contact>section> :last-child {
+			
+			#footer > section.split.contact > section > :last-child {
 				flex-shrink: 1;
 				flex-grow: 1;
 			}
-
-			#footer>section.split.contact>section:first-child {
+			
+			#footer > section.split.contact > section:first-child {
 				padding: 4rem 4rem 3rem 4rem;
+				border-left: none;
 			}
-
-			#footer>section.split.contact>section:last-child {
+			
+			#footer > section.split.contact > section:last-child {
 				padding: 3rem 4rem 4rem 4rem;
 			}
-
-			#footer>section.split.contact>section.alt {
+			
+			#footer > section.split.contact > section.alt {
 				align-items: flex-start;
 			}
-
-			#footer>section.split.contact>section.alt> :last-child {
+			
+			#footer > section.split.contact > section.alt > :last-child {
 				margin-top: -0.325rem;
 			}
-
-			/* New styles for centering */
+			
+			/* Center text in split contact sections */
 			.split.contact section p,
 			.split.contact section a {
 				text-align: center;
@@ -4286,103 +4290,77 @@ ul.icons.alt li .icon:before {
 				text-decoration: none;
 				border: none;
 			}
-
+			
 			/* Add hover effect */
 			.split.contact section a:hover {
 				text-decoration: underline;
 			}
-
-		#footer form label,
-		#footer h3,
-		#footer p {
-			font-size: 0.8rem;
-		}
-
-		@media screen and (max-width: 980px) {
-
-			#footer {
-				display: block;
+			
+			#footer form label,
+			#footer h3,
+			#footer p {
+				font-size: 0.8rem;
 			}
-
+			
+			@media screen and (max-width: 980px) {
+				#footer {
+					display: block;
+				}
+			
 				#footer > section {
 					border-top: solid 2px #e2e2e2;
 				}
-
-					#footer > section:first-child {
-						border-top: 0;
-					}
-
-					#footer > section.split > section {
-						padding: 4rem 4rem 2rem 4rem ;
-					}
-
-						#footer > section.split > section:first-child {
-							padding: 4rem 4rem 2rem 4rem ;
-						}
-
-						#footer > section.split > section:last-child {
-							padding: 4rem 4rem 2rem 4rem ;
-						}
-
-					#footer > section.split.contact > section {
-						padding: 4rem;
-					}
-
-						#footer > section.split.contact > section:first-child {
-							padding: 4rem;
-						}
-
-						#footer > section.split.contact > section:last-child {
-							padding: 4rem;
-						}
-
+			
+				#footer > section:first-child {
+					border-top: 0;
+				}
+			
+				#footer > section.split > section {
+					padding: 4rem 4rem 2rem 4rem;
+				}
+			
+				#footer > section.split > section:first-child,
+				#footer > section.split > section:last-child {
+					padding: 4rem 4rem 2rem 4rem;
+				}
+			
+				#footer > section.split.contact {
+					flex-direction: column;
+				}
+			
+				#footer > section.split.contact > section {
+					padding: 4rem;
+					border-left: none; /* Remove borders for mobile */
+				}
+			
 				#footer form label,
 				#footer h3,
 				#footer p {
 					font-size: 0.9rem;
 				}
-
-		}
-
-		@media screen and (max-width: 736px) {
-
-			#footer > section {
-				padding: 2rem 2rem 0.1rem 2rem ;
 			}
-
-				#footer > section.split > section {
-					padding: 2rem 2rem 0.1rem 2rem ;
+			
+			@media screen and (max-width: 736px) {
+				#footer > section {
+					padding: 2rem 2rem 0.1rem 2rem;
 				}
-
-					#footer > section.split > section:first-child {
-						padding: 2rem 2rem 0.1rem 2rem ;
-					}
-
-					#footer > section.split > section:last-child {
-						padding: 2rem 2rem 0.1rem 2rem ;
-					}
-
-				#footer > section.split.contact > section {
+			
+				#footer > section.split > section,
+				#footer > section.split > section:first-child,
+				#footer > section.split > section:last-child,
+				#footer > section.split.contact > section,
+				#footer > section.split.contact > section:first-child,
+				#footer > section.split.contact > section:last-child {
 					padding: 2rem;
+					border-left: none; /* Remove borders for mobile */
 				}
-
-					#footer > section.split.contact > section:first-child {
-						padding: 2rem;
-					}
-
-					#footer > section.split.contact > section:last-child {
-						padding: 2rem;
-					}
-
-		}
-
-		@media screen and (max-width: 480px) {
-
-			#footer {
-				width: 100%;
 			}
-
-		}
+			
+			@media screen and (max-width: 480px) {
+				#footer {
+					width: 100%;
+				}
+			}			
 
 	#copyright {
 		color: #ffffff;
