@@ -247,24 +247,43 @@
 
 			});
 
-
-
-			// Hide intro on scroll (<= small)
-			breakpoints.on('<=small', function () {
-				$main.unscrollex();
-				$main.scrollex({
-					mode: 'middle',
-					top: '15vh',
-					bottom: '-15vh',
-					enter: function () {
-						$intro.addClass('hidden');
-					},
-					leave: function () {
-						$intro.removeClass('hidden');
+			// Pagination
+			document.addEventListener("DOMContentLoaded", function() {
+				function loadPage(pageNumber, shouldScroll) {
+					if (pageNumber === '1') {
+						document.getElementById('posts-container').innerHTML = document.getElementById('index-posts').innerHTML;
+					} else {
+						fetch(`posts-page${pageNumber}.html`)
+							.then(response => response.text())
+							.then(data => {
+								document.getElementById('posts-container').innerHTML = data;
+							})
+							.catch(error => console.error('Error loading page:', error));
 					}
+			
+					// Scroll to the end of featured posts only if shouldScroll is true
+					if (shouldScroll) {
+						const featuredPost = document.querySelector('.post.featured');
+						if (featuredPost) {
+							const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
+							window.scrollTo(0, featuredEnd);
+						}
+					}
+				}
+			
+				document.querySelectorAll('.pagination a.page').forEach(pageLink => {
+					pageLink.addEventListener('click', function(event) {
+						event.preventDefault();
+						const pageNumber = this.getAttribute('data-page');
+						loadPage(pageNumber, true);
+						document.querySelector('.pagination .active').classList.remove('active');
+						this.classList.add('active');
+					});
 				});
-			});
-
+			
+				loadPage('1', false); // Load the first page on initial load without scrolling
+			});			
+			
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
 				const proxyUrl = 'https://api.allorigins.win/get?url=';
