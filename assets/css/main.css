@@ -3192,9 +3192,11 @@ ul.icons.alt li .icon:before {
 
 @media screen and (max-width: 980px) {
     .pagination a, .pagination span {
+        display: inline-flex;
+        align-items: center; /* Center content vertically */
+        justify-content: center; /* Center content horizontally */
         font-size: 0.9rem;
-        display: inline-block; /* Ensure elements display properly on mobile */
-        padding: 0.5rem; /* Adjust padding for mobile */
+        padding: 0.5rem;
     }
 }
 
