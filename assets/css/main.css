@@ -4622,3 +4622,21 @@ ul.icons.alt li .icon:before {
 		}
 
 	}
+
+	/* TEST-SUBHEADING on index.html */
+	.subheading p {
+		margin: 0; /* Remove default margin */
+		font-size: 14px; /* Adjust font size as needed */
+		margin-bottom: 0px; /* Adjust to reduce gap */
+	}
+	
+	.subheading h2 {
+		margin: 0; /* Remove default margin */
+		font-size: 24px; /* Adjust font size as needed */
+		margin-top: 0px; /* Adjust to reduce gap */
+	}	
+	
+	/* Add a small margin between the p and h2 if needed */
+	.subheading p + .subheading h2 {
+		margin-top: 0px; /* Adjust as needed */
+	}
