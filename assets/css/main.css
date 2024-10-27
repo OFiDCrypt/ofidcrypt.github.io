@@ -3162,7 +3162,7 @@ ul.icons.alt li .icon:before {
     padding: 0 1.75rem;
 }
 
-.pagination .next:before, .pagination .previous:before {
+.pagination .next:after, .pagination .previous:before {
     display: inline-block;
     font-style: normal;
     font-variant: normal;
@@ -3184,9 +3184,8 @@ ul.icons.alt li .icon:before {
     margin-right: 0.9375em;
 }
 
-.pagination .next:before {
+.pagination .next:after {
     content: '\f105';
-    float: right;
     margin-left: 0.9375em;
 }
 
