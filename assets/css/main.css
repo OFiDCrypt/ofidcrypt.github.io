@@ -2368,6 +2368,14 @@ form > .fields > .field.quarter {
 		width: 100%;
 	}
 
+	/* Adjust line height and padding for textarea */
+	textarea {
+    	resize: none; /* Prevent resizing */
+    	line-height: normal; /* Set line height to normal */
+    	padding: 5px; /* Adjust padding inside the textarea */
+    	height: 250px; /* Set the desired height */
+}
+
 		input[type="text"]:invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,
