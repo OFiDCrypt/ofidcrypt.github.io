@@ -2317,6 +2317,13 @@ form > .fields > .field.quarter {
     justify-content: center;
 }
 
+/* Responsive adjustments */
+@media screen and (max-width: 980px) {
+    .g-recaptcha {
+        width: 100%;
+    }
+}
+
 .centered-heading {
     text-align: center;
 }
