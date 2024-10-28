@@ -163,7 +163,6 @@
 					</footer>
 				</div>
 
-
 				<!-- Footer Contact Form -->
 				<footer id="footer">
 					<section>
@@ -185,10 +184,11 @@
 							</div>
 							<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
 							<ul class="actions">
-								<li><input type="submit" value="Send Message"></li>
+								<li><input type="submit" value="Send Message" onclick="return submitForm();"></li>
 							</ul>
-						</form>
-						<script>
+							</form>
+							
+							<script>
 							function verifyRecaptcha() {
 								var response = grecaptcha.getResponse();
 								if (response.length == 0) {
@@ -198,8 +198,18 @@
 									return true;
 								}
 							}
-						</script>
-					</section>
+							
+							function submitForm() {
+								if (verifyRecaptcha()) {
+									// Assuming you're using POST method for form submission
+									document.forms[0].reset();
+									alert("Your message has been sent!");
+									return true; // Allows the form to submit
+								}
+								return false; // Prevents form submission if reCAPTCHA isn't complete
+							}
+							</script>
+					</section>	
 					
 					<!-- Footer Social Location, Links & Other Contact -->
 					<section class="split contact">
