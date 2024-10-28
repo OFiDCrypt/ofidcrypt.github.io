@@ -25,7 +25,7 @@
 				<!-- Intro -->
 					<div id="intro">
 						<h1>Cryptocurrency<br />
-						Made Easy.</h1>
+						Made Easy</h1>
 						<p>"We open the door to understanding our World of Digital Assets together through simple apps, informative articles,<br>
 							and shared community experiences."</p>
 						<div id="custom-subheading">
@@ -163,53 +163,51 @@
 					</footer>
 				</div>
 
-				<!-- Footer Contact Form -->
-				<footer id="footer">
-					<section>
-						<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
-							<h2 class="centered-heading">Got Questions?</h2>
-							<div class="fields">
-								<div class="field">
-									<label for="name">Name</label>
-									<input type="text" name="name" id="name" required>
+					<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
+								<h2 class="centered-heading">Got Questions?</h2>
+								<div class="fields">
+									<div class="field">
+										<label for="name">Name</label>
+										<input type="text" name="name" id="name" required>
+									</div>
+									<div class="field">
+										<label for="email">Email</label>
+										<input type="email" name="email" id="email" required>
+									</div>
+									<div class="field">
+										<label for="message">Message</label>
+										<textarea name="message" id="message" rows="3" required></textarea>
+									</div>
 								</div>
-								<div class="field">
-									<label for="email">Email</label>
-									<input type="email" name="email" id="email" required>
-								</div>
-								<div class="field">
-									<label for="message">Message</label>
-									<textarea name="message" id="message" rows="3" required></textarea>
-								</div>
-							</div>
-							<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
-							<ul class="actions">
-								<li><input type="submit" value="Send Message" onclick="return submitForm();"></li>
-							</ul>
+								<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message"></li>
+								</ul>
 							</form>
-							
 							<script>
-							function verifyRecaptcha() {
-								var response = grecaptcha.getResponse();
-								if (response.length == 0) {
+								function verifyRecaptcha() {
+								  var response = grecaptcha.getResponse();
+								  if (response.length === 0) {
 									alert("Please complete the reCAPTCHA.");
 									return false;
-								} else {
+								  } else {
 									return true;
+								  }
 								}
-							}
-							
-							function submitForm() {
-								if (verifyRecaptcha()) {
-									// Assuming you're using POST method for form submission
-									document.forms[0].reset();
-									alert("Your message has been sent!");
-									return true; // Allows the form to submit
+							  
+								function sendMessage() {
+								  if (verifyRecaptcha()) {
+									var form = document.getElementById('yourFormId'); // Replace 'yourFormId' with the actual id of your form
+									if (form) {
+									  form.reset(); // This will reset the form
+									}
+								  }
 								}
-								return false; // Prevents form submission if reCAPTCHA isn't complete
-							}
-							</script>
-					</section>	
+							  </script>
+						</section>
 					
 					<!-- Footer Social Location, Links & Other Contact -->
 					<section class="split contact">
