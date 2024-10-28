@@ -4395,7 +4395,7 @@ ul.icons.alt li .icon:before {
 					padding-left: 0;
 				}
 
-		@media screen and (max-width: 1280px) {
+		/* @media screen and (max-width: 1280px) {
 
 			#copyright {
 				margin: 4rem auto;
@@ -4403,7 +4403,7 @@ ul.icons.alt li .icon:before {
 
 		}
 
-		@media screen and (max-width: 480px) {
+		 @media screen and (max-width: 480px) {
 
 			#copyright ul li {
 				border-left: 0;
@@ -4416,6 +4416,22 @@ ul.icons.alt li .icon:before {
 					margin-top: 0;
 				}
 
+		} */
+
+		@media screen and (max-width: 480px) {
+		
+			#copyright {
+				display: inline-block; /* Ensure it shrinks to fit content */
+				width: 100%; /* Full width */
+				padding-top: 0.9rem;
+				padding-bottom: 0.9rem;
+				white-space: nowrap; /* Prevent line breaks */
+				overflow: hidden; /* Hide overflow */
+				text-overflow: ellipsis; /* Add ellipsis for overflow text */
+				text-align: center; /* Center align text */
+				margin: 0 auto; /* Center it within the parent */
+				display: block;
+			}
 		}
 
 /* Nav Panel */
