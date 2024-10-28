@@ -2973,6 +2973,7 @@ ul.icons.alt li .icon:before {
 		header > h2 + p {
 			font-size: 1rem;
 			margin-top: -0.75rem;
+			text-align: center;
 		}
 
 		header > h3 + p {
