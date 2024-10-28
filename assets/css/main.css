@@ -3507,6 +3507,12 @@ ul.icons.alt li .icon:before {
 					margin-bottom: 1rem;
 				}
 
+			@media screen and (max-width: 768px) {
+				#intro h1 {
+					font-size: 2rem; /* Adjust as needed */
+				}
+			}
+				
 				#intro p {
 					font-size: 1rem;
 					margin-top: 0rem;
