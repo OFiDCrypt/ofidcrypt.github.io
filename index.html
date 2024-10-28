@@ -189,24 +189,15 @@
 							</form>
 							<script>
 								function verifyRecaptcha() {
-								  var response = grecaptcha.getResponse();
-								  if (response.length === 0) {
-									alert("Please complete the reCAPTCHA.");
-									return false;
-								  } else {
-									return true;
-								  }
-								}
-							  
-								function sendMessage() {
-								  if (verifyRecaptcha()) {
-									var form = document.getElementById('yourFormId'); // Replace 'yourFormId' with the actual id of your form
-									if (form) {
-									  form.reset(); // This will reset the form
+									var response = grecaptcha.getResponse();
+									if (response.length == 0) {
+										alert("Please complete the reCAPTCHA.");
+										return false;
+									} else {
+										return true;
 									}
-								  }
 								}
-							  </script>
+							</script>
 						</section>
 					
 					<!-- Footer Social Location, Links & Other Contact -->
