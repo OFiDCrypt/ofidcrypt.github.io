@@ -46,7 +46,7 @@
 				<!-- Main -->
 					<div id="main">
 
-						<!-- Post -->
+						<!-- Section Title -->
 							<section class="post">
 								<header class="major">
 									<span class="date">Est. 2024</span>
@@ -56,11 +56,28 @@
 										by Code Inc.</p>
 								</header>
 								<div class="video main">
-									<video width="100%" controls autoplay>
-										<source src="../assets/videos/vidlogo01.MP4" type="video/mp4">
-										Your browser does not support the video tag.
+									<video id="myVideo" width="100%" controls autoplay poster="../assets/images/bglogo01.png">
+									  <source src="../assets/videos/vidlogo01.MP4" type="video/mp4">
 									</video>
-								</div>								
+								  </div>
+								  
+								  <!-- Revert video placeholder to poster image after video ends -->
+								  <script>
+									document.addEventListener('DOMContentLoaded', function() {
+									  var video = document.getElementById('myVideo');
+									  
+									  // Ensure video loads before adding event listener
+									  video.addEventListener('loadedmetadata', function() {
+										video.addEventListener('ended', function() {
+										  this.currentTime = 0; // Reset video to start
+										  this.pause(); // Pause the video
+										  this.poster = '../assets/images/poster.jpg'; // Set the new poster image
+										});
+									  });
+									});
+								  </script>
+									
+								<!-- Section Description -->													
 								<p>Discover the world of cryptocurrency through our articles and tools, designed to broaden your understanding and ease your journey. Dive into insightful content and useful resources that make the complex world of digital currency accessible to everyone. Embrace the knowledge that equips you to navigate and utilize cryptocurrencies with confidence.</p>
 								<p>Our platform is committed to helping you stay informed and empowered, guiding you through the dynamic landscape of our evolving digital economy. Join us on this exciting voyage and take control of your financial future."</p>
 							</section>
