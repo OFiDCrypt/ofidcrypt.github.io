@@ -3878,7 +3878,6 @@ ul.icons.alt li .icon:before {
 }
 
 /* Posts Container */
-/* Posts Container */
 #main > #posts-container .posts {
     display: flex;
     flex-wrap: wrap;
@@ -3900,6 +3899,17 @@ ul.icons.alt li .icon:before {
     text-align: center;
     display: flex; /* Add this */
     flex-direction: column; /* Add this to stack children vertically */
+}
+
+#main > #posts-container .posts > article header h2 {
+    font-size: 1.75rem; /* Set the font size to 1.75rem */
+    line-height: 1.2; /* Adjust line height for readability */
+    text-align: center; /* Center the text within the h2 */
+    display: flex; /* Use flex for vertical alignment */
+    flex-direction: column; /* Stack any line breaks vertically */
+    justify-content: center; /* Center lines vertically */
+    height: 100px; /* Set a height for vertical centering; adjust as needed */
+    margin: auto; /* Center the h2 horizontally within its container */
 }
 
 #main > #posts-container .posts > article > ul.actions.special {
