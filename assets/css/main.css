@@ -81,20 +81,39 @@ input, select, textarea {
 	}
 
 /* Header Subpage */
-header.header-subpage .logo {
-    display: block;
-    width: 200px; /* Adjust size as needed */
-    height: auto; /* Keeps the aspect ratio */
-    margin: 0 auto; /* Centers the logo */
-    padding: 10px; /* Adds padding around the logo */
-    max-width: 100%; /* Ensures the logo doesn't exceed its container width on smaller screens */
+header.header-subpage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    height: auto; /* Reverted back to auto height */
+    padding-bottom: 4rem; /* Reduced padding */
+    position: relative;
+    text-align: center;
+    margin: 0;
 }
 
-/* Adjust for mobile */
-@media (max-width: 600px) {
+header.header-subpage .logo {
+    width: 200px; /* Adjust size as needed */
+    height: auto;
+    margin: 0 auto; /* Centers horizontally within flex container */
+    padding: 10px; /* If you want to keep this padding, otherwise consider adjusting */
+    max-width: 100%;
+    transition: opacity 0.5s ease, visibility 0.5s, transform 0.5s ease;
+    visibility: visible;
+}
+
+
+/* Mobile-specific styles */
+@media (max-width: 600px) { /* Adjust the max-width as per your mobile breakpoint */
+    header.header-subpage {
+        padding-bottom: 0; /* No padding at the bottom for mobile */
+    }
+
+    /* If necessary, adjust the logo size for smaller screens */
     header.header-subpage .logo {
         width: 50%; /* Or whatever percentage fits well on mobile */
-        max-width: 200px; /* Max width to prevent it from becoming too large on larger phones */
+        max-width: 200px; /* To ensure it doesn't get too large on bigger phones */
     }
 }
 
