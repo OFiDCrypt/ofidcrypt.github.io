@@ -80,6 +80,24 @@ input, select, textarea {
     	margin-right: 10px; /* Adds space between the logo and the text */
 	}
 
+/* Header Subpage */
+header.header-subpage .logo {
+    display: block;
+    width: 200px; /* Adjust size as needed */
+    height: auto; /* Keeps the aspect ratio */
+    margin: 0 auto; /* Centers the logo */
+    padding: 10px; /* Adds padding around the logo */
+    max-width: 100%; /* Ensures the logo doesn't exceed its container width on smaller screens */
+}
+
+/* Adjust for mobile */
+@media (max-width: 600px) {
+    header.header-subpage .logo {
+        width: 50%; /* Or whatever percentage fits well on mobile */
+        max-width: 200px; /* Max width to prevent it from becoming too large on larger phones */
+    }
+}
+
 /* Basic */
 
 	@-ms-viewport {
