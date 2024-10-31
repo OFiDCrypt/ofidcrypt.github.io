@@ -3356,11 +3356,9 @@ ul.icons.alt li .icon:before {
 		}
 
 		@media screen and (orientation: portrait) {
-
 			#wrapper > .bg {
-				background-size: auto,								auto,														auto 175%;
+				background-size: auto 175%;
 			}
-
 		}
 
 /* Intro */
