@@ -124,7 +124,8 @@ header.header-subpage .logo {
 	}
 
 	body {
-		-ms-overflow-style: scrollbar;
+		overflow-y: auto; /* Will add scrollbars when needed */
+		-webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
 	}
 
 	@media screen and (max-width: 480px) {
