@@ -14,41 +14,29 @@
 		$main = $('#main'),
 		$navPanelToggle, $navPanel, $navPanelInner;
 
-    // Play initial animations on page load.
-    $window.on('load', function () {
-        // Force a reflow to ensure styles are correctly applied
-        $body[0].style.display = 'none';
-        void $body[0].offsetWidth; // Trigger reflow
-        $body[0].style.display = '';
-        
-        window.setTimeout(function () {
-            $body.removeClass('is-preload');
-        }, 100);
-    });
+	// Breakpoints.
+	breakpoints({
+		default: ['1681px', null],
+		xlarge: ['1281px', '1680px'],
+		large: ['981px', '1280px'],
+		medium: ['737px', '980px'],
+		small: ['481px', '736px'],
+		xsmall: ['361px', '480px'],
+		xxsmall: [null, '360px']
+	});
 
-    // Breakpoints.
-    breakpoints({
-        default: ['1681px', null],
-        xlarge: ['1281px', '1680px'],
-        large: ['981px', '1280px'],
-        medium: ['737px', '980px'],
-        small: ['481px', '736px'],
-        xsmall: ['361px', '480px'],
-        xxsmall: [null, '360px']
-    });
-
-    // Ensure scrolly function is initialized
-    $(function () {
-        $('.scrolly').scrolly();
-    });
-
-    // Get inner element
-    var $navPanel = $('#nav');
-    if ($navPanel.length > 0) {
-        var $navPanelInner = $navPanel.children('ul'); // or 'nav' if it’s a direct child
-    } else {
-        console.error('$navPanel is not defined or empty');
-    }
+	// Ensure scrolly function is initialized
+	$(function () {
+		$('.scrolly').scrolly();
+	});
+	
+	// Get inner element
+	var $navPanel = $('#nav');
+	if ($navPanel.length > 0) {
+		var $navPanelInner = $navPanel.children('ul'); // or 'nav' if it’s a direct child
+	} else {
+		console.error('$navPanel is not defined or empty');
+	}
 
 		/**
 		 * Applies parallax scrolling to an element's background image.
@@ -133,6 +121,13 @@
 			return $(this);
 
 		};
+
+				// Play initial animations on page load.
+				$window.on('load', function () {
+					window.setTimeout(function () {
+						$body.removeClass('is-preload');
+					}, 100);
+				});
 
 		// Scrolly.
 		$('.scrolly').scrolly();
