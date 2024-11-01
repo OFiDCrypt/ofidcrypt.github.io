@@ -2662,24 +2662,29 @@ form > .fields > .field.quarter {
 			display: block;
 		}
 
-		.image.left, .image.right {
-			max-width: 40%;
+		.post {
+			overflow: auto;
 		}
-
-			.image.left img, .image.right img {
-				width: 100%;
-			}
-
+		
+		.image.left, .image.right {
+			max-width: 30%; /* This makes the image containers 30% of their parent's width */
+		}
+		
+		.image.left img, .image.right img {
+			max-width: 100%; 
+			height: auto; 
+			object-fit: contain; 
+			/* Remove or increase max-height if set */
+		}
+		
 		.image.left {
 			float: left;
-			margin: 0 2rem 2rem 0;
-			top: 0.75rem;
+			margin-right: 1.5rem; /* Adjusted for larger images */
 		}
-
+		
 		.image.right {
 			float: right;
-			margin: 0 0 2rem 2rem;
-			top: 0.75rem;
+			margin-left: 1.5rem; /* Adjusted for larger images */
 		}
 
 		.image.fit {
