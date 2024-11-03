@@ -3087,102 +3087,108 @@ ul.icons.alt li .icon:before {
 
 /* Table */
 
-	.table-wrapper {
-		-webkit-overflow-scrolling: touch;
-		overflow-x: auto;
-	}
+.table-wrapper {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+}
 
-	table {
-		margin: 0 0 2rem 0;
-		width: 100%;
-	}
+table {
+    margin: 0 0 2rem 0;
+    width: 100%;
+    table-layout: fixed; /* This helps in fixing column widths */
+}
 
-		table tbody tr {
-			border: solid 1px;
-			border-left: 0;
-			border-right: 0;
-		}
+    table tbody tr {
+        border: solid 1px;
+        border-left: 0;
+        border-right: 0;
+    }
 
-		table td {
-			padding: 0.75rem 0.75rem;
-		}
+    table td, table th {
+        padding: 0.75rem 0.75rem;
+        text-align: center; /* Center align all cell content */
+    }
 
-		table th {
-			font-family: "Source Sans Pro", Helvetica, sans-serif;
-			font-size: 0.8rem;
-			font-weight: 900;
-			letter-spacing: 0.075em;
-			line-height: 1.5;
-			padding: 0 0.75rem 0.75rem 0.75rem;
-			text-align: left;
-			text-transform: uppercase;
-		}
+    table th {
+        font-family: "Source Sans Pro", Helvetica, sans-serif;
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 0.075em;
+        line-height: 1.5;
+        padding: 0 0.75rem 0.75rem 0.75rem;
+        text-transform: uppercase; /* Retained uppercase for headers */
+    }
 
-			@media screen and (max-width: 980px) {
+        @media screen and (max-width: 980px) {
 
-				table th {
-					font-size: 0.9rem;
-				}
+            table th {
+                font-size: 0.9rem;
+            }
 
-			}
+        }
 
-		table thead {
-			border-bottom: solid 2px;
-		}
+    table thead {
+        border-bottom: solid 2px;
+    }
 
-		table tfoot {
-			border-top: solid 2px;
-		}
+    table tfoot {
+        border-top: solid 2px;
+    }
 
-		table.alt {
-			border-collapse: separate;
-		}
+    table.alt {
+        border-collapse: separate;
+    }
 
-			table.alt tbody tr td {
-				border: solid 1px;
-				border-left-width: 0;
-				border-top-width: 0;
-			}
+        table.alt tbody tr td {
+            border: solid 1px;
+            border-left-width: 0;
+            border-top-width: 0;
+        }
 
-				table.alt tbody tr td:first-child {
-					border-left-width: 1px;
-				}
+            table.alt tbody tr td:first-child {
+                border-left-width: 1px;
+            }
 
-			table.alt tbody tr:first-child td {
-				border-top-width: 1px;
-			}
+        table.alt tbody tr:first-child td {
+            border-top-width: 1px;
+        }
 
-			table.alt thead {
-				border-bottom: 0;
-			}
+        table.alt thead {
+            border-bottom: 0;
+        }
 
-			table.alt tfoot {
-				border-top: 0;
-			}
+        table.alt tfoot {
+            border-top: 0;
+        }
 
-	table tbody tr {
-		border-color: #eeeeee;
-	}
+    /* Special rule for tables with exactly two columns */
+    table.two-columns tr td, table.two-columns tr th {
+        width: 50%; /* Force each column to take up half the table width */
+    }
 
-		table tbody tr:nth-child(2n + 1) {
-			background-color: rgba(220, 220, 220, 0.25);
-		}
+table tbody tr {
+    border-color: #eeeeee;
+}
 
-	table th {
-		color: #212931;
-	}
+    table tbody tr:nth-child(2n + 1) {
+        background-color: rgba(220, 220, 220, 0.25);
+    }
 
-	table thead {
-		border-bottom-color: #eeeeee;
-	}
+table th {
+    color: #212931;
+}
 
-	table tfoot {
-		border-top-color: #eeeeee;
-	}
+table thead {
+    border-bottom-color: #eeeeee;
+}
 
-	table.alt tbody tr td {
-		border-color: #eeeeee;
-	}
+table tfoot {
+    border-top-color: #eeeeee;
+}
+
+table.alt tbody tr td {
+    border-color: #eeeeee;
+}
 
 /* Pagination */
 .pagination {
@@ -3860,10 +3866,15 @@ ul.icons.alt li .icon:before {
     z-index: 2;
 }
 
-#main > * {
-    padding: 4rem 4rem 2rem 4rem;
+#main > *:not(section.post) {
+    padding: 4rem 2rem 2rem 2rem;
     border-top: solid 2px #eeeeee;
     margin: 0;
+}
+
+section.post {
+    padding: 0 4rem 1rem 4rem; /* No top padding, keep bottom and sides */
+    border-top: none;
 }
 
 #main > *:first-child {
@@ -3916,6 +3927,32 @@ ul.icons.alt li .icon:before {
         line-height: 1.2;
         margin: 0 0 1.5rem 0;
     }
+}
+
+/* Community Connections Section */
+#main .partner-section {
+    margin-bottom: 20px; /* Adds space below each partner-section */
+}
+
+#main .partner-section .product-content .image.left {
+    float: left;
+    margin-right: 20px; /* Adds space to the right of the image */
+}
+
+#main .partner-section .product-content .image.right {
+    float: right;
+    margin-left: 20px; /* Adds space to the left of the image */
+}
+
+/* Clear the float after each section */
+#main .partner-section .product-content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#main .partner-section + .partner-section {
+    clear: both;
 }
 
 /* Posts Container */
@@ -3976,6 +4013,82 @@ ul.icons.alt li .icon:before {
     }
 
     #main > #posts-container .posts > article .image {
+        max-width: 25rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    #main > * {
+        padding: 2rem 2rem 0.1rem 2rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #main {
+        width: 100%;
+    }
+}
+
+/* Monthly Container community.html */
+#main > #monthly-container .monthly-posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    text-align: center;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#main > #monthly-container .monthly-posts > article {
+    flex: 0 0 calc(50% - 2rem);
+    margin: 1rem;
+    padding: 2rem;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex; /* Add this */
+    flex-direction: column; /* Add this to stack children vertically */
+}
+
+#main > #monthly-container .monthly-posts > article header h2 {
+    font-size: 1.75rem; /* Set the font size to 1.75rem */
+    line-height: 1.2; /* Adjust line height for readability */
+    text-align: center; /* Center the text within the h2 */
+    display: flex; /* Use flex for vertical alignment */
+    flex-direction: column; /* Stack any line breaks vertically */
+    justify-content: center; /* Center lines vertically */
+    height: 100px; /* Set a height for vertical centering; adjust as needed */
+    margin: auto; /* Center the h2 horizontally within its container */
+}
+
+#main > #monthly-container .monthly-posts > article > ul.actions.special {
+    margin-top: auto; /* This will push the ul to the bottom */
+    padding-top: 1rem; /* Optional padding */
+    margin-bottom: 0; /* To ensure no extra space at the bottom */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 980px) {
+    #main > #monthly-container .monthly-posts > article {
+        flex: 0 0 calc(50% - 2rem);
+        margin: 1rem;
+        padding: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    #main > #monthly-container .monthly-posts > article {
+        flex: 0 0 calc(100% - 2rem);
+        margin: 1rem 0;
+        padding: 2rem;
+    }
+
+    #main > #monthly-container .monthly-posts > article .image {
         max-width: 25rem;
         margin-left: auto;
         margin-right: auto;

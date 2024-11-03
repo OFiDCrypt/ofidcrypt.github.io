@@ -246,7 +246,7 @@
 
 			});
 
-			// Pagination
+			// Pagination Index
 			document.addEventListener("DOMContentLoaded", function() {
 				const container = document.getElementById('posts-container');
 				let currentPage = '1';
@@ -342,6 +342,102 @@
 				loadPage('1', false); // Load the first page on initial load without scrolling
 			});
 			
+			// Pagination Community
+			document.addEventListener("DOMContentLoaded", function() {
+				const container = document.getElementById('monthly-container');
+				let currentPage = '1';
+				let totalPages = 2; // Adjust this to the actual number of pages
+			
+				function loadPage(pageNumber, shouldScroll) {
+					let url;
+					if (pageNumber === '1') {
+						url = 'community.html';
+					} else {
+						url = `monthly-posts-page${pageNumber}.html`;
+					}
+			
+					container.classList.add('fade-out');
+			
+					fetch(url).then(response => response.text()).then(data => {
+						const parser = new DOMParser();
+						const doc = parser.parseFromString(data, 'text/html');
+						let newContent = '';
+			
+						if(pageNumber === '1') {
+							newContent = doc.getElementById('monthly-community-posts').querySelector('section.monthly-posts').outerHTML;
+						} else {
+							const pageContent = doc.getElementById(`monthly-posts-page${pageNumber}-monthly-posts`);
+							if(pageContent) {
+								newContent = pageContent.innerHTML;
+							} else {
+								newContent = doc.body.innerHTML || doc.querySelector('.monthly-posts').innerHTML;
+							}
+						}
+			
+						setTimeout(() => {
+							container.innerHTML = `<div id="monthly-community-posts">${newContent}</div>`;
+							container.classList.remove('fade-out');
+							container.classList.add('fade-in');
+			
+							setTimeout(() => {
+								container.classList.remove('fade-in');
+							}, 500);
+			
+							if (shouldScroll) {
+								const featuredPost = document.querySelector('.post.featured');
+								if (featuredPost) {
+									const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
+									window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
+								}
+							}
+			
+							// Update active page class for both top and bottom pagination
+							document.querySelectorAll('.pagination .page').forEach(pageLink => {
+								pageLink.classList.remove('active');
+								if (pageLink.getAttribute('data-page') === pageNumber) {
+									pageLink.classList.add('active');
+								}
+							});
+			
+							// Update currentPage
+							currentPage = pageNumber;
+						}, 500);
+					}).catch(error => {
+						console.error('Error loading page:', error);
+						container.classList.remove('fade-out');
+					});
+				}
+			
+				// Event listeners for both top and bottom pagination
+				document.querySelectorAll('.pagination .page').forEach(pageLink => {
+					pageLink.addEventListener('click', function(event) {
+						event.preventDefault();
+						const pageNumber = this.getAttribute('data-page');
+						loadPage(pageNumber, true);
+					});
+				});
+			
+				document.querySelectorAll('.pagination .previous').forEach(prevLink => {
+					prevLink.addEventListener('click', function(event) {
+						event.preventDefault();
+						if (currentPage > '1') {
+							loadPage((parseInt(currentPage) - 1).toString(), true);
+						}
+					});
+				});
+			
+				document.querySelectorAll('.pagination .next').forEach(nextLink => {
+					nextLink.addEventListener('click', function(event) {
+						event.preventDefault();
+						if (parseInt(currentPage) < totalPages) {
+							loadPage((parseInt(currentPage) + 1).toString(), true);
+						}
+					});
+				});
+			
+				loadPage('1', false); // Load the first page on initial load without scrolling
+			});
+
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
 				const proxyUrl = 'https://api.allorigins.win/get?url=';
