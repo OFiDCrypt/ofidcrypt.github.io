@@ -2919,7 +2919,6 @@ ul.icons.alt li .icon:before {
 }
 
 /* List */
-
 	ol {
 		list-style: decimal;
 		margin: 0 0 2rem 0;
@@ -2986,7 +2985,6 @@ ul.icons.alt li .icon:before {
 	}
 
 /* Section Article */
-
 	section.special, article.special {
 		text-align: center;
 	}
@@ -3086,7 +3084,6 @@ ul.icons.alt li .icon:before {
 	}
 
 /* Table */
-
 .table-wrapper {
     -webkit-overflow-scrolling: touch;
     overflow-x: auto;
@@ -3204,6 +3201,12 @@ table.alt tbody tr td {
     list-style: none;
     margin: 0 0 2rem 2px;
     padding: 0;
+}
+
+#header .pagination {
+    margin: 0 auto; /* This centers the pagination horizontally if it's a block element */
+    align-self: center; /* This ensures it's vertically centered within the flex container */
+    padding-bottom: 2rem; /* Adds 2rem of padding at the bottom */
 }
 
 .pagination a, .pagination span {
@@ -3866,12 +3869,6 @@ table.alt tbody tr td {
     z-index: 2;
 }
 
-#main > *:not(section.post) {
-    padding: 4rem 2rem 2rem 2rem;
-    border-top: solid 2px #eeeeee;
-    margin: 0;
-}
-
 section.post {
     padding: 0 4rem 1rem 4rem; /* No top padding, keep bottom and sides */
     border-top: none;
@@ -3955,6 +3952,81 @@ section.post {
     clear: both;
 }
 
+/* Community Featured Section */
+#main > article.community.featured {
+    padding: 4rem 2rem 2rem 2rem;
+    border-top: solid 2px #eeeeee;
+    margin: 0;
+}
+
+article.community.featured {
+    padding: 0 4rem 1rem 4rem; /* No top padding, keep bottom and sides */
+    border-top: none;
+}
+
+#main > *:first-child {
+    border-top: 0;
+}
+
+#main > footer {
+    text-align: center;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* or set a specific height if needed */
+}
+
+#main > footer .pagination {
+    margin: 0 auto; /* This centers the pagination horizontally if it's a block element */
+    align-self: center; /* This ensures it's vertically centered within the flex container */
+    padding-bottom: 1rem; /* Adds 2rem of padding at the bottom */
+}
+
+#main > article.community.featured {
+    padding: 8rem 8rem 6rem 8rem;
+}
+
+#main > article.community.featured > header.major > .date {
+    margin-top: -2rem;
+}
+
+#main > article.community.featured > header.major > h1,
+#main > article.community.featured > header.major h2 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin: 0 0 2rem 0;
+}
+
+#main > article.community.featured {
+    text-align: center;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 1280px) {
+    #main > article.community.featured {
+        padding: 6rem 4rem 4rem 4rem;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    #main > article.community.featured {
+        padding: 4rem 2rem 2rem 2rem;
+    }
+
+    #main > article.community.featured > header.major > .date {
+        margin-top: -1rem;
+        margin-bottom: 2rem;
+    }
+
+    #main > article.community.featured > header.major > h1,
+    #main > article.community.featured > header.major h2 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin: 0 0 1.5rem 0;
+    }
+}
+
 /* Posts Container */
 #main > #posts-container .posts {
     display: flex;
@@ -3970,6 +4042,8 @@ section.post {
 #main > #posts-container .posts > article {
     flex: 0 0 calc(50% - 2rem);
     margin: 1rem;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
     padding: 2rem;
     border: 1px solid #eeeeee;
     border-radius: 5px;
@@ -4046,6 +4120,8 @@ section.post {
 #main > #monthly-container .monthly-posts > article {
     flex: 0 0 calc(50% - 2rem);
     margin: 1rem;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
     padding: 2rem;
     border: 1px solid #eeeeee;
     border-radius: 5px;
