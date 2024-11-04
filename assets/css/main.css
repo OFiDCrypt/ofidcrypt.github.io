@@ -4168,6 +4168,10 @@ article.community.featured {
     margin-bottom: 0; /* To ensure no extra space at the bottom */
 }
 
+.monthly-posts p {
+    text-align: center; /* Center-align text */
+}
+
 /* Responsive Adjustments */
 @media screen and (max-width: 980px) {
     #main > #monthly-container .monthly-posts > article {
