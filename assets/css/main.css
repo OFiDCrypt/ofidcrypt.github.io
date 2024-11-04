@@ -3968,6 +3968,15 @@ article.community.featured {
     border-top: 0;
 }
 
+#main > header {
+    text-align: center;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Or set a specific height if needed */
+}
+
 #main > footer {
     text-align: center;
     padding: 2rem 0;
@@ -4024,6 +4033,17 @@ article.community.featured {
         font-size: 2.5rem;
         line-height: 1.2;
         margin: 0 0 1.5rem 0;
+    }
+}
+
+@media screen and (min-width: 768px) { /* Example breakpoint, adjust as needed */
+    #main > header {
+        text-align: center;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto; /* Or set a specific height if needed */
     }
 }
 
@@ -4095,7 +4115,7 @@ article.community.featured {
 
 @media screen and (max-width: 736px) {
     #main > * {
-        padding: 2rem 2rem 0.1rem 2rem;
+        padding: 0.2rem 2rem 0.1rem 2rem;
     }
 }
 
@@ -4168,12 +4188,6 @@ article.community.featured {
         max-width: 25rem;
         margin-left: auto;
         margin-right: auto;
-    }
-}
-
-@media screen and (max-width: 736px) {
-    #main > * {
-        padding: 2rem 2rem 0.1rem 2rem;
     }
 }
 
