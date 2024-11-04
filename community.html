@@ -162,7 +162,7 @@
 				<div id="community-featured-image" class="image main">
 					<img class="post-featured" src="assets/images/octmonthlykin01.png" alt="Article Image" />
 				</div>				
-				<ul class="actions special">
+				<ul id="community-featured-button" class="actions special">
 					<li><a href="https://pennypost.co/p/727100917/kin-economy-monthly-update---october-24"
 							class="button large">Preview Article</a></li>
 				</ul>
@@ -186,14 +186,14 @@
 						<article>
 							<header>
 								<span class="date">Coming Soon</span>
-								<h2><a href="#community-featured-image">Kin Economy<br /> December Update</a></h2>
+								<h2><a href="https://www.ofidcrypt.com/community.html#community-featured-button">Kin Economy<br /> December Update</a></h2>
 							</header>
-							<a href="#community-featured-image" class="image fit"><img src="assets/images/pic02.jpg" alt="Article Title: Kin Monthy Update Coming Soon" /></a>
-							<p><b>This article will be published on Pennypost.</b></p>
-							<p>Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor.</p>
-							<p>Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
+							<a href="https://www.ofidcrypt.com/community.html#community-featured-button" class="image fit"><img src="assets/images/pic02.jpg" alt="Article Title: Kin Monthy Update Coming Soon" /></a>
+							<p><b>This article will be published on Pennypost.</b> 
+								Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor. 
+								Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
 							<ul class="actions special">
-								<li><a href="#community-featured-image"
+								<li><a href="https://www.ofidcrypt.com/community.html#community-featured-button"
 									class="button">Preview</a></li>
 							</ul>
 						</article>
@@ -201,14 +201,14 @@
 						<article>
 							<header>
 								<span class="date">Coming Soon</span>
-								<h2><a href="#community-featured-image">Kin Economy<br /> November Update</a></h2>
+								<h2><a href="https://www.ofidcrypt.com/community.html#community-featured-button">Kin Economy<br /> November Update</a></h2>
 							</header>
-							<a href="#community-featured-image" class="image fit"><img src="assets/images/pic02.jpg" alt="Article Title: Kin Monthy Update Coming Soon" /></a>
-							<p><b>This article will be published on Pennypost.</b></p>
-							<p>Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor.</p>
-							<p>Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
+							<a href="https://www.ofidcrypt.com/community.html#community-featured-button" class="image fit"><img src="assets/images/pic02.jpg" alt="Article Title: Kin Monthy Update Coming Soon" /></a>
+							<p><b>This article will be published on Pennypost.</b> 
+								Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor. 
+								Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
 							<ul class="actions special">
-								<li><a href="#community-featured-image"
+								<li><a href="https://www.ofidcrypt.com/community.html#community-featured-button"
 									class="button">Preview</a></li>
 							</ul>
 						</article>
@@ -219,9 +219,9 @@
 								<h2><a href="https://pennypost.co/p/727100917/kin-economy-monthly-update---october-24">Kin Economy<br /> October Update</a></h2>
 							</header>
 							<a href="https://pennypost.co/p/727100917/kin-economy-monthly-update---october-24" class="image fit"><img src="assets/images/octmonthlykin01.png" alt="Article Title: Kin Monthy Update for October" /></a>
-							<p><b>This article is published on Pennypost.</b></p>
-							<p>Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor.</p>
-							<p>Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
+							<p><b>This article is published on Pennypost.</b> 
+								Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor. 
+								Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
 							<ul class="actions special">
 								<li><a href="https://pennypost.co/p/727100917/kin-economy-monthly-update---october-24"
 									class="button">Preview</a></li>
@@ -234,9 +234,9 @@
 								<h2><a href="https://pennypost.co/p/531621758/kin-economy-monthly-update---september-24">Kin Economy<br /> September Update</a></h2>
 							</header>
 							<a href="https://pennypost.co/p/531621758/kin-economy-monthly-update---september-24" class="image fit"><img src="assets/images/sepmonthlykin01.png" alt="Article Title: Kin Monthy Update for September" /></a>
-							<p><b>This article will be published on Pennypost.</b></p>
-							<p>Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor.</p>
-							<p>Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
+							<p><b>This article is published on Pennypost.</b> 
+								Purchases support the writer. Optionally, you can leave a tip at the end of Pennypost articles to show gratitude to the contributor. 
+								Code app required to purchase from Pennypost, download from <b><a href="https://getcode.com">here</a>.</b></p>
 							<ul class="actions special">
 								<li><a href="https://pennypost.co/p/531621758/kin-economy-monthly-update---september-24"
 									class="button">Preview</a></li>
@@ -355,46 +355,64 @@
 							url = `monthly-posts-page${pageNumber}.html`;
 						}
 
+						// Store the original height before any changes
 						const originalHeight = container.offsetHeight;
+						// Set a minimum height to prevent content shift
 						container.style.minHeight = `${originalHeight}px`;
+						// Start the fade-out effect
 						container.classList.add('fade-out');
 
-						fetch(url).then(response => {
-							if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-							return response.text();
-						}).then(data => {
-							const parser = new DOMParser();
-							const doc = parser.parseFromString(data, 'text/html');
-							let newContent = '';
+						fetch(url)
+							.then(response => {
+								if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+								return response.text();
+							})
+							.then(data => {
+								const parser = new DOMParser();
+								const doc = parser.parseFromString(data, 'text/html');
+								let newContent = '';
 
-							if (pageNumber === '1') {
-								const content = doc.getElementById('monthly-community-posts');
-								newContent = content ? content.querySelector('section.monthly-posts')?.outerHTML || '' : '';
-							} else {
-								const pageContent = doc.getElementById(`monthly-posts-page${pageNumber}-monthly-posts`);
-								newContent = pageContent ? pageContent.innerHTML :
-									(doc.querySelector('section.monthly-posts')?.outerHTML || '');
-							}
+								if (pageNumber === '1') {
+									const content = doc.getElementById('monthly-community-posts');
+									newContent = content ? content.querySelector('section.monthly-posts')?.outerHTML || '' : '';
+								} else {
+									const pageContent = doc.getElementById(`monthly-posts-page${pageNumber}-monthly-posts`);
+									newContent = pageContent ? pageContent.innerHTML :
+										(doc.querySelector('section.monthly-posts')?.outerHTML || '');
+								}
 
-							setTimeout(() => {
+								// Update the content
 								container.innerHTML = `<div id="monthly-community-posts">${newContent}</div>`;
-								container.classList.remove('fade-out');
-								container.classList.add('fade-in');
-								container.style.minHeight = '';
 
+								// Check the new height and adjust the minHeight if necessary
+								const newHeight = container.offsetHeight;
+								if (newHeight < originalHeight) {
+									container.style.minHeight = `${originalHeight}px`;
+								} else {
+									container.style.minHeight = `${newHeight}px`;
+								}
+
+								// Complete the fade-out, then fade-in
 								setTimeout(() => {
-									container.classList.remove('fade-in');
-									if (shouldScroll) {
-										scrollToFeaturedPost();
-									}
-									updatePagination(pageNumber);
-								}, 500);
-							}, 500);
-						}).catch(error => {
-							console.error('Error loading page:', error);
-							container.classList.remove('fade-out');
-							container.style.minHeight = '';
-						});
+									container.classList.remove('fade-out');
+									container.classList.add('fade-in');
+
+									setTimeout(() => {
+										container.classList.remove('fade-in');
+										container.style.minHeight = ''; // Reset minHeight after transition
+										if (shouldScroll) {
+											scrollToFeaturedPost();
+										}
+										updatePagination(pageNumber);
+									}, 300); // Adjust this based on your CSS transition duration
+
+								}, 100); // A slight delay to ensure the fade-out has started
+							})
+							.catch(error => {
+								console.error('Error loading page:', error);
+								container.classList.remove('fade-out');
+								container.style.minHeight = ''; // Reset minHeight on error
+							});
 					}
 
 					function scrollToFeaturedPost() {
@@ -406,14 +424,14 @@
 					}
 
 					function updatePagination(pageNumber) {
-						document.querySelectorAll('#pagination-controls-top .page, #pagination-controls-bottom .page').forEach(pageLink => {
+						document.querySelectorAll('.pagination .page').forEach(pageLink => {
 							pageLink.classList.toggle('active', pageLink.getAttribute('data-page') === pageNumber);
 						});
 						currentPage = pageNumber;
 					}
 
 					function setupPaginationListeners() {
-						document.querySelectorAll('#pagination-controls-top .page, #pagination-controls-bottom .page').forEach(pageLink => {
+						document.querySelectorAll('.pagination .page').forEach(pageLink => {
 							pageLink.addEventListener('click', function (event) {
 								event.preventDefault();
 								const pageNumber = this.getAttribute('data-page');
@@ -421,7 +439,7 @@
 							});
 						});
 
-						document.querySelectorAll('#pagination-controls-top .previous, #pagination-controls-bottom .previous').forEach(prevLink => {
+						document.querySelectorAll('.pagination .previous').forEach(prevLink => {
 							prevLink.addEventListener('click', function (event) {
 								event.preventDefault();
 								if (currentPage > '1') {
@@ -430,7 +448,7 @@
 							});
 						});
 
-						document.querySelectorAll('#pagination-controls-top .next, #pagination-controls-bottom .next').forEach(nextLink => {
+						document.querySelectorAll('.pagination .next').forEach(nextLink => {
 							nextLink.addEventListener('click', function (event) {
 								event.preventDefault();
 								if (parseInt(currentPage) < totalPages) {
