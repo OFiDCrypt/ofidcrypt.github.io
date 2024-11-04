@@ -110,80 +110,41 @@
 						<div class="product-content">
 							<span class="image left"><img src="assets/images/logokin02.jpg"
 									alt="Kin On Solana Logo Image"></span>
-							<p>"Kin is a cryptocurrency that follows Satoshi Nakamoto's vision of a direct, peer-to-peer payment system. Unlike traditional money where banks or services are the go-between, Kin allows people to send and receive payments directly from each other. It's designed to be user-friendly, making transactions as simple as sending a message, but with the added security of blockchain technology. With Kin, you can pay for services, tip content creators, or just transfer money to friends without any middleman, embodying true decentralization."</p>
+							<p>Kin is a cryptocurrency that follows Satoshi Nakamoto's vision of a direct, peer-to-peer payment system. Unlike traditional money where banks or services are the go-between, Kin allows people to send and receive payments directly from each other. It's designed to be user-friendly, making transactions as simple as sending a message, but with the added security of blockchain technology. With Kin, you can pay for services, tip content creators, or just transfer money to friends without any middleman, embodying true decentralization.</p>
 						</div>
 					</div>
 				</article>
 			</section>
 			
-			<table>
-				<thead>
-					<tr>
-						<th>Join, Follow & Visit</th>
-						<th>Link</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Telegram</td>
-						<td><a href="https://t.me/KinCryptoTelegram">Kin Crypto Official</a></td>
-					</tr>
-					<tr>
-						<td>𝕏</td>
-						<td><a href="https://x.com/Kin_Ecosystem">Kin_Ecosystem</a></td>
-					</tr>
-					<tr>
-						<td>Community Website</td>
-						<td><a href="https://www.kineconomy.com/">kineconomy.com</a></td>
-					</tr>
-				</tbody>
-			</table>
-
-			<!-- Community Connections Section -->
-			<section class="partner-section">
-				<header>
-					<!-- Connection Name 2 -->
-					<h2>A New Community Will Go Here</h2>
-				</header>
-			
-				<!-- Connection Platform 2 -->
-				<article class="product-section">
-					<div class="product-wrapper">
-						<div class="product-content">
-							<span class="image right"><img src="assets/images/pic03.jpg"
-									alt="Kin On Solana Logo Image"></span>
-							<p>"We have reserved this space to showcase our valued community partner. Here, you'll soon find information on their contributions, how they align with our mission at OFiDCrypt, and the exciting ways they're enhancing our community experience."</p>
-						</div>
-					</div>
-				</article>
+			<!-- Community Links Table -->
+			<section class="community-links">
+				<table>
+					<thead>
+						<tr>
+							<th>Join, Follow & Visit</th>
+							<th>Link</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Telegram</td>
+							<td><a href="https://t.me/KinCryptoTelegram">Kin Crypto Official</a></td>
+						</tr>
+						<tr>
+							<td>𝕏</td>
+							<td><a href="https://x.com/Kin_Ecosystem">Kin_Ecosystem</a></td>
+						</tr>
+						<tr>
+							<td>Community Website</td>
+							<td><a href="https://www.kineconomy.com/">kineconomy.com</a></td>
+						</tr>
+					</tbody>
+				</table>
 			</section>
-
-			<table>
-				<thead>
-					<tr>
-						<th>Join, Follow & Visit</th>
-						<th>Link</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Telegram</td>
-						<td><a href="#">@</a></td>
-					</tr>
-					<tr>
-						<td>𝕏</td>
-						<td><a href="#">@</a></td>
-					</tr>
-					<tr>
-						<td>Community Website</td>
-						<td><a href="#">@</a></td>
-					</tr>
-				</tbody>
-			</table>
 
                     <!-- More About Our Partners -->
-							<h2 style="text-align: center;">More Ways to Engage</h2>
-							<p style="text-align: center;">"OFiDCrypt actively works on developing promotions and contests for community participation, in collaboration with other contributors."</p>
+					<h2 style="text-align: center;">More Ways to Engage</h2>
+					<p style="text-align: center;">OFiDCrypt actively works on developing promotions and contests for community participation, in collaboration with other contributors.</p>
                 </section>
             </section>
         </div>
@@ -219,8 +180,8 @@
 		
 			<!-- Monthly Container -->
 			<section id="monthly-container">
-				<div id="monthly-community-posts">
-					<section class="monthly-posts">
+					<div id="monthly-community-posts">
+						<section class="monthly-posts">
 						<article>
 							<header>
 								<span class="date">October, 2024</span>
@@ -313,7 +274,7 @@
 		
 			<!-- Footer for Pagination -->
 			<footer>
-				<div class="pagination">
+				<div class="pagination" id="pagination-controls-bottom">
 					<a href="#" class="previous">Prev</a>
 					<a href="#" class="page active" data-page="1">1</a>
 					<a href="#" class="page" data-page="2">2</a>
@@ -396,8 +357,121 @@
 					<ul><li>&copy; OF<span class="i">i</span>DCrypt by Tokin ⬢ 2024</li></ul>
 					<ul><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
-
 			</div>
+
+			<!-- Page Specific Scripts -->
+			<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					const container = document.getElementById('monthly-container');
+					if (!container) {
+						console.error("Container element not found");
+						return; // If container doesn't exist, stop execution
+					}
+
+					let currentPage = '1';
+					const totalPages = 2; // Adjust this to the actual number of pages
+
+					function loadPage(pageNumber, shouldScroll = true) {
+						if (!container) return; // Early return if container is null
+
+						let url;
+						if (pageNumber === '1') {
+							url = 'community.html';
+						} else {
+							url = `monthly-posts-page${pageNumber}.html`;
+						}
+
+						const originalHeight = container.offsetHeight;
+						container.style.minHeight = `${originalHeight}px`;
+						container.classList.add('fade-out');
+
+						fetch(url).then(response => {
+							if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+							return response.text();
+						}).then(data => {
+							const parser = new DOMParser();
+							const doc = parser.parseFromString(data, 'text/html');
+							let newContent = '';
+
+							if (pageNumber === '1') {
+								const content = doc.getElementById('monthly-community-posts');
+								newContent = content ? content.querySelector('section.monthly-posts')?.outerHTML || '' : '';
+							} else {
+								const pageContent = doc.getElementById(`monthly-posts-page${pageNumber}-monthly-posts`);
+								newContent = pageContent ? pageContent.innerHTML :
+									(doc.querySelector('section.monthly-posts')?.outerHTML || '');
+							}
+
+							setTimeout(() => {
+								container.innerHTML = `<div id="monthly-community-posts">${newContent}</div>`;
+								container.classList.remove('fade-out');
+								container.classList.add('fade-in');
+								container.style.minHeight = '';
+
+								setTimeout(() => {
+									container.classList.remove('fade-in');
+									if (shouldScroll) {
+										scrollToFeaturedPost();
+									}
+									updatePagination(pageNumber);
+								}, 500);
+							}, 500);
+						}).catch(error => {
+							console.error('Error loading page:', error);
+							container.classList.remove('fade-out');
+							container.style.minHeight = '';
+						});
+					}
+
+					function scrollToFeaturedPost() {
+						const featuredPost = document.querySelector('article.community.featured');
+						if (featuredPost) {
+							const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
+							window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
+						}
+					}
+
+					function updatePagination(pageNumber) {
+						document.querySelectorAll('#pagination-controls-top .page, #pagination-controls-bottom .page').forEach(pageLink => {
+							pageLink.classList.toggle('active', pageLink.getAttribute('data-page') === pageNumber);
+						});
+						currentPage = pageNumber;
+					}
+
+					function setupPaginationListeners() {
+						document.querySelectorAll('#pagination-controls-top .page, #pagination-controls-bottom .page').forEach(pageLink => {
+							pageLink.addEventListener('click', function (event) {
+								event.preventDefault();
+								const pageNumber = this.getAttribute('data-page');
+								loadPage(pageNumber);
+							});
+						});
+
+						document.querySelectorAll('#pagination-controls-top .previous, #pagination-controls-bottom .previous').forEach(prevLink => {
+							prevLink.addEventListener('click', function (event) {
+								event.preventDefault();
+								if (currentPage > '1') {
+									loadPage((parseInt(currentPage) - 1).toString());
+								}
+							});
+						});
+
+						document.querySelectorAll('#pagination-controls-top .next, #pagination-controls-bottom .next').forEach(nextLink => {
+							nextLink.addEventListener('click', function (event) {
+								event.preventDefault();
+								if (parseInt(currentPage) < totalPages) {
+									loadPage((parseInt(currentPage) + 1).toString());
+								}
+							});
+						});
+					}
+
+					loadPage('1', false); // Load the first page without scrolling
+					setupPaginationListeners(); // Setup pagination after initial load to ensure all elements exist
+				});
+
+			</script>
+
 			<!-- Link to non-critical JavaScript files -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
