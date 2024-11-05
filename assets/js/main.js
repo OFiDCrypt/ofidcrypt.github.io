@@ -29,185 +29,192 @@
 	$(function () {
 		$('.scrolly').scrolly();
 	});
-	
+
 	// Get inner element
-	var $navPanel = $('#nav');
-	if ($navPanel.length > 0) {
-		var $navPanelInner = $navPanel.children('ul'); // or 'nav' if it’s a direct child
+	var $nav = $('#nav');
+	if ($nav.length > 0) {
+		var $navPanelInner = $nav.children('ul'); // or 'nav' if it’s a direct child
 	} else {
-		console.error('$navPanel is not defined or empty');
+		console.error('$nav is not defined or empty');
 	}
 
-		/**
-		 * Applies parallax scrolling to an element's background image.
-		 * @return {jQuery} jQuery object.
-		 */
-		$.fn._parallax = function (intensity) {
+	/**
+	 * Applies parallax scrolling to an element's background image.
+	 * @return {jQuery} jQuery object.
+	 */
+	$.fn._parallax = function (intensity) {
 
-			var $window = $(window),
-				$this = $(this);
+		var $window = $(window),
+			$this = $(this);
 
-			if (this.length == 0 || intensity === 0)
-				return $this;
+		if (this.length == 0 || intensity === 0)
+			return $this;
 
-			if (this.length > 1) {
+		if (this.length > 1) {
+			for (var i = 0; i < this.length; i++)
+				$(this[i])._parallax(intensity);
+			return $this;
+		}
 
-				for (var i = 0; i < this.length; i++)
-					$(this[i])._parallax(intensity);
+		if (!intensity)
+			intensity = 0.25;
 
-				return $this;
+		$this.each(function () {
 
+			var $t = $(this),
+				$bg = $('<div class="bg"></div>').appendTo($t),
+				on, off;
+
+			on = function () {
+				$bg
+					.removeClass('fixed')
+					.css('transform', 'matrix(1,0,0,1,0,0)');
+
+				$window
+					.on('scroll._parallax', function () {
+						var pos = parseInt($window.scrollTop()) - parseInt($t.position().top);
+						$bg.css('transform', 'matrix(1,0,0,1,0,' + (pos * intensity) + ')');
+					});
+			};
+
+			off = function () {
+				$bg
+					.addClass('fixed')
+					.css('transform', 'none');
+
+				$window
+					.off('scroll._parallax');
+			};
+
+			// Disable parallax on ..
+			if (browser.name == 'ie'     // IE
+				|| browser.name == 'edge'    // Edge
+				|| window.devicePixelRatio > 1)   // Retina/HiDPI (= poor performance)
+				off();
+
+			// Enable everywhere else.
+			else {
+				breakpoints.on('>large', on);
+				breakpoints.on('<=large', off);
 			}
 
-			if (!intensity)
-				intensity = 0.25;
+		});
 
-			$this.each(function () {
-
-				var $t = $(this),
-					$bg = $('<div class="bg"></div>').appendTo($t),
-					on, off;
-
-				on = function () {
-
-					$bg
-						.removeClass('fixed')
-						.css('transform', 'matrix(1,0,0,1,0,0)');
-
-					$window
-						.on('scroll._parallax', function () {
-
-							var pos = parseInt($window.scrollTop()) - parseInt($t.position().top);
-
-							$bg.css('transform', 'matrix(1,0,0,1,0,' + (pos * intensity) + ')');
-
-						});
-
-				};
-
-				off = function () {
-
-					$bg
-						.addClass('fixed')
-						.css('transform', 'none');
-
-					$window
-						.off('scroll._parallax');
-
-				};
-
-				// Disable parallax on ..
-				if (browser.name == 'ie'			// IE
-					|| browser.name == 'edge'			// Edge
-					|| window.devicePixelRatio > 1)		// Retina/HiDPI (= poor performance)
-					off();
-
-				// Enable everywhere else.
-				else {
-
-					breakpoints.on('>large', on);
-					breakpoints.on('<=large', off);
-
-				}
-
+		$window
+			.off('load._parallax resize._parallax')
+			.on('load._parallax resize._parallax', function () {
+				$window.trigger('scroll');
 			});
 
-			$window
-				.off('load._parallax resize._parallax')
-				.on('load._parallax resize._parallax', function () {
-					$window.trigger('scroll');
-				});
+		return $(this);
 
-			return $(this);
+	};
 
-		};
+	// Play initial animations on page load.
+	$window.on('load', function () {
+		window.setTimeout(function () {
+			$body.removeClass('is-preload');
+		}, 100);
+	});
 
-				// Play initial animations on page load.
-				$window.on('load', function () {
-					window.setTimeout(function () {
-						$body.removeClass('is-preload');
-					}, 100);
-				});
+	// Scrolly.
+	$('.scrolly').scrolly();
 
-		// Scrolly.
-		$('.scrolly').scrolly();
+	// Background.
+	$wrapper._parallax(0.925);
 
-		// Background.
-		$wrapper._parallax(0.925);
-
-		// Nav Panel.
-
-		// Toggle.
-		$navPanelToggle = $(
+	// Nav Panel Toggle
+	$(document).ready(function () {
+		var $navPanelToggle = $(
 			'<a href="#navPanel" id="navPanelToggle">Menu</a>'
-		)
-			.appendTo($wrapper);
+		).appendTo($wrapper);
 
-		// Change toggle styling once we've scrolled past the header.
-		$header.scrollex({
-			bottom: '5vh',
-			enter: function () {
-				$navPanelToggle.removeClass('alt');
-			},
-			leave: function () {
-				$navPanelToggle.addClass('alt');
+		// Flag to ensure the toggle happens only once during scrolling
+		var altClassApplied = false;
+
+		// Adjust the toggle point to make it happen slightly sooner
+		var toggleOffset = 50; // Small offset to make the toggle happen a bit sooner
+
+		// Custom scroll event listener to toggle 'alt' class based on scroll position relative to the footer with an offset
+		$(window).on('scroll', function () {
+			var scrollTop = $(this).scrollTop();
+			var docHeight = $(document).height();
+			var windowHeight = $(window).height();
+			var footerHeight = $('footer').outerHeight();
+
+			// Adjust the toggle point based on the footer position plus the offset
+			var footerTop = docHeight - footerHeight + toggleOffset; // This makes it toggle sooner
+
+			if (scrollTop + windowHeight < footerTop && !altClassApplied) {
+				$navPanelToggle.addClass('alt'); // alt class when above this new point
+				altClassApplied = true;
+			} else if (scrollTop + windowHeight >= footerTop && altClassApplied) {
+				$navPanelToggle.removeClass('alt'); // standard class when at or below this new point
+				altClassApplied = false;
 			}
+
+			// Optional: Log for debugging
+			console.log(`Scroll Position: ${scrollTop}, Adjusted Footer Top: ${footerTop}, altClassApplied: ${altClassApplied}`);
 		});
 
-		// Panel.
-		$navPanel = $(
-			'<div id="navPanel">' +
-			'<nav>' +
-			'</nav>' +
-			'<a href="#navPanel" class="close"></a>' +
-			'</div>'
-		)
-			.appendTo($body)
-			.panel({
-				delay: 500,
-				hideOnClick: true,
-				hideOnSwipe: true,
-				resetScroll: true,
-				resetForms: true,
-				side: 'right',
-				target: $body,
-				visibleClass: 'is-navPanel-visible'
-			});
+		// Check initial scroll position on page load
+		var initialScrollTop = $(window).scrollTop();
+		var initialFooterTop = $(document).height() - $('footer').outerHeight() + toggleOffset;
+		if (initialScrollTop + window.innerHeight < initialFooterTop) {
+			$navPanelToggle.addClass('alt');
+			altClassApplied = true;
+		} else {
+			$navPanelToggle.removeClass('alt');
+			altClassApplied = false;
+		}
+	});
 
-		// Get inner.
-		$navPanelInner = $navPanel.children('nav');
-
-		// Move nav content on breakpoint change.
-		var $navContent = $nav.children();
-
-		breakpoints.on('>medium', function () {
-
-			// NavPanel -> Nav.
-			$navContent.appendTo($nav);
-
-			// Flip icon classes.
-			$nav.find('.icons, .icon')
-				.removeClass('alt');
-
+	// Panel.
+	$navPanel = $(
+		'<div id="navPanel">' +
+		'<nav>' +
+		'</nav>' +
+		'<a href="#navPanel" class="close"></a>' +
+		'</div>'
+	)
+		.appendTo($body)
+		.panel({
+			delay: 500,
+			hideOnClick: true,
+			hideOnSwipe: true,
+			resetScroll: true,
+			resetForms: true,
+			side: 'right',
+			target: $body,
+			visibleClass: 'is-navPanel-visible'
 		});
 
-		breakpoints.on('<=medium', function () {
+	// Get inner.
+	$navPanelInner = $navPanel.children('nav');
 
-			// Nav -> NavPanel.
-			$navContent.appendTo($navPanelInner);
+	// Move nav content on breakpoint change.
+	var $navContent = $nav.children('ul');
 
-			// Flip icon classes.
-			$navPanelInner.find('.icons, .icon')
-				.addClass('alt');
+	breakpoints.on('>medium', function () {
+		// NavPanel -> Nav.
+		$navContent.appendTo($nav);
 
-		});
+		// Flip icon classes.
+		$nav.find('.icons, .icon').removeClass('alt');
+	});
 
-		// Hack: Disable transitions on WP.
-		if (browser.os == 'wp'
-			&& browser.osVersion < 10)
-			$navPanel
-				.css('transition', 'none');
+	breakpoints.on('<=medium', function () {
+		// Nav -> NavPanel.
+		$navContent.appendTo($navPanelInner);
 
+		// Flip icon classes.
+		$navPanelInner.find('.icons, .icon').addClass('alt');
+	});
+
+	// Hack: Disable transitions on WP.
+	if (browser.os == 'wp' && browser.osVersion < 10)
+		$navPanel.css('transition', 'none');
+	
 		// Intro.
 		var $intro = $('#intro');
 
@@ -247,11 +254,14 @@
 			});
 
 			// Pagination Index
-			document.addEventListener("DOMContentLoaded", function() {
+			document.addEventListener("DOMContentLoaded", function () {
 				const container = document.getElementById('posts-container');
 				let currentPage = '1';
 				let totalPages = 2; // Adjust this to the actual number of pages
-			
+
+				// Flag to prevent scroll events during transition
+				let isTransitioning = false;
+
 				function loadPage(pageNumber, shouldScroll) {
 					let url;
 					if (pageNumber === '1') {
@@ -259,88 +269,97 @@
 					} else {
 						url = `posts-page${pageNumber}.html`;
 					}
-			
+
 					container.classList.add('fade-out');
-			
+					isTransitioning = true; // Start of transition
+
 					fetch(url).then(response => response.text()).then(data => {
 						const parser = new DOMParser();
 						const doc = parser.parseFromString(data, 'text/html');
 						let newContent = '';
-			
-						if(pageNumber === '1') {
+
+						if (pageNumber === '1') {
 							newContent = doc.getElementById('index-posts').querySelector('section.posts').outerHTML;
 						} else {
 							const pageContent = doc.getElementById(`posts-page${pageNumber}-posts`);
-							if(pageContent) {
+							if (pageContent) {
 								newContent = pageContent.innerHTML;
 							} else {
 								newContent = doc.body.innerHTML || doc.querySelector('.posts').innerHTML;
 							}
 						}
-			
+
 						setTimeout(() => {
 							container.innerHTML = `<div id="index-posts">${newContent}</div>`;
 							container.classList.remove('fade-out');
 							container.classList.add('fade-in');
-			
+
 							setTimeout(() => {
 								container.classList.remove('fade-in');
-							}, 500);
-			
-							if (shouldScroll) {
-								const featuredPost = document.querySelector('.post.featured');
-								if (featuredPost) {
-									const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
-									window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
+								isTransitioning = false; // End of transition
+
+								if (shouldScroll) {
+									scrollToFeaturedPost();
 								}
-							}
-			
-							// Update active page class for both top and bottom pagination
-							document.querySelectorAll('.pagination .page').forEach(pageLink => {
-								pageLink.classList.remove('active');
-								if (pageLink.getAttribute('data-page') === pageNumber) {
-									pageLink.classList.add('active');
-								}
-							});
-			
-							// Update currentPage
-							currentPage = pageNumber;
-						}, 500);
+
+								updatePagination(pageNumber);
+							}, 500); // Delay for fade-in animation
+
+						}, 500); // Delay for fade-out animation
 					}).catch(error => {
 						console.error('Error loading page:', error);
 						container.classList.remove('fade-out');
+						isTransitioning = false; // End of transition in case of error
 					});
 				}
-			
-				// Event listeners for both top and bottom pagination
-				document.querySelectorAll('.pagination .page').forEach(pageLink => {
-					pageLink.addEventListener('click', function(event) {
-						event.preventDefault();
-						const pageNumber = this.getAttribute('data-page');
-						loadPage(pageNumber, true);
-					});
-				});
-			
-				document.querySelectorAll('.pagination .previous').forEach(prevLink => {
-					prevLink.addEventListener('click', function(event) {
-						event.preventDefault();
-						if (currentPage > '1') {
-							loadPage((parseInt(currentPage) - 1).toString(), true);
+
+				function scrollToFeaturedPost() {
+					const featuredPost = document.querySelector('.post.featured');
+					if (featuredPost) {
+						const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
+						window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
+					}
+				}
+
+				function updatePagination(pageNumber) {
+					document.querySelectorAll('.pagination .page').forEach(pageLink => {
+						pageLink.classList.remove('active');
+						if (pageLink.getAttribute('data-page') === pageNumber) {
+							pageLink.classList.add('active');
 						}
 					});
-				});
-			
-				document.querySelectorAll('.pagination .next').forEach(nextLink => {
-					nextLink.addEventListener('click', function(event) {
-						event.preventDefault();
-						if (parseInt(currentPage) < totalPages) {
-							loadPage((parseInt(currentPage) + 1).toString(), true);
-						}
-					});
-				});
-			
-				loadPage('1', false); // Load the first page on initial load without scrolling
-			});
+        currentPage = pageNumber;
+    }
+
+    // Event listeners for both top and bottom pagination
+    document.querySelectorAll('.pagination .page').forEach(pageLink => {
+        pageLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const pageNumber = this.getAttribute('data-page');
+            loadPage(pageNumber, true);
+        });
+    });
+
+    document.querySelectorAll('.pagination .previous').forEach(prevLink => {
+        prevLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            if (currentPage > '1') {
+                loadPage((parseInt(currentPage) - 1).toString(), true);
+            }
+        });
+    });
+
+    document.querySelectorAll('.pagination .next').forEach(nextLink => {
+        nextLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            if (parseInt(currentPage) < totalPages) {
+                loadPage((parseInt(currentPage) + 1).toString(), true);
+            }
+        });
+    });
+
+    loadPage('1', false); // Load the first page on initial load without scrolling
+});
 
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
