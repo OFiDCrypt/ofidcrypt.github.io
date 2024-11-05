@@ -132,35 +132,37 @@
 		// Flag to ensure the toggle happens only once during scrolling
 		var altClassApplied = false;
 
-		// Adjust the toggle point to make it happen slightly sooner
-		var toggleOffset = 50; // Small offset to make the toggle happen a bit sooner
+		// Set toggleOffset to -5 for alignment under the copyright element
+		var toggleOffset = -5;
 
-		// Custom scroll event listener to toggle 'alt' class based on scroll position relative to the footer with an offset
+		// Custom scroll event listener to toggle 'alt' class based on scroll position relative to the copyright element
 		$(window).on('scroll', function () {
 			var scrollTop = $(this).scrollTop();
-			var docHeight = $(document).height();
 			var windowHeight = $(window).height();
-			var footerHeight = $('footer').outerHeight();
+			var $copyright = $('#copyright');
+			var copyrightTop = $copyright.offset().top;
+			var copyrightHeight = $copyright.outerHeight();
 
-			// Adjust the toggle point based on the footer position plus the offset
-			var footerTop = docHeight - footerHeight + toggleOffset; // This makes it toggle sooner
+			// Adjust the toggle point to be just under the copyright element
+			var togglePoint = copyrightTop + copyrightHeight + toggleOffset; // Adjusted for under the copyright
 
-			if (scrollTop + windowHeight < footerTop && !altClassApplied) {
-				$navPanelToggle.addClass('alt'); // alt class when above this new point
+			if (scrollTop + windowHeight < togglePoint && !altClassApplied) {
+				$navPanelToggle.addClass('alt');
 				altClassApplied = true;
-			} else if (scrollTop + windowHeight >= footerTop && altClassApplied) {
-				$navPanelToggle.removeClass('alt'); // standard class when at or below this new point
+			} else if (scrollTop + windowHeight >= togglePoint && altClassApplied) {
+				$navPanelToggle.removeClass('alt');
 				altClassApplied = false;
 			}
 
 			// Optional: Log for debugging
-			console.log(`Scroll Position: ${scrollTop}, Adjusted Footer Top: ${footerTop}, altClassApplied: ${altClassApplied}`);
+			console.log(`Scroll Position: ${scrollTop}, Toggle Point: ${togglePoint}, altClassApplied: ${altClassApplied}`);
 		});
 
 		// Check initial scroll position on page load
 		var initialScrollTop = $(window).scrollTop();
-		var initialFooterTop = $(document).height() - $('footer').outerHeight() + toggleOffset;
-		if (initialScrollTop + window.innerHeight < initialFooterTop) {
+		var initialCopyrightTop = $('#copyright').offset().top;
+		var initialTogglePoint = initialCopyrightTop + $('#copyright').outerHeight() + toggleOffset;
+		if (initialScrollTop + window.innerHeight < initialTogglePoint) {
 			$navPanelToggle.addClass('alt');
 			altClassApplied = true;
 		} else {
@@ -169,51 +171,51 @@
 		}
 	});
 
-	// Panel.
-	$navPanel = $(
-		'<div id="navPanel">' +
-		'<nav>' +
-		'</nav>' +
-		'<a href="#navPanel" class="close"></a>' +
-		'</div>'
-	)
-		.appendTo($body)
-		.panel({
-			delay: 500,
-			hideOnClick: true,
-			hideOnSwipe: true,
-			resetScroll: true,
-			resetForms: true,
-			side: 'right',
-			target: $body,
-			visibleClass: 'is-navPanel-visible'
-		});
+    // Panel.
+    $navPanel = $(
+        '<div id="navPanel">' +
+        '<nav>' +
+        '</nav>' +
+        '<a href="#navPanel" class="close"></a>' +
+        '</div>'
+    )
+        .appendTo($body)
+        .panel({
+            delay: 500,
+            hideOnClick: true,
+            hideOnSwipe: true,
+            resetScroll: true,
+            resetForms: true,
+            side: 'right',
+            target: $body,
+            visibleClass: 'is-navPanel-visible'
+        });
 
-	// Get inner.
-	$navPanelInner = $navPanel.children('nav');
+    // Get inner.
+    $navPanelInner = $navPanel.children('nav');
 
-	// Move nav content on breakpoint change.
-	var $navContent = $nav.children('ul');
+    // Move nav content on breakpoint change.
+    var $navContent = $nav.children('ul');
 
-	breakpoints.on('>medium', function () {
-		// NavPanel -> Nav.
-		$navContent.appendTo($nav);
+    breakpoints.on('>medium', function () {
+        // NavPanel -> Nav.
+        $navContent.appendTo($nav);
 
-		// Flip icon classes.
-		$nav.find('.icons, .icon').removeClass('alt');
-	});
+        // Flip icon classes.
+        $nav.find('.icons, .icon').removeClass('alt');
+    });
 
-	breakpoints.on('<=medium', function () {
-		// Nav -> NavPanel.
-		$navContent.appendTo($navPanelInner);
+    breakpoints.on('<=medium', function () {
+        // Nav -> NavPanel.
+        $navContent.appendTo($navPanelInner);
 
-		// Flip icon classes.
-		$navPanelInner.find('.icons, .icon').addClass('alt');
-	});
+        // Flip icon classes.
+        $navPanelInner.find('.icons, .icon').addClass('alt');
+    });
 
-	// Hack: Disable transitions on WP.
-	if (browser.os == 'wp' && browser.osVersion < 10)
-		$navPanel.css('transition', 'none');
+    // Hack: Disable transitions on WP.
+    if (browser.os == 'wp' && browser.osVersion < 10)
+        $navPanel.css('transition', 'none');
 	
 		// Intro.
 		var $intro = $('#intro');

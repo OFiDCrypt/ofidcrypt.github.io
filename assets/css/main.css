@@ -4739,7 +4739,7 @@ article.community.featured {
     padding-right: 1rem; /* This ensures the button's content doesn't touch the right edge */
     text-transform: uppercase;
     z-index: 10001;
-    border-radius: 0; /* Rectangle shape */
+    border-radius: 10px; /* Slightly rounded corners for rectangle shape */
 }
 
 #navPanelToggle:before {
