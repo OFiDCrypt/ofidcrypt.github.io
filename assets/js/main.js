@@ -133,7 +133,7 @@
 		var altClassApplied = false;
 
 		// Set toggleOffset to -5 for alignment under the copyright element
-		var toggleOffset = -5;
+		var toggleOffset = 0;
 
 		// Custom scroll event listener to toggle 'alt' class based on scroll position relative to the copyright element
 		$(window).on('scroll', function () {
@@ -362,6 +362,54 @@
 
     loadPage('1', false); // Load the first page on initial load without scrolling
 });
+
+			// Switch Visual Mode - Dark Mode Light Mode
+			document.addEventListener('DOMContentLoaded', (event) => {
+				console.log('DOM fully loaded and parsed');
+			
+				const darkModeToggle = document.querySelector('#darkModeToggle');
+				console.log('Dark Mode Toggle Element:', darkModeToggle);
+			
+				function toggleDarkMode() {
+					document.body.classList.toggle('dark-mode');
+					darkModeToggle.classList.toggle('dark');
+					
+					const isDarkMode = document.body.classList.contains('dark-mode');
+					localStorage.setItem('dark-mode', isDarkMode);
+			
+					// Toggle the icon
+					const icon = darkModeToggle.querySelector('i');
+					if (isDarkMode) {
+						icon.classList.remove('fa-sun');
+						icon.classList.add('fa-moon');
+						console.log('Switched to dark mode (moon icon)');
+					} else {
+						icon.classList.remove('fa-moon');
+						icon.classList.add('fa-sun');
+						console.log('Switched to light mode (sun icon)');
+					}
+				}
+			
+				// Check local storage for dark mode on page load
+				if (localStorage.getItem('dark-mode') === 'true') {
+					document.body.classList.add('dark-mode');
+					darkModeToggle.classList.add('dark');
+					const icon = darkModeToggle.querySelector('i');
+					icon.classList.add('fa-moon');
+					icon.classList.remove('fa-sun');
+					console.log('Dark mode restored from local storage');
+				}
+			
+				// Add click event listener to toggle button
+				if (darkModeToggle) {
+					darkModeToggle.addEventListener('click', function(event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('Dark Mode Toggle button not found');
+				}
+			});			
 
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
