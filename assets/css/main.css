@@ -97,6 +97,7 @@ input, select, textarea {
     --icon-border-color: #eeeeee;
     --icon-hover-border-color: #18bfef;
     --icon-hover-text-color: #18bfef;
+	--intro-button-border-color: #eeeeee;
     --table-border-color: #eeeeee;
     --table-alternate-bg-color: rgba(220, 220, 220, 0.25);
     --table-header-text-color: #212931;
@@ -3675,7 +3676,7 @@ table {
 		#intro button,
 		#intro .button {
 			background-color: transparent;
-			/* box-shadow: inset 0 0 0 2px var(--intro-button-border-color); */
+			box-shadow: inset 0 0 0 2px var(--intro-button-border-color);
 			color: #ffffff !important; /* color stays the same in both themes */
 		}
 		
