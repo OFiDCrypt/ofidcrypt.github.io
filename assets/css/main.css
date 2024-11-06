@@ -4997,7 +4997,7 @@ article.community.featured {
     transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     display: none;
     position: fixed;
-    bottom: calc(1rem + 3rem); /* Positioned above nav toggle */
+    bottom: calc(5rem + 3rem); /* Positioned above nav toggle */
     right: 1rem;
     border: 0;
     color: #212931;
