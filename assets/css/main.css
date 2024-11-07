@@ -5266,3 +5266,25 @@ footer {
 		margin-top: 5px; /* Add small margin if needed */
 		margin-bottom: 50px;
 	}
+
+/* Image Properties */
+.image.main img {
+	width: 30%;
+	/* Shrink the width more */
+	height: auto;
+	/* Maintain aspect ratio */
+	max-width: 100%;
+	/* Ensure it doesn't exceed the container width */
+	display: block;
+	/* Center image */
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+	.image.main img {
+		width: 50%;
+		/* Make the image bigger on mobile devices */
+	}
+}
