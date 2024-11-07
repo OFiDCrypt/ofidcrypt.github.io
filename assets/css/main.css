@@ -74,7 +74,8 @@ input, select, textarea {
 
 :root {
     --text-color: #212931;
-    --link-color: #212931;
+	--text-h2a-color: #212931;
+    --link-color: #7019c7;
     --link-hover-color: #18bfef;
     --strong-color: #212931;
     --heading-color: #212931;
@@ -178,6 +179,7 @@ input, select, textarea {
 
 body.dark-mode {
     --text-color: #ffffff;
+	--text-h2a-color: #9a52e2;;
     --link-color: #9a52e2;
     --link-hover-color: #663399;
     --strong-color: #9a52e2;
@@ -488,6 +490,7 @@ header.header-subpage {
 				justify-content: center;
 				height: 100px;
 				margin: auto;
+				color: var(--text-h2a-color);
 		}
 
 		/* Exclude the specifically marked h2 */
@@ -5267,24 +5270,19 @@ footer {
 		margin-bottom: 50px;
 	}
 
-/* Image Properties */
-.image.main img {
-	width: 30%;
-	/* Shrink the width more */
-	height: auto;
-	/* Maintain aspect ratio */
-	max-width: 100%;
-	/* Ensure it doesn't exceed the container width */
-	display: block;
-	/* Center image */
-	margin-left: auto;
-	margin-right: auto;
+/* Image Properties - button-image */
+.image.button-image img {
+    width: 30%; /* Shrink the width more */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Ensure it doesn't exceed the container width */
+    display: block; /* Center image */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
-	.image.main img {
-		width: 50%;
-		/* Make the image bigger on mobile devices */
-	}
+    .image.button-image img {
+        width: 50%; /* Make the image bigger on mobile devices */
+    }
 }
