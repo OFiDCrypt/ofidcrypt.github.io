@@ -2,27 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ofidcrypt.com/</loc>
-    <lastmod>2024-10-31T04:42:00+00:00</lastmod>
+    <lastmod>2024-11-06T04:46:00+00:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://www.ofidcrypt.com/index.html</loc>
-    <lastmod>2024-10-31T04:42:00+00:00</lastmod>
+    <lastmod>2024-11-06T04:46:00+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.ofidcrypt.com/pages/vipwithcode.html</loc>
-    <lastmod>2024-10-31T04:42:00+00:00</lastmod>
+    <lastmod>2024-11-06T04:46:00+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.ofidcrypt.com/pages/about.html</loc>
-    <lastmod>2024-10-31T04:42:00+00:00</lastmod>
+    <lastmod>2024-11-06T04:46:00+00:00</lastmod>
     <priority>0.80</priority>
   </url>
   <url>
     <loc>https://www.ofidcrypt.com/pages/affiliate.html</loc>
-    <lastmod>2024-10-31T04:46:00+00:00</lastmod>
+    <lastmod>2024-11-06T04:46:00+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://www.ofidcrypt.com/community.html</loc>
+    <lastmod>2024-11-06T04:46:00+00:00</lastmod>
     <priority>0.80</priority>
   </url>
 </urlset>
