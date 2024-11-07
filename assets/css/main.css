@@ -200,6 +200,7 @@ body.dark-mode {
     --icon-hover-border-color: #9918ef;
     --icon-hover-text-color: #663399;
     --table-border-color: #a1a1a1;
+	--table-alternate-bg-color: transparent;
     --table-header-text-color: #ffffff;
     --pagination-border-color: #a1a1a1;
     --pagination-text-color: #ffffff;
@@ -3360,7 +3361,7 @@ table {
 }
 
     table tbody tr {
-        border: solid 1px;
+        border: solid px;
         border-left: 0;
         border-right: 0;
     }
