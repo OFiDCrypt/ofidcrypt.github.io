@@ -99,7 +99,7 @@ input, select, textarea {
     --icon-hover-text-color: #18bfef;
 	--intro-button-border-color: #eeeeee;
     --table-border-color: #eeeeee;
-    --table-alternate-bg-color: rgba(220, 220, 220, 0.25);
+	--table-alternate-bg-color: rgba(220, 220, 220, 0.25);
     --table-header-text-color: #212931;
     --pagination-border-color: #eeeeee;
     --pagination-text-color: #212931;
@@ -3361,7 +3361,7 @@ table {
 }
 
     table tbody tr {
-        border: solid px;
+        border: solid 2px;
         border-left: 0;
         border-right: 0;
     }
