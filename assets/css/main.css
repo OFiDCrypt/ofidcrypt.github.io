@@ -284,41 +284,79 @@ body.dark-mode {
     	margin-right: 10px; /* Adds space between the logo and the text */
 	}
 
-/* Header Subpage */
-header.header-subpage {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    height: auto; /* Reverted back to auto height */
-    padding-bottom: 4rem; /* Reduced padding */
-    position: relative;
-    text-align: center;
-    margin: 0;
-}
+	header.header-subpage {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin: 0;
+		padding: 0; /* Remove all padding by default */
+		text-align: center;
+		min-height: 200px; /* Set a minimum height for the header */
+	}
+	
+	header.header-subpage .logo {
+		/* Ensure the logo stays centered */
+		margin: 0 auto;
+	}
+	
+	/* Hide sub-header by default */
+	header.header-subpage .sub-header {
+		display: none;
+	}
+	
+	/* Adjustments for when the nav menu appears */
+	@media screen and (min-width: 1024px) {
+		header.header-subpage {
+			padding-bottom: 4rem; /* Add padding when nav appears */
+		}
+		
+		/* Show sub-header when nav is visible */
+		header.header-subpage .sub-header {
+			display: block;
+			margin-top: 20px; /* Add space between logo and sub-header */
+		}
+	}
 
 header.header-subpage .logo {
-    width: 200px; /* Adjust size as needed */
+    width: 200px; 
     height: auto;
-    margin: 0 auto; /* Centers horizontally within flex container */
-    padding: 10px; /* If you want to keep this padding, otherwise consider adjusting */
+    margin: 0 auto; 
+    padding: 10px; 
     max-width: 100%;
     transition: opacity 0.5s ease, visibility 0.5s, transform 0.5s ease;
     visibility: visible;
 }
 
-
-/* Mobile-specific styles */
-@media (max-width: 600px) { /* Adjust the max-width as per your mobile breakpoint */
+/* Mobile-specific styles for portrait */
+@media (max-width: 600px) and (orientation: portrait) { 
     header.header-subpage {
-        padding-bottom: 0; /* No padding at the bottom for mobile */
+        padding-bottom: 0;
     }
-
-    /* If necessary, adjust the logo size for smaller screens */
     header.header-subpage .logo {
-        width: 50%; /* Or whatever percentage fits well on mobile */
-        max-width: 200px; /* To ensure it doesn't get too large on bigger phones */
+        width: 50%; 
+        max-width: 200px; 
     }
+}
+
+/* Mobile-specific styles for landscape */
+@media (max-width: 600px) and (orientation: landscape) { 
+    header.header-subpage {
+        padding-bottom: 0;
+    }
+    header.header-subpage .logo {
+        width: 30%; /* Adjust percentage to fit landscape, assuming less vertical space */
+        max-width: 150px; /* Smaller max-width for landscape to ensure it fits */
+        margin-top: auto;
+        margin-bottom: auto; /* This will vertically center the logo if the header uses flexbox */
+    }
+}
+
+/* General rule to center items in the header if using flexbox */
+header.header-subpage {
+    display: flex;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center; /* Centers items vertically */
 }
 
 /* Basic */
@@ -4066,6 +4104,17 @@ table {
 					color: var(--nav-link-hover-color) !important;
 				}
 				
+/* Ensure the nav panel doesn't interfere until needed */
+#nav ul.links {
+    display: none; /* Hidden by default */
+}
+
+@media screen and (min-width: 1024px) {
+    #nav ul.links {
+        display: flex; /* Show on larger screens */
+    }
+}
+
 				#nav ul.icons {
 					-moz-flex-grow: 0;
 					-webkit-flex-grow: 0;
@@ -4078,7 +4127,7 @@ table {
 					margin-bottom: 0;
 				}
 				
-				@media screen and (max-width: 980px) {
+				@media screen and (max-width: 1024px) {
 					#nav {
 						display: none;
 					}
@@ -4982,10 +5031,11 @@ article.community.featured {
 @media screen and (max-width: 980px) {
 	#navPanelToggle {
 		display: block;
+		text-align: center;
 	}
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 980px) {
 	#navPanelToggle {
 		font-size: 0.8rem;
 		padding: 0.25rem 1rem;
