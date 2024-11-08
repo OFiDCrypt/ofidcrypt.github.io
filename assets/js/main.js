@@ -132,8 +132,8 @@
 		// Flag to ensure the toggle happens only once during scrolling
 		var altClassApplied = false;
 
-		// Set toggleOffset to -5 for alignment under the copyright element
-		var toggleOffset = 0;
+		// Set toggleOffset to for alignment under (-) or above (+) the copyright element
+		var toggleOffset = 5;
 
 		// Custom scroll event listener to toggle 'alt' class based on scroll position relative to the copyright element
 		$(window).on('scroll', function () {
