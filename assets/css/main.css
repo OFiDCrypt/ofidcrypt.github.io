@@ -3500,12 +3500,12 @@ table {
     text-transform: uppercase;
 }
 
-.pagination .next, .pagination .previous {
+.pagination .next, .pagination .previous, .pagination .first, .pagination .last {
     text-decoration: none;
     padding: 0 1.75rem;
 }
 
-.pagination .next:after, .pagination .previous:before {
+.pagination .next:after, .pagination .previous:before, .pagination .first:before, .pagination .last:after {
     display: inline-block;
     font-style: normal;
     font-variant: normal;
@@ -3516,7 +3516,7 @@ table {
     font-weight: 900;
 }
 
-.pagination .next:before, .pagination .previous:before {
+.pagination .next:before, .pagination .previous:before, .pagination .first:before, .pagination .last:after {
     display: inline-block;
     color: inherit !important;
     line-height: inherit;
@@ -3532,13 +3532,48 @@ table {
     margin-left: 0.9375em;
 }
 
+.pagination .first:before {
+    content: '\f100'; /* Font Awesome representation of << */
+    margin-right: 0.9375em;
+}
+
+.pagination .last:after {
+    content: '\f101'; /* Font Awesome representation of >> */
+    margin-left: 0.9375em;
+}
+
 @media screen and (max-width: 980px) {
-    .pagination a, .pagination span {
-        display: inline-flex;
-        align-items: center; /* Center content vertically */
-        justify-content: center; /* Center content horizontally */
-        font-size: 0.9rem;
-        padding: 0.5rem;
+    .pagination {
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap; /* Keep in a single line */
+    }
+
+    .pagination .next, .pagination .previous {
+        font-size: 0.8rem; /* Slightly reduce font size */
+        padding: 0 0.8rem; /* Reduce padding */
+        white-space: nowrap; /* Prevent text from wrapping */
+    }
+
+    .pagination .page {
+        transition: opacity 0.5s ease, transform 0.5s ease, display 0.5s ease; /* Add transition for display */
+    }
+    
+    .pagination .page.hidden {
+        opacity: 0; /* Start invisible */
+        transform: scale(0.9); /* Start slightly smaller */
+        display: none; /* Initially hidden */
+    }
+
+    .pagination .page:not(.hidden) {
+        opacity: 1;
+        transform: scale(1); /* Full size when not hidden */
+        display: inline-block; /* Make sure it's displayed */
+    }
+
+    /* Adjust for mobile */
+    .pagination .extra {
+        display: none;
     }
 }
 
@@ -3569,22 +3604,38 @@ table {
     color: #eeeeee;
 }
 
+/* Specific styles for First and Last buttons */
+.pagination .first, .pagination .last {
+    text-decoration: none;
+    padding: 0 1.25rem; /* Slightly smaller padding */
+    font-size: 0.75rem; /* Slightly smaller font size */
+}
 
-  /* Fade In Out */
-  .fade-out {
-	opacity: 0;
-	transition: opacity 0.5s;
-  }
-  
-  .fade-in {
-	opacity: 1;
-	transition: opacity 0.5s;
-  }
-  
-  /* If you need to center the pagination within a larger container */
-  .page-content, body {
-	text-align: center;
-  }
+/* Hover effect for First and Last buttons */
+.pagination a.first:hover, .pagination a.last:hover {
+    background-color: #e0e0e0; /* Hover effect */
+}
+
+/* Hide the extra class when page 2 is active */
+.pagination .page.active[data-page="2"] ~ .extra {
+    display: none;
+}
+
+/* Fade In Out */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s;
+}
+
+/* If you need to center the pagination within a larger container */
+.page-content, body {
+    text-align: center;
+}
 
 /* Wrapper */
 
