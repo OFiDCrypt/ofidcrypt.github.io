@@ -438,7 +438,7 @@
 						dynamicImage.src = imageUrl;
 						console.log('Image source updated successfully');
 					} else {
-						dynamicImage.src = 'assets/images/pic01.png'; // Fallback image
+						dynamicImage.src = 'assets/images/pic05.jpg'; // Fallback image
 						console.log('Fallback image used');
 					}
 				});
