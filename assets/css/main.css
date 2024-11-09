@@ -5314,13 +5314,13 @@ body.dark-mode #darkModeToggle.dark i::before {
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     overflow: hidden;
 	margin-bottom: 1.5rem;
+	aspect-ratio: 16/9;
 }
 
 /* Mobile-specific styles */
 @media screen and (max-width: 980px) {
 	.video.main {
 		margin-bottom: 1rem;
-		/* Different margin for mobile */
 	}
 }
 
@@ -5340,13 +5340,25 @@ body.dark-mode #darkModeToggle.dark i::before {
     width: 100%;
     height: 100%;
     z-index: 1;
+	transform: scale(0.75);
+	transform-origin: 50% 50%; /* Center the scaling */
 }
+
+@media only screen and (max-width: 767px) {
+	.video.main .placeholder {
+	  width: auto;
+	  height: auto;
+	  max-width: 100%; /* Keep the image from overflowing its container */
+	  transform: none; /* Remove any scaling transformations applied previously */
+	}
+  }
 
 /* Unique styling for specific video(s) */
 #xstream {
     /* Add any unique styles here for the first video */
     border: 2px solid #a200ff; /* Example: red border */
 }
+
 /* Footer */
 footer {
 	position: relative;
