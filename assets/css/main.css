@@ -3200,12 +3200,6 @@ ul.icons.alt li .icon:before {
     text-align: center; /* Centers text within each section */
 }
 
-/* Exclude the specific image */
-.split.contact > section > a > img#contact-img {
-    display: inline-block; /* Ensure the image is inline */
-    margin: 0; /* Reset margins if needed */
-}
-
 /* Custom Site Icons */
 .custom-site-icon {
     width: 1.25rem;
@@ -3240,16 +3234,16 @@ ul.icons.alt li .icon:before {
   	/* Maintains aspect ratio */
   	padding: 5px;
   	/* Optional padding for aesthetics */
-  	/* border-radius: 50%; /* Optional: makes the image circular */
-  	/* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a subtle shadow */
+	margin-bottom: 5px;
   }
 
-  /* Media query to shrink the image */
-  @media screen and (max-width: 980px) {
-  	#contact-img.custom-site-icon-contact {
-  		max-width: 55px;
-  	}
-  }
+/* Media query to add top margin and shrink the image on mobile */
+@media screen and (max-width: 980px) {
+	#contact-img.custom-site-icon-contact {
+		max-width: 55px;
+		/* Add top margin to push it down on mobile */
+	}
+}
 
 /* Ensure the section text is centered */
 section {
@@ -4855,6 +4849,7 @@ article.community.featured {
 				-ms-flex-direction: column;
 				flex-direction: column;
 				padding: 0;
+				border-top: solid 1px var(--footer-section-border-color);
 			}
 
 			#footer > section.split.contact > section {
@@ -4869,6 +4864,7 @@ article.community.featured {
 			
 			#footer > section.split.contact > section > * {
 				margin-bottom: 0;
+				padding-top: 10px;
 			}
 			
 			#footer > section.split.contact > section > :first-child {
