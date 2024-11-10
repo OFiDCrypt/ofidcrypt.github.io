@@ -5411,13 +5411,19 @@ body.dark-mode #darkModeToggle.dark i::before {
 }
 
 @media only screen and (max-width: 767px) {
-	.video.main .placeholder {
-	  width: auto;
-	  height: auto;
-	  max-width: 100%; /* Keep the image from overflowing its container */
-	  transform: none; /* Remove any scaling transformations applied previously */
-	}
-  }
+    .video.main .placeholder {
+        width: 100%; /* Make the video fill the iframe's width */
+        height: 100%; /* Make the video fill the iframe's height */
+        max-width: 100%; /* Keep the image from overflowing its container */
+        transform: none; /* Remove any scaling transformations */
+        object-fit: cover; /* Ensure the video covers the entire area */
+    }
+
+    .video.main iframe {
+        width: 100%; /* Ensure iframe takes the full width */
+        height: 100%; /* Ensure iframe takes the full height */
+    }
+}
 
 /* Unique styling for specific video(s) */
 #xstream {
