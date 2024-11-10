@@ -1,4 +1,6 @@
-@import url(fontawesome-all.min.css);
+@import url(fontawesome.min.css);
+
+@import url(all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Merriweather:300,700,300italic,700italic|Source+Sans+Pro:900");
 
 /*
@@ -2894,34 +2896,34 @@ form > .fields > .field.quarter {
     color: var(--button-text-color);
 }
 
-		.icon:before {
-			-moz-osx-font-smoothing: grayscale;
-			-webkit-font-smoothing: antialiased;
-			display: inline-block;
-			font-style: normal;
-			font-variant: normal;
-			text-rendering: auto;
-			line-height: 1;
-			text-transform: none !important;
-			font-family: 'Font Awesome 5 Free';
-			font-weight: 400;
-		}
+    .icon:before {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        display: inline-block;
+        font-style: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        line-height: 1;
+        text-transform: none !important;
+        font-family: 'Font Awesome 6 Free'; /* Updated to Font Awesome 6 Free */
+        font-weight: 400;
+    }
 
-		.icon > .label {
-			display: none;
-		}
+    .icon > .label {
+        display: none;
+    }
 
-		.icon:before {
-			line-height: inherit;
-		}
+    .icon:before {
+        line-height: inherit;
+    }
 
-		.icon.solid:before {
-			font-weight: 900;
-		}
+    .icon.solid:before {
+        font-weight: 900;
+    }
 
-		.icon.brands:before {
-			font-family: 'Font Awesome 5 Brands';
-		}
+    .icon.brands:before {
+        font-family: 'Font Awesome 6 Brands'; /* Updated to Font Awesome 6 Brands */
+    }
 
 /* Image */
 
