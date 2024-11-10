@@ -460,6 +460,12 @@ header.header-subpage {
 		text-decoration: none;
 	}
 
+		#nav a,
+		.icons a.custom-site-icon,
+		a.custom-site-icon {
+			border-bottom: none;
+		}
+
 		a:hover {
 			border-bottom-color: transparent;
 		}
@@ -3168,6 +3174,7 @@ ul.icons li .icon:before {
     text-align: center;
     border-radius: 100%;
     font-size: 1.25rem;
+	vertical-align: middle;
 }
 
 ul.icons.alt li .icon:before {
@@ -3193,45 +3200,60 @@ ul.icons.alt li .icon:before {
     text-align: center; /* Centers text within each section */
 }
 
+/* Exclude the specific image */
+.split.contact > section > a > img#contact-img {
+    display: inline-block; /* Ensure the image is inline */
+    margin: 0; /* Reset margins if needed */
+}
+
 /* Custom Site Icons */
 .custom-site-icon {
-	width: 24px; 
-	height: 24px;
-	vertical-align: middle;
-  }
-  
-/* Custom Site Icons Styling for Footer */
-#footer .custom-site-icon {
-    /* Dark grey color for the PNG */
-    filter: brightness(0) invert(1) sepia(1) saturate(1) hue-rotate(0deg) brightness(0.4);
-    
-    /* Adding padding */
-    padding: 6px; /* Adds space between the image and its shadow */
-    
-    /* Transparent background */
-    background-color: transparent;
-    
-    /* Lighter grey circle shadow with thinner solid color */
-    box-shadow: inset 0 0 0 1.33px #2c2c2c; /* Thinner circle by adjusting spread */
-    border-radius: 50%; /* Makes the shape circular */
-  
-    /* Scale up the icon by 45% */
-    transform: scale(1.45);
-  
-    /* Transition for smooth hover effect */
-    transition: all 0.3s ease;
-  
-    /* Add margins to push the icon away from adjacent elements */
-    margin: 0 8px; /* Left and right margin */
+    width: 1.25rem;
+    height: 1.25rem;
+    line-height: 1.25rem;
+    display: inline-block;
+    text-align: center;
+    border-radius: 100%;
+    font-size: 1.25rem;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    fill: var(--button-text-color); /* Apply color variable to SVG fill */
 }
-  
-/* Hover effects for the custom site icon */
-#footer .custom-site-icon:hover {
-    /* Change the filter on hover for a color change */
-    filter: brightness(0) invert(1) sepia(1) saturate(10) hue-rotate(180deg) brightness(0.8);
-    
-    /* Slightly larger scale on hover */
-    transform: scale(1.55);
+
+/* Media query to hide the icon on mobile devices */
+@media screen and (max-width: 980px) {
+	.icons .custom-site-icon {
+		display: none;
+	}
+}
+
+  /* Custom Site Icons - Contact */
+  #contact-img.custom-site-icon-contact {
+  	display: block;
+  	/* Ensures the image is treated as a block element */
+  	margin: 0 auto;
+  	/* Centers the image horizontally */
+  	max-width: 100px;
+  	/* Shrinks the image to a small icon size */
+  	height: auto;
+  	/* Maintains aspect ratio */
+  	padding: 5px;
+  	/* Optional padding for aesthetics */
+  	/* border-radius: 50%; /* Optional: makes the image circular */
+  	/* box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a subtle shadow */
+  }
+
+  /* Media query to shrink the image */
+  @media screen and (max-width: 980px) {
+  	#contact-img.custom-site-icon-contact {
+  		max-width: 55px;
+  	}
+  }
+
+/* Ensure the section text is centered */
+section {
+    text-align: center;
 }
 
 /* List */
@@ -5352,12 +5374,13 @@ body.dark-mode #darkModeToggle.dark i::before {
 /* Video Main General styling (for all videos in .main) */
 .video.main {
     position: relative;
-    width: 100%;
+    width: calc(100% - 2rem); /* Adjust width to account for padding */
     height: 0;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     overflow: hidden;
-	margin-bottom: 1.5rem;
-	aspect-ratio: 16/9;
+    margin: 1rem auto 2rem auto; /* Center horizontally and adjust margin */
+    padding-left: 1rem; /* Add padding to left */
+    padding-right: 1rem; /* Add padding to right */
 }
 
 /* Mobile-specific styles */
