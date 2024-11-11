@@ -5382,7 +5382,8 @@ body.dark-mode #darkModeToggle.dark i::before {
 /* Mobile-specific styles */
 @media screen and (max-width: 980px) {
 	.video.main {
-		margin-bottom: 1rem;
+		width: calc(100% - 0rem);
+		margin: 0rem auto 2rem auto;
 	}
 }
 

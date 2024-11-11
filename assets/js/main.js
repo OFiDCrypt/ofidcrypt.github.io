@@ -366,18 +366,16 @@
 			// Switch Visual Mode - Dark Mode Light Mode
 			document.addEventListener('DOMContentLoaded', (event) => {
 				console.log('DOM fully loaded and parsed');
-			
-				const darkModeToggle = document.querySelector('#darkModeToggle');
-				console.log('Dark Mode Toggle Element:', darkModeToggle);
+				
+				const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
+				const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
 			
 				function toggleDarkMode() {
 					document.body.classList.toggle('dark-mode');
 					darkModeToggle.classList.toggle('dark');
-					
 					const isDarkMode = document.body.classList.contains('dark-mode');
 					localStorage.setItem('dark-mode', isDarkMode);
 			
-					// Toggle the icon
 					const icon = darkModeToggle.querySelector('i');
 					if (isDarkMode) {
 						icon.classList.remove('fa-sun');
@@ -400,7 +398,7 @@
 					console.log('Dark mode restored from local storage');
 				}
 			
-				// Add click event listener to toggle button
+				// Event listener for original toggle button
 				if (darkModeToggle) {
 					darkModeToggle.addEventListener('click', function(event) {
 						event.preventDefault();
@@ -409,8 +407,22 @@
 				} else {
 					console.warn('Dark Mode Toggle button not found');
 				}
-			});			
-
+			
+				// Event listener for the new button
+				if (newDarkModeToggle) {
+					newDarkModeToggle.parentElement.addEventListener('click', function(event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+					newDarkModeToggle.parentElement.addEventListener('touchstart', function(event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('New Dark Mode Toggle button not found');
+				}
+			});
+			
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
 				const proxyUrl = 'https://api.allorigins.win/get?url=';

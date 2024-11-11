@@ -17,15 +17,13 @@
 	<title>Our Community Connections | OFiDCrypt</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-	<meta name="description"
-		content="Join our vibrant communities to share knowledge, experiences, and grow together. Connect, learn, and engage with us!">
+	<meta name="description" content="Join our vibrant communities to share knowledge, experiences, and grow together. Connect, learn, and engage with us!">
 	<meta name="keywords" content="cryptocurrency, blockchain, digital assets, OFiDCrypt, crypto community">
 	<meta name="author" content="Tokin ⬢">
 
 	<!-- Open Graph Meta Tags -->
 	<meta property="og:title" content="Our Community Connections | OFiDCrypt">
-	<meta property="og:description"
-		content="Join our vibrant communities to share knowledge, experiences, and grow together. Connect, learn, and engage with us!">
+	<meta property="og:description" content="Join our vibrant communities to share knowledge, experiences, and grow together. Connect, learn, and engage with us!">
 	<meta property="og:image" content="https://ofidcrypt.com/assets/images/bglogo02-lowres.png">
 	<meta property="og:url" content="https://ofidcrypt.com/community.html">
 	<meta property="og:type" content="website">
@@ -33,8 +31,7 @@
 	<!-- Twitter Card Meta Tags -->
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="Our Community Connections | OFiDCrypt">
-	<meta name="twitter:description"
-		content="Join our vibrant communities to share knowledge, experiences, and grow together. Connect, learn, and engage with us!">
+	<meta name="twitter:description" content="Join our vibrant communities to share knowledge, experiences, and grow together. Connect, learn, and engage with us!">
 	<meta name="twitter:image" content="https://ofidcrypt.com/assets/images/bglogo02-lowres.png">
 	<meta name="twitter:url" content="https://ofidcrypt.com/community.html">
 
@@ -90,6 +87,11 @@
 				<li><a href="pages/about.html">About Us</a></li>
 			</ul>
 			<ul class="icons">
+				<li>
+					<a href="#" aria-label="Dark-Light Desktop Toggle Button">
+					  <img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button" class="custom-site-icon">
+					</a>
+				</li>
 				<li>
 					<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
 					  <img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
@@ -559,51 +561,63 @@
 	<script>
 		// Switch Visual Mode - Dark Mode Light Mode
 		document.addEventListener('DOMContentLoaded', (event) => {
-			console.log('DOM fully loaded and parsed');
-
-			const darkModeToggle = document.querySelector('#darkModeToggle');
-			console.log('Dark Mode Toggle Element:', darkModeToggle);
-
-			function toggleDarkMode() {
-				document.body.classList.toggle('dark-mode');
-				darkModeToggle.classList.toggle('dark');
-
-				const isDarkMode = document.body.classList.contains('dark-mode');
-				localStorage.setItem('dark-mode', isDarkMode);
-
-				// Toggle the icon
-				const icon = darkModeToggle.querySelector('i');
-				if (isDarkMode) {
-					icon.classList.remove('fa-sun');
-					icon.classList.add('fa-moon');
-					console.log('Switched to dark mode (moon icon)');
-				} else {
-					icon.classList.remove('fa-moon');
-					icon.classList.add('fa-sun');
-					console.log('Switched to light mode (sun icon)');
+				console.log('DOM fully loaded and parsed');
+				
+				const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
+				const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
+			
+				function toggleDarkMode() {
+					document.body.classList.toggle('dark-mode');
+					darkModeToggle.classList.toggle('dark');
+					const isDarkMode = document.body.classList.contains('dark-mode');
+					localStorage.setItem('dark-mode', isDarkMode);
+			
+					const icon = darkModeToggle.querySelector('i');
+					if (isDarkMode) {
+						icon.classList.remove('fa-sun');
+						icon.classList.add('fa-moon');
+						console.log('Switched to dark mode (moon icon)');
+					} else {
+						icon.classList.remove('fa-moon');
+						icon.classList.add('fa-sun');
+						console.log('Switched to light mode (sun icon)');
+					}
 				}
-			}
-
-			// Check local storage for dark mode on page load
-			if (localStorage.getItem('dark-mode') === 'true') {
-				document.body.classList.add('dark-mode');
-				darkModeToggle.classList.add('dark');
-				const icon = darkModeToggle.querySelector('i');
-				icon.classList.add('fa-moon');
-				icon.classList.remove('fa-sun');
-				console.log('Dark mode restored from local storage');
-			}
-
-			// Add click event listener to toggle button
-			if (darkModeToggle) {
-				darkModeToggle.addEventListener('click', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-			} else {
-				console.warn('Dark Mode Toggle button not found');
-			}
-		});			
+			
+				// Check local storage for dark mode on page load
+				if (localStorage.getItem('dark-mode') === 'true') {
+					document.body.classList.add('dark-mode');
+					darkModeToggle.classList.add('dark');
+					const icon = darkModeToggle.querySelector('i');
+					icon.classList.add('fa-moon');
+					icon.classList.remove('fa-sun');
+					console.log('Dark mode restored from local storage');
+				}
+			
+				// Event listener for original toggle button
+				if (darkModeToggle) {
+					darkModeToggle.addEventListener('click', function(event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('Dark Mode Toggle button not found');
+				}
+			
+				// Event listener for the new button
+				if (newDarkModeToggle) {
+					newDarkModeToggle.parentElement.addEventListener('click', function(event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+					newDarkModeToggle.parentElement.addEventListener('touchstart', function(event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('New Dark Mode Toggle button not found');
+				}
+			});
 	</script>
 
 	<!-- Link to non-critical JavaScript files -->
