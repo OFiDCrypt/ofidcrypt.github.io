@@ -206,7 +206,7 @@ body.dark-mode {
     --icon-hover-border-color: #663399;
     --icon-hover-text-color: #663399;
     --table-border-color: #a1a1a1;
-	--table-alternate-bg-color: transparent;
+	--table-alternate-bg-color: rgba(139, 28, 125, 0.1);
     --table-header-text-color: #ffffff;
     --pagination-border-color: #a1a1a1;
     --pagination-text-color: #ffffff;
@@ -3456,13 +3456,69 @@ table {
 
         }
 
-    table thead {
-        border-bottom: solid 2px;
+/* Mobile styles */
+@media screen and (max-width: 767px) {
+
+    .event-links table,
+    .event-links thead,
+    .event-links tbody,
+    .event-links td,
+    .event-links tr {
+        display: block;
+        width: 100%;
     }
 
-    table tfoot {
-        border-top: solid 2px;
+    /* Keep the main heading row visible */
+    .event-links #event-heading {
+        display: block;
+        text-align: center;
+        border: none; /* Remove any borders */
+        margin-top: 0; /* Ensure no margin at the top */
     }
+
+    /* Hide all other th elements */
+    .event-links thead th:not(#event-heading th) {
+        display: none;
+    }
+
+    /* Ensure no border on the h2 th element */
+    .event-links #event-heading th {
+        display: block;
+        border: none;
+        margin-top: 0; /* Ensure no margin at the top */
+    }
+
+    /* Table rows */
+    .event-links tbody tr {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ddd;
+    }
+
+    /* Each cell is a row */
+    .event-links td {
+        display: block;
+        padding: 8px 16px;
+        border: none;
+        border-bottom: none;
+        width: 100%;
+    }
+
+    /* Label for each cell */
+    .event-links td::before {
+        content: attr(data-label);
+        display: inline-block;
+        font-weight: bold;
+        margin-right: 10px;
+        white-space: nowrap;
+    }
+
+    /* Content of each cell */
+    .event-links td > * {
+        display: inline-block;
+    }
+}
 
     table.alt {
         border-collapse: separate;
