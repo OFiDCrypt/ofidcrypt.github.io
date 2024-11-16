@@ -5428,19 +5428,60 @@ body.dark-mode #darkModeToggle.dark i::before {
     position: relative;
     width: calc(100% - 2rem); /* Adjust width to account for padding */
     height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 54.6%; /* 16:9 aspect ratio */
     overflow: hidden;
     margin: 1rem auto 2rem auto; /* Center horizontally and adjust margin */
-    padding-left: 1rem; /* Add padding to left */
-    padding-right: 1rem; /* Add padding to right */
+    border: 2px solid #a200ff; /* Example: red border */
 }
 
-/* Mobile-specific styles */
+/* Prevent children from inheriting or being affected by the border */
+.video.main > * {
+    box-sizing: border-box;
+    border: 0 !important;
+}
+
+/* Ensure X embed is centered and fits within the container */
+.video.main .twitter-tweet {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.twitter-tweet {
+    margin-top: 0 !important;
+}
+
+/* Mobile specific styles for X embed */
 @media screen and (max-width: 980px) {
-	.video.main {
-		width: calc(100% - 0rem);
-		margin: 0rem auto 2rem auto;
-	}
+    .video.main {
+        width: 100%;
+        height: 0; /* Reset height to allow padding to define the aspect ratio */
+        padding-bottom: 56%; /* Your specific aspect ratio */
+        margin: 0rem auto 2rem auto;
+        position: relative;
+        overflow: hidden; /* Ensure content doesn't spill outside */
+    }
+
+    .video.main .twitter-tweet {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100vw; /* Full viewport width on mobile */
+        max-height: none; /* Allow content to define height */
+        z-index: 10;
+    }
+    
+    .video.main .twitter-tweet iframe {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover; /* This ensures the iframe content covers the area */
+    }
 }
 
 .video.main iframe {
