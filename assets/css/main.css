@@ -4646,25 +4646,64 @@ article.community.featured {
 
 /* Custom styling for the event post article */
 .event-post {
-    flex: 0 0 calc(50% - 2rem);
+    /* Flex properties to ensure it behaves like the original posts in a grid layout */
+    flex: 0 0 calc(50% - 2rem); /* Adjust to your layout needs, this assumes a two-column layout */
     margin: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
     margin-top: 1rem;
     padding: 2rem;
-    border: 1px solid var(--posts-border-color);
+    border: 1px solid var(--posts-border-color); /* Ensure this variable is defined */
     border-radius: 5px;
     box-sizing: border-box;
     text-align: center;
     display: flex;
     flex-direction: column;
+    max-width: 100%; /* To ensure it doesn't overflow on smaller screens */
 }
 
-/* Mobile-specific styling for the event post article */
-@media screen and (max-width: 767px) {
+/* Styling for the header within the event post */
+.event-post header {
+    margin-bottom: 1rem; /* Space below the header */
+}
+
+/* Image within the event post */
+.event-post .image {
+    margin-bottom: 1rem; /* Space below the image */
+}
+
+/* Actions within the event post */
+.event-post ul.actions.special {
+    margin-top: auto; /* Push the actions to the bottom */
+    padding-top: 1rem; /* Optional padding */
+    margin-bottom: 0; /* Ensure no extra space at the bottom */
+}
+
+/* Button within actions */
+.event-post ul.actions.special li a.button {
+    width: 100%; /* Make the button full width of its container */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 980px) {
     .event-post {
-        flex: 0 0 calc(100% - 2rem);
-        margin: 1rem 0;
+        flex: 0 0 calc(100% - 2rem); /* Full width on medium screens */
+        padding: 2.5rem;
+		margin-bottom: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    .event-post {
+        flex: 0 0 100%; /* Full width on small screens */
+        margin: 1rem 0; /* Adjust margins for stacked layout */
         padding: 2rem;
+		margin-bottom: 2.5rem;
+    }
+
+    .event-post .image {
+        max-width: 100%; /* Image will scale to container width */
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
