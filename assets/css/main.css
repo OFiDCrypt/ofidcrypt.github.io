@@ -3232,7 +3232,7 @@ ul.icons.alt li .icon:before {
   	/* Shrinks the image to a small icon size */
   	height: auto;
   	/* Maintains aspect ratio */
-  	padding: 5px;
+  	padding: 10px;
   	/* Optional padding for aesthetics */
 	margin-bottom: 5px;
   }
@@ -3240,7 +3240,7 @@ ul.icons.alt li .icon:before {
 /* Media query to add top margin and shrink the image on mobile */
 @media screen and (max-width: 980px) {
 	#contact-img.custom-site-icon-contact {
-		max-width: 55px;
+		max-width: 65px;
 		/* Add top margin to push it down on mobile */
 	}
 }
@@ -4709,13 +4709,8 @@ article.community.featured {
 
 /* Event Headings Section - Livestream.html */
 .event.headings {
-    padding: 4rem 2rem 1rem 2rem;
+    padding: 0rem 2rem 0rem 2rem;
     margin: 0;
-}
-
-.event.headings {
-    padding: 0 2rem 0.5rem 2rem; /* No top padding, keep bottom and sides */
-    border-top: none;
 }
 
 /* Footer */
