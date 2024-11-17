@@ -3939,12 +3939,20 @@ table {
 				}
 		
 				.smaller-heading {
-					font-size: 0.5em;
-					/* Smaller font size */
-					color: #3498DB;
-					/* Different color */
-					font-weight: normal;
-					/* Adjust weight if needed */
+					font-size: 0.5em; /* Smaller font size */
+					color: #3498DB; /* Different color */
+					font-weight: normal; /* Adjust weight if needed */
+					position: relative; /* Relative positioning */
+					display: inline-block; /* Ensure it remains inline */
+				}
+				
+				.smaller-heading-bottom {
+					font-size: 0.5em; /* Smaller font size */
+					color: #3498DB; /* Different color */
+					font-weight: normal; /* Adjust weight if needed */
+					position: relative; /* Relative positioning */
+					top: -20px; /* Move up by 10 pixels */
+					display: inline-block; /* Ensure it remains inline */
 				}
 		
 				.images-with-plus {
@@ -3959,6 +3967,15 @@ table {
 					/* Adjusted width to make images smaller */
 					margin: 0 5%;
 				}
+
+				@media screen and (max-width: 600px) {
+					.images-with-plus img {
+						width: 20%;
+						/* Slightly larger images for smaller screens */
+						margin: 0 1%;
+						/* Reduced margin for closer spacing */
+					}
+				}
 		
 				.plus-sign {
 					font-size: 6em; /* Increased font size for larger text */
@@ -3966,7 +3983,27 @@ table {
 					color: #ffffff; /* Customize the color as needed */
 					line-height: 1; /* Ensures the plus sign doesn't add extra height */
 					margin: 0 1%; /* Adjust as needed for spacing */
-				}				
+				}		
+
+				@media screen and (max-width: 600px) {
+					.plus-sign {
+						font-size: 3em;
+						/* Smaller font size for smaller screens */
+					}
+				}
+
+				.no-style-link {
+					text-decoration: none;
+					color: inherit;
+					border: none;
+				}
+				
+				.no-style-link img {
+					width: 50%;
+					/* Adjusted width to make images smaller */
+					margin: 0 5%;
+				}
+				
 
 		#intro p {
 			font-size: 1.25rem;
