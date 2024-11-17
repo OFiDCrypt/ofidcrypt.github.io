@@ -4707,6 +4707,17 @@ article.community.featured {
     }
 }
 
+/* Event Headings Section - Livestream.html */
+.event.headings {
+    padding: 4rem 2rem 1rem 2rem;
+    margin: 0;
+}
+
+.event.headings {
+    padding: 0 2rem 0.5rem 2rem; /* No top padding, keep bottom and sides */
+    border-top: none;
+}
+
 /* Footer */
 
 	#footer {
@@ -5595,9 +5606,8 @@ body.dark-mode #darkModeToggle.dark i::before {
 			z-index: 10;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%, -50%) scale(1); /* Scale down if necessary for fit */
+			transform: translate(-50%, -50%); /* Scale down if necessary for fit */
 			/* Add this to center text or other content inside the tweet */
-			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
