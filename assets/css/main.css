@@ -5721,8 +5721,6 @@ body.dark-mode #darkModeToggle.dark i::before {
     }
 }
 
-
-
 /* Unique styling for specific video(s) */
 #xstream {
     /* Add any unique styles here for the first video */
@@ -5741,23 +5739,15 @@ footer {
 	/* Ensures footer is above the button if they overlap */
 }
 
-	/* TEST-SUBHEADING on index.html */
-	#custom-subheading p {
-		margin: 0; /* Remove default margin */
-		font-size: 14px; /* Adjust font size as needed */
-		line-height: 1.2; /* Adjust line height */
-		padding: 0; /* Remove padding */
-		margin-top: 5px;
-	}
-	
-	#custom-subheading h2 {
-		margin: 0; /* Remove default margin */
-		font-size: 28px; /* Adjust font size as needed */
-		line-height: 1.2; /* Adjust line height */
-		padding: 0; /* Remove padding */
-		margin-top: 5px; /* Add small margin if needed */
-		margin-bottom: 50px;
-	}
+#custom-subheading .twitter-follow-button {
+    /* Increase the size of the button */
+    font-size: 24px; /* This will scale the button text and potentially the button itself */
+    
+    /* Move the button up */
+    position: relative;
+    top: -10px; /* Adjust this value to move the button up as needed */
+	margin-bottom: 2rem;
+}
 
 /* Image Properties - button-image */
 .image.button-image img {
