@@ -379,8 +379,8 @@ header.header-subpage .logo {
         padding-bottom: 0;
     }
     header.header-subpage .logo {
-        width: 50%; 
-        max-width: 200px; 
+        max-width: 200px;
+		margin-top: 1rem
     }
 }
 
@@ -394,6 +394,29 @@ header.header-subpage .logo {
         max-width: 150px; /* Smaller max-width for landscape to ensure it fits */
         margin-top: auto;
         margin-bottom: auto; /* This will vertically center the logo if the header uses flexbox */
+    }
+}
+
+/* Media queries for mobile */
+@media (max-width: 600px) and (orientation: portrait) {
+    header.header-subpage a {
+        border-bottom: none !important;
+    }
+    header.header-subpage .logo.img {
+        max-width: 200px;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 600px) and (orientation: landscape) {
+    header.header-subpage a {
+        border-bottom: none !important;
+    }
+    header.header-subpage .logo.img {
+        width: 30%; 
+        max-width: 150px;
+        margin-top: auto;
+        margin-bottom: auto;
     }
 }
 
