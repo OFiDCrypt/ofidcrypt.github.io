@@ -1,5 +1,4 @@
 @import url(fontawesome.min.css);
-
 @import url(all.min.css);
 @import url("https://fonts.googleapis.com/css?family=Merriweather:300,700,300italic,700italic|Source+Sans+Pro:900");
 
@@ -285,12 +284,49 @@ body.dark-mode {
     --nav-panel-box-shadow-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Preload Styles */
+body.is-preload *, body.is-preload *:before, body.is-preload *:after {
+	-moz-animation: none !important;
+	-webkit-animation: none !important;
+	-ms-animation: none !important;
+	animation: none !important;
+	-moz-transition: none !important;
+	-webkit-transition: none !important;
+	-ms-transition: none !important;
+	transition: none !important;
+  }
+  
+  /* CSS Reset/Normalize */
+  *, *:before, *:after {
+	box-sizing: inherit;
+  }
+  
+  @-ms-viewport {
+	width: device-width;
+  }
+  
+  /* General Styles */
+  html {
+	box-sizing: border-box;
+  }
+  
+  body {
+	overflow-y: auto; /* Will add scrollbars when needed */
+	-webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+	background-color: #1e2931;
+  }
+  
+  @media screen and (max-width: 480px) {
+	html, body {
+	  min-width: 320px;
+	}
+  }  
+
 /* Header */
 
 	#header .logo img {
-    	width: 200px; /* Adjust size as needed */
+    	width: 300px; /* Adjust size as needed */
     	height: auto; /* Keeps the aspect ratio */
-    	margin-right: 10px; /* Adds space between the logo and the text */
 	}
 
 	header.header-subpage {
@@ -367,48 +403,6 @@ header.header-subpage {
     justify-content: center; /* Centers items horizontally */
     align-items: center; /* Centers items vertically */
 }
-
-/* Basic */
-
-	@-ms-viewport {
-		width: device-width;
-	}
-
-	body {
-		overflow-y: auto; /* Will add scrollbars when needed */
-		-webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
-	}
-
-	@media screen and (max-width: 480px) {
-
-		html, body {
-			min-width: 320px;
-		}
-
-	}
-
-	html {
-		box-sizing: border-box;
-	}
-
-	*, *:before, *:after {
-		box-sizing: inherit;
-	}
-
-	body {
-		background-color: #1e252d;
-	}
-
-		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
-			-moz-animation: none !important;
-			-webkit-animation: none !important;
-			-ms-animation: none !important;
-			animation: none !important;
-			-moz-transition: none !important;
-			-webkit-transition: none !important;
-			-ms-transition: none !important;
-			transition: none !important;
-		}
 
 /* Type */
 
@@ -506,18 +500,20 @@ header.header-subpage {
 				border-bottom: none
 		}
 
-		/* Exclude the specifically marked h2 */
-h2.exclude-from-style a {
-    font-size: inherit; /* or whatever the default font size should be */
-    line-height: inherit;
-    text-align: inherit;
-    display: block; /* or whatever display property you want */
-    flex-direction: initial;
-    justify-content: initial;
-    height: auto;
-    margin: 0; /* reset margin */
-}
-
+				/* Exclude the specifically marked h2 */
+				h2.exclude-from-style a {
+					font-size: inherit;
+					/* or whatever the default font size should be */
+					line-height: inherit;
+					text-align: inherit;
+					display: block;
+					/* or whatever display property you want */
+					flex-direction: initial;
+					justify-content: initial;
+					height: auto;
+					margin: 0;
+					/* reset margin */
+				}
 	h1 {
 		font-size: 4rem;
 		line-height: 1.1;
@@ -3919,11 +3915,58 @@ table {
 		#intro .button.primary:hover {
 			background-color: var(--intro-button-primary-hover-bg-color);
 		}
-
-		#intro h1 {
-			font-size: 5rem;
-			line-height: 1;
-		}
+		
+				/* General heading styles */
+				#intro h1 {
+					text-align: center;
+					font-size: 4em;
+					/* Adjust as needed */
+					color: #ffffff;
+					/* Customize color as needed */
+					margin: 20px 0;
+					/* Adjust margins as needed */
+				}
+		
+				.left-aligned {
+					text-align: left;
+					font-size: 2em;
+					/* Adjust the size as needed */
+					font-weight: bold;
+					margin: 20px 0;
+					/* Adjust margins as needed */
+					color: #2C3E50;
+					/* Customize color as needed */
+				}
+		
+				.smaller-heading {
+					font-size: 0.5em;
+					/* Smaller font size */
+					color: #3498DB;
+					/* Different color */
+					font-weight: normal;
+					/* Adjust weight if needed */
+				}
+		
+				.images-with-plus {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					margin: 0 0;
+				}
+		
+				.images-with-plus img {
+					width: 22%;
+					/* Adjusted width to make images smaller */
+					margin: 0 5%;
+				}
+		
+				.plus-sign {
+					font-size: 6em; /* Increased font size for larger text */
+					font-weight: bold;
+					color: #ffffff; /* Customize the color as needed */
+					line-height: 1; /* Ensures the plus sign doesn't add extra height */
+					margin: 0 1%; /* Adjust as needed for spacing */
+				}				
 
 		#intro p {
 			font-size: 1.25rem;
@@ -4016,7 +4059,7 @@ table {
 
 			@media screen and (max-width: 768px) {
 				#intro h1 {
-					font-size: 2rem; /* Adjust as needed */
+					font-size: 3rem; /* Adjust as needed */
 				}
 			}
 				
@@ -4057,7 +4100,7 @@ table {
     -ms-user-select: none;
     user-select: none;
     height: 20rem;
-    padding-bottom: 8rem;
+    padding-bottom: 5rem;
     position: relative;
     text-align: center;
     z-index: 2;
