@@ -324,53 +324,53 @@ body.is-preload *, body.is-preload *:before, body.is-preload *:after {
 
 /* Header */
 
-	#header .logo img {
-    	width: 300px; /* Adjust size as needed */
-    	height: auto; /* Keeps the aspect ratio */
-	}
+#header .logo img {
+    width: 300px; 
+    height: auto; 
+}
 
-	header.header-subpage {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		margin: 0;
-		padding: 0; /* Remove all padding by default */
-		text-align: center;
-		min-height: 200px; /* Set a minimum height for the header */
-	}
-	
-	header.header-subpage .logo {
-		/* Ensure the logo stays centered */
-		margin: 0 auto;
-	}
-	
-	/* Hide sub-header by default */
-	header.header-subpage .sub-header {
-		display: none;
-	}
-	
-	/* Adjustments for when the nav menu appears */
-	@media screen and (min-width: 1024px) {
-		header.header-subpage {
-			padding-bottom: 4rem; /* Add padding when nav appears */
-		}
-		
-		/* Show sub-header when nav is visible */
-		header.header-subpage .sub-header {
-			display: block;
-			margin-top: 20px; /* Add space between logo and sub-header */
-		}
-	}
+header.header-subpage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    min-height: 200px;
+}
 
 header.header-subpage .logo {
     width: 200px; 
     height: auto;
-    margin: 0 auto; 
+    margin: 1rem auto 0 auto; /* Changed margin-top to 1rem */
     padding: 10px; 
     max-width: 100%;
     transition: opacity 0.5s ease, visibility 0.5s, transform 0.5s ease;
     visibility: visible;
+}
+
+/* Hide sub-header by default */
+header.header-subpage .sub-header {
+    display: none;
+}
+
+/* Adjustments for when the nav menu appears */
+@media screen and (min-width: 1024px) {
+    header.header-subpage {
+        padding-bottom: 4rem;
+    }
+    
+    header.header-subpage .sub-header {
+        display: block;
+        margin-top: 20px;
+    }
+}
+
+/* Remove border from logo for all screen sizes */
+header.header-subpage a,
+header.header-subpage .logo img {
+    border-bottom: none !important;
 }
 
 /* Mobile-specific styles for portrait */
@@ -380,7 +380,7 @@ header.header-subpage .logo {
     }
     header.header-subpage .logo {
         max-width: 200px;
-		margin-top: 1rem
+        margin-top: 1rem;
     }
 }
 
@@ -390,29 +390,6 @@ header.header-subpage .logo {
         padding-bottom: 0;
     }
     header.header-subpage .logo {
-        width: 30%; /* Adjust percentage to fit landscape, assuming less vertical space */
-        max-width: 150px; /* Smaller max-width for landscape to ensure it fits */
-        margin-top: auto;
-        margin-bottom: auto; /* This will vertically center the logo if the header uses flexbox */
-    }
-}
-
-/* Media queries for mobile */
-@media (max-width: 600px) and (orientation: portrait) {
-    header.header-subpage a {
-        border-bottom: none !important;
-    }
-    header.header-subpage .logo.img {
-        max-width: 200px;
-        margin-top: 1rem;
-    }
-}
-
-@media (max-width: 600px) and (orientation: landscape) {
-    header.header-subpage a {
-        border-bottom: none !important;
-    }
-    header.header-subpage .logo.img {
         width: 30%; 
         max-width: 150px;
         margin-top: auto;
@@ -3606,7 +3583,7 @@ table {
     user-select: none;
     cursor: default;
     list-style: none;
-    margin: 0 0 2rem 2px;
+    margin: 0 0 2rem 0;
     padding: 0;
 }
 
@@ -3681,6 +3658,7 @@ table {
         display: flex;
         justify-content: center;
         flex-wrap: nowrap; /* Keep in a single line */
+		margin: 0 0 0 0;
     }
 
     .pagination .next, .pagination .previous {
