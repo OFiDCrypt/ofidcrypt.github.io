@@ -4405,8 +4405,15 @@ section.post {
 }
 
 section.livestream {
-    padding: 0 0 1rem 0; /* No top padding, keep bottom and sides */
+    padding: 0 0 3rem 0; /* No top padding, keep bottom and sides */
     overflow: auto;
+}
+
+/* Media query for mobile devices */
+@media screen and (max-width: 600px) {
+    #main > section.livestream {
+        padding: 4rem 2rem 2rem 2rem;
+    }
 }
 
 #main > *:first-child {
