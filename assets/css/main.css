@@ -78,7 +78,7 @@ input, select, textarea {
 	--text-h2a-color: #212931;
     --link-color: #7019c7;
     --link-hover-color: #7019c7;
-    --strong-color: #212931;
+    --strong-color: #7019c7;
     --heading-color: #212931;
     --blockquote-border-color: #eeeeee;
     --code-bg-color: rgba(220, 220, 220, 0.25);
@@ -4466,6 +4466,18 @@ section.livestream {
         line-height: 1.2;
         margin: 0 0 1.5rem 0;
     }
+
+    /* Media query for .livestream section */
+    .livestream {
+        padding: 4rem 2rem 2rem 2rem;
+    }
+
+    /* Specific targeting for event-links heading */
+    .event-links header.major h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+        margin: 0 0 1.5rem 0;
+    }
 }
 
 /* Community Connections Section */
@@ -4590,6 +4602,17 @@ article.community.featured {
 }
 
 /* Posts Container */
+#main > #posts-container #index-posts > .posts > article header h2 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100px;
+    margin: auto;
+}
+
 #main > #posts-container .posts {
     display: flex;
     flex-wrap: wrap;
@@ -4700,7 +4723,7 @@ article.community.featured {
 }
 
 .monthly-posts p {
-    text-align: center; /* Center-align text */
+    text-align: justify; /* justify-align text */
 }
 
 /* Responsive Adjustments */
@@ -4781,7 +4804,15 @@ article.community.featured {
 }
 
 @media screen and (max-width: 736px) {
-    .event-post {
+		#main > #monthly-container .monthly-posts {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: stretch;
+		text-align: center;
+		width: 100%;
+		padding: 0;
+		box-sizing: border-box;
         flex: 0 0 100%; /* Full width on small screens */
         margin: 1rem 0; /* Adjust margins for stacked layout */
         padding: 2rem;
