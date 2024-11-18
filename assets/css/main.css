@@ -3356,7 +3356,7 @@ section {
 		}
 
 		header.major {
-			margin: 0 0 4rem 0;
+			margin: 0 0 2rem 0;
 			text-align: center;
 		}
 
@@ -3371,7 +3371,7 @@ section {
 
 			header.major > .date {
 				font-size: 1rem;
-				margin: 0 0 4rem 0;
+				margin: 0 0 2rem 0;
 			}
 
 				header.major > .date:before, header.major > .date:after {
@@ -4418,7 +4418,7 @@ section.livestream {
 }
 
 #main > .post {
-    padding: 8rem 8rem 6rem 8rem;
+    padding: 6rem 8rem 3rem 8rem;
 }
 
 #main > .post header.major > .date {
@@ -4528,7 +4528,7 @@ article.community.featured {
 }
 
 #main > article.community.featured {
-    padding: 8rem 8rem 6rem 8rem;
+    padding: 6rem 8rem 6rem 8rem;
 }
 
 #main > article.community.featured > header.major > .date {
