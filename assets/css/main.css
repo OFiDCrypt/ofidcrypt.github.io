@@ -541,9 +541,16 @@ header.header-subpage {
 		top: -0.5rem;
 	}
 
-	blockquote {
+	blockquote.i {
 		border-left: solid 4px;
 		font-style: italic;
+		margin: 0 0 2rem 0;
+		padding: 0.5rem 0 0.5rem 2rem;
+	}
+
+	blockquote {
+		border-left: solid 4px;
+		font-style: none;
 		margin: 0 0 2rem 0;
 		padding: 0.5rem 0 0.5rem 2rem;
 	}
@@ -626,6 +633,28 @@ header.header-subpage {
 	hr {
 		border-bottom-color: #eeeeee;
 	}
+
+	/* Custom Headers */
+	.large-href h1 a {
+    font-size: 3rem;
+	line-height: 1.2;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100px;
+	margin: auto;
+	color: var(--text-h2a-color);
+	border-bottom: none
+}
+
+@media screen and (max-width: 768px) {
+    .large-href h1 a {
+        font-size: 2rem;
+        height: auto;
+        padding: 1rem 0;
+    }
+}
 
 /* Row */
 
@@ -4239,14 +4268,6 @@ table {
 		width: calc(100% - 4rem);
 		max-width: 72rem;
 		z-index: 2;
-	}
-
-	@media (max-width: 768px) and (pointer: coarse) {
-		#nav {
-			overflow-y: auto;
-			-webkit-overflow-scrolling: touch;
-			touch-action: pan-y;
-		}
 	}
 
 	#nav ul.divided li {
