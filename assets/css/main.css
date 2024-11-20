@@ -5498,18 +5498,12 @@ body.dark-mode #darkModeToggle.dark i::before {
     display: flex;
     flex-direction: column;
     justify-content: flex-end; /* This pushes content to the bottom */
-	-webkit-transform: translateZ(0);
-	touch-action: pan-y;
-	flex: 1 1 auto; /* Allow content to grow */
-	padding-top: calc(env(safe-area-inset-top) + 3rem); /* Accounts for top safe area plus some extra padding */
-	padding-bottom: calc(env(safe-area-inset-bottom) + 3rem); /* Accounts for bottom safe area plus some extra padding */
 }
 
 #navPanel .links {
     list-style: none;
     padding-left: 0;
-    /* Changed from margin-top: auto; */
-    margin-top: 1rem; /* Or whatever value gives you the desired spacing */
+    margin-top: auto; /* Ensure menu items stay at the bottom */
     margin-bottom: 3rem;
 }
 
