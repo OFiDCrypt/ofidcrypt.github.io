@@ -356,7 +356,7 @@ header.header-subpage .sub-header {
 }
 
 /* Adjustments for when the nav menu appears */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 981px) {
     header.header-subpage {
         padding-bottom: 4rem;
     }
@@ -381,19 +381,6 @@ header.header-subpage .logo img {
     header.header-subpage .logo {
         max-width: 200px;
         margin-top: 1rem;
-    }
-}
-
-/* Mobile-specific styles for landscape */
-@media (max-width: 600px) and (orientation: landscape) { 
-    header.header-subpage {
-        padding-bottom: 0;
-    }
-    header.header-subpage .logo {
-        width: 30%; 
-        max-width: 150px;
-        margin-top: auto;
-        margin-bottom: auto;
     }
 }
 
@@ -4246,12 +4233,20 @@ table {
 		height: 4rem;
 		line-height: 4rem;
 		margin: -4rem auto 0 auto;
-		overflow: hidden;
+		overflow: none;
 		padding: 0 2rem 0 0;
 		position: relative;
 		width: calc(100% - 4rem);
 		max-width: 72rem;
 		z-index: 2;
+	}
+
+	@media (max-width: 768px) and (pointer: coarse) {
+		#nav {
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+			touch-action: pan-y;
+		}
 	}
 
 	#nav ul.divided li {
@@ -4365,7 +4360,7 @@ table {
     display: none; /* Hidden by default */
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 981px) {
     #nav ul.links {
         display: flex; /* Show on larger screens */
     }
@@ -4383,7 +4378,7 @@ table {
 					margin-bottom: 0;
 				}
 				
-				@media screen and (max-width: 1024px) {
+				@media screen and (max-width: 981px) {
 					#nav {
 						display: none;
 					}
@@ -4801,7 +4796,6 @@ article.community.featured {
         padding: 2.5rem;
 		margin-bottom: 2.5rem;
     }
-}
 
     .event-post .image {
         max-width: 100%; /* Image will scale to container width */
