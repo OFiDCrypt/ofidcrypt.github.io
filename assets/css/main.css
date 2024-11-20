@@ -5485,7 +5485,7 @@ body.dark-mode #darkModeToggle.dark i::before {
     background: var(--nav-panel-bg-color);
     box-shadow: none;
     color: var(--nav-panel-text-color);
-    height: 100%;
+    height: 100vh;
     max-width: 80%;
     overflow-y: auto;
     padding: 3rem 2rem 0; /* Top padding to make room for close button */
@@ -5594,8 +5594,6 @@ body.dark-mode #darkModeToggle.dark i::before {
         visibility: visible;
     }
 }
-
-
 
 /* Video Main General styling (for all videos in .main) */
 .video.main {
