@@ -5592,8 +5592,6 @@ body.dark-mode #darkModeToggle.dark i::before {
         transform: translateX(0);
         box-shadow: 0 0 1.5rem 0 var(--nav-panel-box-shadow-color);
         visibility: visible;
-		overflow-y: auto; /* Ensure scrolling */
-		-webkit-overflow-scrolling: touch;
     }
 }
 
