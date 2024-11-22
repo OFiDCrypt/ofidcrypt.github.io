@@ -81,10 +81,12 @@ input, select, textarea {
     --strong-color: #7019c7;
     --heading-color: #212931;
     --blockquote-border-color: #eeeeee;
+	--quick-start-border-color: #eeeeee;
     --code-bg-color: rgba(220, 220, 220, 0.25);
     --code-border-color: #eeeeee;
     --box-border-color: #eeeeee;
-    --button-border-color: #212931;
+	--button-color: #a1a1a1;
+    --button-border-color: #eeeeee;
     --button-hover-border-color: #7019c7;
     --button-primary-bg-color: #212931;
     --button-primary-hover-bg-color: #7019c7;
@@ -187,8 +189,10 @@ body.dark-mode {
     --link-hover-color: #663399;
     --strong-color: #9a52e2;
     --heading-color: #9a52e2;
+	--quick-start-border-color: #a1a1a1;
     --code-border-color: #a1a1a1;
     --box-border-color: #a1a1a1;
+	--button-color: #a1a1a1;
     --button-border-color: #ffffff;
     --button-hover-border-color: #663399;
     --button-primary-bg-color: #ffffff;
@@ -2423,7 +2427,6 @@ header.header-subpage {
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
-		color: #212931; /* Light mode color */
 	
 		body.dark-mode & {
 			color: var(--button-color); /* Dark mode color */
@@ -4493,6 +4496,90 @@ section.livestream {
         font-size: 2.5rem;
         line-height: 1.2;
         margin: 0 0 1.5rem 0;
+    }
+}
+
+/* Quick Start Section */
+#main .quick-start-section {
+    margin-bottom: 20px;
+}
+
+#main .quick-start-section .button {
+    margin-top: auto;
+}
+
+#main .quick-start-section .quick-start-items {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column; /* Changed to stack vertically */
+}
+
+#main .quick-start-section .quick-start-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid var(--quick-start-border-color);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Full width on smaller screens */
+}
+
+#main .quick-start-section .image.left {
+    margin-right: 15px; /* Space between image and text */
+    /* No need for float now */
+    max-width: 100px;
+}
+
+#main .quick-start-section .quick-start-content {
+    flex: 1; /* Allow the content to grow and take available space */
+}
+
+#main .quick-start-section .quick-start-content h3,
+#main .quick-start-section .quick-start-content p {
+    margin: 0.5rem 0; /* Vertical margin only; horizontal centering with auto margin below */
+    padding: 0;
+    display: block;
+    width: 100%; /* Full width for text centering */
+    text-align: center; /* Center text */
+}
+
+#main .quick-start-section .quick-start-content h3 {
+    /* Remove fixed height to allow wrapping */
+    /* height: 40px; */
+    /* line-height: 40px; */
+    margin: 0.5rem auto; /* Center the header with some vertical margin */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+}
+
+#main .quick-start-section .quick-start-content p {
+    margin: 0.5rem auto; /* Center the paragraph with some vertical margin */
+	margin-bottom: 1.5rem;
+}
+
+/* Media Query for larger screens */
+@media (min-width: 768px) {
+    #main .quick-start-section .quick-start-items {
+        flex-direction: row; /* Horizontal layout for larger screens */
+    }
+
+    #main .quick-start-section .quick-start-item {
+        flex-direction: column;
+        align-items: center; /* Added to keep items centered horizontally */
+        width: calc(33.33% - 20px);
+    }
+
+    #main .quick-start-section .image.left {
+        /* Resetting for larger screens */
+        margin: 5px 0 5px 0;
+        width: 100%;
+        max-width: none;
+    }
+
+    #main .quick-start-section .quick-start-content {
+        display: flex;
+        flex-direction: column;
     }
 }
 
