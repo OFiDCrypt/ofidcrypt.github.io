@@ -193,7 +193,7 @@ body.dark-mode {
     --code-border-color: #a1a1a1;
     --box-border-color: #a1a1a1;
 	--button-color: #a1a1a1;
-    --button-border-color: #ffffff;
+    --button-border-color: #a1a1a1;
     --button-hover-border-color: #663399;
     --button-primary-bg-color: #ffffff;
     --button-primary-hover-bg-color: #663399;
@@ -2971,6 +2971,7 @@ form > .fields > .field.quarter {
 			height: auto; 
 			object-fit: contain; 
 			/* Remove or increase max-height if set */
+			border-radius: 8px;
 		}
 		
 		.image.left {
@@ -3986,6 +3987,7 @@ table {
 					width: 22%;
 					/* Adjusted width to make images smaller */
 					margin: 0 5%;
+					border-radius: 8px;
 				}
 
 				@media screen and (max-width: 600px) {
@@ -4739,6 +4741,7 @@ article.community.featured {
     text-align: center;
     display: flex;
     flex-direction: column;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #main > #posts-container .posts > article > ul.actions.special {
@@ -4806,6 +4809,7 @@ article.community.featured {
     text-align: center;
     display: flex;
     flex-direction: column;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #main > #monthly-container .monthly-posts > article header h2 {
@@ -4873,6 +4877,7 @@ article.community.featured {
     display: flex;
     flex-direction: column;
     max-width: 100%; /* To ensure it doesn't overflow on smaller screens */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Styling for the header within the event post */
