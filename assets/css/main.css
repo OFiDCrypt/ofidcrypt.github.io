@@ -86,7 +86,7 @@ input, select, textarea {
     --code-border-color: #eeeeee;
     --box-border-color: #eeeeee;
 	--button-color: #a1a1a1;
-    --button-border-color: #eeeeee;
+    --button-border-color: #a1a1a1;
     --button-hover-border-color: #7019c7;
     --button-primary-bg-color: #212931;
     --button-primary-hover-bg-color: #7019c7;
@@ -4996,7 +4996,7 @@ article.community.featured {
 		#footer input[type="button"]:hover,
 		#footer button:hover,
 		#footer .button:hover {
-			box-shadow: inset 0 0 0 2px var(--footer-button-hover-border-color);
+			box-shadow: inset 0 0 0 2px var;
 			color: var(--footer-button-hover-text-color) !important;
 		}
 		
@@ -5006,7 +5006,7 @@ article.community.featured {
 		#footer button.primary,
 		#footer .button.primary {
 			background-color: var(--footer-button-primary-bg-color);
-			box-shadow: none;
+			box-shadow: inset 0 0 0 2px var(--footer-button-hover-border-color);
 			color: var(--footer-button-primary-text-color) !important;
 		}
 		
