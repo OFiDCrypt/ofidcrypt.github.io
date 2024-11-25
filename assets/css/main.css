@@ -2592,7 +2592,7 @@ form > .fields {
     display: flex;
     flex-wrap: wrap;
     width: calc(100% + 3rem);
-    margin: -1.5rem 0 2rem -1.5rem;
+    margin: -1.5rem 0 1.5rem -1.5rem;
 }
 
 form > .fields > .field {
@@ -2646,9 +2646,10 @@ form > .fields > .field.quarter {
 }
 
 .g-recaptcha {
-    margin-bottom: 30px; /* Adjust the value as needed */
+    margin-bottom: 1.5rem;
     display: flex;
     justify-content: center;
+    align-items: center; /* Add this to center vertically */
 }
 
 /* Responsive adjustments */
@@ -4986,7 +4987,7 @@ article.community.featured {
 		#footer button,
 		#footer .button {
 			background-color: transparent;
-			box-shadow: inset 0 0 0 2px #717981;
+			box-shadow: inset 0 0 0 2px var(--button-border-color) !important;
 			color: #717981 !important;
 		}
 
