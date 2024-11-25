@@ -4519,7 +4519,7 @@ section.livestream {
 #main .quick-start-section .quick-start-item {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
     border: 1px solid var(--quick-start-border-color);
     padding: 30px;
     border-radius: 8px;
