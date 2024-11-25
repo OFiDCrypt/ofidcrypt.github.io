@@ -126,64 +126,63 @@
 			</nav>
 
 			<!-- Main -->
-			<div id="main"> <!-- Welcome & Intro -->
+			<div id="main">
 				<article class="post">
 					<header class="major">
 						<span class="date">VIP Member Area</span>
-			
-			<!-- Quick Start Section -->
-			<section class="quick-start-section">
-				<header>
-					<h2>Cash Links</h2>
-				</header>
-				<div class="quick-start-items">
-					<article class="quick-start-item">
-						<span class="image left"><img src="/assets/images/cashlink-test.jpg" alt="Wallet Icon"></span>
-						<div class="quick-start-content">
-							<h3>⬢ 15,000</h3>
-							<button class="button" onclick="return verifyRecaptchaForLinks();">
-								<a href="javascript:void(0);" onclick="event.preventDefault();">
-									Claim Kin
-								</a>
-							</button>
-						</div>
-					</article>
-					<article class="quick-start-item">
-						<span class="image left"><img src="/assets/images/cashlink-test.jpg" alt="Learn Icon"></span>
-						<div class="quick-start-content">
-							<h3>⬢ 15,000</h3>
-							<button class="button" onclick="return verifyRecaptchaForLinks();">
-								<a href="javascript:void(0);" onclick="event.preventDefault();">
-									Claim Kin
-								</a>
-							</button>
-						</div>
-					</article>
-					<article class="quick-start-item">
-						<span class="image left"><img src="/assets/images/cashlink-test.jpg" alt="Event Icon"></span>
-						<div class="quick-start-content">
-							<h3>⬢ 15,000</h3>
-							<button class="button" onclick="return verifyRecaptchaForLinks();">
-								<a href="javascript:void(0);" onclick="event.preventDefault();">
-									Claim Kin
-								</a>
-							</button>
-						</div>
-					</article>
-				</div>
-				<div id="recaptchaForLinks" class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
-				<ul class="actions special">
-					<li><a href="/pages/vipwithcode.html" class="button">Return to Lounge</a></li>
-				</ul>
-			</section>
-			</header>
-			</article>
+						<!-- Quick Start Section -->
+						<section class="quick-start-section">
+							<header>
+								<h2>Cash Links</h2>
+							</header>
+							<div class="quick-start-items">
+								<article class="quick-start-item">
+									<span class="image left"><img src="/assets/images/cashlink-test.jpg" alt="Wallet Icon"></span>
+									<div class="quick-start-content">
+										<h3>⬢ 15,000</h3>
+										<button class="button" onclick="return verifyRecaptchaForLinks(this);">
+											<a href="javascript:void(0);" data-link="https://cash.getcode.com/c/#/e=YKmpEcZndtrJif4PGRbw87"
+												onclick="event.preventDefault();">Claim
+												Kin</a>
+										</button>
+									</div>
+								</article>
+								<article class="quick-start-item">
+									<span class="image left"><img src="/assets/images/cashlink-test.jpg" alt="Learn Icon"></span>
+									<div class="quick-start-content">
+										<h3>⬢ 15,000</h3>
+										<button class="button" onclick="return verifyRecaptchaForLinks(this);">
+											<a href="javascript:void(0);" data-link="https://cash.getcode.com/c/#/e=YKmpEcZndtrJif4PGRbw87"
+												onclick="event.preventDefault();">Claim
+												Kin</a>
+										</button>
+									</div>
+								</article>
+								<article class="quick-start-item">
+									<span class="image left"><img src="/assets/images/cashlink-test.jpg" alt="Event Icon"></span>
+									<div class="quick-start-content">
+										<h3>⬢ 15,000</h3>
+										<button class="button" onclick="return verifyRecaptchaForLinks(this);">
+											<a href="javascript:void(0);" data-link="https://cash.getcode.com/c/#/e=YKmpEcZndtrJif4PGRbw87"
+												onclick="event.preventDefault();">Claim
+												Kin</a>
+										</button>
+									</div>
+								</article>
+							</div>
+							<div id="recaptchaForLinks" class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+							<ul class="actions special">
+								<li><a href="/pages/vipwithcode.html" class="button">Return to Lounge</a></li>
+							</ul>
+						</section>
+					</header>
+				</article>
 			</div>
 			
 			<!-- Footer -->
 			<footer id="footer">
 				<section>
-					<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptchaForForm()">
+					<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
 						<h2 class="centered-heading">Suggest A Topic</h2>
 						<div class="fields">
 							<div class="field">
@@ -202,11 +201,11 @@
 						<div id="recaptchaForForm" class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa">
 						</div>
 						<ul class="actions">
-							<li><input type="submit" value="Send Message" id="formSubmit" disabled></li>
+							<li><input type="submit" value="Send Message"></li>
 						</ul>
 					</form>
 				</section>
-			
+				
 				<!-- Footer Social Location, Links & Other Contact -->
 				<section class="split contact">
 					<section>
@@ -325,34 +324,41 @@
 			</script>
 			
 			<script>
-				// Function to handle link redirection after reCAPTCHA verification
-				function verifyRecaptchaForLinks() {
+				// Function to verify reCAPTCHA before allowing link click
+				function verifyRecaptchaForLinks(button) {
 					var response = grecaptcha.getResponse();
 					if (response.length === 0) {
 						alert("Please complete the reCAPTCHA for the links.");
 						return false;
 					} else {
-						// Redirect to the first link URL here
-						window.location.href = 'https://cash.getcode.com/c/#/e=YKmpEcZndtrJif4PGRbw87';
+						// Get the URL from the 'data-link' attribute of the button's anchor tag
+						var anchor = button.querySelector('a');
+						if (anchor) {
+							var linkUrl = anchor.getAttribute('data-link');
+							if (linkUrl) {
+								window.location.href = linkUrl;
+							} else {
+								alert("Error: No URL specified for this link.");
+								return false;
+							}
+						} else {
+							alert("Error: No anchor tag found within the button.");
+							return false;
+						}
 						return true;
 					}
 				}
 
 				// Function to verify reCAPTCHA for form submission
-				function verifyRecaptchaForForm() {
+				function verifyRecaptcha() {
 					var response = grecaptcha.getResponse();
 					if (response.length === 0) {
-						alert("Please complete the reCAPTCHA for the form.");
+						alert("Please complete the reCAPTCHA.");
 						return false;
 					} else {
 						return true;
 					}
 				}
-
-				// Enable form submit button when reCAPTCHA is solved
-				document.querySelector('.g-recaptcha').addEventListener('grecaptcharesponse', function () {
-					document.getElementById('formSubmit').disabled = false;
-				});
 			</script>
 			
 			<!-- Link to non-critical JavaScript files -->
