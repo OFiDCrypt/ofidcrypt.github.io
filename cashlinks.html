@@ -65,7 +65,7 @@
 		</noscript>
 	
 		<!-- JavaScript Libraries -->
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 		<script src="/assets/js/browser.min.js" defer></script>
 		<script src="/assets/js/main.js" defer></script>
 
@@ -326,7 +326,7 @@
 			<script>
 				// Function to verify reCAPTCHA before allowing link click
 				function verifyRecaptchaForLinks(button) {
-					var response = grecaptcha.getResponse();
+					var response = grecaptcha.getResponse(grecaptchaForLinksWidgetId);
 					if (response.length === 0) {
 						alert("Please complete the reCAPTCHA for the links.");
 						return false;
@@ -348,18 +348,35 @@
 						return true;
 					}
 				}
-
+				
 				// Function to verify reCAPTCHA for form submission
 				function verifyRecaptcha() {
-					var response = grecaptcha.getResponse();
+					var response = grecaptcha.getResponse(grecaptchaForFormWidgetId);
 					if (response.length === 0) {
-						alert("Please complete the reCAPTCHA.");
+						alert("Please complete the reCAPTCHA for the form.");
 						return false;
 					} else {
 						return true;
 					}
 				}
-			</script>
+				
+				// Initialize reCAPTCHA widget IDs
+				var grecaptchaForLinksWidgetId;
+				var grecaptchaForFormWidgetId;
+				
+				// Callback function to initialize reCAPTCHA widgets
+				window.onloadCallback = function() {
+					grecaptchaForLinksWidgetId = grecaptcha.render('recaptchaForLinks', {
+						'sitekey': '6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa',
+						'callback': function(){ /* Optional callback for links */ }
+					});
+				
+					grecaptchaForFormWidgetId = grecaptcha.render('recaptchaForForm', {
+						'sitekey': '6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa',
+						'callback': function() { /* Optional callback for form */ }
+					});
+				};
+				</script>
 			
 			<!-- Link to non-critical JavaScript files -->
 			<script src="assets/js/jquery.min.js"></script>
