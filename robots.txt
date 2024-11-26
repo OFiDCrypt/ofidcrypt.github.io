@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /cashlinks.html
+Disallow: /cashlinks
 
-Sitemap: https://www.ofidcrypt.com/sitemap.xml
+Sitemap: /sitemap.xml
