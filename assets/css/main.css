@@ -3445,7 +3445,7 @@ table {
 }
 
     table tbody tr {
-        border: solid 2px;
+        border: solid 1px;
         border-left: 0;
         border-right: 0;
     }
