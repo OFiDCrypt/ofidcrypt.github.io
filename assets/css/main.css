@@ -518,7 +518,7 @@ header.header-subpage {
 
 	h3 {
 		font-size: 1.25rem;
-		margin: 0 0 1.5rem 0;
+		margin: 1.5rem 0 1.5rem 0;
 	}
 
 	h4 {
@@ -4514,7 +4514,7 @@ section.livestream {
 #main .quick-start-section .quick-start-items {
     display: flex;
     justify-content: space-between;
-    flex-direction: column; /* Changed to stack vertically */
+    flex-direction: column; /* Default for mobile */
 }
 
 #main .quick-start-section .quick-start-item {
@@ -4530,39 +4530,34 @@ section.livestream {
 
 #main .quick-start-section .image.left {
     margin-right: 15px; /* Space between image and text */
-    /* No need for float now */
-    max-width: 100px;
 }
 
 #main .quick-start-section .quick-start-content {
     flex: 1; /* Allow the content to grow and take available space */
 }
 
-#main .quick-start-section .quick-start-content h3,
-#main .quick-start-section .quick-start-content p {
-    margin: 0.5rem 0; /* Vertical margin only; horizontal centering with auto margin below */
-    padding: 0;
-    display: block;
-    width: 100%; /* Full width for text centering */
-    text-align: center; /* Center text */
+/* New CSS for the featured item */
+#main .quick-start-section .quick-start-featured {
+    display: flex; /* Use flex for better alignment control */
+    flex-direction: column; /* Default for mobile */
+    margin-bottom: 20px; /* Space from the above items */
+    border: 1px solid var(--quick-start-border-color); /* Match border */
+    border-radius: 8px; /* Match border-radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Match box-shadow */
+    padding: 30px;
+    max-width: 100%; /* Ensure it doesn't exceed parent container's width */
 }
 
-#main .quick-start-section .quick-start-content h3 {
-    /* Remove fixed height to allow wrapping */
-    /* height: 40px; */
-    /* line-height: 40px; */
-    margin: 0.5rem auto; /* Center the header with some vertical margin */
-    /* overflow: hidden; */
-    /* text-overflow: ellipsis; */
+#main .quick-start-section .quick-start-featured .image.left {
+    max-width: 60%; /* For mobile, let it take full width */
 }
 
-#main .quick-start-section .quick-start-content p {
-    margin: 0.5rem auto; /* Center the paragraph with some vertical margin */
-	margin-bottom: 1.5rem;
+#main .quick-start-section .quick-start-featured .quick-start-content {
+    text-align: center; /* Default for mobile */
 }
 
 /* Media Query for larger screens */
-@media (min-width: 768px) {
+@media (min-width: 980px) {
     #main .quick-start-section .quick-start-items {
         flex-direction: row; /* Horizontal layout for larger screens */
     }
@@ -4570,19 +4565,32 @@ section.livestream {
     #main .quick-start-section .quick-start-item {
         flex-direction: column;
         align-items: center; /* Added to keep items centered horizontally */
-        width: calc(33.33% - 20px);
+		width: calc(33.33% - 20px);
     }
 
     #main .quick-start-section .image.left {
-        /* Resetting for larger screens */
         margin: 5px 0 5px 0;
         width: 100%;
         max-width: none;
     }
 
-    #main .quick-start-section .quick-start-content {
-        display: flex;
-        flex-direction: column;
+    #main .quick-start-section .quick-start-featured {
+        flex-direction: row; /* Horizontal layout for desktop */
+		max-width: 100%;
+		width: 60%;
+		margin-left: auto;
+		margin-right: auto;
+    }
+
+    #main .quick-start-section .quick-start-featured .image.left {
+        max-width: 250px; /* Adjust max-width to fit your design */
+		margin-left: 15px; /* Space between image and content */
+        margin-right: 15px; /* Space between image and content */
+    }
+
+    #main .quick-start-section .quick-start-featured .quick-start-content {
+        text-align: center;
+        flex: 1; /* Allow content to grow and take available space */
     }
 }
 
