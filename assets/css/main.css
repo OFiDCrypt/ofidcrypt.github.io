@@ -4625,6 +4625,14 @@ section.livestream {
     clear: both;
 }
 
+/* Ad Banner */
+#main > section > section.ad-banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 /* Community Featured Section */
 #main > article.community.featured {
     padding: 4rem 2rem 2rem 2rem;
