@@ -4447,7 +4447,7 @@ section.livestream {
 }
 
 #main > .post {
-    padding: 6rem 8rem 3rem 8rem;
+    padding: 2rem 8rem 3rem 8rem;
 }
 
 #main > .post header.major > .date {
@@ -4468,13 +4468,13 @@ section.livestream {
 /* Responsive Adjustments */
 @media screen and (max-width: 1280px) {
     #main > .post {
-        padding: 6rem 4rem 4rem 4rem;
+        padding: 2rem 4rem 4rem 4rem;
     }
 }
 
 @media screen and (max-width: 736px) {
     #main > .post {
-        padding: 4rem 2rem 2rem 2rem;
+        padding: 2rem 2rem 2rem 2rem;
     }
 
     #main > .post header.major > .date {
@@ -4631,6 +4631,34 @@ section.livestream {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
+}
+
+/* Ad Banner eXPB */
+#expb-ball {
+    /* Autofit width */
+    width: 100%;
+    /* Add top padding */
+    padding-top: 20px;
+    /* Reset any margin if previously set */
+    margin: 0 auto;
+    /* Use flexbox for centering content */
+    display: flex;
+    justify-content: center;
+}
+
+#expb-ball .ad-banner div {
+    /* Remove text-align since we're using flexbox */
+    width: 100%; /* Ensure the div takes full width */
+}
+
+#expb-ball img {
+    /* Image will automatically adjust based on parent width */
+    max-width: 100%;
+    height: auto;
+    /* Redundant with flexbox, but kept for safety */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Community Featured Section */
