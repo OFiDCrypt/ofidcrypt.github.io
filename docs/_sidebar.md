@@ -1,5 +1,0 @@
-- [Getting Started](index.md)
-- [Installation](installation.md)
-- [Usage](usage.md)
-- [Contributing](contributing.md)
-- [FAQ](faq.md)
