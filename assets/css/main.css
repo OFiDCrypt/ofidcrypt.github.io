@@ -3363,6 +3363,7 @@ section {
 		header > h2 + p {
 			font-size: 1rem;
 			margin-top: -0.75rem;
+			margin-bottom: 2rem;
 			text-align: center;
 		}
 
@@ -3461,7 +3462,7 @@ table {
         font-weight: 900;
         letter-spacing: 0.075em;
         line-height: 1.5;
-        padding: 0 0.75rem 0.75rem 0.75rem;
+        padding: 0.75rem 0.75rem 0.75rem 0.75rem;
         text-transform: uppercase; /* Retained uppercase for headers */
     }
 
@@ -3472,6 +3473,19 @@ table {
             }
 
         }
+		
+        @media screen and (max-width: 980px) {
+			table th {
+				font-family: "Source Sans Pro", Helvetica, sans-serif;
+				font-size: 0.8rem;
+				font-weight: 900;
+				letter-spacing: 0.075em;
+				line-height: 1.5;
+				padding: 0 0.75rem 0.75rem 0.75rem; /* Top padding set to 0 for mobile */
+				text-transform: uppercase; /* Retained uppercase for headers */
+			}
+		}
+		
 
 /* Mobile styles */
 @media screen and (max-width: 767px) {
@@ -4421,6 +4435,10 @@ table {
 					z-index: 2;
 				}
 
+				#main > section.post > section > article:nth-child(4) {
+					padding-bottom: 3rem;
+				}
+				
 section.post {
     padding: 0 4rem 1rem 4rem; /* No top padding, keep bottom and sides */
     border-top: none;
@@ -4597,11 +4615,6 @@ section.livestream {
         text-align: center;
         flex: 1; /* Allow content to grow and take available space */
     }
-}
-
-/* Community Connections Section */
-#main .partner-section {
-    margin-bottom: 20px; /* Adds space below each partner-section */
 }
 
 #main .partner-section .product-content .image.left {
