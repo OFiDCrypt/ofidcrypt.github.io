@@ -465,7 +465,7 @@ header.header-subpage {
 
 	p {
 		text-align: justify;
-		margin: 1rem 0 1rem 0;
+		margin: 1rem 0 2rem 0;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -513,7 +513,7 @@ header.header-subpage {
 
 	h2 {
 		font-size: 1.75rem;
-		margin: 0 0 2rem 0;
+		margin: 2rem 0 2rem 0;
 	}
 
 	h3 {
@@ -4465,7 +4465,7 @@ section.livestream {
 }
 
 #main > .post {
-    padding: 2rem 8rem 3rem 8rem;
+    padding: 2rem 8rem 1rem 8rem;
 }
 
 #main > .post header.major > .date {
@@ -4767,6 +4767,28 @@ article.community.featured {
         align-items: center;
         height: auto; /* Or set a specific height if needed */
     }
+}
+
+/* Price Chart - #dexscreener{*/
+#dexscreener-embed {
+	position: relative;
+	width: 100%;
+	padding-bottom: 125%;
+}
+
+@media(min-width:1400px) {
+	#dexscreener-embed {
+		padding-bottom: 65%;
+	}
+}
+
+#dexscreener-embed iframe {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	border: 0;
 }
 
 /* Posts Container */
