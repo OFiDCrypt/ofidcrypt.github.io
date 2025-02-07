@@ -2984,7 +2984,9 @@ form > .fields > .field.quarter {
 			float: right;
 			margin-left: 1.5rem; /* Adjusted for larger images */
 		}
+		
 
+		
 		.image.fit {
 			display: block;
 			margin: 2.5rem 0;
@@ -3388,6 +3390,7 @@ section {
 
 			header.major > p {
 				margin-top: 0;
+				margin-bottom: 0;
 				text-align: center;
 			}
 
@@ -4497,7 +4500,7 @@ section.livestream {
 
     #main > .post header.major > .date {
         margin-top: -1rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
     #main > .post header.major > h1,
@@ -5941,13 +5944,15 @@ footer {
 
 /* Image Properties - button-image */
 .image.button-image img {
-    width: 30%; /* Shrink the width more */
+    width: 35%; /* Shrink the width more */
     height: auto; /* Maintain aspect ratio */
     max-width: 100%; /* Ensure it doesn't exceed the container width */
     display: block; /* Center image */
     margin-left: auto;
     margin-right: auto;
+    padding: 10px; /* Add padding for a central fit */
 }
+
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
