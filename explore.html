@@ -214,7 +214,7 @@
 								<h2>e𝕏Plore Even More</h2>
 								<!-- Section Description -->
 								<p class="align-center">Find more Web3 apps to try by visiting this <a
-										href="https://ofidcrypt.ca/try-services-using-code-wallet-uztuawi">Blog Post</a> for partner services; hosted by HVR Social
+										href="https://ofidcrypt.ca/try-services-using-code-wallet-uztuawi">Blog Post</a> for partner services; hosted by Hvr Social
 									Browser.
 								</p>
 							</header>
@@ -225,18 +225,19 @@
 					<!-- Featured Post -->
 					<article id="article-featured" class="post featured">
 						<header class="major">
-							<span class="date">Knowledge Library</span>
+							<span class="date">Articles & Featured</span>
 							<h2>Learn With <br />Articles</h2>
-							<p>Click "Preview Article" below to get a sneak peek of this featured article, available via Code Wallet for only $0.25
+							<p>Click "Preview Article" below to get a sneak peek of this featured article, available via Code Wallet for
+								only $0.25
 							</p>
 						</header>
-						<div class="image main"><img class="post-featured" src="assets/images/pic06.jpg" alt="Article Title: A Beginners Introduction to Cryptocurrency" /></div>
+									<a href="https://pennypost.co/p/676825480/01-a-beginners-introduction-to-cryptocurrency" class="image fit"><img src="assets/images/pic06.jpg" alt="Article Title: A Beginners Introduction to Cryptocurrency" /></a>
 						<ul class="actions special">
 							<li><a href="https://pennypost.co/p/676825480/01-a-beginners-introduction-to-cryptocurrency"
 									class="button large">Preview Article</a></li>
 						</ul>
-					</article>	
-				</div>			
+					</article>
+					</div>
 
 					<!-- Header for Pagination -->
 					<header>
@@ -251,7 +252,7 @@
 				
 					<!-- Posts Container -->
 					<section id="posts-container">
-						<div id="index-posts">
+						<div id="explore-posts">
 							<section class="posts">
 								<article>
 									<header>
@@ -423,7 +424,7 @@
 					function loadPage(pageNumber, shouldScroll) {
 						let url;
 						if (pageNumber === '1') {
-							url = 'index.html';
+							url = 'explore.html';
 						} else {
 							url = `posts-page${pageNumber}.html`;
 						}
@@ -437,7 +438,7 @@
 							let newContent = '';
 
 							if (pageNumber === '1') {
-								newContent = doc.getElementById('index-posts').querySelector('section.posts').outerHTML;
+								newContent = doc.getElementById('explore-posts').querySelector('section.posts').outerHTML;
 							} else {
 								const pageContent = doc.getElementById(`posts-page${pageNumber}-posts`);
 								if (pageContent) {
@@ -448,7 +449,7 @@
 							}
 
 							setTimeout(() => {
-								container.innerHTML = `<div id="index-posts">${newContent}</div>`;
+								container.innerHTML = `<div id="explore-posts">${newContent}</div>`;
 								container.classList.remove('fade-out');
 								container.classList.add('fade-in');
 
