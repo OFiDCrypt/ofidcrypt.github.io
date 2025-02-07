@@ -4715,7 +4715,7 @@ article.community.featured {
 }
 
 #main > article.community.featured {
-    padding: 6rem 8rem 6rem 8rem;
+    padding: 6rem 8rem 3rem 8rem;
 }
 
 #main > article.community.featured > header.major > .date {

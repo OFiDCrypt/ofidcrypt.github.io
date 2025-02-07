@@ -255,114 +255,6 @@
 
 			});
 
-			// Pagination Index
-			document.addEventListener("DOMContentLoaded", function () {
-				const container = document.getElementById('posts-container');
-				let currentPage = '1';
-				let totalPages = 2; // Adjust this to the actual number of pages
-
-				// Flag to prevent scroll events during transition
-				let isTransitioning = false;
-
-				function loadPage(pageNumber, shouldScroll) {
-					let url;
-					if (pageNumber === '1') {
-						url = 'index.html';
-					} else {
-						url = `posts-page${pageNumber}.html`;
-					}
-
-					container.classList.add('fade-out');
-					isTransitioning = true; // Start of transition
-
-					fetch(url).then(response => response.text()).then(data => {
-						const parser = new DOMParser();
-						const doc = parser.parseFromString(data, 'text/html');
-						let newContent = '';
-
-						if (pageNumber === '1') {
-							newContent = doc.getElementById('index-posts').querySelector('section.posts').outerHTML;
-						} else {
-							const pageContent = doc.getElementById(`posts-page${pageNumber}-posts`);
-							if (pageContent) {
-								newContent = pageContent.innerHTML;
-							} else {
-								newContent = doc.body.innerHTML || doc.querySelector('.posts').innerHTML;
-							}
-						}
-
-						setTimeout(() => {
-							container.innerHTML = `<div id="index-posts">${newContent}</div>`;
-							container.classList.remove('fade-out');
-							container.classList.add('fade-in');
-
-							setTimeout(() => {
-								container.classList.remove('fade-in');
-								isTransitioning = false; // End of transition
-
-								if (shouldScroll) {
-									scrollToFeaturedPost();
-								}
-
-								updatePagination(pageNumber);
-							}, 500); // Delay for fade-in animation
-
-						}, 500); // Delay for fade-out animation
-					}).catch(error => {
-						console.error('Error loading page:', error);
-						container.classList.remove('fade-out');
-						isTransitioning = false; // End of transition in case of error
-					});
-				}
-
-				function scrollToFeaturedPost() {
-					const featuredPost = document.querySelector('.post.featured');
-					if (featuredPost) {
-						const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
-						window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
-					}
-				}
-
-				function updatePagination(pageNumber) {
-					document.querySelectorAll('.pagination .page').forEach(pageLink => {
-						pageLink.classList.remove('active');
-						if (pageLink.getAttribute('data-page') === pageNumber) {
-							pageLink.classList.add('active');
-						}
-					});
-        currentPage = pageNumber;
-    }
-
-    // Event listeners for both top and bottom pagination
-    document.querySelectorAll('.pagination .page').forEach(pageLink => {
-        pageLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            const pageNumber = this.getAttribute('data-page');
-            loadPage(pageNumber, true);
-        });
-    });
-
-    document.querySelectorAll('.pagination .previous').forEach(prevLink => {
-        prevLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            if (currentPage > '1') {
-                loadPage((parseInt(currentPage) - 1).toString(), true);
-            }
-        });
-    });
-
-    document.querySelectorAll('.pagination .next').forEach(nextLink => {
-        nextLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            if (parseInt(currentPage) < totalPages) {
-                loadPage((parseInt(currentPage) + 1).toString(), true);
-            }
-        });
-    });
-
-    loadPage('1', false); // Load the first page on initial load without scrolling
-});
-
 			// Switch Visual Mode - Dark Mode Light Mode
 			document.addEventListener('DOMContentLoaded', (event) => {
 				console.log('DOM fully loaded and parsed');
@@ -426,7 +318,7 @@
 			// Featured Dynamic Image
 			document.addEventListener("DOMContentLoaded", function() {
 				const proxyUrl = 'https://api.allorigins.win/get?url=';
-				const articleUrl = proxyUrl + encodeURIComponent('https://pennypost.co/p/723123949/04-learn-about-a-crypto-project-kin-token');
+				const articleUrl = proxyUrl + encodeURIComponent('https://pennypost.co/p/676825480/01-a-beginners-introduction-to-cryptocurrency');
 			
 				async function fetchOpenGraphImage(url) {
 					try {
