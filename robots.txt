@@ -1,5 +1,3 @@
 User-agent: *
 Disallow: /cashlinks
-Disallow: /assets/images/logo02.PNG
-Disallow: /assets/images/bglogo01.webp
 Sitemap: https://www.ofidcrypt.com/sitemap.xml
