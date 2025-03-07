@@ -5942,6 +5942,28 @@ footer {
 	margin-bottom: 2rem;
 }
 
+/* Image Properties - image-custom */
+.image-custom {
+    display: block; /* Ensures the link behaves as a block element */
+    width: 100%; /* Makes the image fill its container */
+    margin: 0; /* Removes any default margins */
+    padding: 0; /* Removes any default padding */
+}
+
+.image-custom img {
+    width: 100%; /* Ensures the image scales to the container */
+    height: auto; /* Maintains aspect ratio */
+    display: block; /* Removes baseline spacing */
+    margin: 0; /* No extra spacing */
+    padding: 0; /* Removes any default padding */
+}
+
+@media screen and (max-width: 980px) {
+    .image-custom, .image-custom * {
+        padding: 0 !important;
+    }
+}
+
 /* Image Properties - button-image */
 .image.button-image img {
     width: 35%; /* Shrink the width more */
