@@ -215,6 +215,7 @@ body.dark-mode {
     --pagination-text-color: #ffffff;
     --pagination-hover-color: #9a52e2;
     --pagination-active-bg-color: #663399;
+	--quick-start-bg-color: black;
     --bg-light-color: #000000;
     --header-text-color: #212931;
     --header-input-color: #000000;
@@ -4552,6 +4553,7 @@ section.livestream {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%; /* Full width on smaller screens */
+	background-color: var(--quick-start-bg-color); /* Adds black background */
 }
 
 #main .quick-start-section .image.left {
