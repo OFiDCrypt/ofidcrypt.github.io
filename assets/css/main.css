@@ -466,7 +466,7 @@ header.header-subpage {
 
 	p {
 		text-align: justify;
-		margin: 1rem 0 2rem 0;
+		margin: 1rem 0 1rem 0;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -2428,6 +2428,8 @@ header.header-subpage {
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
+		margin-right: 1rem;
+		margin-bottom: 1rem;
 	
 		body.dark-mode & {
 			color: var(--button-color); /* Dark mode color */
@@ -4439,9 +4441,11 @@ table {
 					z-index: 2;
 				}
 
+				/*
 				#main > section.post > section > article:nth-child(4) {
 					padding-bottom: 3rem;
 				}
+				*/
 				
 section.post {
     padding: 0 4rem 1rem 4rem; /* No top padding, keep bottom and sides */
