@@ -2428,13 +2428,25 @@ header.header-subpage {
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
-		margin-right: 1rem;
 		margin-bottom: 1rem;
 	
 		body.dark-mode & {
 			color: var(--button-color); /* Dark mode color */
 		}
 	}
+
+		/* Explore Button */
+		.explore-button-container {
+			display: flex; /* Aligns buttons side by side */
+			justify-content: center; /* Centers the button group */
+			gap: 1rem; /* Adds spacing between buttons */
+		}		
+
+/* To remove extra space from the last button */
+.explore-button:last-child {
+    margin-right: 0;
+}
+
 
 		input[type="submit"].icon:before,
 		input[type="reset"].icon:before,
@@ -4634,6 +4646,10 @@ section.livestream {
 #main .partner-section .product-content .image.right {
     float: right;
     margin-left: 20px; /* Adds space to the left of the image */
+}
+
+.product-wrapper {
+    margin-top: 2rem; /* Adjust the value as needed */
 }
 
 /* Clear the float after each section */
