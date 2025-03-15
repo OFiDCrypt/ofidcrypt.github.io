@@ -193,6 +193,7 @@ body.dark-mode {
     --code-border-color: #a1a1a1;
     --box-border-color: #a1a1a1;
 	--button-color: #a1a1a1;
+	--button-bg-color: #111416;
     --button-border-color: #a1a1a1;
     --button-hover-border-color: #663399;
     --button-primary-bg-color: #ffffff;
@@ -2435,17 +2436,27 @@ header.header-subpage {
 		}
 	}
 
-		/* Explore Button */
-		.explore-button-container {
-			display: flex; /* Aligns buttons side by side */
-			justify-content: center; /* Centers the button group */
-			gap: 1rem; /* Adds spacing between buttons */
-		}		
-
-/* To remove extra space from the last button */
-.explore-button:last-child {
-    margin-right: 0;
-}
+				/* Explore Button */
+				.round-button-container {
+					display: flex;
+					/* Aligns buttons side by side */
+					justify-content: center;
+					/* Centers the button group */
+					gap: 1rem;
+					/* Adds spacing between buttons */
+				}
+		
+				/* To remove extra space from the last button */
+				.round-button {
+					background-color: var(--button-bg-color);
+					border-radius: 20px;
+					transition: background-color 0.3s ease;
+				}
+		
+				/* To remove extra space from the last button */
+				.round-button:last-child {
+					margin-right: 0;
+				}
 
 
 		input[type="submit"].icon:before,
