@@ -490,7 +490,7 @@
 			}
 
 			function scrollToFeaturedPost() {
-				const featuredPost = document.querySelector('article.community.featured');
+				const featuredPost = document.querySelector('article.post.featured');
 				if (featuredPost) {
 					const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
 					window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
