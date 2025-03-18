@@ -4682,6 +4682,33 @@ section.livestream {
     margin-bottom: 20px;
 }
 
+/* Ad Banner Table Header*/
+#main > section > section.ad-table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ad Banner Kin Money */
+#kin-money {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+#kin-money .ad-table div {
+    width: 100%;
+}
+
+#kin-money img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Ad Banner eXPB */
 #expb-ball {
     /* Autofit width */
