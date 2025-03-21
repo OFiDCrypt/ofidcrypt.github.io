@@ -4551,6 +4551,57 @@ section.livestream {
     }
 }
 
+/* Container for TikTok embed */
+.tiktok.video.main {
+    position: relative;
+    width: 100%;
+    max-width: 605px; /* Matches TikTok's max-width */
+    height: 0;
+    padding-bottom: 125%; /* Adjusted base ratio - compromise between desktop and mobile */
+    margin: 1rem auto;
+    border: 2px solid #a200ff;
+    overflow: hidden;
+}
+
+/* Style the TikTok embed itself */
+.tiktok.video.main .tiktok-embed {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Ensure iframe inside embed scales properly */
+.tiktok.video.main .tiktok-embed iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+}
+
+/* Desktop-specific adjustment */
+@media (min-width: 769px) {
+    .tiktok.video.main {
+        padding-bottom: 56.25%; /* 16:9 ratio for wider desktop screens */
+    }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .tiktok.video.main {
+        max-width: 90%;
+        padding-bottom: 177.77%; /* Restore vertical ratio for tablets/mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .tiktok.video.main {
+        max-width: 100%;
+    }
+}
+
 /* Quick Start Section */
 
 .quick-start-title {
