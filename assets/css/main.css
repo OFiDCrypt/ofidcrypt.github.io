@@ -5787,35 +5787,35 @@ body.dark-mode #darkModeToggle.dark i::before {
 #navPanel {
     transform: translateX(20rem);
     transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Aligns content (links) to bottom */
-    -webkit-overflow-scrolling: auto; /* Fallback, not touch */
+    display: none;
+    -webkit-overflow-scrolling: touch;
     background: var(--nav-panel-bg-color);
     box-shadow: none;
     color: var(--nav-panel-text-color);
-    height: 100vh; /* Full viewport height */
+    height: 100%;
     max-width: 80%;
-    overflow-y: auto; /* Enable scrolling */
-    padding: 3rem 2rem 0; /* Top padding for close button */
+    overflow-y: auto;
+    padding: 3rem 2rem 0; /* Top padding to make room for close button */
     position: fixed;
     right: 0;
     top: 0;
     visibility: hidden;
     width: 20rem;
     z-index: 10002;
-    touch-action: pan-y; /* Ensure Android touch scrolling */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* This pushes content to the bottom */
 }
 
 #navPanel .links {
     list-style: none;
     padding-left: 0;
-    margin-top: auto; /* Pushes links to bottom within flex */
-    margin-bottom: 3rem; /* Space from bottom */
+    margin-top: auto; /* Ensure menu items stay at the bottom */
+    margin-bottom: 3rem;
 }
 
 #navPanel .links li {
-    border-top: solid 2px var(--nav-panel-link-border-color);
+	border-top: solid 2px var(--nav-panel-link-border-color);
 }
 
 #navPanel .links li a {
@@ -5836,7 +5836,7 @@ body.dark-mode #darkModeToggle.dark i::before {
 
 #navPanel .close {
     position: relative;
-    align-self: flex-end; /* Right-aligned at top */
+    align-self: flex-end; /* Align to the right of the flex container */
     text-decoration: none;
     transition: color 0.2s ease-in-out;
     -webkit-tap-highlight-color: var(--nav-panel-close-tap-highlight-color);
@@ -5849,10 +5849,10 @@ body.dark-mode #darkModeToggle.dark i::before {
     padding: 0.5rem;
     text-align: right;
     width: auto;
-    margin-top: 0;
-    z-index: 10003;
-    margin-bottom: 0.5rem;
-    order: -1; /* Stays at top of flex */
+    margin-top: 0; /* No gap between the top of the panel and the close button */
+    z-index: 1003; /* Ensure it's above menu items */
+    margin-bottom: 0.5rem; /* Added padding to raise it a bit from the bottom */
+    order: -1; /* Ensure it stays at the top of the flex container */
 }
 
 #navPanel .close:before {
@@ -5876,10 +5876,11 @@ body.dark-mode #darkModeToggle.dark i::before {
 
 @media screen and (max-width: 736px) {
     #navPanel {
-        padding: 2.5rem 1.75rem 0;
+        padding: 2.5rem 1.75rem 0; /* Adjust padding for mobile */
     }
+
     #navPanel .close {
-        padding: 0.5rem;
+        padding: 0.5rem; /* Adjust for touch-friendly interaction on mobile */
     }
 }
 
@@ -5887,13 +5888,13 @@ body.dark-mode #darkModeToggle.dark i::before {
     #navPanel {
         display: flex;
     }
-    body.is-navPanel-visible {
-        overflow: hidden; /* Lock body */
-    }
+}
+
+@media screen and (max-width: 980px) {
     body.is-navPanel-visible #wrapper {
         opacity: 0.5;
-        overflow: hidden; /* Lock main content */
     }
+
     body.is-navPanel-visible #navPanel {
         transform: translateX(0);
         box-shadow: 0 0 1.5rem 0 var(--nav-panel-box-shadow-color);
