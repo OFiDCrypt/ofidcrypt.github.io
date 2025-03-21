@@ -168,6 +168,29 @@
                 });
             }
         });
+
+        // .scrolly for navigation links
+        $('.scrolly').scrolly({ speed: 500, easing: 'swing' }); // Applies to your <a class="scrolly">
+
+        // Logo scroll animation
+        var $logo = $('#header .logo'); // Specific selector for your logo
+        function updateLogoVisibility() {
+            var scrollTop = $window.scrollTop();
+            var triggerPoint = 50; // Adjusted lower since logo is in #header near top
+            if (scrollTop > triggerPoint && !$logo.hasClass('visible')) {
+                $logo.addClass('visible');
+            } else if (scrollTop <= triggerPoint && $logo.hasClass('visible')) {
+                $logo.removeClass('visible');
+            }
+        }
+
+        // Bind to multiple events for cross-device reliability
+        $window.on('scroll touchmove resize orientationchange', function () {
+            updateLogoVisibility();
+        });
+
+        // Initial check
+        updateLogoVisibility();
     });
 
     // Panel.
