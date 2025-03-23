@@ -2451,6 +2451,7 @@ header.header-subpage {
 					background-color: var(--button-bg-color);
 					border-radius: 20px;
 					transition: background-color 0.3s ease;
+					margin-top: 1rem;
 				}
 		
 				/* To remove extra space from the last button */
@@ -3075,11 +3076,8 @@ form > .fields > .field.quarter {
 					margin-left: 1.5rem;
 				}
 		
-				/* Assuming this is the conflicting rule */
 				#main .partner-section .product-content .image.left {
 					margin-right: 1.5rem;
-					/* Example value; adjust if different */
-					/* Other styles... */
 				}
 		
 				.product-content {
@@ -3552,6 +3550,21 @@ section {
 	header.major .date:before, header.major .date:after {
 		border-top-color: #eeeeee;
 	}
+
+		/* New class to override top margin */
+		.product-wrapper h2.no-top-margin {
+			margin-top: 0;
+
+		}
+	
+		.content-block {
+			overflow: hidden;
+		}
+	
+		.product-content .round-button {
+			display: inline-block;
+			margin: 0.5rem 0 1rem 0;
+		}
 
 /* Table */
 .table-wrapper {
@@ -5075,6 +5088,18 @@ article.community.featured {
     }
 }
 
+/* Posts Container explore.html */
+#posts-container #explore-posts .posts article header h2 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100px;
+    margin: auto;
+}
+
 /* Monthly Container community.html */
 #main > #monthly-container .monthly-posts {
     display: flex;
@@ -5159,7 +5184,7 @@ article.community.featured {
     margin: 1rem;
     margin-bottom: 2.5rem;
     margin-top: 1rem;
-    padding: 2rem;
+    padding: 2rem 2rem 0 2rem;
     border: 1px solid var(--posts-border-color); /* Ensure this variable is defined */
     border-radius: 5px;
     box-sizing: border-box;
@@ -5196,8 +5221,8 @@ article.community.featured {
 @media screen and (max-width: 980px) {
     .event-post {
         flex: 0 0 calc(100% - 2rem); /* Full width on medium screens */
-        padding: 2.5rem;
-		margin-bottom: 2.5rem;
+        padding: 2.5rem 1.5rem 0.5rem 1.5rem;
+		margin-bottom: 0.5rem;
     }
 
     .event-post .image {
@@ -6182,6 +6207,6 @@ footer {
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
     .image.button-image img {
-        width: 50%; /* Make the image bigger on mobile devices */
+        width: 35%; /* Make the image bigger on mobile devices */
     }
 }
