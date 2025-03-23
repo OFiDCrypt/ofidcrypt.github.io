@@ -332,6 +332,7 @@
         });
 
         // Featured Dynamic Image
+        /*
         document.addEventListener("DOMContentLoaded", function () {
             const proxyUrl = 'https://api.allorigins.win/get?url=';
             const articleUrl = proxyUrl + encodeURIComponent('https://pennypost.co/p/676825480/01-a-beginners-introduction-to-cryptocurrency');
@@ -363,5 +364,6 @@
                 }
             });
         });
+        */
     }
 })(jQuery); 
