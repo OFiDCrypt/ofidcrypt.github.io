@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /explore/app-featured-hvr
 Disallow: /cashlinks
 Disallow: /chart
 Disallow: /404
