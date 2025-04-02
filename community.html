@@ -147,40 +147,197 @@
 			<!-- Section Title -->
 			<section class="post">
 				<header class="major">
-					<span class="date">e𝕏P Web3™ Home</span>
-					<h1>Community<br />
-						Connections</h1>
-					<p>We are growing our own decentralised self-sustaining ecosystem run by the people, for the people.</p>
+					<span class="date">e𝕏P Web3™ Bulletins</span>
+					<h1>What's New?<br />
+						Socials Latest</h1>
+						<p>Keep up-to-date with what's happening throughout the OFiDCrypt journey; we're working towards global web3 adoption starting in Canada!</p>
 				</header>
+
+				
+				<div class="x-post-container">
+					<div class="x-post video main">
+						<h2>App Concept Part 2</h2>
+						<blockquote class="twitter-tweet">
+							<p lang="en" dir="ltr">OUR VISION: See it 💫<br>PART 2: We will form a post chain of progress 🎊<br><br>Also on
+								TikTok 📹<br>👉 <a href="https://t.co/WhswoMObEm">https://t.co/WhswoMObEm</a><br><br>Follow our development
+								journey through in-house designs and professional collaborations 🙏<br><br>✅ Safe<br>✅ Educational<br>✅ Fun<br>✅
+								Supporting of others!<br><br>No clutter.… <a href="https://t.co/WaHDLP8SGl">https://t.co/WaHDLP8SGl</a> <a
+									href="https://t.co/FNT2xu9mzC">pic.twitter.com/FNT2xu9mzC</a></p>— OFiDCrypt e𝕏P Web3™ (@OFiDCrypt)
+							<a href="https://twitter.com/OFiDCrypt/status/1906770834464882997?ref_src=twsrc%5Etfw">March 31, 2025</a>
+						</blockquote>
+					</div>
+				
+					<div class="x-post video main">
+						<h2>App Concept Part 1</h2>
+						<blockquote class="twitter-tweet">
+							<p lang="en" dir="ltr">We will give EVERYTHING to keep you busy and entertained. Tell your friends! 💫<br><br>No
+								clutter. Simple ideas, packaged neatly.<br><br>Hey, it has to be this way for the new people we are introducing!
+								<a href="https://twitter.com/OFiDKid?ref_src=twsrc%5Etfw">@OFiDKid</a> is only just getting
+								started!<br><br>Safe, educational, fun and supporting of others.… <a
+									href="https://t.co/1QBoOKJqkd">https://t.co/1QBoOKJqkd</a> <a
+									href="https://t.co/ybZ8K3JcHo">pic.twitter.com/ybZ8K3JcHo</a></p>— OFiDCrypt e𝕏P Web3™ (@OFiDCrypt)
+							<a href="https://twitter.com/OFiDCrypt/status/1906266035361403317?ref_src=twsrc%5Etfw">March 30, 2025</a>
+						</blockquote>
+					</div>
+				</div>
+				
+				<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 				<!-- Community Connections Section -->
 				<section class="partner-section">
+					<header>
+						<h2>Tips & Bulletins</h2>
+					</header>
+					
+					<!-- Horizontal Scroll Container -->
+					<div class="scroll-container">
+				
+						<!-- Box 1: Telegram -->
+						<article class="scroll-box">
+							<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+							<div class="box-content">
+								<span class="image"><img src="assets/images/bouncy-ball-dispense-2.png"
+										alt="Bouncy Ball & Ramp Img"></span>
+								<h3>Updates & Buy Alerts in Telegram</h3>
+								<p>We're dedicated to making crypto and web3 more friendly and fun for everyone, from newbies to
+									seasoned enthusiasts. In our community space, we emphasize engaging with each other, sharing ideas,
+									and collaborating on exciting projects. Members can share pictures, participate in polls, and have
+									fun together while dispensing balls and staying updated with buy alerts. We also prioritize
+									security, ensuring our Telegram group is spam-free and safe for all members to enjoy meaningful
+									interactions!</p>
+							</div>
+							<button class="scroll-arrow right" aria-label="Scroll Right"><i class="fas fa-arrow-right"></i></button>
+						</article>
+				
+						<!-- Box 2: Twitter -->
+						<article class="scroll-box">
+							<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+							<div class="box-content">
+								<span class="image"><img src="assets/images/bouncy-ball-dispense-2.png"
+										alt="Twitter Placeholder"></span>
+								<h3>Follow Us on Twitter</h3>
+								<p>Get real-time updates, join discussions, and see what’s trending in our crypto journey on Twitter.
+									Engage with us and the community!</p>
+							</div>
+							<button class="scroll-arrow right" aria-label="Scroll Right"><i class="fas fa-arrow-right"></i></button>
+						</article>
+				
+						<!-- Box 3: Discord -->
+						<article class="scroll-box">
+							<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+							<div class="box-content">
+								<span class="image"><img src="assets/images/bouncy-ball-dispense-2.png"
+										alt="Discord Placeholder"></span>
+								<h3>Join Our TikTok</h3>
+								<p>Watch our latest content of fun, learning and opportunity!</p>
+							</div>
+							<button class="scroll-arrow right" aria-label="Scroll Right"><i class="fas fa-arrow-right"></i></button>
+						</article>
+					</div>
+				
+					<script>
+						document.addEventListener('DOMContentLoaded', () => {
+							const container = document.querySelector('.scroll-container');
+							const slides = document.querySelectorAll('.scroll-box');
+							const totalSlides = slides.length; // 3 slides
 
-					<!-- Connection Platform 1 -->
+							// Force start on Box 1 (Telegram)
+							function setInitialPosition() {
+								container.scrollTo({ left: 0, behavior: 'instant' }); // Force Box 1
+								updateArrowStates(); // Update arrows immediately
+							}
+
+							// Scroll by one box width based on screen size
+							function getBoxWidth() {
+								if (window.innerWidth > 768) {
+									return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+								} else if (window.innerWidth <= 480) {
+									return 260 + 20; // Mobile: Box width + gap
+								} else {
+									return slides[0].offsetWidth; // Mid-range: Stacked box width
+								}
+							}
+
+							// Add click listeners to all arrows
+							slides.forEach(slide => {
+								const leftArrow = slide.querySelector('.scroll-arrow.left');
+								const rightArrow = slide.querySelector('.scroll-arrow.right');
+
+								leftArrow.addEventListener('click', () => {
+									container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+								});
+
+								rightArrow.addEventListener('click', () => {
+									container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+								});
+							});
+
+							// Update arrow states based on current scroll position
+							function updateArrowStates() {
+								const scrollLeft = container.scrollLeft;
+								const maxScroll = container.scrollWidth - container.clientWidth;
+								const boxWidth = getBoxWidth();
+								const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+
+								slides.forEach((slide, index) => {
+									const leftArrow = slide.querySelector('.scroll-arrow.left');
+									const rightArrow = slide.querySelector('.scroll-arrow.right');
+
+									// Disable left arrow on Box 1 (Telegram), right arrow on last slide
+									leftArrow.disabled = currentSlideIndex === 0;
+									rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+								});
+							}
+
+							// Update arrows on scroll
+							container.addEventListener('scroll', updateArrowStates);
+
+							// Update arrows after each click
+							slides.forEach(slide => {
+								slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
+									arrow.addEventListener('click', () => {
+										setTimeout(updateArrowStates, 300); // Match smooth scroll duration
+									});
+								});
+							});
+
+							// Set initial position after DOM is fully loaded
+							setInitialPosition();
+
+							// Ensure position after page fully renders
+							window.addEventListener('load', setInitialPosition);
+						});
+					</script>
+					<!-- Connection Platform 2: Social Card -->
 					<article class="product-section">
 						<div class="product-wrapper">
 							<div class="product-content">
-								<span class="image left"><img src="assets/images/bouncy-ball-dispense-2.png" alt="Bouncy Ball & Ramp Img"></span>
-								<h2 style="text-align: left;">OFiDCrypt Community</h2>
-								<p>We're dedicated to making crypto and web3 more friendly and fun for everyone, from newbies to
-									seasoned enthusiasts. In our community space, we emphasize engaging with each other, sharing ideas, and
-									collaborating on exciting projects. Members can share pictures, participate in polls, and have fun together while
-									dispensing balls and staying updated with buy alerts.
-									We also prioritize security, ensuring our Telegram group is spam-free and safe for all members to enjoy meaningful
-									interactions!</p>
+								<a href="https://www.ofidcrypt.ca/">
+									<span class="image right"><img src="../assets/images/ofid-exp-social-card-01.png"
+											alt="eXP Brand Card COlour Splash"></span>
+								</a>
+								<h3 style="text-align: left;">Your Choice of Platform</h3>
+								<p>Join the OFiDCrypt Community on 𝕏, Telegram, Flipchat, and more! Take part in promotions, live
+									events with e𝕏PB
+									Bouncy Ball, and connect your Solana Wallet. Find us as @OFiDCrypt or @OFiDKid on all verified
+									platforms, including
+									WhatsApp. Join the web3 movement and grow with us—Buster encourages you to explore our full list of <a
+									href="https://www.ofidcrypt.ca">social platforms</a></p>
+								</p>
 							</div>
 						</div>
 					</article>
 				</section>
 
 				<!-- Community Links Table -->
-				<section class="community-links">
+				<section class="community-links">				
 					<table>
 						<!-- Ad Banner -->
 						<section id="expb-ball" class="ad-banner">
 							<div style="text-align: center;">
 								<!-- <a href="#" style="border-bottom: none;"> -->
-									<img src="/assets/images/banner-socials.png" alt="Ad Banner" style="max-width: 100%; height: auto;">
+								<img src="/assets/images/ofidkid-buster-bouncer-01.jpg" alt="Ad Banner"
+									style="max-width: 100%; height: auto;">
 								</a>
 							</div>
 						</section>
@@ -213,41 +370,7 @@
 						</tbody>
 					</table>
 				</section>
-
-				<!-- Social Card & Connections -->
-				<article class="product-section">
-					<div class="product-wrapper">
-						<div class="product-content">
-							<a href="https://www.ofidcrypt.ca/">
-								<span class="image right"><img src="../assets/images/ofid-exp-social-card-01.png"
-										alt="eXP Brand Card COlour Splash"></span>
-							</a>
-							<h3 style="text-align: left;">Your Choice of Platform</h3>
-							<p>Join like-minded individuals within the OFiDCrypt Community on 𝕏,
-								Telegram, Flipchat and more! Participate in promotions and live
-								events with e𝕏PB Bouncy Ball & Your Solana Wallet.
-							</p>
-							<p>We are <b>@OFiDCrypt</b> or <b>@OFiDKid</b> and on all verified listed platforms. We are
-								connected with WhatsApp on Google. Become part of our community and the web3 movement by joining our
-								growing social
-								channels! You can speak to Buster to get in to Telegram below.
-							</p>
-						</div>
-					</div>
-				</article>
-				
-				<!-- Ad Banner -->
-				<section id="ofid-bouncer" class="ad-banner">
-					<div style="text-align: center;">
-						<a href="https://t.me/OFiDBall" style="border-bottom: none;">
-							<img src="/assets/images/ofidkid-buster-bouncer-01.jpg" alt="Ad Banner"
-								style="max-width: 100%; height: auto;">
-						</a>
-						<p>Buster says you can also explore our <a href="/pages/affiliate.html">Partner Connections</a>
-							to discover additional communities and services!</p>
-					</div>
-				</section>
-			</div>
+				</div>
 
 		<!-- Footer -->
 		<footer id="footer">
