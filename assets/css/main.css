@@ -3574,7 +3574,7 @@ section {
 }
 
 table {
-    margin: 0 0 2rem 0;
+    margin: 0 0 0 0;
     width: 100%;
     table-layout: fixed; /* This helps in fixing column widths */
 }
@@ -4588,7 +4588,7 @@ section.livestream {
 /* Media query for mobile devices */
 @media screen and (max-width: 600px) {
     #main > section.livestream {
-        padding: 4rem 2rem 2rem 2rem;
+        padding: 2rem 2rem 2rem 2rem;
     }
 }
 
@@ -4601,7 +4601,7 @@ section.livestream {
 }
 
 #main > .post {
-    padding: 2rem 8rem 1rem 8rem;
+    padding: 2rem 8rem 2rem 8rem;
 }
 
 #main > .post header.major > .date {
@@ -4805,7 +4805,7 @@ section.livestream {
         padding: 10px; /* Mobile padding */
         width: 100%; /* Full width */
         max-width: 1200px; /* Centered layout */
-        margin: 0 auto; /* Center on mobile */
+        margin: 0 auto 2rem auto; /* Center on mobile */
         height: auto; /* Reset height */
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
         align-items: center; /* Center boxes vertically */
@@ -5150,6 +5150,40 @@ section.livestream {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Socials Banner Buster */
+#socials-banner {
+    /* Autofit width */
+    width: 100%;
+    /* Add top padding */
+    padding-top: 20px;
+    /* Reset any margin if previously set */
+    margin: 2rem auto 0 auto;
+    /* Use flexbox for centering content */
+    display: flex;
+    justify-content: center;
+}
+
+#socials-banner .ad-banner div {
+    /* Remove text-align since we're using flexbox */
+    width: 100%; /* Ensure the div takes full width */
+}
+
+#socials-banner img {
+    /* Image will automatically adjust based on parent width */
+    max-width: 100%;
+    height: auto;
+    /* Redundant with flexbox, but kept for safety */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+    #socials-banner {
+        margin-top: 1rem; /* Adjusted top margin for smaller screens */
+    }
 }
 
 /* Community Featured Section */
@@ -6300,7 +6334,7 @@ body.dark-mode #darkModeToggle.dark i::before {
         width: 100%;
         height: 0; /* Reset height to allow padding to define the aspect ratio */
         padding-bottom: 56%; /* Your specific aspect ratio */
-        margin: 0rem auto 2rem auto;
+        margin: 0rem auto 1rem auto;
         position: relative;
         overflow: hidden; /* Ensure content doesn't spill outside */
     }
