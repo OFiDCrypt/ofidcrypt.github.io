@@ -4684,7 +4684,7 @@ section.livestream {
     overflow-y: auto; /* Vertical scroll if content overflows */
     scroll-snap-align: center; /* Center each box in viewport */
     flex-direction: column; /* Stack content vertically */
-    margin: 0 15px; /* Margin for scrollbar compensation */
+	margin: 0 15px 1rem 15px; /* Margin for scrollbar compensation */
     box-sizing: border-box; /* Include padding/border in width */
     position: relative; /* Context for absolute arrows */
 }
@@ -6285,7 +6285,7 @@ body.dark-mode #darkModeToggle.dark i::before {
     height: 0;
     padding-bottom: 54.6%; /* 16:9 aspect ratio */
     overflow: hidden;
-    margin: 1rem auto 2rem auto; /* Center horizontally and adjust margin */
+    margin: 1rem auto 0 auto; /* Center horizontally and adjust margin */
 }
 
 /* Prevent children from inheriting or being affected by the border */
