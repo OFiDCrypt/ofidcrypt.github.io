@@ -81,7 +81,7 @@ input, select, textarea {
     --strong-color: #7019c7;
     --heading-color: #212931;
     --blockquote-border-color: #eeeeee;
-	--quick-start-border-color: #eeeeee;
+    --quick-start-border-color: #a200ff; /* Purple border */
     --code-bg-color: rgba(220, 220, 220, 0.25);
     --code-border-color: #eeeeee;
     --box-border-color: #eeeeee;
@@ -109,6 +109,7 @@ input, select, textarea {
     --pagination-text-color: #212931;
     --pagination-hover-color: #7019c7;
     --pagination-active-bg-color: #eeeeee;
+	--quick-start-bg-color: #f9f9f9; /* Light background */
     --bg-light-color: #212931;
     --header-text-color: #ffffff;
     --header-input-color: #ffffff;
@@ -4655,24 +4656,18 @@ section.livestream {
     }
 }
 
-/* Define CSS variables for colors */
-:root {
-    --quick-start-border-color: #a200ff; /* Purple border */
-    --quick-start-bg-color: #f9f9f9; /* Light background */
-}
-
 /* Container for horizontal scrolling */
 .scroll-container {
     display: flex;
     overflow-x: auto; /* Horizontal scroll */
     scroll-snap-type: x mandatory; /* Snap to each box */
     gap: 10px; /* Small gap between boxes */
-    padding: 20px 0; /* Vertical padding */
+    padding: 0 0; /* Vertical padding */
     width: 100%; /* Full width of parent (viewport) */
     max-width: 1200px; /* Center within a reasonable width */
     margin: 0 auto; /* Center horizontally */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
-    height: 540px; /* Match box height + padding */
+    height: auto; /* Match box height + padding */
     align-items: center; /* Center boxes vertically */
     justify-content: flex-start; /* Start at left for Box 1 */
 }
@@ -4680,7 +4675,6 @@ section.livestream {
 /* Individual scrollable box - Desktop default */
 .scroll-box {
     flex: 0 0 calc(100% - 30px); /* Full width minus total margin */
-    height: 500px; /* Fixed height */
     display: flex;
     align-items: flex-start; /* Start content at top */
     border: 1px solid var(--quick-start-border-color); /* Custom border */
@@ -4698,6 +4692,7 @@ section.livestream {
 /* Content inside each box */
 .box-content {
     text-align: center; /* Center text */
+	height: 420px;
     width: 100%; /* Ensure content fits */
     padding: 30px calc(80px * 1.4); /* 30px top/bottom, 112px sides */
     box-sizing: border-box; /* Include padding */
@@ -4719,20 +4714,19 @@ section.livestream {
     max-height: 150px; /* Limit image height */
     display: block; /* Remove inline spacing */
     margin: 0 auto; /* Explicit centering */
+	border-radius: 8px;
 }
 
 /* Heading styling */
 .box-content h3 {
     margin: 10px 0;
     font-size: 1.5em;
-    color: #333;
 }
 
 /* Paragraph styling - Explicitly center-align */
 .box-content p {
     margin: 0;
     font-size: 1em;
-    color: #666;
     text-align: center; /* Explicitly center p text */
 }
 
@@ -4741,7 +4735,7 @@ section.livestream {
     position: absolute; /* Absolute for precise pinning */
     top: 50%; /* Center vertically in box */
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    background: rgba(155, 88, 144, 0.5); /* Semi-transparent black */
     color: white;
     border: none;
     width: 40px; /* Perfect circle width */
@@ -6473,6 +6467,6 @@ footer {
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
     .image.button-image img {
-        width: 35%; /* Make the image bigger on mobile devices */
+        width: 45%; /* Make the image bigger on mobile devices */
     }
 }
