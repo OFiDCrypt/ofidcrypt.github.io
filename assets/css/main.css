@@ -4655,6 +4655,272 @@ section.livestream {
     }
 }
 
+/* Define CSS variables for colors */
+:root {
+    --quick-start-border-color: #a200ff; /* Purple border */
+    --quick-start-bg-color: #f9f9f9; /* Light background */
+}
+
+/* Container for horizontal scrolling */
+.scroll-container {
+    display: flex;
+    overflow-x: auto; /* Horizontal scroll */
+    scroll-snap-type: x mandatory; /* Snap to each box */
+    gap: 10px; /* Small gap between boxes */
+    padding: 20px 0; /* Vertical padding */
+    width: 100%; /* Full width of parent (viewport) */
+    max-width: 1200px; /* Center within a reasonable width */
+    margin: 0 auto; /* Center horizontally */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+    height: 540px; /* Match box height + padding */
+    align-items: center; /* Center boxes vertically */
+    justify-content: flex-start; /* Start at left for Box 1 */
+}
+
+/* Individual scrollable box - Desktop default */
+.scroll-box {
+    flex: 0 0 calc(100% - 30px); /* Full width minus total margin */
+    height: 500px; /* Fixed height */
+    display: flex;
+    align-items: flex-start; /* Start content at top */
+    border: 1px solid var(--quick-start-border-color); /* Custom border */
+    border-radius: 8px; /* From snippet */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* From snippet */
+    background-color: var(--quick-start-bg-color); /* Custom background */
+    overflow-y: auto; /* Vertical scroll if content overflows */
+    scroll-snap-align: center; /* Center each box in viewport */
+    flex-direction: column; /* Stack content vertically */
+    margin: 0 15px; /* Margin for scrollbar compensation */
+    box-sizing: border-box; /* Include padding/border in width */
+    position: relative; /* Context for absolute arrows */
+}
+
+/* Content inside each box */
+.box-content {
+    text-align: center; /* Center text */
+    width: 100%; /* Ensure content fits */
+    padding: 30px calc(80px * 1.4); /* 30px top/bottom, 112px sides */
+    box-sizing: border-box; /* Include padding */
+}
+
+/* Image styling - Ensure centering and top spacing */
+.box-content .image {
+    display: flex; /* Use flex to center */
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center if needed */
+    margin: 0 auto 10px; /* No top margin, 10px bottom */
+    width: 100%; /* Full width for centering */
+}
+
+/* Image itself */
+.box-content .image img {
+    max-width: 100%; /* Responsive width */
+    height: auto;
+    max-height: 150px; /* Limit image height */
+    display: block; /* Remove inline spacing */
+    margin: 0 auto; /* Explicit centering */
+}
+
+/* Heading styling */
+.box-content h3 {
+    margin: 10px 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Paragraph styling - Explicitly center-align */
+.box-content p {
+    margin: 0;
+    font-size: 1em;
+    color: #666;
+    text-align: center; /* Explicitly center p text */
+}
+
+/* Arrow buttons - Pinned and centered horizontally within each scroll-box */
+.scroll-arrow {
+    position: absolute; /* Absolute for precise pinning */
+    top: 50%; /* Center vertically in box */
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    color: white;
+    border: none;
+    width: 40px; /* Perfect circle width */
+    height: 40px; /* Perfect circle height */
+    border-radius: 20px; /* Half of width/height for perfect circle */
+    display: flex; /* Flex for centering icon */
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+    cursor: pointer;
+    z-index: 10; /* Above content */
+}
+
+.scroll-arrow.left {
+    left: 20px; /* Pinned 20px from left edge of box */
+}
+
+.scroll-arrow.right {
+    right: 20px; /* Pinned 20px from right edge of box */
+    left: auto; /* Ensure no left override */
+}
+
+/* Desktop under 768px - Stack boxes vertically, no arrows */
+@media (max-width: 768px) and (min-width: 481px) {
+    .scroll-container {
+        flex-direction: column; /* Stack boxes vertically */
+        height: auto; /* Adjust height */
+        padding: 20px 0; /* Keep vertical padding */
+        overflow-x: hidden; /* No horizontal scroll */
+        overflow-y: auto; /* Vertical scroll if needed */
+        gap: 20px; /* Vertical gap between boxes */
+    }
+
+    .scroll-box {
+        flex: 0 0 auto; /* Auto width */
+        width: calc(100% - 40px); /* Full width minus margins */
+        height: 500px; /* Keep height */
+        margin: 0 20px; /* Center with margins */
+        flex-direction: column; /* Stack content vertically */
+        scroll-snap-align: none; /* No snap for vertical layout */
+    }
+
+    .scroll-arrow {
+        display: none; /* Hide arrows in this range */
+    }
+
+    .box-content {
+        padding: 30px; /* 30px all around */
+    }
+
+    .box-content .image {
+        margin: 0 auto 10px; /* Consistent spacing */
+    }
+
+    .box-content p {
+        text-align: center; /* Center p text in this range */
+    }
+}
+
+/* Mobile - Below 480px (Flex with Touch Swipe) */
+@media (max-width: 480px) {
+    .scroll-container {
+        display: flex; /* Restore flex layout */
+        flex-direction: row; /* Horizontal for swipe */
+        overflow-x: auto; /* Horizontal scroll */
+        scroll-snap-type: x mandatory; /* Snap to each box */
+        gap: 20px; /* Horizontal gap */
+        padding: 10px; /* Mobile padding */
+        width: 100%; /* Full width */
+        max-width: 1200px; /* Centered layout */
+        margin: 0 auto; /* Center on mobile */
+        height: auto; /* Reset height */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+        align-items: center; /* Center boxes vertically */
+        justify-content: flex-start; /* Start at left */
+    }
+
+    .scroll-box {
+        flex: 0 0 260px; /* Mobile width */
+        height: 300px; /* Mobile height */
+        display: flex;
+        align-items: flex-start; /* Start content at top */
+        border: 1px solid var(--quick-start-border-color);
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: var(--quick-start-bg-color);
+        overflow-y: auto; /* Vertical scroll if content overflows */
+        scroll-snap-align: center; /* Center each box on swipe */
+        flex-direction: column; /* Stack content vertically */
+        margin: 0; /* Reset margins */
+        box-sizing: border-box;
+    }
+
+    .scroll-arrow {
+        display: none; /* Hide arrows on mobile */
+    }
+
+    .box-content {
+        padding: 30px; /* 30px all around */
+    }
+
+    .box-content .image {
+        margin: 0 auto 10px; /* Consistent spacing */
+    }
+
+    .box-content p {
+        text-align: center; /* Center p text on mobile */
+    }
+}
+
+/* Hide scrollbar for cleaner look (optional) */
+.scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.scroll-container {
+    -ms-overflow-style: none; /* IE, Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Container for the X layout Post Embed */
+.x-post-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* Individual post styling */
+.x-post.video.main {
+    flex: 1;
+    min-width: 300px;
+    max-width: 550px; /* Typical Twitter embed width */
+    height: auto; /* Shrink to content */
+    max-height: 600px; /* Cap with scroll */
+    border: 2px solid #a200ff; /* Purple border */
+    border-radius: 5px;
+    overflow-y: auto; /* Enable scrolling */
+    display: flex; /* Fit content snugly */
+    flex-direction: column;
+}
+
+/* Style the Twitter embed inside */
+.x-post.video.main .twitter-tweet {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 0; /* Prevent excess space */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .x-post-container {
+        flex-direction: column;
+    }
+
+    .x-post.video.main {
+        flex: none;
+        width: 100%;
+        max-width: 90%;
+        height: auto; /* Shrink to content */
+        max-height: 600px; /* Match desktop cap, adjust if needed */
+        overflow-y: auto;
+        display: flex; /* Fit content snugly */
+        flex-direction: column;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .x-post.video.main {
+        max-width: 100%;
+        max-height: 600px; /* Consistent cap */
+    }
+}
+
 /* Container for TikTok embed */
 .tiktok.video.main {
     position: relative;
