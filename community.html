@@ -157,6 +157,12 @@
 						Latest Socials</h1>
 					<p>Keep up-to-date with what's happening throughout the OFiDCrypt journey; we're working towards
 						global web3 adoption starting in Canada!</p>
+
+					<!-- Bulletins & Social Links Buttons -->
+					<div class="round-button-container">
+						<button class="round-button"><a href="#bulletins">Quick Tips</a></button>
+						<button class="round-button"><a href="#socials-banner">Chat Spaces</a></button>
+					</div>
 				</header>
 
 				<!-- X Post Embed: Row 1 HEADING -->
@@ -214,7 +220,7 @@
 				</div>
 
 				<!-- Community Connections Section -->
-				<section class="partner-section">
+				<section class="partner-section" id="bulletins">
 					<header>
 						<h2>Tips & Bulletins</h2>
 					</header>
@@ -248,10 +254,9 @@
 										alt="Phantom Wallet Logo"></span>
 								<h3>You Need A Wallet</h3>
 								<p>Phantom Wallet is a user-friendly cryptocurrency wallet designed for simplicity and
-									speed. It allows
-									you to manage your digital assets without the need for registration, making it quick
-									to set up and
-									easy to use!</p>
+									speed. It allows you to manage your digital assets without the need for registration, 
+									making it <a href="https://www.ofidcrypt.com/#Guide">quick to set up</a> 
+									and easy to use!</p>
 							</div>
 							<button class="scroll-arrow right" aria-label="Scroll Right"><i
 									class="fas fa-arrow-right"></i></button>
@@ -266,9 +271,8 @@
 										alt="OFiD Locals Logo"></span>
 								<h3>We Support Each Other Locally</h3>
 								<p>The OFiD Locals program makes learning about Web3 approachable by connecting you with
-									close friends,
-									local community groups, and Facebook. Discover new opportunities safely and spark
-									conversations in our social channels!</p>
+									close friends, local community groups, and <a href="https://www.facebook.com/groups/ofidcrypt/" target="_blank">Facebook</a>. 
+									Discover new opportunities safely and spark conversations in our social channels!</p>
 							</div>
 							<button class="scroll-arrow right" aria-label="Scroll Right"><i
 									class="fas fa-arrow-right"></i></button>
@@ -281,13 +285,14 @@
 						const container = document.querySelector('.scroll-container');
 						const slides = document.querySelectorAll('.scroll-box');
 						const totalSlides = slides.length; // 3 slides
-
+						let autoScrollInterval; // Store the interval ID
+					
 						// Force start on Box 1 (Telegram)
 						function setInitialPosition() {
-							container.scrollTo({ left: 0, behavior: 'instant' }); // Force Box 1
-							updateArrowStates(); // Update arrows immediately
+							container.scrollTo({ left: 0, behavior: 'instant' });
+							updateArrowStates();
 						}
-
+					
 						// Scroll by one box width based on screen size
 						function getBoxWidth() {
 							if (window.innerWidth > 768) {
@@ -298,47 +303,35 @@
 								return slides[0].offsetWidth; // Mid-range: Stacked box width
 							}
 						}
-
-						// Add click listeners to all arrows
-						slides.forEach(slide => {
-							const leftArrow = slide.querySelector('.scroll-arrow.left');
-							const rightArrow = slide.querySelector('.scroll-arrow.right');
-
-							leftArrow.addEventListener('click', () => {
-								container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
-							});
-
-							rightArrow.addEventListener('click', () => {
-								container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
-							});
-						});
-
+					
 						// Update arrow states based on current scroll position
 						function updateArrowStates() {
 							const scrollLeft = container.scrollLeft;
 							const maxScroll = container.scrollWidth - container.clientWidth;
 							const boxWidth = getBoxWidth();
 							const currentSlideIndex = Math.round(scrollLeft / boxWidth);
-
+					
 							slides.forEach((slide, index) => {
 								const leftArrow = slide.querySelector('.scroll-arrow.left');
 								const rightArrow = slide.querySelector('.scroll-arrow.right');
-
-								// Disable left arrow on Box 1, right arrow on last slide
 								leftArrow.disabled = currentSlideIndex === 0;
 								rightArrow.disabled = currentSlideIndex === totalSlides - 1;
 							});
 						}
-
-						// Auto-scroll function for desktop only
+					
+						// Auto-scroll function for all screen sizes
 						function startAutoScroll() {
-							if (window.innerWidth > 768) { // Desktop only
-								let currentIndex = 0;
-
-								setInterval(() => {
+							let currentIndex = 0;
+					
+							// Function to reset and start the interval
+							function resetAutoScroll() {
+								if (autoScrollInterval) {
+									clearInterval(autoScrollInterval); // Clear existing interval
+								}
+								autoScrollInterval = setInterval(() => {
 									currentIndex++;
 									if (currentIndex >= totalSlides) {
-										currentIndex = 0; // Loop back to Box 1
+										currentIndex = 0;
 										container.scrollTo({ left: 0, behavior: 'smooth' });
 									} else {
 										container.scrollTo({
@@ -349,12 +342,41 @@
 									setTimeout(updateArrowStates, 300); // Update arrows after scroll
 								}, 12000); // 12 seconds
 							}
+					
+							// Initial start
+							resetAutoScroll();
+					
+							// Reset timer on arrow clicks
+							slides.forEach(slide => {
+								const leftArrow = slide.querySelector('.scroll-arrow.left');
+								const rightArrow = slide.querySelector('.scroll-arrow.right');
+					
+								leftArrow.addEventListener('click', () => {
+									container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+									resetAutoScroll(); // Reset timer on click
+								});
+					
+								rightArrow.addEventListener('click', () => {
+									container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+									resetAutoScroll(); // Reset timer on click
+								});
+							});
+					
+							// Reset timer on slide tap/click (for selecting a new box)
+							slides.forEach(slide => {
+								slide.addEventListener('click', (e) => {
+									// Only reset if the click isn’t on an arrow (to avoid double reset)
+									if (!e.target.classList.contains('scroll-arrow')) {
+										resetAutoScroll(); // Reset timer on slide click
+									}
+								});
+							});
 						}
-
+					
 						// Update arrows on scroll
 						container.addEventListener('scroll', updateArrowStates);
-
-						// Update arrows after each click
+					
+						// Update arrows after each click (for timing)
 						slides.forEach(slide => {
 							slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
 								arrow.addEventListener('click', () => {
@@ -362,23 +384,23 @@
 								});
 							});
 						});
-
+					
 						// Set initial position after DOM is fully loaded
 						setInitialPosition();
-
+					
 						// Ensure position after page fully renders
 						window.addEventListener('load', setInitialPosition);
-
-						// Start auto-scroll on desktop
+					
+						// Start auto-scroll for all sizes
 						startAutoScroll();
-
-						// Re-check on window resize (in case user switches from mobile to desktop)
+					
+						// Handle resize
 						window.addEventListener('resize', () => {
-							setInitialPosition(); // Reset position on resize
-							// Note: setInterval won't restart on resize; if needed, you’d clear and restart it
+							setInitialPosition();
+							// Note: Auto-scroll continues; no need to restart unless width changes behavior significantly
 						});
 					});
-				</script>
+					</script>
 
 				<!-- X Post Embed: Row 2 HEADING -->
 				<header>
@@ -488,18 +510,42 @@
 								<span class="image right"><img src="../assets/images/ofid-exp-social-card-01.png"
 										alt="eXP Brand Card COlour Splash"></span>
 							</a>
-							<h3 style="text-align: left;">Your Choice of Platform</h3>
-							<p>Join the OFiDCrypt Community on 𝕏, Telegram, Flipchat, and more! Take part in exciting
+							<h3 style="text-align: center;">Your Choice of Platform</h3>
+							<!-- Partner Nav Button 1 -->
+							<div style="text-align: center;">
+								<button class="button"><a href="https://www.ofidcrypt.ca">See Full List</a></button>
+							</div>
+							<p>Join our communities on 𝕏, Telegram, Flipchat, and more! Take part in exciting
 								promotions and live events
 								with e𝕏PB Bouncy Ball. We are deeply rooted in various social platforms, offering value
 								to a wide audience.
-								Embrace the Web3 movement and grow with us! Buster invites you to explore our full list
-								of <a href="https://www.ofidcrypt.ca">social platforms</a>.</p>
+								Embrace the Web3 movement and grow with us! Buster invites you to explore more <a
+									href="/pages/affiliate.html">Partners & Communities</a></p>
 							</p>
 						</div>
 					</div>
 				</article>
-		</div>
+				</div>
+
+		<!-- Page Button Style -->
+		<style>
+			body.dark-mode {
+				--button-bg-color: #111416;
+			}
+	
+			.button {
+				background-color: var(--button-bg-color);
+				display: inline-block;
+				border-radius: 20px;
+				text-decoration: none;
+				border: none;
+				cursor: pointer;
+				text-align: center;
+				margin-top: 0rem;
+				/* This property centers the text */
+				transition: background-color 0.3s ease;
+			}
+		</style>
 
 		<!-- Footer -->
 		<footer id="footer">
