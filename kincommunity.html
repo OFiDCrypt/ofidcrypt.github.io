@@ -171,19 +171,6 @@
 				</section>
 				<tbody>
 					<tr>
-					<tr>
-						<td style="text-align: center; vertical-align: middle;">
-							<a href="https://app.flipchat.xyz/room/32">
-								<img src="/assets/images/social-logo/IMG_1884 (1).png" alt="Flipchat Logo"
-									style="max-width: 35%; height: auto; display: block; margin: auto;">
-							</a>
-						</td>
-						<td style="text-align: center; vertical-align: middle;">
-							<a href="https://app.flipchat.xyz/room/350">Room #350</a>
-						</td>
-					</tr>
-					</tr>
-					<tr>
 						<td style="text-align: center; vertical-align: middle;">
 							<a href="https://x.com/OneKinCommunity
 							">
@@ -199,6 +186,179 @@
 				</tbody>
 				</table>
 				</section>
+
+				<!-- Community Connections Section -->
+				<section class="partner-section" id="bulletins">
+					<header>
+						<h2>KIN Supporters</h2>
+					</header>
+
+					<!-- Horizontal Scroll Container -->
+					<div class="scroll-container">
+					
+						<!-- Box 1: DOBBY -->
+						<article class="scroll-box">
+							<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+							<div class="box-content">
+								<a href="https://x.com/Dobby_Coin" target="_blank">
+									<span class="image">
+										<img src="assets/images/logo-dobby.jpg" alt="DOBBY Logo">
+									</span>
+								</a>
+								<h3>DOBBY</h3>
+								<p>Sockless Transactions: No fees, just smooth spells 🪄💸. Mischief Mode: Monthly lotteries 🎟️ for magical
+									goodies 🎁. Magic Wallet: A wizard-worthy 🧙‍♀️, easy-to-use wallet 💼🔮.</p>
+								<div class="round-button-container">
+									<button class="round-button"><a href="https://t.co/gQBLmw20Qp">Telegram</a></button>
+								</div>
+							</div>
+						
+							<button class="scroll-arrow right" aria-label="Scroll Right"><i class="fas fa-arrow-right"></i></button>
+						</article>
+
+						<!-- Box 2: DUNO -->
+						<article class="scroll-box">
+							<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+							<div class="box-content">
+								<a href="https://x.com/dunoglobal" target="_blank">
+									<span class="image">
+										<img src="assets/images/logo-duno.jpeg" alt="DUNO Logo">
+									</span>
+								</a>
+								<h3>DUNO GLOBAL</h3>
+								<p>$DUNO Global Army is the ultimate hyped crypto project, offering free coins to early adopters!</p>
+								<!-- Bulletins & Social Links Buttons -->
+								<div class="round-button-container">
+									<button class="round-button"><a href="https://t.co/Zw5nm61Bvx">Telegram</a></button>
+								</div>
+							</div>
+							<button class="scroll-arrow right" aria-label="Scroll Right"><i class="fas fa-arrow-right"></i></button>
+						</article>
+						
+						</div>
+						</section>
+
+				<script>
+					document.addEventListener('DOMContentLoaded', () => {
+						const container = document.querySelector('.scroll-container');
+						const slides = document.querySelectorAll('.scroll-box');
+						const totalSlides = slides.length; // 3 slides
+						let autoScrollInterval; // Store the interval ID
+					
+						// Force start on Box 1 (Telegram)
+						function setInitialPosition() {
+							container.scrollTo({ left: 0, behavior: 'instant' });
+							updateArrowStates();
+						}
+					
+						// Scroll by one box width based on screen size
+						function getBoxWidth() {
+							if (window.innerWidth > 768) {
+								return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+							} else if (window.innerWidth <= 480) {
+								return 260 + 20; // Mobile: Box width + gap
+							} else {
+								return slides[0].offsetWidth; // Mid-range: Stacked box width
+							}
+						}
+					
+						// Update arrow states based on current scroll position
+						function updateArrowStates() {
+							const scrollLeft = container.scrollLeft;
+							const maxScroll = container.scrollWidth - container.clientWidth;
+							const boxWidth = getBoxWidth();
+							const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+					
+							slides.forEach((slide, index) => {
+								const leftArrow = slide.querySelector('.scroll-arrow.left');
+								const rightArrow = slide.querySelector('.scroll-arrow.right');
+								leftArrow.disabled = currentSlideIndex === 0;
+								rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+							});
+						}
+					
+						// Auto-scroll function for all screen sizes
+						function startAutoScroll() {
+							let currentIndex = 0;
+					
+							// Function to reset and start the interval
+							function resetAutoScroll() {
+								if (autoScrollInterval) {
+									clearInterval(autoScrollInterval); // Clear existing interval
+								}
+								autoScrollInterval = setInterval(() => {
+									currentIndex++;
+									if (currentIndex >= totalSlides) {
+										currentIndex = 0;
+										container.scrollTo({ left: 0, behavior: 'smooth' });
+									} else {
+										container.scrollTo({
+											left: currentIndex * getBoxWidth(),
+											behavior: 'smooth'
+										});
+									}
+									setTimeout(updateArrowStates, 300); // Update arrows after scroll
+								}, 12000); // 12 seconds
+							}
+					
+							// Initial start
+							resetAutoScroll();
+					
+							// Reset timer on arrow clicks
+							slides.forEach(slide => {
+								const leftArrow = slide.querySelector('.scroll-arrow.left');
+								const rightArrow = slide.querySelector('.scroll-arrow.right');
+					
+								leftArrow.addEventListener('click', () => {
+									container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+									resetAutoScroll(); // Reset timer on click
+								});
+					
+								rightArrow.addEventListener('click', () => {
+									container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+									resetAutoScroll(); // Reset timer on click
+								});
+							});
+					
+							// Reset timer on slide tap/click (for selecting a new box)
+							slides.forEach(slide => {
+								slide.addEventListener('click', (e) => {
+									// Only reset if the click isn’t on an arrow (to avoid double reset)
+									if (!e.target.classList.contains('scroll-arrow')) {
+										resetAutoScroll(); // Reset timer on slide click
+									}
+								});
+							});
+						}
+					
+						// Update arrows on scroll
+						container.addEventListener('scroll', updateArrowStates);
+					
+						// Update arrows after each click (for timing)
+						slides.forEach(slide => {
+							slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
+								arrow.addEventListener('click', () => {
+									setTimeout(updateArrowStates, 300); // Match smooth scroll duration
+								});
+							});
+						});
+					
+						// Set initial position after DOM is fully loaded
+						setInitialPosition();
+					
+						// Ensure position after page fully renders
+						window.addEventListener('load', setInitialPosition);
+					
+						// Start auto-scroll for all sizes
+						startAutoScroll();
+					
+						// Handle resize
+						window.addEventListener('resize', () => {
+							setInitialPosition();
+							// Note: Auto-scroll continues; no need to restart unless width changes behavior significantly
+						});
+					});
+					</script>
 
 			<!-- More About Our Partners -->
 			<h2 style="text-align: center;">More Ways to Engage</h2>
