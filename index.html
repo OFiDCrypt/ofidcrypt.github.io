@@ -185,31 +185,36 @@
 								const slides = document.querySelectorAll('.ad-slide');
 								const totalSlides = slides.length;
 								let autoScrollInterval;
-							
+
 								// Exit if no slides
 								if (totalSlides === 0) {
 									console.warn('No slides found in .ad-scroll-container');
 									return;
 								}
-							
+
+								// Clone first slide for continuous loop
+								const firstSlideClone = slides[0].cloneNode(true);
+								container.appendChild(firstSlideClone);
+								const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
 								// Force start on first slide
 								function setInitialPosition() {
 									container.scrollTo({ left: 0, behavior: 'instant' });
 								}
-							
-								// Calculate slide width, using slide width
+
+								// Calculate slide width
 								function getBoxWidth() {
 									const slideWidth = slides[0].offsetWidth; // Actual slide width
-									const slideMargin = 20; // 10px left + 10px right margin
+									const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
 									const totalWidth = slideWidth + slideMargin;
 									console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
 									return totalWidth;
 								}
-							
+
 								// Auto-scroll function
 								function startAutoScroll() {
 									let currentIndex = 0;
-							
+
 									function resetAutoScroll() {
 										if (autoScrollInterval) {
 											clearInterval(autoScrollInterval);
@@ -217,41 +222,41 @@
 										autoScrollInterval = setInterval(() => {
 											currentIndex++;
 											console.log('Scrolling to index:', currentIndex);
-											if (currentIndex >= totalSlides) {
-												currentIndex = 0;
-												container.scrollTo({ left: 0, behavior: 'smooth' });
-											} else {
-												container.scrollTo({
-													left: currentIndex * getBoxWidth(),
-													behavior: 'smooth'
-												});
+											if (currentIndex >= totalSlides + 1) {
+												// Reached clone, reset to first slide instantly
+												container.scrollTo({ left: 0, behavior: 'instant' });
+												currentIndex = 1; // Start from second slide to continue smoothly
 											}
-										}, 12000); // 12 seconds
+											container.scrollTo({
+												left: currentIndex * getBoxWidth(),
+												behavior: 'smooth'
+											});
+										}, 8000); // 8 seconds
 									}
-							
+
 									// Start auto-scrolling
 									resetAutoScroll();
-							
-									// Pause on hover
-									container.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
-									container.addEventListener('mouseleave', () => resetAutoScroll());
-							
-									// Debounce resize handler
-									let resizeTimeout;
-									window.addEventListener('resize', () => {
-										clearTimeout(resizeTimeout);
-										resizeTimeout = setTimeout(() => {
-											setInitialPosition();
-											resetAutoScroll();
-										}, 100); // 100ms debounce
-									});
 								}
-							
+
+								// Prevent touch and scroll input from disrupting auto-scroll
+								container.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+								container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+								// Debounce resize handler
+								let resizeTimeout;
+								window.addEventListener('resize', () => {
+									clearTimeout(resizeTimeout);
+									resizeTimeout = setTimeout(() => {
+										setInitialPosition();
+										startAutoScroll();
+									}, 100); // 100ms debounce
+								});
+
 								// Initialize
 								setInitialPosition();
 								startAutoScroll();
 							});
-							</script>
+						</script>
 
 						<!-- Welcome & Intro  -->
 						<article class="post">
@@ -314,7 +319,7 @@
 												<h3 class="quick-start-title">Get Bouncy Ball</h3>
 												<p class="align-center">e𝕏PB · On Solana <br />
 													In Your Wallet</p>
-												<button class="round-button"><a href="https://jup.ag/tokens/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump">Go to Merchant</a></button>
+												<button class="round-button"><a href="/bouncyball.html">Token Info</a></button>
 											</div>
 								</article>
 								<article class="quick-start-item"> <span class="image left"><img src="/assets/images/expb-learn.png"
@@ -336,16 +341,17 @@
 											href="/pages/livestream.html#livestream-title">Learn More</a></button>
 								</div>
 							</article>
-						</section>
-						
-						<header id="guide">
-							<h2>Wallet Guide</h2>
-							<!-- Section Description -->
-							<p>Solana cryptocurrency operates on the <b>Solana Public Ledger</b>, similar to how cash transactions are processed
-								on Visa or
-								Mastercard networks. With just a click, you can swap Solana for our <b>Bouncy Ball Token</b> or others operating on SPL.
-								 Find out how by checking out our Phantom Wallet 3 Part Tutorial below!</p>
-
+							</section>
+							
+							<header id="guide">
+								<h2>Wallet Guide</h2>
+								<!-- Section Description -->
+								<p>Solana cryptocurrency operates on the <b>Solana Public Ledger</b>, similar to how cash transactions are processed
+									on Visa or
+									Mastercard networks. With just a click, you can swap Solana for our <b>Bouncy Ball Token</b> or others operating
+									on SPL.
+									Find out how by checking out our Phantom Wallet 3 Part Tutorial below!</p>
+							
 								<div class="tiktok-videos-container">
 									<!-- First TikTok Embed -->
 									<div class="tiktok-video-wrapper" id="part1">
@@ -356,27 +362,36 @@
 											<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ofidkid/video/7483289569861897527"
 												data-video-id="7483289569861897527" style="max-width: 605px;min-width: 325px;">
 												<section>
-													<a target="_blank" title="@ofidkid" href="https://www.tiktok.com/@ofidkid?refer=embed">@ofidkid</a>
-													Get Your First Wallet! Do it all from one app; a safe place for earned tokens! 🥳 PART 1 of 3: Downloading
+													<a target="_blank" title="@ofidkid"
+														href="https://www.tiktok.com/@ofidkid?refer=embed">@ofidkid</a>
+													Get Your First Wallet! Do it all from one app; a safe place for earned tokens! 🥳 PART 1 of 3:
+													Downloading
 													Phantom Wallet 📲
-													<a title="crypto" target="_blank" href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a>
-													<a title="solana" target="_blank" href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a>
+													<a title="crypto" target="_blank"
+														href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a>
+													<a title="solana" target="_blank"
+														href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a>
 													<a title="web3" target="_blank" href="https://www.tiktok.com/tag/web3?refer=embed">#web3</a>
-													<a title="tokens" target="_blank" href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a>
-													<a title="ofidkid" target="_blank" href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a>
+													<a title="tokens" target="_blank"
+														href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a>
+													<a title="ofidkid" target="_blank"
+														href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a>
 													<a title="baby" target="_blank" href="https://www.tiktok.com/tag/baby?refer=embed">#baby</a>
-													<a title="babytokin" target="_blank" href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a>
+													<a title="babytokin" target="_blank"
+														href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a>
 													<a title="fyp" target="_blank" href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a>
-													<a title="foryoupage" target="_blank" href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a>
+													<a title="foryoupage" target="_blank"
+														href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a>
 													<a target="_blank" title="♬ Thank You for Being a Friend - Alyssa Bonagura"
-														href="https://www.tiktok.com/music/Thank-You-for-Being-a-Friend-6799317023240226818?refer=embed">♬ Thank
+														href="https://www.tiktok.com/music/Thank-You-for-Being-a-Friend-6799317023240226818?refer=embed">♬
+														Thank
 														You for Being a Friend - Alyssa Bonagura</a>
 												</section>
 											</blockquote>
 											<script async src="https://www.tiktok.com/embed.js"></script>
 										</div>
 									</div>
-								
+							
 									<!-- Second TikTok Embed -->
 									<div class="tiktok-video-wrapper" id="part2">
 										<header class="tiktok-header">
@@ -386,23 +401,28 @@
 											<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ofidtales/video/7504331353756847365"
 												data-video-id="7504331353756847365" style="max-width: 605px;min-width: 325px;">
 												<section> <a target="_blank" title="@ofidtales"
-														href="https://www.tiktok.com/@ofidtales?refer=embed">@ofidtales</a> PART 2 of 3: How to Buy Solana!
-													Phantom Wallet Tutorial: Do it all from one app; a safe place to store your crypto and earned tokens! <a
-														title="crypto" target="_blank" href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a> <a
-														title="solana" target="_blank" href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a> <a
+														href="https://www.tiktok.com/@ofidtales?refer=embed">@ofidtales</a> PART 2 of 3: How to Buy
+													Solana!
+													Phantom Wallet Tutorial: Do it all from one app; a safe place to store your crypto and earned
+													tokens! <a title="crypto" target="_blank"
+														href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a> <a title="solana"
+														target="_blank" href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a> <a
 														title="web3" target="_blank" href="https://www.tiktok.com/tag/web3?refer=embed">#web3</a> <a
 														title="cryptowallet" target="_blank"
-														href="https://www.tiktok.com/tag/cryptowallet?refer=embed">#cryptowallet</a> <a title="tokens"
-														target="_blank" href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a> <a title="ofidkid"
+														href="https://www.tiktok.com/tag/cryptowallet?refer=embed">#cryptowallet</a> <a
+														title="tokens" target="_blank"
+														href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a> <a title="ofidkid"
 														target="_blank" href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a> <a
 														title="tutorial" target="_blank"
 														href="https://www.tiktok.com/tag/tutorial?refer=embed">#tutorial</a> <a title="babytokin"
 														target="_blank" href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a> <a
 														title="fyp" target="_blank" href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a> <a
 														title="foryoupage" target="_blank"
-														href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a> @Crypto Mason @Linda-Marie
+														href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a> @Crypto Mason
+													@Linda-Marie
 													Emmerson @DeFi Space @Tiffany <a target="_blank" title="♬ Little Things - Adrián Berenguer"
-														href="https://www.tiktok.com/music/Little-Things-6981828410792216577?refer=embed">♬ Little Things -
+														href="https://www.tiktok.com/music/Little-Things-6981828410792216577?refer=embed">♬ Little
+														Things -
 														Adrián Berenguer</a>
 												</section>
 											</blockquote>
@@ -410,29 +430,28 @@
 										</div>
 									</div>
 								</div>
-
-							<!-- Chart Button & Header-->
-							<section class="partner-section">
-								<section id="docs-banner" class="ad-banner">
 							
-									<!-- Chart Button <div>
-										<button class="round-button"><a href="chart.html#dexscreener-embed">Price Chart</a></button>
-										</div>
-										</section>
-										</section>
-
-									-->
-						</header>
+								<!-- Chart Button & Header-->
+								<section class="partner-section">
+									<section id="docs-banner" class="ad-banner">
 							
-									<p class="align-center">Ready? <a href="#jump-ahead">Download Phantom Wallet</a></p>
+										<!-- Chart Button <div>
+																	<button class="round-button"><a href="chart.html#dexscreener-embed">Price Chart</a></button>
+																	</div>
+																	</section>
+																	</section>
+																-->
+							</header>
 							
-									<!-- Docs Button -->
-									<div class="image button-image">
-										<a href="/docs/main.html" target="_blank">
-											<img src="../assets/images/button-see-the-docs.png" alt="Login Button Image for Code Wallet" />
-										</a>
-									</div>
-									</div>
+							<p class="align-center">Ready? <a href="#jump-ahead">Download Phantom Wallet</a></p>
+							
+							<!-- Docs Button -->
+							<div class="image button-image">
+								<a href="/docs/main.html" target="_blank">
+									<img src="../assets/images/button-see-the-docs.png" alt="Login Button Image for Code Wallet" />
+								</a>
+							</div>
+							</div>
 
 					<!-- Footer -->
 					<footer id="footer">
