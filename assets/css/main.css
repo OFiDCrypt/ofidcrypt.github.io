@@ -3451,6 +3451,8 @@ section {
 		box-shadow: inset 0 0 0 2px var(--icon-hover-border-color);
 	}
 
+
+
 /* Section Article */
 	section.special, article.special {
 		text-align: center;
@@ -5126,30 +5128,75 @@ section.livestream {
 
 /* Ad Banner eXPB */
 #expb-ball {
-    /* Autofit width */
-    width: 100%;
-    /* Add top padding */
-    padding-top: 20px;
-    /* Reset any margin if previously set */
-    margin: 0 auto;
-    /* Use flexbox for centering content */
-    display: flex;
+    width: 100%; /* Full width */
+    padding-top: 20px; /* Original top padding */
+    margin: 0 auto; /* Original margin */
+    display: flex; /* Centering content */
     justify-content: center;
+    overflow: hidden; /* Prevent overflow */
 }
 
-#expb-ball .ad-banner div {
-    /* Remove text-align since we're using flexbox */
-    width: 100%; /* Ensure the div takes full width */
+.ad-scroll-container {
+    display: flex;
+    width: 100%;
+    overflow-x: hidden; /* Hide horizontal overflow */
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    scroll-snap-type: x mandatory; /* Snap to each slide */
+    box-sizing: border-box; /* Include padding in width */
 }
 
-#expb-ball img {
-    /* Image will automatically adjust based on parent width */
-    max-width: 100%;
-    height: auto;
-    /* Redundant with flexbox, but kept for safety */
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+/* Each slide takes full container width with margins */
+.ad-slide {
+    flex: 0 0 calc(100% - 40px); /* Account for 20px margins */
+    width: calc(100% - 40px); /* Ensure one slide per screen */
+    margin: 0 20px; /* Equal left and right margins */
+    scroll-snap-align: center;
+    display: block; /* Match original block behavior */
+    text-align: center; /* Center image */
+}
+
+/* Ensure image scales consistently */
+.ad-slide img {
+    max-width: 100%; /* From original CSS */
+    height: auto; /* From original CSS */
+    width: 100%; /* Force image to fill slide */
+    display: block; /* From original CSS */
+    margin-left: auto; /* From original CSS */
+    margin-right: auto; /* From original CSS */
+    object-fit: contain; /* Scale image to fit */
+}
+
+/* Hide scrollbar */
+.ad-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.ad-scroll-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Mobile adjustments (≤480px) */
+@media screen and (max-width: 480px) {
+    #expb-ball {
+        padding: 0; /* Remove padding for max width */
+    }
+
+    .ad-scroll-container {
+        padding: 0; /* Remove padding for max width */
+    }
+
+    .ad-slide {
+        flex: 0 0 calc(100% - 10px); /* Account for 5px margins */
+        width: calc(100% - 10px); /* Full width minus margins */
+        margin: 0 5px; /* Reduced margins for larger banners */
+    }
+
+    .ad-slide img {
+        width: 100%; /* Full slide width */
+        max-width: 100%; /* Original max-width */
+    }
 }
 
 /* Socials Banner Buster */
