@@ -149,21 +149,25 @@
 						<ul class="icons">
 							<li>
 								<a href="#" aria-label="Dark-Light Desktop Toggle Button">
-								  <img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button" class="custom-site-icon">
+									<img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
+										class="custom-site-icon">
 								</a>
 							</li>
 							<li>
 								<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
-								  <img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
+									<img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
 								</a>
-							  </li>
-							  <li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a></li>
-							  <li><a href="https://www.tiktok.com/@OFiDKid" class="icon brands alt fa-tiktok"><span class="label">TikTok</span></a></li>
-							  <li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-							  <li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							</li>
+							<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a></li>
+							<li><a href="https://www.tiktok.com/@OFiDKid" class="icon brands alt fa-tiktok"><span
+										class="label">TikTok</span></a></li>
+							<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+										class="label">Facebook</span></a></li>
+							<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+										class="label">LinkedIn</span></a></li>
 						</ul>
 					</nav>
-
+					
 					<!-- Main -->
 					<div id="main">
 					
@@ -225,7 +229,7 @@
 											if (currentIndex >= totalSlides + 1) {
 												// Reached clone, reset to first slide instantly
 												container.scrollTo({ left: 0, behavior: 'instant' });
-												currentIndex = 1; // Start from second slide to continue smoothly
+												currentIndex = 1; // Start from second slide
 											}
 											container.scrollTo({
 												left: currentIndex * getBoxWidth(),
@@ -238,8 +242,49 @@
 									resetAutoScroll();
 								}
 
-								// Prevent touch and scroll input from disrupting auto-scroll
-								container.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+								// Handle touch gestures to allow taps but block swipes
+								let touchStartX = 0;
+								let touchStartY = 0;
+								let touchMoved = false;
+
+								container.addEventListener('touchstart', (e) => {
+									touchStartX = e.touches[0].clientX;
+									touchStartY = e.touches[0].clientY;
+									touchMoved = false;
+								}, { passive: true });
+
+								container.addEventListener('touchmove', (e) => {
+									const touchX = e.touches[0].clientX;
+									const touchY = e.touches[0].clientY;
+									const deltaX = Math.abs(touchX - touchStartX);
+									const deltaY = Math.abs(touchY - touchStartY);
+
+									// Detect swipe (horizontal movement > 10px, vertical < 50px)
+									if (deltaX > 10 && deltaY < 50) {
+										e.preventDefault(); // Block swipe
+										touchMoved = true;
+									}
+								}, { passive: false });
+
+								container.addEventListener('touchend', (e) => {
+									if (!touchMoved) {
+										// Treat as tap, allow default behavior (link click)
+										const touchEndX = e.changedTouches[0].clientX;
+										const touchEndY = e.changedTouches[0].clientY;
+										const deltaX = Math.abs(touchEndX - touchStartX);
+										const deltaY = Math.abs(touchEndY - touchStartY);
+
+										if (deltaX < 10 && deltaY < 10) {
+											// Minimal movement, allow click
+											const target = e.target.closest('a');
+											if (target && target.href) {
+												window.location.href = target.href; // Trigger link
+											}
+										}
+									}
+								}, { passive: true });
+
+								// Prevent wheel scrolling
 								container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
 
 								// Debounce resize handler
@@ -319,7 +364,7 @@
 												<h3 class="quick-start-title">Get Bouncy Ball</h3>
 												<p class="align-center">e𝕏PB · On Solana <br />
 													In Your Wallet</p>
-												<button class="round-button"><a href="/bouncyball.html">Token Info</a></button>
+												<button class="round-button"><a href="/bouncyball.html">Token Page</a></button>
 											</div>
 								</article>
 								<article class="quick-start-item"> <span class="image left"><img src="/assets/images/expb-learn.png"
@@ -526,7 +571,7 @@
 				<!-- Copyright -->
 				<div id="copyright">
 				<ul>
-					<li><a href="/community.html">Community</a></li>
+					<li><a href="/bouncyball.html">Token</a></li>
 					<li><a href="/docs/main.html">Docs</a></li>
 					<li><a href="/pages/affiliate.html">Partners</a></li>
 					<li><a href="/pages/about.html">About</a></li>
