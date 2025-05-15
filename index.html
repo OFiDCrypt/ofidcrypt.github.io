@@ -159,7 +159,7 @@
 								</a>
 							</li>
 							<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a></li>
-							<li><a href="https://www.tiktok.com/@OFiDKid" class="icon brands alt fa-tiktok"><span
+							<li><a href="https://www.tiktok.com/@OFiDTales" class="icon brands alt fa-tiktok"><span
 										class="label">TikTok</span></a></li>
 							<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
 										class="label">Facebook</span></a></li>
@@ -182,13 +182,14 @@
 								</a>
 							</div>
 						</div>
-					
+						
 						<script>
 							document.addEventListener('DOMContentLoaded', () => {
 								const container = document.querySelector('.ad-scroll-container');
 								const slides = document.querySelectorAll('.ad-slide');
 								const totalSlides = slides.length;
 								let autoScrollInterval;
+								let currentIndex = 0; // Track current index globally
 
 								// Exit if no slides
 								if (totalSlides === 0) {
@@ -204,6 +205,7 @@
 								// Force start on first slide
 								function setInitialPosition() {
 									container.scrollTo({ left: 0, behavior: 'instant' });
+									currentIndex = 0; // Reset index
 								}
 
 								// Calculate slide width
@@ -217,8 +219,6 @@
 
 								// Auto-scroll function
 								function startAutoScroll() {
-									let currentIndex = 0;
-
 									function resetAutoScroll() {
 										if (autoScrollInterval) {
 											clearInterval(autoScrollInterval);
@@ -242,7 +242,7 @@
 									resetAutoScroll();
 								}
 
-								// Handle touch gestures to allow taps but block swipes
+								// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
 								let touchStartX = 0;
 								let touchStartY = 0;
 								let touchMoved = false;
@@ -259,23 +259,26 @@
 									const deltaX = Math.abs(touchX - touchStartX);
 									const deltaY = Math.abs(touchY - touchStartY);
 
-									// Detect swipe (horizontal movement > 10px, vertical < 50px)
+									// Block horizontal swipe (deltaX > 10, deltaY < 50)
 									if (deltaX > 10 && deltaY < 50) {
 										e.preventDefault(); // Block swipe
 										touchMoved = true;
+									}
+									// Allow vertical scrolling (deltaY > 50)
+									if (deltaY > 50) {
+										touchMoved = true; // Mark as moved, but don't prevent default
 									}
 								}, { passive: false });
 
 								container.addEventListener('touchend', (e) => {
 									if (!touchMoved) {
-										// Treat as tap, allow default behavior (link click)
+										// Treat as tap, allow link click
 										const touchEndX = e.changedTouches[0].clientX;
 										const touchEndY = e.changedTouches[0].clientY;
 										const deltaX = Math.abs(touchEndX - touchStartX);
 										const deltaY = Math.abs(touchEndY - touchStartY);
 
 										if (deltaX < 10 && deltaY < 10) {
-											// Minimal movement, allow click
 											const target = e.target.closest('a');
 											if (target && target.href) {
 												window.location.href = target.href; // Trigger link
@@ -284,15 +287,19 @@
 									}
 								}, { passive: true });
 
-								// Prevent wheel scrolling
+								// Prevent wheel scrolling within carousel
 								container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
 
-								// Debounce resize handler
+								// Debounce resize handler, preserve current slide
 								let resizeTimeout;
 								window.addEventListener('resize', () => {
 									clearTimeout(resizeTimeout);
 									resizeTimeout = setTimeout(() => {
-										setInitialPosition();
+										// Restore current slide position instead of resetting
+										container.scrollTo({
+											left: currentIndex * getBoxWidth(),
+											behavior: 'instant'
+										});
 										startAutoScroll();
 									}, 100); // 100ms debounce
 								});
@@ -408,7 +415,7 @@
 												data-video-id="7483289569861897527" style="max-width: 605px;min-width: 325px;">
 												<section>
 													<a target="_blank" title="@ofidkid"
-														href="https://www.tiktok.com/@ofidkid?refer=embed">@ofidkid</a>
+														href="https://www.tiktok.com/@ofidkid?refer=embed">@ofidtales</a>
 													Get Your First Wallet! Do it all from one app; a safe place for earned tokens! 🥳 PART 1 of 3:
 													Downloading
 													Phantom Wallet 📲
@@ -560,7 +567,7 @@
 							<h3>Social</h3>
 							<ul class="icons alt">
 								<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a></li>
-								<li><a href="https://www.tiktok.com/@OFiDKid" class="icon brands alt fa-tiktok"><span class="label">TikTok</span></a></li>
+								<li><a href="https://www.tiktok.com/@OFiDTales" class="icon brands alt fa-tiktok"><span class="label">TikTok</span></a></li>
 								<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
 								<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
 							</ul>
