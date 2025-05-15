@@ -1,6 +1,5 @@
 User-agent: *
 Disallow: /explore/app-featured-hvr
 Disallow: /cashlinks
-Disallow: /chart
 Disallow: /404
 Sitemap: https://www.ofidcrypt.com/sitemap.xml
