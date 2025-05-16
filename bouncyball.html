@@ -151,8 +151,26 @@
 				<header class="major">
 					<span class="date">e𝕏PB Bouncy Ball</span>
 					<h1>Token Details</h1>
-					<p>Your one-stop shop for all things Bouncy Ball!</p>
+					<p>Your one-stop shop for all things Bouncy Ball! Tap or click below to copy the CA.</p>
 				</header>
+
+				<!-- Ad Banner -->
+				<section id="socials-banner" class="ad-banner" onclick="copyToClipboard()">
+					<div style="text-align: center;">
+						<img src="/assets/images/expb-ca.png" alt="Ad Banner" style="max-width: 100%; height: auto;">
+					</div>
+				</section>
+				
+				<script>
+					function copyToClipboard() {
+						const address = "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump"; // Address to copy
+						navigator.clipboard.writeText(address).then(() => {
+							alert("CA copied to clipboard!");
+						}).catch(err => {
+							console.error("Error copying text: ", err);
+						});
+					}
+				</script>
 				
 				<!-- TikTok Embed -->
 				<div class="tiktok-videos-container">
