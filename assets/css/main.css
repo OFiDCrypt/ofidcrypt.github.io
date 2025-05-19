@@ -2402,69 +2402,77 @@ header.header-subpage {
 
 /* Button */
 
-	input[type="submit"],
-	input[type="reset"],
-	input[type="button"],
-	button,
-	.button {
-		-moz-appearance: none;
-		-webkit-appearance: none;
-		-ms-appearance: none;
-		appearance: none;
-		-moz-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-		-webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-		-ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-		transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
-		border: 0;
-		border-radius: 0;
-		cursor: pointer;
-		display: inline-block;
-		font-family: "Source Sans Pro", Helvetica, sans-serif;
-		font-size: 0.8rem;
-		font-weight: 900;
-		letter-spacing: 0.075em;
-		height: 3rem;
-		line-height: 3rem;
-		padding: 0 2rem;
-		text-align: center;
-		text-decoration: none;
-		text-transform: uppercase;
-		white-space: nowrap;
-		margin-bottom: 1rem;
-	
-		body.dark-mode & {
-			color: var(--button-color); /* Dark mode color */
-		}
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button,
+.button {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+	-moz-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+	-webkit-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+	-ms-transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+	transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.2s ease-in-out;
+	border: 0;
+	border-radius: 0;
+	cursor: pointer;
+	display: inline-block;
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	font-size: 0.8rem;
+	font-weight: 900;
+	letter-spacing: 0.075em;
+	height: 3rem;
+	line-height: 3rem;
+	padding: 0 2rem;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	white-space: nowrap;
+	margin-bottom: 1rem;
+
+	body.dark-mode & {
+		color: var(--button-color);
+		/* Dark mode color */
 	}
+}
 
-				/* Explore Button */
-				.round-button-container {
-					display: flex;
-					/* Aligns buttons side by side */
-					justify-content: center;
-					/* Centers the button group */
-					gap: 1rem;
-					/* Adds spacing between buttons */
-				}
-		
-				/* To remove extra space from the last button */
-				.round-button {
-					background-color: var(--button-bg-color);
-					border-radius: 20px;
-					transition: background-color 0.3s ease;
-					margin-top: 1rem;
-				}
-		
-				/* To remove extra space from the last button */
-				.round-button:last-child {
-					margin-right: 0;
-				}
+/* Explore Button */
+.round-button-container {
+	display: flex;
+	/* Aligns buttons side by side */
+	justify-content: center;
+	/* Centers the button group */
+	gap: 1rem;
+	/* Adds spacing between buttons */
+}
 
+/* To remove extra space from the last button */
+.round-button {
+	background-color: var(--button-bg-color);
+	border-radius: 20px;
+	transition: background-color 0.3s ease;
+	margin-top: 1rem;
+}
 
-		input[type="submit"].icon:before,
-		input[type="reset"].icon:before,
-		input[type="button"].icon:before,
-		button.icon:before,
+/* To remove extra space from the last button */
+.round-button:last-child {
+	margin-right: 0;
+}
+
+@media screen and (max-width: 768px) {
+	.round-button-container {
+		flex-direction: column;
+		/* Stacks vertically on mobile */
+		align-items: center;
+	}
+}
+
+input[type="submit"].icon:before,
+input[type="reset"].icon:before,
+input[type="button"].icon:before,
+button.icon:before,
 		.button.icon:before {
 			margin-right: 0.5rem;
 		}
