@@ -4976,6 +4976,31 @@ section.livestream {
     }
 }
 
+/* Container for TikTok videos (side-by-side for Episodes) */
+.tiktok-videos-container-pair {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* Space between videos */
+    margin: 1rem auto;
+    max-width: 100%;
+}
+
+/* Wrapper for each TikTok video in side-by-side container */
+.tiktok-videos-container-pair .tiktok-video-wrapper {
+    flex: 1; /* Equal width for side-by-side videos */
+    min-width: 300px; /* Minimum width to prevent videos from becoming too narrow */
+    max-width: 605px; /* Matches TikTok's max-width */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .tiktok-videos-container-pair {
+        flex-direction: column; /* Stack videos vertically on smaller screens */
+        align-items: center;
+    }
+}
+
 /* Quick Start Section */
 
 .quick-start-title {
