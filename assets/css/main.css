@@ -4967,6 +4967,7 @@ section.livestream {
     .tiktok.video.main {
         max-width: 90%;
         padding-bottom: 177.77%; /* Restore vertical ratio for tablets/mobile */
+        margin: 0; /* Remove margin on mobile to eliminate lower margin */
     }
 }
 
@@ -4982,7 +4983,7 @@ section.livestream {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem; /* Space between videos */
-    margin: 1rem auto;
+    margin: 0; /* Remove margin on all screen sizes (desktop and mobile) */
     max-width: 100%;
 }
 
@@ -4998,6 +4999,11 @@ section.livestream {
     .tiktok-videos-container-pair {
         flex-direction: column; /* Stack videos vertically on smaller screens */
         align-items: center;
+        margin: 0; /* Ensure no margin on mobile */
+        gap: 0; /* Remove gap to prevent extra spacing between stacked videos */
+    }
+    .tiktok-videos-container-pair .tiktok-video-wrapper {
+        margin: 0; /* Remove margin on mobile for video wrappers */
     }
 }
 
@@ -5122,6 +5128,42 @@ section.livestream {
 
 #main .partner-section + .partner-section {
     clear: both;
+}
+
+/* Info Tile */
+#info-tile {
+    display: flex;
+    flex-direction: row; /* Side by side */
+    gap: 2rem; /* Space between images */
+    max-width: 100%; /* Fit viewport */
+    justify-content: center;
+}
+
+#info-tile img {
+    max-width: 50%; /* Default for wide screens */
+    height: auto; /* Maintain aspect ratio */
+}
+
+#info-tile a {
+    display: contents; /* Neutralize <a> */
+}
+
+/* Intermediate: Keep side by side with smaller images */
+@media (max-width: 1200px) and (min-width: 801px) {
+    #info-tile img {
+        max-width: 40%; /* Reduce size to fit side by side */
+    }
+}
+
+/* Mobile: Stack images */
+@media (max-width: 800px) {
+    #info-tile {
+        flex-direction: column; /* Stack on mobile */
+        gap: 2rem;
+    }
+    #info-tile img {
+        max-width: 100%; /* Full width on mobile */
+    }
 }
 
 /* Ad Banner */
