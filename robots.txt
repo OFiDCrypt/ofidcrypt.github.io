@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /explore/app-featured-hvr
+Disallow: /docs/main/whitepaper
+Disallow: /docs/main/whitepaper2
 Disallow: /cashlinks
 Disallow: /404
 Disallow: /promote/client-directory
