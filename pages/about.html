@@ -110,9 +110,9 @@
 				<li><a href="../index.html">Home</a></li>
 				<li><a href="../explore.html">Services</a></li>
 				<li><a href="../community.html">Community</a></li>
-				<li><a href="livestream.html">e𝕏P Streams™</a></li>
+				<li><a href="livestream.html">𝕏 Live Spaces</a></li>
 				<li><a href="../ofidtales.html">OFiD Tales</a></li>
-				<li class="active"><a href="about.html">About</a></li>
+				<li class="active"><a href="about.html">About Us</a></li>
 			</ul>
 			<ul class="icons">
 				<li>
@@ -140,31 +140,164 @@
 		<!-- Main -->
 		<div id="main">
 
-			<!-- Ad Banner -->
-			<section id="expb-ball" class="ad-banner">
-				<div style="text-align: center;">
-					<a href="../bouncyball.html" style="border-bottom: none;">
-						<img src="/assets/images/expb-banner-01.png" alt="Ad Banner"
-							style="max-width: 100%; height: auto;">
-					</a>
-				</div>
-			</section>
+			<!-- Scrolling Ad Banner -->
+						<div id="expb-ball" class="ad-banner-wrapper">
+							<div class="ad-scroll-container">
+								<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index" class="ad-slide" style="border-bottom: none;">
+									<img src="../assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1" style="max-width: 100%; height: auto;">
+								</a>
+								<a href="../bouncyball.html" class="ad-slide" style="border-bottom: none;">
+									<img src="../assets/images/expb-banner-01.png" alt="Ad Banner 2" style="max-width: 100%; height: auto;">
+								</a>
+								<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+									<img src="../assets/images/dobby-banner-01.png" alt="Ad Banner 3" style="max-width: 100%; height: auto;">
+								</a>
+							</div>
+						</div>
+						
+						<script>
+							document.addEventListener('DOMContentLoaded', () => {
+								const container = document.querySelector('.ad-scroll-container');
+								const slides = document.querySelectorAll('.ad-slide');
+								const totalSlides = slides.length;
+								let autoScrollInterval;
+								let currentIndex = 0; // Track current index globally
+
+								// Exit if no slides
+								if (totalSlides === 0) {
+									console.warn('No slides found in .ad-scroll-container');
+									return;
+								}
+
+								// Clone first slide for continuous loop
+								const firstSlideClone = slides[0].cloneNode(true);
+								container.appendChild(firstSlideClone);
+								const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+								// Force start on first slide
+								function setInitialPosition() {
+									container.scrollTo({ left: 0, behavior: 'instant' });
+									currentIndex = 0; // Reset index
+								}
+
+								// Calculate slide width
+								function getBoxWidth() {
+									const slideWidth = slides[0].offsetWidth; // Actual slide width
+									const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+									const totalWidth = slideWidth + slideMargin;
+									console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+									return totalWidth;
+								}
+
+								// Auto-scroll function
+								function startAutoScroll() {
+									function resetAutoScroll() {
+										if (autoScrollInterval) {
+											clearInterval(autoScrollInterval);
+										}
+										autoScrollInterval = setInterval(() => {
+											currentIndex++;
+											console.log('Scrolling to index:', currentIndex);
+											if (currentIndex >= totalSlides + 1) {
+												// Reached clone, reset to first slide instantly
+												container.scrollTo({ left: 0, behavior: 'instant' });
+												currentIndex = 1; // Start from second slide
+											}
+											container.scrollTo({
+												left: currentIndex * getBoxWidth(),
+												behavior: 'smooth'
+											});
+										}, 8000); // 8 seconds
+									}
+
+									// Start auto-scrolling
+									resetAutoScroll();
+								}
+
+								// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+								let touchStartX = 0;
+								let touchStartY = 0;
+								let touchMoved = false;
+
+								container.addEventListener('touchstart', (e) => {
+									touchStartX = e.touches[0].clientX;
+									touchStartY = e.touches[0].clientY;
+									touchMoved = false;
+								}, { passive: true });
+
+								container.addEventListener('touchmove', (e) => {
+									const touchX = e.touches[0].clientX;
+									const touchY = e.touches[0].clientY;
+									const deltaX = Math.abs(touchX - touchStartX);
+									const deltaY = Math.abs(touchY - touchStartY);
+
+									// Block horizontal swipe (deltaX > 10, deltaY < 50)
+									if (deltaX > 10 && deltaY < 50) {
+										e.preventDefault(); // Block swipe
+										touchMoved = true;
+									}
+									// Allow vertical scrolling (deltaY > 50)
+									if (deltaY > 50) {
+										touchMoved = true; // Mark as moved, but don't prevent default
+									}
+								}, { passive: false });
+
+								container.addEventListener('touchend', (e) => {
+									if (!touchMoved) {
+										// Treat as tap, allow link click
+										const touchEndX = e.changedTouches[0].clientX;
+										const touchEndY = e.changedTouches[0].clientY;
+										const deltaX = Math.abs(touchEndX - touchStartX);
+										const deltaY = Math.abs(touchEndY - touchStartY);
+
+										if (deltaX < 10 && deltaY < 10) {
+											const target = e.target.closest('a');
+											if (target && target.href) {
+												window.location.href = target.href; // Trigger link
+											}
+										}
+									}
+								}, { passive: true });
+
+								// Prevent wheel scrolling within carousel
+								container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+								// Debounce resize handler, preserve current slide
+								let resizeTimeout;
+								window.addEventListener('resize', () => {
+									clearTimeout(resizeTimeout);
+									resizeTimeout = setTimeout(() => {
+										// Restore current slide position instead of resetting
+										container.scrollTo({
+											left: currentIndex * getBoxWidth(),
+											behavior: 'instant'
+										});
+										startAutoScroll();
+									}, 100); // 100ms debounce
+								});
+
+								// Initialize
+								setInitialPosition();
+								startAutoScroll();
+							});
+						</script>
 
 			<!-- Section Title -->
 			<section class="post">
 				<header class="major">
 					<span class="date">Est. September 2024</span>
-					<h1>Our Web3<br />
-						Movement</h1>
-					<p>We are a registered Canadian small business, committed to uniting people through experiences and
-						information, as we transition into the era of Web3.</p>
+					<h1>We Steer<br />
+						Web3 Adoption</h1>
+					<p>We are a registered Canadian small business, committed to introducing people to digital wallets, crypto, and
+						token assets. We don’t just onboard users into the Web3 world of on-chain opportunities—we’re actively
+						creating fresh ways to make it worthwhile for people just like you!</p>
 				</header>
 
 				<!-- Why Web3: About Statistics -->
 				<article class="product-section">
 					<div class="product-wrapper">
 						<div class="product-content">
-
+				
 							<!-- Section  - Left Image -->
 							<a href="https://www.ofidcrypt.ca/">
 								<span class="image left"><img src="../assets/images/ofid-exp-bg-01.png"
@@ -178,18 +311,24 @@
 								to reach $162.84 billion by 2027, highlighting its growing significance. Additionally,
 								Bitcoin adoption has seen
 								substantial growth, with over 41 million BTC addresses holding at least $1 worth of
-								Bitcoin<a href="https://www.tastycrypto.com/blog/bitcoin-adoption/">2</a>. As of 2025, around 5% of the global
-								population has entered the cryptocurrency market. With foundations in utility and integration in future financial
+								Bitcoin<a href="https://www.tastycrypto.com/blog/bitcoin-adoption/">2</a>. As of 2025, around 5% of the
+								global
+								population has entered the cryptocurrency market. With foundations in utility and integration in future
+								financial
 								systems, this leaves an untapped 95% of the global population as potential demand.</p>
-
-							<!-- Mission Statement -->
-							<section class="quick-start-section">
-								<article class="quick-start-item quick-start-featured">
-
-									<!-- Mission Content -->
-									<div class="quick-start-content">
-										<h2 class="quick-start-title">Our Mission</h2>
-										<p class="align-center">To be the leading identity and movement accelerating
+				
+							<!-- Horizontal Scroll Container -->
+							<div class="scroll-container">
+				
+								<!-- Box 1: Mission Statement -->
+								<article class="scroll-box">
+									<button class="scroll-arrow left" aria-label="Scroll Left"><i
+											class="fas fa-arrow-left"></i></button>
+									<div class="box-content">
+										<span class="image"><img src="../assets/images/ofid-expb-logo.png"
+												alt="OFiD Kid Rewards Poster"></span>
+										<h3>Our Mission</h3>
+										<p>To be the leading identity and movement accelerating
 											mainstream Web3 adoption,
 											unifying people and applications through a simple digital wallet hub and
 											partner platforms. We empower
@@ -197,12 +336,166 @@
 											self-sustaining autonomous
 											ecosystem, guided by the people.</p>
 									</div>
+									<button class="scroll-arrow right" aria-label="Scroll Right"><i
+											class="fas fa-arrow-right"></i></button>
 								</article>
-							</section>
+				
+								<!-- Box 2: #MicroEconomies -->
+								<article class="scroll-box">
+									<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+									<div class="box-content">
+										<span class="image"><img src="../assets/images/microeconomies.jpg" alt="Phantom Wallet Logo"></span>
+										<h3>Our Method</h3>
+										<p>We created <b>#MicroEconomies</b>—the secret sauce to accompany stablecoins and introduce a brand-new wave of
+											savings and growth for service businesses and consumers! We're the first to implement this in our Web3
+											marketing business; and yes, we do everything a traditional company can! You
+											can read our white paper <a href="../docs/whitepaper2.html">here</a> to get a sneak peek at the more
+											comprehensive and technical overview.</p>
+									</div>
+									<button class="scroll-arrow right" aria-label="Scroll Right"><i
+											class="fas fa-arrow-right"></i></button>
+								</article>
+				
+								<!-- Box 3: Our Token -->
+								<article class="scroll-box">
+									<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
+									<div class="box-content">
+										<span class="image"><img src="../assets/images/expb-3d-trans.gif" alt="Bouncy Ball 3D Logo"></span>
+										<h3>Our Token</h3>
+										<p>e𝕏PB <b>Bouncy Ball</b> is our shiny gem—right at the heart of our entire ecosystem! It's what makes <b>#MicroEconomies</b>
+											possible. We even have a dedicated page for Bouncy Ball; you can click <a href="../bouncyball.html#guide"
+												target="_blank">here</a> to find out all you need to know.</p>
+									</div>
+									<button class="scroll-arrow right" aria-label="Scroll Right"><i
+											class="fas fa-arrow-right"></i></button>
+								</article>
+							</div>
+				
+							<script>
+								document.addEventListener('DOMContentLoaded', () => {
+									const container = document.querySelector('.scroll-container');
+									const slides = document.querySelectorAll('.scroll-box');
+									const totalSlides = slides.length; // 3 slides
+									let autoScrollInterval; // Store the interval ID
+
+									// Force start on Box 1 (Telegram)
+									function setInitialPosition() {
+										container.scrollTo({ left: 0, behavior: 'instant' });
+										updateArrowStates();
+									}
+
+									// Scroll by one box width based on screen size
+									function getBoxWidth() {
+										if (window.innerWidth > 768) {
+											return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+										} else if (window.innerWidth <= 480) {
+											return 260 + 20; // Mobile: Box width + gap
+										} else {
+											return slides[0].offsetWidth; // Mid-range: Stacked box width
+										}
+									}
+
+									// Update arrow states based on current scroll position
+									function updateArrowStates() {
+										const scrollLeft = container.scrollLeft;
+										const maxScroll = container.scrollWidth - container.clientWidth;
+										const boxWidth = getBoxWidth();
+										const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+
+										slides.forEach((slide, index) => {
+											const leftArrow = slide.querySelector('.scroll-arrow.left');
+											const rightArrow = slide.querySelector('.scroll-arrow.right');
+											leftArrow.disabled = currentSlideIndex === 0;
+											rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+										});
+									}
+
+									// Auto-scroll function for all screen sizes
+									function startAutoScroll() {
+										let currentIndex = 0;
+
+										// Function to reset and start the interval
+										function resetAutoScroll() {
+											if (autoScrollInterval) {
+												clearInterval(autoScrollInterval); // Clear existing interval
+											}
+											autoScrollInterval = setInterval(() => {
+												currentIndex++;
+												if (currentIndex >= totalSlides) {
+													currentIndex = 0;
+													container.scrollTo({ left: 0, behavior: 'smooth' });
+												} else {
+													container.scrollTo({
+														left: currentIndex * getBoxWidth(),
+														behavior: 'smooth'
+													});
+												}
+												setTimeout(updateArrowStates, 300); // Update arrows after scroll
+											}, 12000); // 12 seconds
+										}
+
+										// Initial start
+										resetAutoScroll();
+
+										// Reset timer on arrow clicks
+										slides.forEach(slide => {
+											const leftArrow = slide.querySelector('.scroll-arrow.left');
+											const rightArrow = slide.querySelector('.scroll-arrow.right');
+
+											leftArrow.addEventListener('click', () => {
+												container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+												resetAutoScroll(); // Reset timer on click
+											});
+
+											rightArrow.addEventListener('click', () => {
+												container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+												resetAutoScroll(); // Reset timer on click
+											});
+										});
+
+										// Reset timer on slide tap/click (for selecting a new box)
+										slides.forEach(slide => {
+											slide.addEventListener('click', (e) => {
+												// Only reset if the click isn’t on an arrow (to avoid double reset)
+												if (!e.target.classList.contains('scroll-arrow')) {
+													resetAutoScroll(); // Reset timer on slide click
+												}
+											});
+										});
+									}
+
+									// Update arrows on scroll
+									container.addEventListener('scroll', updateArrowStates);
+
+									// Update arrows after each click (for timing)
+									slides.forEach(slide => {
+										slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
+											arrow.addEventListener('click', () => {
+												setTimeout(updateArrowStates, 300); // Match smooth scroll duration
+											});
+										});
+									});
+
+									// Set initial position after DOM is fully loaded
+									setInitialPosition();
+
+									// Ensure position after page fully renders
+									window.addEventListener('load', setInitialPosition);
+
+									// Start auto-scroll for all sizes
+									startAutoScroll();
+
+									// Handle resize
+									window.addEventListener('resize', () => {
+										setInitialPosition();
+										// Note: Auto-scroll continues; no need to restart unless width changes behavior significantly
+									});
+								});
+							</script>
 
 							<!-- Section 2 - Right Image -->
 							<a href="https://www.ofidcrypt.ca/">
-								<span class="image right"><img src="../assets/images/expb.png"
+								<span class="image right"><img src="../assets/images/ofid-partners.jpg"
 										alt="e𝕏P Web3™ Logo"></span>
 							</a>
 							<h3 style="text-align: right;">Leading Partner Collaborations</h3>
@@ -324,7 +617,7 @@
 				<li><a href="../bouncyball.html">Token</a></li>
 				<li><a href="../docs/main.html">Docs</a></li>
 				<li><a href="affiliate.html">Partners</a></li>
-				<li><a href="about.html">About</a></li>
+				<li><a href="about.html">About Us</a></li>
 			</ul>
 			<ul>
 				<ul>
