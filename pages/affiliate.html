@@ -106,9 +106,9 @@
 							<li><a href="../index.html">Home</a></li>
 							<li><a href="../explore.html">Services</a></li>
 							<li><a href="../community.html">Community</a></li>
-							<li><a href="livestream.html">e𝕏P Streams™</a></li>
+							<li><a href="livestream.html">𝕏 Live Spaces</a></li>
 							<li><a href="../ofidtales.html">OFiD Tales</a></li>
-							<li><a href="about.html">About</a></li>
+							<li><a href="about.html">About Us</a></li>
 						</ul>
 						<ul class="icons">
 							<li>
@@ -131,14 +131,148 @@
         <!-- Main -->
         <div id="main">
 
-		<!-- Ad Banner -->
-		<section id="expb-ball" class="ad-banner">
-			<div style="text-align: center;">
-				<a href="../bouncyball.html" style="border-bottom: none;">
-					<img src="/assets/images/expb-banner-01.png" alt="Ad Banner" style="max-width: 100%; height: auto;">
+		<!-- Scrolling Ad Banner -->
+		<div id="expb-ball" class="ad-banner-wrapper">
+			<div class="ad-scroll-container">
+				<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+					class="ad-slide" style="border-bottom: none;">
+					<img src="../assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1" style="max-width: 100%; height: auto;">
+				</a>
+				<a href="../bouncyball.html" class="ad-slide" style="border-bottom: none;">
+					<img src="../assets/images/expb-banner-01.png" alt="Ad Banner 2" style="max-width: 100%; height: auto;">
+				</a>
+				<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+					<img src="../assets/images/dobby-banner-01.png" alt="Ad Banner 3" style="max-width: 100%; height: auto;">
 				</a>
 			</div>
-		</section>
+		</div>
+		
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const container = document.querySelector('.ad-scroll-container');
+				const slides = document.querySelectorAll('.ad-slide');
+				const totalSlides = slides.length;
+				let autoScrollInterval;
+				let currentIndex = 0; // Track current index globally
+
+				// Exit if no slides
+				if (totalSlides === 0) {
+					console.warn('No slides found in .ad-scroll-container');
+					return;
+				}
+
+				// Clone first slide for continuous loop
+				const firstSlideClone = slides[0].cloneNode(true);
+				container.appendChild(firstSlideClone);
+				const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+				// Force start on first slide
+				function setInitialPosition() {
+					container.scrollTo({ left: 0, behavior: 'instant' });
+					currentIndex = 0; // Reset index
+				}
+
+				// Calculate slide width
+				function getBoxWidth() {
+					const slideWidth = slides[0].offsetWidth; // Actual slide width
+					const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+					const totalWidth = slideWidth + slideMargin;
+					console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+					return totalWidth;
+				}
+
+				// Auto-scroll function
+				function startAutoScroll() {
+					function resetAutoScroll() {
+						if (autoScrollInterval) {
+							clearInterval(autoScrollInterval);
+						}
+						autoScrollInterval = setInterval(() => {
+							currentIndex++;
+							console.log('Scrolling to index:', currentIndex);
+							if (currentIndex >= totalSlides + 1) {
+								// Reached clone, reset to first slide instantly
+								container.scrollTo({ left: 0, behavior: 'instant' });
+								currentIndex = 1; // Start from second slide
+							}
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'smooth'
+							});
+						}, 8000); // 8 seconds
+					}
+
+					// Start auto-scrolling
+					resetAutoScroll();
+				}
+
+				// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+				let touchStartX = 0;
+				let touchStartY = 0;
+				let touchMoved = false;
+
+				container.addEventListener('touchstart', (e) => {
+					touchStartX = e.touches[0].clientX;
+					touchStartY = e.touches[0].clientY;
+					touchMoved = false;
+				}, { passive: true });
+
+				container.addEventListener('touchmove', (e) => {
+					const touchX = e.touches[0].clientX;
+					const touchY = e.touches[0].clientY;
+					const deltaX = Math.abs(touchX - touchStartX);
+					const deltaY = Math.abs(touchY - touchStartY);
+
+					// Block horizontal swipe (deltaX > 10, deltaY < 50)
+					if (deltaX > 10 && deltaY < 50) {
+						e.preventDefault(); // Block swipe
+						touchMoved = true;
+					}
+					// Allow vertical scrolling (deltaY > 50)
+					if (deltaY > 50) {
+						touchMoved = true; // Mark as moved, but don't prevent default
+					}
+				}, { passive: false });
+
+				container.addEventListener('touchend', (e) => {
+					if (!touchMoved) {
+						// Treat as tap, allow link click
+						const touchEndX = e.changedTouches[0].clientX;
+						const touchEndY = e.changedTouches[0].clientY;
+						const deltaX = Math.abs(touchEndX - touchStartX);
+						const deltaY = Math.abs(touchEndY - touchStartY);
+
+						if (deltaX < 10 && deltaY < 10) {
+							const target = e.target.closest('a');
+							if (target && target.href) {
+								window.location.href = target.href; // Trigger link
+							}
+						}
+					}
+				}, { passive: true });
+
+				// Prevent wheel scrolling within carousel
+				container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+				// Debounce resize handler, preserve current slide
+				let resizeTimeout;
+				window.addEventListener('resize', () => {
+					clearTimeout(resizeTimeout);
+					resizeTimeout = setTimeout(() => {
+						// Restore current slide position instead of resetting
+						container.scrollTo({
+							left: currentIndex * getBoxWidth(),
+							behavior: 'instant'
+						});
+						startAutoScroll();
+					}, 100); // 100ms debounce
+				});
+
+				// Initialize
+				setInitialPosition();
+				startAutoScroll();
+			});
+		</script>
 
             <!-- Section Title -->
             <section class="post">
@@ -152,56 +286,11 @@
 				<section class="partner-section">
 					<header>
 						<!-- Partner Intro -->
-						<p style="text-align: center;">We select diverse products through various marketing channels. Trusted partners share
-							authentic insights, fostering trust and enhancing the web3 experience.</p>
-                    </header>
+						<p style="text-align: center;">We collaborate across a wide network of partners—exchanges, blockchain projects, communities, tech platforms,
+							token ecosystems, and content sites.</p>
+					</header>
 
-					<!-- Product 1 -->
-					<article class="product-section">
-						<div class="product-wrapper">
-							<div class="product-content">
-								<a href="https://www.ofidcrypt.ca/">
-									<span class="image left affiliate"><img src="../assets/images/hvr-logo03.png" alt="Hvr App Colorful Logo"></span>
-								</a>
-								<h3 style="text-align: center;">Hvr Browser | Where Sites Are Social</h3>
-								<!-- Partner Nav Button 1 -->
-								<div style="text-align: center;">
-									<button class="button"><a href="https://hvr.world">Visit Partner</a></button>
-								</div>
-								<p>Hvr instantly impressed us with its groundbreaking concept: Comment on, share, and tag people on any page
-									across the
-									internet! This innovation unleashes boundless opportunities for discussion all over the web, enabling
-									you to form
-									new connections and share your thoughts seamlessly as you browse.</p>
-							</div>
-						</div>
-					</article>
-
-					<!-- Product 2 -->
-					<article class="product-section">
-						<div class="product-wrapper">
-							<div class="product-content">
-								<a href="../kincommunity.html">
-									<span class="image right affiliate"><img src="../assets/images/ONEKin.jpg"
-											alt="Kin On Solana Logo Image"></span>
-								</a>
-								<h3 style="text-align: center;">ONE Kin Community</h3>
-								<!-- Partner Nav Button 2 -->
-								<div style="text-align: center;">
-									<button class="button"><a href="../kincommunity.html">Visit Page</a></button>
-								</div>
-								<p>Kin is a cryptocurrency that follows Satoshi Nakamoto's vision of a direct,
-									peer-to-peer payment system. Unlike traditional money where banks or services are
-									the go-between, Kin allows people to send and receive payments directly from each
-									other. It's designed to be user-friendly, making transactions as simple as sending a
-									message, but with the added security of blockchain technology. With Kin, you can pay
-									for services, tip content creators, or just transfer money to friends without any
-									middleman. Kin was introduced in 2017 as an ICO (Initial Coin Offering) within Kik Messenger.</p>
-							</div>
-						</div>
-					</article>
-
-					<!-- Product 3 
+					<!-- Product 0 
 					<article class="product-section">
 						<div class="product-wrapper">
 							<div class="product-content">
@@ -224,6 +313,95 @@
 						</div>
 					</article>
 					 -->
+
+					<!-- Product 1 -->
+					<article class="product-section">
+						<div class="product-wrapper">
+							<div class="product-content">
+								<a href="https://kraken.pxf.io/xLox1A">
+									<span class="image left affiliate"><img src="../assets/images/partner-affiliate-kraken.png"
+											alt="Kraken Logo Image"></span>
+								</a>
+								<h3 style="text-align: center;">Kraken | Buy & Sell Crypto Securely</h3>
+								<!-- Partner Nav Button 1 -->
+								<div style="text-align: center;">
+									<button class="button"><a href="https://kraken.pxf.io/xLox1A">Get Started</a></button>
+								</div>
+								<p>Kraken Exchange makes getting into crypto simple—whether you’re buying your first token or moving
+									between coins and cash. With fast deposits, easy swaps, and secure withdrawals, it’s a user-friendly
+									gateway to Web3. Paired with OFiDCrypt’s services, Kraken helps unlock a whole new world of
+									potential—where access, safety, and freedom come standard.</p>
+						</div>
+					</article>
+
+					<!-- Product 2 -->
+					<article class="product-section">
+						<div class="product-wrapper">
+							<div class="product-content">
+								<a href="https://shop.ledger.com/?r=aa8d4fce2d9a&tracker=ofid_affiliate_page">
+									<span class="image right affiliate"><img src="../assets/images/partner-affiliate-ledger.PNG"
+											alt="Legder Logo Image"></span>
+								</a>
+								<h3 style="text-align: center;">Ledger Crypto Wallet | Security for Web3 & Defi</h3>
+								<!-- Partner Nav Button 2 -->
+								<div style="text-align: center;">
+									<button class="button"><a
+											href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_affiliate_page">View
+											Nano S Plus</a></button>
+								</div>
+								<p>Ledger wallets keep your crypto safe while putting you in charge. With your keys stored offline, you’re protected
+									from online threats without needing to rely on anyone else. That means you can send, receive, and manage digital
+									assets with full confidence. Ledger is all about giving real people real control—just as OFiDCrypt is paving the way
+									to help people discover these benefits and everything Web3-connected. Simple, powerful, and made for everyday use.
+								</p>
+							</div>
+						</div>
+					</article>
+
+					<!-- Product 3 -->
+					<article class="product-section">
+						<div class="product-wrapper">
+							<div class="product-content">
+								<a href="https://hvr.world">
+									<span class="image left affiliate"><img src="../assets/images/hvr-logo03.png" alt="Hvr App Colorful Logo"></span>
+								</a>
+								<h3 style="text-align: center;">Hvr Browser | Where Sites Are Social</h3>
+								<!-- Partner Nav Button 1 -->
+								<div style="text-align: center;">
+									<button class="button"><a href="https://hvr.world">Visit Partner</a></button>
+								</div>
+								<p>Hvr instantly impressed us with its groundbreaking concept: Comment on, share, and tag people on any page
+									across the
+									internet! This innovation unleashes boundless opportunities for discussion all over the web, enabling
+									you to form
+									new connections and share your thoughts seamlessly as you browse.</p>
+							</div>
+						</div>
+					</article>
+
+					<!-- Product 4 -->
+					<article class="product-section">
+						<div class="product-wrapper">
+							<div class="product-content">
+								<a href="../kincommunity.html">
+									<span class="image right affiliate"><img src="../assets/images/ONEKin.jpg"
+											alt="Kin On Solana Logo Image"></span>
+								</a>
+								<h3 style="text-align: center;">ONE Kin Community</h3>
+								<!-- Partner Nav Button 2 -->
+								<div style="text-align: center;">
+									<button class="button"><a href="../kincommunity.html">Visit Page</a></button>
+								</div>
+								<p>Kin is a cryptocurrency that follows Satoshi Nakamoto's vision of a direct,
+									peer-to-peer payment system. Unlike traditional money where banks or services are
+									the go-between, Kin allows people to send and receive payments directly from each
+									other. It's designed to be user-friendly, making transactions as simple as sending a
+									message, but with the added security of blockchain technology. With Kin, you can pay
+									for services, tip content creators, or just transfer money to friends without any
+									middleman. Kin was introduced in 2017 as an ICO (Initial Coin Offering) within Kik Messenger.</p>
+							</div>
+						</div>
+					</article>
 
 					<!-- Page Button Style -->
 					<style>
@@ -248,8 +426,8 @@
                     <!-- More About Our Partners -->
                     <footer>
 							<h2 style="text-align: center;">More About Our Partners</h2>
-							<p style="text-align: center;">OFiDCrypt works with a blend of community and sponsored partnerships,
-								offering you a variety of services and social spaces. You
+							<p style="text-align: center;">Through affiliate relationships and strategic alliances, we spotlight
+							trusted products, share authentic insight, and help build a secure and accessible Web3 experience. You
 								can visit our <a href="../community.html">Community Page</a> and choose a channel to keep informed or join the conversation!</p>
 					</footer>
                 </section>
@@ -332,7 +510,7 @@
 						<li><a href="../bouncyball.html">Token</a></li>
 						<li><a href="../docs/main.html">Docs</a></li>
 						<li><a href="affiliate.html">Partners</a></li>
-						<li><a href="about.html">About</a></li></ul>
+						<li><a href="about.html">About Us</a></li></ul>
 					<ul><li>&copy; OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2025</li></ul>
 					<ul><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
