@@ -288,9 +288,9 @@
 					<span class="date">Est. September 2024</span>
 					<h1>We Steer<br />
 						Web3 Adoption</h1>
-					<p>We are a registered Canadian small business, committed to introducing people to digital wallets, crypto, and
-						token assets. We don’t just onboard users into the Web3 world of on-chain opportunities—we’re actively
-						creating fresh ways to make it worthwhile for people just like you!</p>
+					<p>We are a registered Canadian <b>Web3 Advocacy & Marketing Business</b> dedicated to helping brands get
+						noticed. Our process allows us to introduce everyone to digital wallets, crypto, and token assets through
+						discounted services. </p>
 				</header>
 
 				<!-- Why Web3: About Statistics -->
@@ -304,37 +304,33 @@
 										alt="Hvr App Colorful Logo"></span>
 							</a>
 							<h3 style="text-align: left;">Benefit from Discovery</h3>
-							<p>Blockchain technology is rapidly gaining traction globally, with
-								over 300 million people using
-								it worldwide<a href="https://www.demandsage.com/blockchain-statistics/">1</a>. The
-								blockchain market is predicted
-								to reach $162.84 billion by 2027, highlighting its growing significance. Additionally,
-								Bitcoin adoption has seen
-								substantial growth, with over 41 million BTC addresses holding at least $1 worth of
+							<p>We don’t just educate our customers about on-chain opportunities—<b>we also help those who
+								aren’t marketing clients</b>. We create content and innovative pathways to deliver real value through
+								savings and growth—all powered by our hybrid service model. Blockchain technology is rapidly gaining traction
+								globally, with over 300 million people using it worldwide<a href="https://www.demandsage.com/blockchain-statistics/">1</a>. The
+								blockchain market is predicted to reach $162.84 billion by 2027, highlighting its growing significance.</p>
+								
+								<p>Additionally,
+								Bitcoin adoption has seen substantial growth, with over 41 million BTC addresses holding at least $1 worth of
 								Bitcoin<a href="https://www.tastycrypto.com/blog/bitcoin-adoption/">2</a>. As of 2025, around 5% of the
-								global
-								population has entered the cryptocurrency market. With foundations in utility and integration in future
-								financial
-								systems, this leaves an untapped 95% of the global population as potential demand.</p>
+								global population has entered the cryptocurrency market.With foundations in utility and integration across
+								emerging financial systems—potentially including fast, scalable networks like <a href="../explore.html#article-featured">Solana</a>—this leaves an
+								untapped 95% of the global population as potential demand.</p>
 				
 							<!-- Horizontal Scroll Container -->
 							<div class="scroll-container">
-				
+							
 								<!-- Box 1: Mission Statement -->
 								<article class="scroll-box">
-									<button class="scroll-arrow left" aria-label="Scroll Left"><i
-											class="fas fa-arrow-left"></i></button>
+									<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
 									<div class="box-content">
-										<span class="image"><img src="../assets/images/ofid-expb-logo.png"
-												alt="OFiD Kid Rewards Poster"></span>
+										<span class="image"><img src="../assets/images/ofid-expb-logo.png" alt="OFiD Kid Rewards Poster"></span>
 										<h3>Our Mission</h3>
-										<p>To be the leading identity and movement accelerating
-											mainstream Web3 adoption,
-											unifying people and applications through a simple digital wallet hub and
-											partner platforms. We empower
-											peer-to-peer swaps, protection and earning of assets, envisioning a
-											self-sustaining autonomous
-											ecosystem, guided by the people.</p>
+										<p>To lead Web3 adoption by empowering everyone—businesses, consumers, and newcomers—with #MicroEconomies,
+											a simple framework for discounted services, growth, and savings using eXPB Bouncy Ball. Through
+											strategic marketing and viral onboarding, we unite brands and regular folks in a sustainable digital economy,
+											paving the way for a peer-to-peer future.
+										</p>
 									</div>
 									<button class="scroll-arrow right" aria-label="Scroll Right"><i
 											class="fas fa-arrow-right"></i></button>
@@ -344,7 +340,7 @@
 								<article class="scroll-box">
 									<button class="scroll-arrow left" aria-label="Scroll Left"><i class="fas fa-arrow-left"></i></button>
 									<div class="box-content">
-										<span class="image"><img src="../assets/images/microeconomies.jpg" alt="Phantom Wallet Logo"></span>
+										<span class="image"><img src="../assets/images/microeconomies.PNG" alt="MicroEconomies Tile"></span>
 										<h3>Our Method</h3>
 										<p>We created <b>#MicroEconomies</b>—the secret sauce to accompany stablecoins and introduce a brand-new wave of
 											savings and growth for service businesses and consumers! We're the first to implement this in our Web3
@@ -362,150 +358,96 @@
 									<div class="box-content">
 										<span class="image"><img src="../assets/images/expb-3d-trans.gif" alt="Bouncy Ball 3D Logo"></span>
 										<h3>Our Token</h3>
-										<p>e𝕏PB <b>Bouncy Ball</b> is our shiny gem—right at the heart of our entire ecosystem! It's what makes <b>#MicroEconomies</b>
+										<p>e𝕏PB <b>Bouncy Ball</b> is our shiny gem—right at the heart of our entire ecosystem! It's what makes
+											<b>#MicroEconomies</b>
 											possible. We even have a dedicated page for Bouncy Ball; you can click <a href="../bouncyball.html#guide"
 												target="_blank">here</a> to find out all you need to know.</p>
 									</div>
-									<button class="scroll-arrow right" aria-label="Scroll Right"><i
-											class="fas fa-arrow-right"></i></button>
+									<button class="scroll-arrow right" aria-label="Scroll Right"><i class="fas fa-arrow-right"></i></button>
 								</article>
-							</div>
-				
-							<script>
-								document.addEventListener('DOMContentLoaded', () => {
-									const container = document.querySelector('.scroll-container');
-									const slides = document.querySelectorAll('.scroll-box');
-									const totalSlides = slides.length; // 3 slides
-									let autoScrollInterval; // Store the interval ID
+								</div>
+								
+								<script>
+									document.addEventListener('DOMContentLoaded', () => {
+										const container = document.querySelector('.scroll-container');
+										const slides = document.querySelectorAll('.scroll-box');
+										const totalSlides = slides.length; // 3 slides
 
-									// Force start on Box 1 (Telegram)
-									function setInitialPosition() {
-										container.scrollTo({ left: 0, behavior: 'instant' });
-										updateArrowStates();
-									}
-
-									// Scroll by one box width based on screen size
-									function getBoxWidth() {
-										if (window.innerWidth > 768) {
-											return slides[0].offsetWidth + 10; // Desktop: Box width + gap
-										} else if (window.innerWidth <= 480) {
-											return 260 + 20; // Mobile: Box width + gap
-										} else {
-											return slides[0].offsetWidth; // Mid-range: Stacked box width
+										// Force start on Box 1 (Telegram)
+										function setInitialPosition() {
+											container.scrollTo({ left: 0, behavior: 'instant' });
+											updateArrowStates();
 										}
-									}
 
-									// Update arrow states based on current scroll position
-									function updateArrowStates() {
-										const scrollLeft = container.scrollLeft;
-										const maxScroll = container.scrollWidth - container.clientWidth;
-										const boxWidth = getBoxWidth();
-										const currentSlideIndex = Math.round(scrollLeft / boxWidth);
-
-										slides.forEach((slide, index) => {
-											const leftArrow = slide.querySelector('.scroll-arrow.left');
-											const rightArrow = slide.querySelector('.scroll-arrow.right');
-											leftArrow.disabled = currentSlideIndex === 0;
-											rightArrow.disabled = currentSlideIndex === totalSlides - 1;
-										});
-									}
-
-									// Auto-scroll function for all screen sizes
-									function startAutoScroll() {
-										let currentIndex = 0;
-
-										// Function to reset and start the interval
-										function resetAutoScroll() {
-											if (autoScrollInterval) {
-												clearInterval(autoScrollInterval); // Clear existing interval
+										// Scroll by one box width based on screen size
+										function getBoxWidth() {
+											if (window.innerWidth > 768) {
+												return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+											} else if (window.innerWidth <= 480) {
+												return 260 + 20; // Mobile: Box width + gap
+											} else {
+												return slides[0].offsetWidth; // Mid-range: Stacked box width
 											}
-											autoScrollInterval = setInterval(() => {
-												currentIndex++;
-												if (currentIndex >= totalSlides) {
-													currentIndex = 0;
-													container.scrollTo({ left: 0, behavior: 'smooth' });
-												} else {
-													container.scrollTo({
-														left: currentIndex * getBoxWidth(),
-														behavior: 'smooth'
-													});
-												}
-												setTimeout(updateArrowStates, 300); // Update arrows after scroll
-											}, 12000); // 12 seconds
 										}
 
-										// Initial start
-										resetAutoScroll();
+										// Update arrow states based on current scroll position
+										function updateArrowStates() {
+											const scrollLeft = container.scrollLeft;
+											const maxScroll = container.scrollWidth - container.clientWidth;
+											const boxWidth = getBoxWidth();
+											const currentSlideIndex = Math.round(scrollLeft / boxWidth);
 
-										// Reset timer on arrow clicks
-										slides.forEach(slide => {
+											slides.forEach((slide) => {
+												const leftArrow = slide.querySelector('.scroll-arrow.left');
+												const rightArrow = slide.querySelector('.scroll-arrow.right');
+												leftArrow.disabled = currentSlideIndex === 0;
+												rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+											});
+										}
+
+										// Arrow button functionality
+										slides.forEach((slide) => {
 											const leftArrow = slide.querySelector('.scroll-arrow.left');
 											const rightArrow = slide.querySelector('.scroll-arrow.right');
 
 											leftArrow.addEventListener('click', () => {
 												container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
-												resetAutoScroll(); // Reset timer on click
+												setTimeout(updateArrowStates, 300); // Update arrows after scroll
 											});
 
 											rightArrow.addEventListener('click', () => {
 												container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
-												resetAutoScroll(); // Reset timer on click
+												setTimeout(updateArrowStates, 300); // Update arrows after scroll
 											});
 										});
 
-										// Reset timer on slide tap/click (for selecting a new box)
-										slides.forEach(slide => {
-											slide.addEventListener('click', (e) => {
-												// Only reset if the click isn’t on an arrow (to avoid double reset)
-												if (!e.target.classList.contains('scroll-arrow')) {
-													resetAutoScroll(); // Reset timer on slide click
-												}
-											});
-										});
-									}
+										// Update arrows on scroll
+										container.addEventListener('scroll', updateArrowStates);
 
-									// Update arrows on scroll
-									container.addEventListener('scroll', updateArrowStates);
-
-									// Update arrows after each click (for timing)
-									slides.forEach(slide => {
-										slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
-											arrow.addEventListener('click', () => {
-												setTimeout(updateArrowStates, 300); // Match smooth scroll duration
-											});
-										});
-									});
-
-									// Set initial position after DOM is fully loaded
-									setInitialPosition();
-
-									// Ensure position after page fully renders
-									window.addEventListener('load', setInitialPosition);
-
-									// Start auto-scroll for all sizes
-									startAutoScroll();
-
-									// Handle resize
-									window.addEventListener('resize', () => {
+										// Set initial position after DOM is fully loaded
 										setInitialPosition();
-										// Note: Auto-scroll continues; no need to restart unless width changes behavior significantly
+
+										// Ensure position after page fully renders
+										window.addEventListener('load', setInitialPosition);
+
+										// Handle resize
+										window.addEventListener('resize', setInitialPosition);
 									});
-								});
-							</script>
+								</script>
 
 							<!-- Section 2 - Right Image -->
-							<a href="https://www.ofidcrypt.ca/">
-								<span class="image right"><img src="../assets/images/ofid-partners.jpg"
-										alt="e𝕏P Web3™ Logo"></span>
+							<a href="affiliate.html">
+								<span class="image right"><img src="../assets/images/partnerships.PNG" alt="Partnerships Tile"></span>
 							</a>
 							<h3 style="text-align: right;">Leading Partner Collaborations</h3>
-							<p>By partnering with leading Web3 software developers, our company subtly introduces people to blockchain technology's
-								nuances. Everyday applications integrating blockchain let users experience its benefits without navigating crypto
-								and trading complexities. This approach keeps businesses and individuals at the forefront of technological
-								advancement. We support other developers' software, helping businesses grow their audience through our like-minded
-								community. Additionally, we guide users to wallet apps, enabling easy exploration and management of their digital
-								portfolios.</p>
-							</div>
+							<p>By forming affiliate relationships and strategic alliances—including tech partners,
+								site partners, partner token projects, and community collaborators—our company subtly introduces people to the
+								nuances of blockchain technology. Everyday applications that integrate blockchain allow users to experience its
+								benefits without the need to navigate complex crypto trading. This inclusive approach keeps businesses and
+								individuals at the forefront of technological innovation. We actively support partner software and initiatives,
+								helping brands grow their audiences through our like-minded network. Additionally, we guide users to digital asset wallets,
+								making it easy to explore and manage their digital portfolios.</p>
+								</div>
 					</div>
 				</article>
 
