@@ -2948,118 +2948,209 @@ form > .fields > .field.quarter {
 /* Icon */
 
 .icon {
-    text-decoration: none;
-    border-bottom: none;
-    position: relative;
-    color: var(--button-text-color);
+	text-decoration: none;
+	border-bottom: none;
+	position: relative;
+	color: var(--button-text-color);
 }
 
-    .icon:before {
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-        display: inline-block;
-        font-style: normal;
-        font-variant: normal;
-        text-rendering: auto;
-        line-height: 1;
-        text-transform: none !important;
-        font-family: 'Font Awesome 6 Free'; /* Updated to Font Awesome 6 Free */
-        font-weight: 400;
-    }
+.icon:before {
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	text-transform: none !important;
+	font-family: 'Font Awesome 6 Free';
+	/* Updated to Font Awesome 6 Free */
+	font-weight: 400;
+}
 
-    .icon > .label {
-        display: none;
-    }
+.icon>.label {
+	display: none;
+}
 
-    .icon:before {
-        line-height: inherit;
-    }
+.icon:before {
+	line-height: inherit;
+}
 
-    .icon.solid:before {
-        font-weight: 900;
-    }
+.icon.solid:before {
+	font-weight: 900;
+}
 
-    .icon.brands:before {
-        font-family: 'Font Awesome 6 Brands'; /* Updated to Font Awesome 6 Brands */
-    }
+.icon.brands:before {
+	font-family: 'Font Awesome 6 Brands';
+	/* Updated to Font Awesome 6 Brands */
+}
 
 /* Image */
 
-	.image {
-		border: 0;
-		display: inline-block;
-		position: relative;
+.image {
+	border: 0;
+	display: inline-block;
+	position: relative;
+}
+
+.image img {
+	display: block;
+}
+
+.post {
+	overflow: auto;
+}
+
+.image.left,
+.image.right {
+	max-width: 30%;
+	/* This makes the image containers 30% of their parent's width */
+}
+
+.image.left img,
+.image.right img {
+	max-width: 100%;
+	height: auto;
+	object-fit: contain;
+	/* Remove or increase max-height if set */
+	border-radius: 8px;
+}
+
+.image.left {
+	float: left;
+	margin-right: 1.5rem;
+	/* Adjusted for larger images */
+}
+
+.image.right {
+	float: right;
+	margin-left: 1.5rem;
+	/* Adjusted for larger images */
+}
+
+.image.fit {
+	display: block;
+	margin: 2.5rem 0;
+	width: 100%;
+}
+
+.image.fit:first-child {
+	margin-top: 0;
+}
+
+.image.fit img {
+	width: 100%;
+}
+
+.image.main {
+	display: block;
+	margin: 4rem 0;
+	width: 100%;
+}
+
+.image.main:first-child {
+	margin-top: 0;
+}
+
+.image.main img {
+	width: 100%;
+}
+
+@media screen and (max-width: 736px) {
+
+	.image.left,
+	.image.right {
+		float: none;
+		max-width: 100%;
+		margin: 1rem 0;
 	}
 
-		.image img {
-			display: block;
-		}
+	.image.left img,
+	.image.right img {
+		max-width: 100%;
+	}
 
-		.post {
-			overflow: auto;
-		}
-		
-		.image.left, .image.right {
-			max-width: 30%; /* This makes the image containers 30% of their parent's width */
-		}
-		
-		.image.left img, .image.right img {
-			max-width: 100%; 
-			height: auto; 
-			object-fit: contain; 
-			/* Remove or increase max-height if set */
-			border-radius: 8px;
-		}
-		
-		.image.left {
-			float: left;
-			margin-right: 1.5rem; /* Adjusted for larger images */
-		}
-		
-		.image.right {
-			float: right;
-			margin-left: 1.5rem; /* Adjusted for larger images */
-		}
-		
-		.image.fit {
-			display: block;
-			margin: 2.5rem 0;
-			width: 100%;
-		}
+	.product-content a,
+	.product-content a .image,
+	.product-content a .image.left,
+	.product-content a .image.right {
+		border-bottom: none !important;
+	}
 
-			.image.fit:first-child {
-				margin-top: 0;
-			}
+	.image.fit {
+		margin: 2rem 0;
+	}
 
-			.image.fit img {
-				width: 100%;
-			}
+	.image.main {
+		margin: 2rem 0;
+	}
+}
 
-		.image.main {
-			display: block;
-			margin: 4rem 0;
-			width: 100%;
-		}
+@media screen and (min-width: 737px) {
 
-			.image.main:first-child {
-				margin-top: 0;
-			}
+	.image.left,
+	.image.right {
+		max-width: 45%;
+		/* Keep increased size */
+		width: auto;
+		/* Allow natural width up to max-width */
+	}
 
-			.image.main img {
-				width: 100%;
-			}
+	.image.left {
+		float: left;
+		margin: 15px 25px 15px 0;
+		/* Remove left margin (0), keep right (25px) for text spacing */
+	}
 
-		@media screen and (max-width: 736px) {
+	.image.right {
+		float: right;
+		margin: 15px 0 15px 25px;
+		/* Remove right margin (0), keep left (25px) for text spacing */
+	}
 
-			.image.fit {
-				margin: 2rem 0;
-			}
+	.image.left img,
+	.image.right img {
+		max-width: 100%;
+		/* Scale within container */
+		height: auto;
+		/* Maintain aspect ratio */
+		object-fit: contain;
+		border-radius: 8px;
+		/* Keep existing border radius */
+	}
 
-			.image.main {
-				margin: 2rem 0;
-			}
+	.product-content {
+		overflow: hidden;
+		/* Clearfix for floated images */
+		padding: 0 20px 20px 20px;
+		/* Prevent text crowding */
+		max-width: 1200px;
+		/* Limit content width */
+		margin: 0 auto;
+		/* Center content */
+	}
 
-		}
+	.product-wrapper {
+		width: 100%;
+		/* Full width */
+		max-width: 1200px;
+		/* Consistent with product-content */
+		margin: 0 auto;
+		/* Center wrapper */
+	}
+
+	.product-content p {
+		margin: 1.5em 0;
+		/* Standardize paragraph spacing */
+		line-height: 1.6;
+		/* Improve readability */
+	}
+  /* Remove underlines from linked images */
+  .product-content a .image.left,
+  .product-content a .image.right {
+    border-bottom: none !important;
+  }
+}
 
 				/* Affiliate desktop styles */
 				.image.left.affiliate,
@@ -5116,7 +5207,7 @@ section.livestream {
 }
 
 .product-wrapper {
-    margin-top: 2rem; /* Adjust the value as needed */
+    margin-top: 0rem; /* Adjust the value as needed */
 }
 
 /* Clear the float after each section */
