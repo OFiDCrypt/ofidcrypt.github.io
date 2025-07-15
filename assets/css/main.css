@@ -4785,7 +4785,7 @@ section.livestream {
     overflow-y: auto; /* Vertical scroll if content overflows */
     scroll-snap-align: center; /* Center each box in viewport */
     flex-direction: column; /* Stack content vertically */
-	margin: 0 15px 1rem 15px; /* Margin for scrollbar compensation */
+	margin: 15px 15px 1rem 15px; /* Margin for scrollbar compensation */
     box-sizing: border-box; /* Include padding/border in width */
     position: relative; /* Context for absolute arrows */
 }
@@ -6142,121 +6142,208 @@ article.community.featured {
 				}
 			}			
 
-			#copyright {
-				color: var(--copyright-text-color);
-				position: relative;
-				cursor: default;
-				font-family: "Source Sans Pro", Helvetica, sans-serif;
-				font-size: 0.8rem;
-				font-weight: 900;
-				letter-spacing: 0.075em;
-				line-height: 1.5;
-				text-align: center;
-				text-transform: uppercase;
-				margin: 4rem auto 8rem auto;
-				width: calc(100% - 4rem);
-				max-width: 72rem;
-				z-index: 2;
-			}
-			
-			#copyright input, #copyright select, #copyright textarea {
-				color: var(--copyright-input-color);
-			}
-			
-			#copyright a {
-				color: var(--copyright-link-color);
-				border-bottom-color: rgba(255, 255, 255, 0.5);
-			}
-			
-			#copyright a:hover {
-				border-bottom-color: transparent;
-				color: var(--copyright-link-hover-color) !important;
-			}
-			
-			#copyright strong, #copyright b {
-				color: var(--copyright-strong-color);
-			}
-			
-			#copyright h1, #copyright h2, #copyright h3, #copyright h4, #copyright h5, #copyright h6 {
-				color: var(--copyright-heading-color);
-			}
-			
-			#copyright blockquote {
-				border-left-color: var(--copyright-blockquote-border-color);
-			}
-			
-			#copyright code {
-				background: rgba(255, 255, 255, 0.075); /* Assuming this should stay the same */
-				border-color: var(--copyright-code-border-color);
-			}
-			
-			#copyright hr {
-				border-bottom-color: var(--copyright-hr-color);
-			}
+						/* Copyright */
+					#copyright {
+    color: var(--copyright-text-color); /* Black in light mode, white in dark mode */
+    position: relative;
+    cursor: default;
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.075em;
+    line-height: 1.5;
+    text-align: center;
+    text-transform: uppercase;
+    margin: 2rem auto 0rem auto; /* Your updated margin */
+    width: calc(100% - 4rem);
+    max-width: 72rem;
+    z-index: 2;
+}
 
-		#copyright a {
-			color: inherit;
-			border-bottom-color: inherit;
-		}
+#copyright input,
+#copyright select,
+#copyright textarea {
+    color: var(--copyright-input-color);
+}
 
-		#copyright ul {
-			list-style: none;
-			margin: 0;
-			padding-left: 0;
-		}
+#copyright a {
+    color: var(--copyright-link-color);
+    border-bottom-color: rgba(255, 255, 255, 0.5);
+}
 
-			#copyright ul li {
-				border-left: solid 2px;
-				display: inline-block;
-				line-height: 1;
-				margin-left: 1rem;
-				padding-left: 1rem;
-			}
+#copyright a:hover {
+    border-bottom-color: transparent;
+    color: var(--copyright-link-hover-color) !important;
+}
 
-				#copyright ul li:first-child {
-					border-left: 0;
-					margin-left: 0;
-					padding-left: 0;
-				}
+#copyright strong,
+#copyright b {
+    color: var(--copyright-strong-color);
+}
 
-		/* @media screen and (max-width: 1280px) {
+#copyright h1,
+#copyright h2,
+#copyright h3,
+#copyright h4,
+#copyright h5,
+#copyright h6 {
+    color: var(--copyright-heading-color);
+}
 
-			#copyright {
-				margin: 4rem auto;
-			}
+#copyright blockquote {
+    border-left-color: var(--copyright-blockquote-border-color);
+}
 
-		}
+#copyright code {
+    background: rgba(255, 255, 255, 0.075);
+    border-color: var(--copyright-code-border-color);
+}
 
-		 @media screen and (max-width: 480px) {
+#copyright hr {
+    border-bottom-color: var(--copyright-hr-color);
+}
 
-			#copyright ul li {
-				border-left: 0;
-				margin: 1rem 0 0 0;
-				padding-left: 0;
-				display: block;
-			}
+#copyright a {
+    color: inherit; /* Inherit from parent, typically var(--copyright-text-color) */
+    border-bottom-color: inherit;
+}
 
-				#copyright ul li:first-child {
-					margin-top: 0;
-				}
+#copyright ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
 
-		} */
+#copyright ul li {
+    border-left: solid 2px;
+    display: inline-block;
+    line-height: 1;
+    margin-left: 1rem;
+    padding-left: 1rem;
+}
 
-		@media screen and (max-width: 480px) {
-		
-			#copyright {
-				display: inline-block; /* Ensure it shrinks to fit content */
-				width: 100%; /* Full width */
-				padding-top: 1.8rem;
-				padding-bottom: 1.8rem;
-				white-space: nowrap; /* Prevent line breaks */
-				overflow: hidden; /* Hide overflow */
-				text-overflow: ellipsis; /* Add ellipsis for overflow text */
-				text-align: center; /* Center align text */
-				margin: 0 auto; /* Center it within the parent */
-				display: block;
-			}
-		}
+#copyright ul li:first-child {
+    border-left: 0;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+/* Footer Extended Links Container */
+.footer-extended-container {
+    display: flex;
+    justify-content: center; /* Center the columns horizontally */
+    gap: 2em; /* Space between columns */
+    padding: 0rem 2rem; /* Your updated padding */
+    max-width: 72rem; /* Match #copyright max-width for consistency */
+    margin: 0 auto 2rem auto; /* Center the container */
+    font-family: "Source Sans Pro", Helvetica, sans-serif; /* Match #copyright font */
+    font-size: 0.75rem; /* Reduced for tidier appearance on desktop */
+    color: var(--copyright-text-color); /* Match #copyright text color (black in light, white in dark) */
+}
+
+.footer-extended {
+    flex: 1; /* Each section takes equal space */
+    min-width: 200px; /* Minimum width for each column */
+    text-align: left; /* Align text to the left within each column */
+}
+
+/* Separator between sections (vertical line) */
+.footer-extended:not(:last-child)::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 100%;
+    background: var(--copyright-blockquote-border-color); /* Match blockquote border color */
+    position: absolute;
+    right: -1em; /* Adjust based on gap */
+    top: 0;
+}
+
+/* Styles for lists within footer-extended sections */
+.footer-extended ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-extended ul li {
+    margin-bottom: 0em; /* Your updated margin */
+    font-size: 0.8em; /* Reduced to match .smaller-heading (~0.6rem) on desktop */
+}
+
+.footer-extended ul li a {
+    color: inherit; /* Match #copyright a color inheritance */
+    text-decoration: none;
+    border-bottom: none; /* Remove default underline */
+}
+
+.footer-extended ul li a:hover {
+    color: var(--copyright-link-hover-color); /* Match #copyright hover color */
+}
+
+.footer-extended h1.left-aligned {
+    font-size: 0.95em; /* Reduced to match smaller desktop font */
+    font-weight: 900;
+    letter-spacing: 0.075em;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    text-align: left; /* Align headings to the left on desktop */
+}
+
+.footer-extended h1.left-aligned .smaller-heading {
+    font-size: 0.8em; /* Reduced to maintain hierarchy (~0.6rem) on desktop */
+    /* Color controlled by external stylesheet (e.g., blue) */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 900px) {
+    #copyright {
+        display: inline-block; /* Ensure it shrinks to fit content */
+        width: 100%; /* Full width */
+        padding-top: 1.8rem;
+        padding-bottom: 0rem; /* Your updated padding */
+        white-space: nowrap; /* Prevent line breaks */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis for overflow text */
+        text-align: center; /* Center align text */
+        margin: 0 auto; /* Center it within the parent */
+        display: block;
+    }
+
+    .footer-extended-container {
+        flex-direction: column; /* Stack columns vertically on small screens */
+        align-items: center; /* Center align sections horizontally */
+        gap: 0; /* No spacing between sections on mobile */
+        display: flex; /* Ensure flexbox for vertical centering */
+        justify-content: center; /* Vertically center content */
+        font-size: 0.9rem; /* Restore original mobile font size */
+        /* Removed min-height to allow shrinking to content */
+    }
+
+    .footer-extended {
+        width: calc(100% - 2rem); /* Constrain width to allow margins */
+        margin: 0 1rem; /* Add left and right margin for spacing */
+        text-align: center; /* Center text for mobile */
+    }
+
+    .footer-extended:not(:last-child)::after {
+        display: none; /* Remove separator on mobile */
+    }
+
+    .footer-extended h1.left-aligned {
+        font-size: 1.1em; /* Restore original mobile heading size */
+        text-align: center; /* Center headings on mobile */
+    }
+
+    .footer-extended h1.left-aligned .smaller-heading {
+        font-size: 0.9em; /* Restore original mobile subheading size */
+        /* Color controlled by external stylesheet (e.g., blue) */
+    }
+
+    .footer-extended ul li {
+        font-size: 1em; /* Restore original mobile list item size (inherits 0.9rem) */
+    }
+}
 
 /* Nav Panel Toggle*/
 #navPanelToggle {
