@@ -20,11 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd js
+          cd assets/js
           npm install
 
       - name: Run supply update script
-        run: node js/updateSupply.js
+        run: node assets/js/updateSupply.js
 
       - name: Commit updated supply files
         run: |
