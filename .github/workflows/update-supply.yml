@@ -24,10 +24,10 @@ jobs:
       - name: Run supply update script
         run: node js/updateSupply.js
 
-      - name: Commit updated supply.json
+      - name: Commit updated supply files
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add supply.json
-          git commit -m "Auto-update supply data"
+          git add total.txt circulating.txt max.txt
+          git commit -m "Auto-update supply values"
           git push
