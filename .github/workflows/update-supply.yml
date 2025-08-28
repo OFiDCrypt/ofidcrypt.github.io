@@ -24,7 +24,7 @@ jobs:
           npm install
 
       - name: Run supply update script
-        run: node assets/js/updateSupply.js
+        run: node assets/js/updatesupply.js
 
       - name: Commit updated supply files
         run: |
