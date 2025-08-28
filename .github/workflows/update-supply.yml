@@ -1,0 +1,33 @@
+name: Update Supply Data
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run supply update script
+        run: node js/updateSupply.js
+
+      - name: Commit updated supply.json
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add supply.json
+          git commit -m "Auto-update supply data"
+          git push
