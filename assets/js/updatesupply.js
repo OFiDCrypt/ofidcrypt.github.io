@@ -12,15 +12,15 @@ https.get(url, (res) => {
       const json = JSON.parse(data);
       const market = json.market_data;
 
-      const supplyData = {
-        circulating_supply: market.circulating_supply || 0,
-        total_supply: market.total_supply || 0,
-        max_supply: market.max_supply || 0,
-        last_updated: new Date().toISOString()
-      };
+      const total = market.total_supply || 0;
+      const circulating = market.circulating_supply || 0;
+      const max = market.max_supply || 0;
 
-      fs.writeFileSync('supply.json', JSON.stringify(supplyData, null, 2));
-      console.log('✅ supply.json updated');
+      fs.writeFileSync('total.txt', total.toString());
+      fs.writeFileSync('circulating.txt', circulating.toString());
+      fs.writeFileSync('max.txt', max.toString());
+
+      console.log('✅ All supply files updated');
     } catch (err) {
       console.error('❌ Error parsing CoinGecko response:', err);
     }
