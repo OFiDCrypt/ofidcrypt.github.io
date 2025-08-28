@@ -19,7 +19,9 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd js
+          npm install
 
       - name: Run supply update script
         run: node js/updateSupply.js
