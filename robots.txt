@@ -3,6 +3,7 @@ Disallow: /explore/app-featured-hvr
 Disallow: /docs/main/whitepaper
 Disallow: /docs/main/whitepaper2
 Disallow: /docs/main/pa1
+Disallow: /docs/main/la1
 Disallow: /cashlinks
 Disallow: /404
 Disallow: /promote/client-directory
