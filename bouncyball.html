@@ -130,14 +130,147 @@
 		<!-- Main -->
 		<div id="main">
 		
-			<!-- Ad Banner -->
-			<section id="expb-ball" class="ad-banner">
-				<div style="text-align: center;">
-					<a href="https://t.me/OFiDBall" style="border-bottom: none;">
-						<img src="/assets/images/expb-banner-02.png" alt="Ad Banner" style="max-width: 100%; height: auto;">
+			<!-- Scrolling Ad Banner -->
+			<div id="expb-ball" class="ad-banner-wrapper">
+				<div class="ad-scroll-container">
+					<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 3"
+							style="max-width: 100%; height: auto;">
 					</a>
 				</div>
-			</section>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const container = document.querySelector('.ad-scroll-container');
+					const slides = document.querySelectorAll('.ad-slide');
+					const totalSlides = slides.length;
+					let autoScrollInterval;
+					let currentIndex = 0; // Track current index globally
+
+					// Exit if no slides
+					if (totalSlides === 0) {
+						console.warn('No slides found in .ad-scroll-container');
+						return;
+					}
+
+					// Clone first slide for continuous loop
+					const firstSlideClone = slides[0].cloneNode(true);
+					container.appendChild(firstSlideClone);
+					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+					// Force start on first slide
+					function setInitialPosition() {
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						currentIndex = 0; // Reset index
+					}
+
+					// Calculate slide width
+					function getBoxWidth() {
+						const slideWidth = slides[0].offsetWidth; // Actual slide width
+						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+						const totalWidth = slideWidth + slideMargin;
+						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+						return totalWidth;
+					}
+
+					// Auto-scroll function
+					function startAutoScroll() {
+						function resetAutoScroll() {
+							if (autoScrollInterval) {
+								clearInterval(autoScrollInterval);
+							}
+							autoScrollInterval = setInterval(() => {
+								currentIndex++;
+								console.log('Scrolling to index:', currentIndex);
+								if (currentIndex >= totalSlides + 1) {
+									// Reached clone, reset to first slide instantly
+									container.scrollTo({ left: 0, behavior: 'instant' });
+									currentIndex = 1; // Start from second slide
+								}
+								container.scrollTo({
+									left: currentIndex * getBoxWidth(),
+									behavior: 'smooth'
+								});
+							}, 8000); // 8 seconds
+						}
+
+						// Start auto-scrolling
+						resetAutoScroll();
+					}
+
+					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchMoved = false;
+
+					container.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						touchMoved = false;
+					}, { passive: true });
+
+					container.addEventListener('touchmove', (e) => {
+						const touchX = e.touches[0].clientX;
+						const touchY = e.touches[0].clientY;
+						const deltaX = Math.abs(touchX - touchStartX);
+						const deltaY = Math.abs(touchY - touchStartY);
+
+						// Block horizontal swipe (deltaX > 10, deltaY < 50)
+						if (deltaX > 10 && deltaY < 50) {
+							e.preventDefault(); // Block swipe
+							touchMoved = true;
+						}
+						// Allow vertical scrolling (deltaY > 50)
+						if (deltaY > 50) {
+							touchMoved = true; // Mark as moved, but don't prevent default
+						}
+					}, { passive: false });
+
+					container.addEventListener('touchend', (e) => {
+						if (!touchMoved) {
+							// Treat as tap, allow link click
+							const touchEndX = e.changedTouches[0].clientX;
+							const touchEndY = e.changedTouches[0].clientY;
+							const deltaX = Math.abs(touchEndX - touchStartX);
+							const deltaY = Math.abs(touchEndY - touchStartY);
+
+							if (deltaX < 10 && deltaY < 10) {
+								const target = e.target.closest('a');
+								if (target && target.href) {
+									window.location.href = target.href; // Trigger link
+								}
+							}
+						}
+					}, { passive: true });
+
+					// Prevent wheel scrolling within carousel
+					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+					// Debounce resize handler, preserve current slide
+					let resizeTimeout;
+					window.addEventListener('resize', () => {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => {
+							// Restore current slide position instead of resetting
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'instant'
+							});
+							startAutoScroll();
+						}, 100); // 100ms debounce
+					});
+
+					// Initialize
+					setInitialPosition();
+					startAutoScroll();
+				});
+			</script>
 
 			<!-- Chart -->
 			<section id="expb-chart">
@@ -172,31 +305,71 @@
 					}
 				</script>
 				
+				<!-- Header -->
 				<header id="guide">
 					<h2>What is Bouncy Ball?</h2>
-					<!-- Section Description -->
-					<p>Giddy’s Bouncy Ball (e𝕏PB) is a fun, secure, and rewarding token with real-world value 🎉 With a fixed 1 billion
-						to ever be created, you can grab your share early--the opportunity to hold an asset that drives business, web3
-						adoption, and entertainment.</p>
+				
+					<!-- Description -->
+					<p>
+						Giddy’s Bouncy Ball (e𝕏PB) is a fun, secure, and rewarding token with real-world value 🎉
+						It’s designed to be used as a form of payment for products and services offered by OFiDCrypt Marketing and
+						<a href="https://giddys.shop" target="_blank">Giddy’s Shop</a>—an asset that drives both business and consumer growth while reducing spending through digital asset payments; encouraging Web3
+						adoption, and enhancing entertainment.
+					</p>
 				
 					<p style="text-align: center;">
-						Easy to get and safe to hold, Bouncy Ball grows in many ways; such as with the
-						<a href="/ofidtales.html#giddy-tales-nav">Giddy Tales Series</a> as it gains popularity, or if more people buy
-						in to support us. Not only that, when we do business as usual—your portfolio will grow with us, even if you're not a
-						customer! Whether for rewards, innovation, or fun, it's rolling toward a future where Web3 meets creativity—and the more businesses that adopt
+						Easy to get and safe to hold, Bouncy Ball grows in many ways—such as through the
+						<a href="/ofidtales.html#giddy-tales-nav">Giddy Tales Series</a> as it gains popularity, and through the
+						redistribution of tokens within our ecosystem from every sale.
+						Whether for rewards, innovation, or fun, it's rolling toward a future where Web3 meets creativity—and the more
+						businesses that adopt
 						#MicroEconomies, the faster we all grow! 🚀
 					</p>
 				
 					<!-- Bulletins & Social Links Buttons -->
 					<div class="round-button-container">
-						<button class="round-button"><a href="https://ofidcrypt.ca/new-ofid-bouncy-ball-epb">Learn More</a></button>
+						<button class="round-button">
+							<a href="https://ofidcrypt.ca/new-ofid-bouncy-ball-epb">Learn More</a>
+						</button>
 					</div>
-				</header>
+					<!-- Header -->
+					<div>
+						<header class="major" id="buy-expb">
+							<span class="date">Wallets & Providers</span>
+							<h1>Get Tokens</h1>
+						</header>
+					</div>
+					
+					<!-- Info Tile -->
+					<section id="provider-tile" class="provider-tile">
+						<a href="https://t.me/c/2292263577/35699" target="_blank">
+							<img src="/assets/images/expb-providers-1.png" alt="Providers">
+						</a>
+					
+						<!-- Token Buttons -->
+						<div class="token-button-container">
+							<button class="token-button"><a href="https://phantom.com/..." target="_blank">Phantom</a></button>
+							<button class="token-button"><a href="https://moonshot.com/..." target="_blank">Moonshot</a></button>
+							<button class="token-button"><a href="https://jup.ag/..." target="_blank">Jupiter</a></button>
+							<button class="token-button"><a href="https://raydium.io/..." target="_blank">Raydium</a></button>
+							<button class="token-button"><a href="https://coingecko.com/..." target="_blank">CoinGecko</a></button>
+							<button class="token-button"><a href="https://coinranking.com/..." target="_blank">CoinRanking</a></button>
+							<button class="token-button"><a href="https://solscan.io/..." target="_blank">Solscan</a></button>
+						</div>
+					</section>
+					
+					<!-- Section Description -->
+					<header>
+						<p style="text-align: center;">
+							Giddy’s Bouncy Ball (e𝕏PB) is verified on Solscan and listed on CoinGecko. Explore your favorite wallet apps and data providers
+							above to buy your own Bouncy Ball Tokens!
+						</p>
+					</header>
 
-				<!-- TikTok Embed -->
-				<div class="tiktok-videos-container">
+				<!-- TikTok Embed 
+				<div class="tiktok-videos-container"> -->
 					<!-- Video 1 - TikTok Embed -->
-					<div class="tiktok-video-wrapper">
+					<!--<div class="tiktok-video-wrapper">
 						<header class="tiktok-header">
 							<h2>Bulletins</h2>
 						</header>
@@ -224,6 +397,7 @@
 						</div>
 					</div>
 				</div>
+				-->
 				
 				</section>
 			</section>
