@@ -2567,14 +2567,12 @@ button,
 /* Explore Button */
 .round-button-container {
 	display: flex;
-	/* Aligns buttons side by side */
 	justify-content: center;
-	/* Centers the button group */
 	gap: 1rem;
-	/* Adds spacing between buttons */
+	margin-bottom: 3rem; /* 👈 Increased from 2rem to 3rem for desktop */
 }
 
-/* To remove extra space from the last button */
+/* Individual Button Styling */
 .round-button {
 	background-color: var(--button-bg-color);
 	border-radius: 20px;
@@ -2582,17 +2580,53 @@ button,
 	margin-top: 1rem;
 }
 
-/* To remove extra space from the last button */
 .round-button:last-child {
 	margin-right: 0;
 }
 
+/* Mobile Styles */
 @media screen and (max-width: 768px) {
 	.round-button-container {
 		flex-direction: column;
-		/* Stacks vertically on mobile */
 		align-items: center;
+		margin-bottom: 2rem; /* 👈 Overrides desktop value for mobile */
 	}
+}
+
+/* Token Button Container */
+.token-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Individual Token Buttons */
+.token-button {
+  background-color: var(--button-bg-color);
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+  flex: 1 1 calc(50% - 1rem); /* Two buttons per row with gap */
+  display: flex; /* Enable flexbox */
+  align-items: center; /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+}
+
+/* Link inside button */
+.token-button a {
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+/* Remove extra margin from last button */
+.token-button:last-child {
+  margin-right: 0;
 }
 
 input[type="submit"].icon:before,
@@ -5656,6 +5690,51 @@ section.livestream {
 	#info-tile img {
 		max-width: 100%;
 		/* Full width on mobile */
+	}
+}
+
+/* Provider Tile */
+#provider-tile {
+	display: flex;
+	flex-direction: row;
+	gap: 2rem;
+	max-width: 100%;
+	justify-content: center;
+}
+
+/* Desktop only: Add top padding */
+@media (min-width: 801px) {
+	#provider-tile {
+		padding-top: 1rem;
+	}
+}
+
+#provider-tile img {
+	max-width: 50%;
+	height: auto;
+	border-radius: 20px; /* Rounded corners */
+}
+
+#provider-tile a {
+	display: contents;
+}
+
+/* Intermediate: Keep side by side with smaller images */
+@media (max-width: 1200px) and (min-width: 801px) {
+	#provider-tile img {
+		max-width: 40%;
+	}
+}
+
+/* Mobile: Stack images */
+@media (max-width: 800px) {
+	#provider-tile {
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	#provider-tile img {
+		max-width: 100%;
 	}
 }
 
