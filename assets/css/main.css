@@ -2586,11 +2586,19 @@ button,
 
 /* Mobile Styles */
 @media screen and (max-width: 768px) {
-	.round-button-container {
-		flex-direction: column;
-		align-items: center;
-		margin-bottom: 2rem; /* 👈 Overrides desktop value for mobile */
-	}
+    .round-button-container {
+        display: flex;
+        flex-direction: column; /* Stack button pairs vertically */
+        align-items: center; /* Center pairs horizontally */
+        gap: 1rem; /* Maintain spacing between pairs */
+        margin-bottom: 2rem; /* Overrides desktop value for mobile */
+    }
+    .button-pair {
+        display: flex;
+        flex-wrap: nowrap; /* Ensure buttons in a pair stay side by side */
+        gap: 1rem; /* Spacing between buttons in a pair */
+        justify-content: center; /* Center buttons within the pair */
+    }
 }
 
 /* Token Button Container */
@@ -3291,7 +3299,7 @@ input[type="radio"]:focus+label:before {
 	.product-content {
 		overflow: hidden;
 		/* Clearfix for floated images */
-		padding: 0 20px 20px 20px;
+		padding: 20px 20px 20px 20px;
 		/* Prevent text crowding */
 		max-width: 1200px;
 		/* Limit content width */
