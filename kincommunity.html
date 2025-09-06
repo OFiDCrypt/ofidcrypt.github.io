@@ -222,6 +222,7 @@
 								<p>Bouncy Ball powers OFiDCrypt’s tokenized e-commerce; an accepted currency for marketing services and
 									Giddy’s entertainment
 									products. It cuts costs and boosts portfolio growth—benefiting both businesses and consumers.</p>
+
 								<div class="round-button-container">
 									<button class="round-button"><a href="https://t.me/OFiDBall">Telegram</a></button>
 								</div>
@@ -243,6 +244,7 @@
 								<p>Sockless Transactions: No fees, just smooth spells 🪄💸. Mischief Mode: Monthly lotteries 🎟️ for
 									magical
 									goodies 🎁. Magic Wallet: A wizard-worthy 🧙‍♀️, easy-to-use wallet 💼🔮.</p>
+									
 								<div class="round-button-container">
 									<button class="round-button"><a href="https://t.co/gQBLmw20Qp">Telegram</a></button>
 								</div>
@@ -263,7 +265,7 @@
 								<h3>MYLO Cat</h3>
 								<p>Cutest Cat on Solana + Strong Community + Real Utility + Jupiter Swap + Coming up MYLO TRADING BOT!
 								</p>
-								<!-- Bulletins & Social Links Buttons -->
+				
 								<div class="round-button-container">
 									<button class="round-button"><a href="https://t.me/mylocat_official">Telegram</a></button>
 								</div>
@@ -282,7 +284,7 @@
 								</a>
 								<h3>DUNO GLOBAL</h3>
 								<p>$DUNO Global Army is the ultimate hyped crypto project, offering free coins to early adopters!</p>
-								<!-- Bulletins & Social Links Buttons -->
+				
 								<div class="round-button-container">
 									<button class="round-button"><a href="https://t.co/Zw5nm61Bvx">Telegram</a></button>
 								</div>
@@ -301,7 +303,7 @@
 								</a>
 								<h3>ONE</h3>
 								<p></p>
-								<!-- Bulletins & Social Links Buttons -->
+				
 								<div class="round-button-container">
 									<button class="round-button"><a href="https://t.co/Zw5nm61Bvx">Telegram</a></button>
 								</div>
@@ -320,7 +322,7 @@
 								</a>
 								<h3>KIN</h3>
 								<p></p>
-								<!-- Bulletins & Social Links Buttons -->
+				
 								<div class="round-button-container">
 									<button class="round-button"><a href="#article-featured">Learn More</a></button>
 								</div>
@@ -329,162 +331,134 @@
 						</article>
 					</div>
 				</section>
-				
-				<script>
-					document.addEventListener('DOMContentLoaded', () => {
-						const container = document.querySelector('.scroll-container');
-						const slides = document.querySelectorAll('.scroll-box');
-						const totalSlides = 6; // Six slides
-						let autoScrollInterval; // Store the interval ID
+								
+								<script>
+									document.addEventListener('DOMContentLoaded', () => {
+										const container = document.querySelector('.scroll-container'); // Match HTML class
+										const slides = document.querySelectorAll('.scroll-box'); // Match HTML class
+										const totalSlides = 6; // Six slides
+										let autoScrollInterval; // Store the interval ID
 
-						// Force start on Box 1 (Bouncy Ball, furthest left/top)
-						function setInitialPosition() {
-							if (window.innerWidth > 768) {
-								// Desktop: Horizontal scroll to leftmost item
-								container.scrollTo({ left: 0, behavior: 'instant' });
-							} else {
-								// Mobile: Ensure top of vertical stack
-								container.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-								// Fallback for rendering issues
-								setTimeout(() => {
-									if (slides.length > 0) {
-										slides[0].scrollIntoView({ block: 'start', behavior: 'instant' });
-										console.log('Mobile scroll reset to first item'); // Debug for emulator
-									}
-								}, 300); // Increased delay for emulator
-							}
-							updateArrowStates();
-						}
+										// Force start on Box 1 (Bouncy Ball, furthest left)
+										function setInitialPosition() {
+											container.scrollTo({ left: 0, behavior: 'instant' });
+											updateArrowStates();
+										}
 
-						// Scroll by one box width based on screen size (desktop only)
-						function getBoxWidth() {
-							if (window.innerWidth > 768) {
-								return slides[0].offsetWidth + 10; // Desktop: Box width + gap
-							}
-							return 0; // Mobile: No horizontal scrolling
-						}
+										// Scroll by one box width based on screen size
+										function getBoxWidth() {
+											if (window.innerWidth > 768) {
+												return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+											} else if (window.innerWidth <= 480) {
+												return 260 + 20; // Mobile: Box width + gap
+											} else {
+												return slides[0].offsetWidth; // Mid-range: Stacked box width
+											}
+										}
 
-						// Update arrow states based on current scroll position (desktop only)
-						function updateArrowStates() {
-							if (window.innerWidth > 768) {
-								const scrollLeft = container.scrollLeft;
-								const maxScroll = container.scrollWidth - container.clientWidth;
-								const boxWidth = getBoxWidth();
-								const currentSlideIndex = boxWidth ? Math.round(scrollLeft / boxWidth) : 0;
+										// Update arrow states based on current scroll position
+										function updateArrowStates() {
+											const scrollLeft = container.scrollLeft;
+											const maxScroll = container.scrollWidth - container.clientWidth;
+											const boxWidth = getBoxWidth();
+											const currentSlideIndex = Math.round(scrollLeft / boxWidth);
 
-								slides.forEach((slide) => {
-									const leftArrow = slide.querySelector('.scroll-arrow.left');
-									const rightArrow = slide.querySelector('.scroll-arrow.right');
-									if (leftArrow && rightArrow) {
-										leftArrow.disabled = currentSlideIndex === 0;
-										rightArrow.disabled = currentSlideIndex === totalSlides - 1;
-									}
-								});
-							}
-						}
-
-						// Auto-scroll function for desktop only
-						function startAutoScroll() {
-							let currentIndex = 0;
-
-							// Function to reset and start the interval
-							function resetAutoScroll() {
-								if (autoScrollInterval) {
-									clearInterval(autoScrollInterval); // Clear existing interval
-								}
-								autoScrollInterval = setInterval(() => {
-									if (window.innerWidth > 768) {
-										// Only auto-scroll on desktop
-										currentIndex++;
-										if (currentIndex >= totalSlides) {
-											currentIndex = 0;
-											container.scrollTo({ left: 0, behavior: 'smooth' });
-										} else {
-											container.scrollTo({
-												left: currentIndex * getBoxWidth(),
-												behavior: 'smooth'
+											slides.forEach((slide) => {
+												const leftArrow = slide.querySelector('.scroll-arrow.left');
+												const rightArrow = slide.querySelector('.scroll-arrow.right');
+												if (leftArrow && rightArrow) {
+													leftArrow.disabled = currentSlideIndex === 0;
+													rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+												}
 											});
 										}
-										setTimeout(updateArrowStates, 300); // Update arrows after scroll
-									}
-								}, 12000); // 12 seconds
-							}
 
-							// Initial start
-							resetAutoScroll();
+										// Auto-scroll function for all screen sizes
+										function startAutoScroll() {
+											let currentIndex = 0;
 
-							// Reset timer on arrow clicks
-							slides.forEach(slide => {
-								const leftArrow = slide.querySelector('.scroll-arrow.left');
-								const rightArrow = slide.querySelector('.scroll-arrow.right');
-								if (leftArrow && rightArrow) {
-									leftArrow.addEventListener('click', (e) => {
-										e.preventDefault(); // Prevent default button behavior
-										if (window.innerWidth > 768) {
-											container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
-											resetAutoScroll(); // Reset timer on click
+											// Function to reset and start the interval
+											function resetAutoScroll() {
+												if (autoScrollInterval) {
+													clearInterval(autoScrollInterval); // Clear existing interval
+												}
+												autoScrollInterval = setInterval(() => {
+													currentIndex++;
+													if (currentIndex >= totalSlides) {
+														currentIndex = 0;
+														container.scrollTo({ left: 0, behavior: 'smooth' });
+													} else {
+														container.scrollTo({
+															left: currentIndex * getBoxWidth(),
+															behavior: 'smooth'
+														});
+													}
+													setTimeout(updateArrowStates, 300); // Update arrows after scroll
+												}, 12000); // 12 seconds
+											}
+
+											// Initial start
+											resetAutoScroll();
+
+											// Reset timer on arrow clicks
+											slides.forEach(slide => {
+												const leftArrow = slide.querySelector('.scroll-arrow.left');
+												const rightArrow = slide.querySelector('.scroll-arrow.right');
+												if (leftArrow && rightArrow) {
+													leftArrow.addEventListener('click', (e) => {
+														e.preventDefault(); // Prevent default button behavior
+														container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+														resetAutoScroll(); // Reset timer on click
+													});
+
+													rightArrow.addEventListener('click', (e) => {
+														e.preventDefault(); // Prevent default button behavior
+														container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+														resetAutoScroll(); // Reset timer on click
+													});
+												}
+											});
+
+											// Reset timer on slide tap/click (for selecting a new box)
+											slides.forEach(slide => {
+												slide.addEventListener('click', (e) => {
+													// Only reset if the click isn’t on an arrow or its child (e.g., <i>)
+													if (!e.target.closest('.scroll-arrow')) {
+														resetAutoScroll(); // Reset timer on slide click
+													}
+												});
+											});
 										}
+
+										// Update arrows on scroll
+										container.addEventListener('scroll', updateArrowStates);
+
+										// Update arrows after each click (for timing)
+										slides.forEach(slide => {
+											const arrows = slide.querySelectorAll('.scroll-arrow');
+											arrows.forEach(arrow => {
+												arrow.addEventListener('click', () => {
+													setTimeout(updateArrowStates, 300); // Match smooth scroll duration
+												});
+											});
+										});
+
+										// Set initial position after DOM is fully loaded
+										setInitialPosition();
+
+										// Ensure position after page fully renders
+										window.addEventListener('load', setInitialPosition);
+
+										// Start auto-scroll for all sizes
+										startAutoScroll();
+
+										// Handle resize
+										window.addEventListener('resize', () => {
+											setInitialPosition();
+											// Auto-scroll continues; no need to restart unless width changes behavior significantly
+										});
 									});
-
-									rightArrow.addEventListener('click', (e) => {
-										e.preventDefault(); // Prevent default button behavior
-										if (window.innerWidth > 768) {
-											container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
-											resetAutoScroll(); // Reset timer on click
-										}
-									});
-								}
-							});
-
-							// Reset timer on slide tap/click (desktop only)
-							slides.forEach(slide => {
-								slide.addEventListener('click', (e) => {
-									// Only reset if the click isn’t on an arrow or its child
-									if (!e.target.closest('.scroll-arrow') && window.innerWidth > 768) {
-										resetAutoScroll(); // Reset timer on slide click
-									}
-								});
-							});
-						}
-
-						// Update arrows on scroll (desktop only)
-						container.addEventListener('scroll', () => {
-							if (window.innerWidth > 768) {
-								updateArrowStates();
-							}
-						});
-
-						// Update arrows after each click (desktop only)
-						slides.forEach(slide => {
-							const arrows = slide.querySelectorAll('.scroll-arrow');
-							arrows.forEach(arrow => {
-								arrow.addEventListener('click', () => {
-									if (window.innerWidth > 768) {
-										setTimeout(updateArrowStates, 300); // Match smooth scroll duration
-									}
-								});
-							});
-						});
-
-						// Set initial position after DOM is fully loaded
-						setInitialPosition();
-
-						// Ensure position after page fully renders
-						window.addEventListener('load', () => {
-							setInitialPosition();
-							console.log('Page load: Initial scroll position set'); // Debug for emulator
-						});
-
-						// Start auto-scroll for desktop
-						startAutoScroll();
-
-						// Handle resize
-						window.addEventListener('resize', () => {
-							setInitialPosition();
-							console.log('Resize: Initial scroll position reset'); // Debug for emulator
-						});
-					});
-				</script>
+								</script>
 
 					<!-- X Post Embed: Row HEADING -->
 					<header>
