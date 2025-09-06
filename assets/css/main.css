@@ -2566,38 +2566,48 @@ button,
 
 /* Explore Button */
 .round-button-container {
-	display: flex;
-	justify-content: center;
-	gap: 1rem;
-	margin-bottom: 3rem; /* 👈 Increased from 2rem to 3rem for desktop */
+    display: flex;
+    flex-wrap: wrap; /* Allow pairs to wrap on desktop */
+    justify-content: center;
+    gap: 0.5rem; /* Reduced gap between pairs for consistency */
+    margin-bottom: 3rem; /* Kept desktop value */
 }
 
 /* Individual Button Styling */
 .round-button {
-	background-color: var(--button-bg-color);
-	border-radius: 20px;
-	transition: background-color 0.3s ease;
-	margin-top: 1rem;
+    background-color: var(--button-bg-color);
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    margin-top: 0; /* Removed margin-top to prevent extra spacing within pairs */
 }
 
+/* Remove unnecessary margin-right rule */
 .round-button:last-child {
-	margin-right: 0;
+    margin-right: 0; /* Unchanged, but likely redundant due to gap property */
+}
+
+/* Button Pair Styling */
+.button-pair {
+    display: flex;
+    flex-wrap: nowrap; /* Ensure buttons in a pair stay side by side */
+    gap: 0.5rem; /* Consistent gap between buttons in a pair */
+    justify-content: center;
 }
 
 /* Mobile Styles */
 @media screen and (max-width: 768px) {
     .round-button-container {
         display: flex;
-        flex-direction: column; /* Stack button pairs vertically */
+        flex-direction: column; /* Stack pairs vertically */
         align-items: center; /* Center pairs horizontally */
-        gap: 1rem; /* Maintain spacing between pairs */
-        margin-bottom: 2rem; /* Overrides desktop value for mobile */
+        gap: 0.5rem; /* Consistent gap between pairs */
+        margin-bottom: 2rem; /* Kept mobile override */
     }
     .button-pair {
         display: flex;
         flex-wrap: nowrap; /* Ensure buttons in a pair stay side by side */
-        gap: 1rem; /* Spacing between buttons in a pair */
-        justify-content: center; /* Center buttons within the pair */
+        gap: 0.5rem; /* Consistent gap between buttons in a pair */
+        justify-content: center;
     }
 }
 
