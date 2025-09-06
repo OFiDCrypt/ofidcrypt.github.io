@@ -5350,6 +5350,117 @@ section.livestream {
 	/* Firefox */
 }
 
+/* Partners container - Flexbox for dynamic width on desktop */
+.partners-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* Allow wrapping if needed */
+  justify-content: center; /* Center boxes horizontally */
+  gap: 1rem; /* Center gap between boxes */
+  padding: 1rem;
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  scroll-snap-type: x mandatory; /* Snap scrolling for multiple boxes */
+  box-sizing: border-box;
+  max-width: 1200px; /* Limit container width for large screens */
+  margin: 0 auto; /* Center container horizontally */
+}
+
+/* Header styling */
+.partners-container h2 {
+  width: 100%; /* Full width for header */
+  text-align: center;
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: var(--quick-start-text-color, #333); /* Custom color with fallback */
+}
+
+/* Individual partner box */
+.partner-box {
+  flex: 1 1 calc(50% - 0.5rem); /* 50% width minus half the gap (1rem / 2) */
+  min-width: 280px; /* Minimum width to prevent squeezing */
+  max-width: 500px; /* Maximum width for readability */
+  display: flex;
+  align-items: flex-start; /* Start content at top */
+  border: 1px solid var(--quick-start-border-color, #ccc); /* Custom border with fallback */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--quick-start-bg-color, #fff); /* Custom background with fallback */
+  overflow-y: auto; /* Vertical scroll if content overflows */
+  scroll-snap-align: center; /* Center each box in viewport */
+  flex-direction: column; /* Stack content vertically */
+  margin: 0; /* Remove margin, handled by container gap */
+  box-sizing: border-box;
+  position: relative; /* Context for absolute arrows, if used */
+}
+
+/* Content inside each box */
+.box-content {
+  text-align: center; /* Center text */
+  width: 100%; /* Ensure content fits */
+  padding: 30px; /* Simplified padding */
+  box-sizing: border-box;
+  min-height: 420px; /* Consistent height, prevent overflow issues */
+}
+
+/* Image styling */
+.box-content .image {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  margin: 0 auto 10px; /* No top margin, 10px bottom */
+  width: 100%; /* Full width for centering */
+}
+
+.box-content .image img {
+  max-width: 100%; /* Responsive width */
+  height: auto;
+  max-height: 150px; /* Limit image height */
+  display: block; /* Remove inline spacing */
+  margin: 0 auto; /* Explicit centering */
+  border-radius: 8px;
+}
+
+/* Heading styling */
+.box-content h3 {
+  margin: 10px 0;
+  font-size: 1.5em;
+}
+
+/* Paragraph styling */
+.box-content p {
+  margin: 0;
+  font-size: 1em;
+  text-align: center;
+}
+
+/* Button container */
+.button-container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* Mobile responsive design */
+@media (max-width: 768px) {
+  .partners-container {
+    flex-direction: column; /* Stack boxes vertically */
+    overflow-x: visible; /* Disable horizontal scrolling */
+    justify-content: flex-start; /* Align to top */
+    padding: 1rem 0.5rem; /* Reduced side padding for mobile */
+  }
+
+  .partners-container h2 {
+    font-size: 1.5rem; /* Smaller header on mobile */
+    margin: 0.5rem 0;
+  }
+
+  .partner-box {
+    flex: 0 0 auto; /* Allow natural width */
+    width: 100%; /* Full width on mobile */
+    max-width: 400px; /* Limit width for readability */
+    margin: 10px auto; /* Center boxes, reduced margin */
+  }
+}
+
 /* Container for the X layout Post Embed */
 .x-post-container {
 	display: flex;
