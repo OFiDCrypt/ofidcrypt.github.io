@@ -5063,7 +5063,7 @@ section.livestream {
 	display: flex;
 	overflow-x: auto;
 	/* Horizontal scroll */
-	scroll-snap-type: x mandatory;
+	scroll-snap-type: x proximity;
 	/* Snap to each box */
 	gap: 10px;
 	/* Small gap between boxes */
@@ -5271,7 +5271,7 @@ section.livestream {
 		/* Horizontal for swipe */
 		overflow-x: auto;
 		/* Horizontal scroll */
-		scroll-snap-type: x mandatory;
+		scroll-snap-type: x proximity;
 		/* Snap to each box */
 		gap: 20px;
 		/* Horizontal gap */
@@ -5370,7 +5370,7 @@ section.livestream {
   gap: 1rem; /* Center gap between boxes */
   padding: 1rem;
   overflow-x: auto; /* Enable horizontal scrolling if needed */
-  scroll-snap-type: x mandatory; /* Snap scrolling for multiple boxes */
+  scroll-snap-type: x proximity; /* Snap scrolling for multiple boxes */
   box-sizing: border-box;
   max-width: 1200px; /* Limit container width for large screens */
   margin: 0 auto; /* Center container horizontally */
@@ -6090,7 +6090,7 @@ footer {
 	/* Hide horizontal overflow */
 	scroll-behavior: smooth;
 	white-space: nowrap;
-	scroll-snap-type: x mandatory;
+	scroll-snap-type: x proximity;
 	/* Snap to each slide */
 	box-sizing: border-box;
 	/* Include padding in width */
