@@ -500,7 +500,7 @@
 					function setInitialPosition() {
 						if (container && container.scrollTo) {
 							container.scrollTo({ left: 0, behavior: 'instant' }); // Snap to first tile
-							setTimeout(updateArrowStates, 100); // Update arrows after render
+							requestAnimationFrame(updateArrowStates); // Sync with rendering
 						}
 					}
 
@@ -538,13 +538,16 @@
 							const scrollLeft = container.scrollLeft;
 							const boxWidth = getBoxWidth();
 							const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+							let targetScroll;
 
 							if (currentSlideIndex < totalSlides - 1) {
-								container.scrollBy({ left: boxWidth, behavior: 'smooth' }); // Next tile
+								targetScroll = (currentSlideIndex + 1) * boxWidth; // Next tile
 							} else {
-								container.scrollTo({ left: 0, behavior: 'smooth' }); // Loop to first
+								targetScroll = 0; // Loop to first tile
 							}
-							setTimeout(updateArrowStates, 300); // Update arrows after scroll
+
+							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+							requestAnimationFrame(updateArrowStates); // Sync with rendering
 						}, 5000); // Auto-scroll every 5 seconds
 					}
 
@@ -564,21 +567,29 @@
 						leftArrow.addEventListener('click', () => {
 							stopAutoScroll();
 							const boxWidth = getBoxWidth();
-							container.scrollBy({ left: -boxWidth, behavior: 'smooth' });
-							setTimeout(updateArrowStates, 300); // Update arrows after scroll
+							const currentScroll = container.scrollLeft;
+							const currentSlideIndex = Math.round(currentScroll / boxWidth);
+							const targetScroll = currentSlideIndex === 0 ? 0 : (currentSlideIndex - 1) * boxWidth;
+
+							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+							requestAnimationFrame(updateArrowStates);
 							setTimeout(startAutoScroll, 10000); // Resume after 10s
 						});
 
 						rightArrow.addEventListener('click', () => {
 							stopAutoScroll();
 							const boxWidth = getBoxWidth();
-							container.scrollBy({ left: boxWidth, behavior: 'smooth' });
-							setTimeout(updateArrowStates, 300); // Update arrows after scroll
+							const currentScroll = container.scrollLeft;
+							const currentSlideIndex = Math.round(currentScroll / boxWidth);
+							const targetScroll = currentSlideIndex === totalSlides - 1 ? currentScroll : (currentSlideIndex + 1) * boxWidth;
+
+							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+							requestAnimationFrame(updateArrowStates);
 							setTimeout(startAutoScroll, 10000); // Resume after 10s
 						});
 					});
 
-					// Handle touch swipe for mobile with platform-specific sensitivity
+					// Handle touch swipe for mobile
 					let touchStartX = 0;
 					let touchEndX = 0;
 
@@ -594,22 +605,26 @@
 						touchEndX = e.changedTouches[0].screenX;
 						const swipeDistance = touchEndX - touchStartX;
 						const boxWidth = getBoxWidth();
-						const isAndroid = /Android/i.test(navigator.userAgent);
-						const swipeThreshold = isAndroid ? 150 : 100; // Higher threshold for Android
 
-						if (Math.abs(swipeDistance) > swipeThreshold) {
+						if (Math.abs(swipeDistance) > 100) { // Increased threshold for smoother swipes
+							const currentScroll = container.scrollLeft;
+							const currentSlideIndex = Math.round(currentScroll / boxWidth);
+							let targetScroll;
+
 							if (swipeDistance > 0) {
 								// Swipe right (previous)
-								container.scrollBy({ left: -boxWidth, behavior: 'smooth' });
+								targetScroll = currentSlideIndex === 0 ? 0 : (currentSlideIndex - 1) * boxWidth;
 							} else {
 								// Swipe left (next)
-								container.scrollBy({ left: boxWidth, behavior: 'smooth' });
+								targetScroll = currentSlideIndex === totalSlides - 1 ? currentScroll : (currentSlideIndex + 1) * boxWidth;
 							}
-							setTimeout(updateArrowStates, 300); // Update arrows after scroll
+
+							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+							requestAnimationFrame(updateArrowStates);
 							setTimeout(startAutoScroll, 10000); // Resume after 10s
 						}
 
-						setTimeout(() => { isTouchScrolling = false; }, isAndroid ? 500 : 300); // Longer debounce for Android
+						setTimeout(() => { isTouchScrolling = false; }, 300); // Debounce touch events
 					});
 
 					// Pause auto-scroll on hover
@@ -633,9 +648,6 @@
 					// Set initial position and start auto-scroll
 					setInitialPosition();
 					startAutoScroll();
-
-					// Ensure position after page fully renders
-					window.addEventListener('load', setInitialPosition);
 				});
 			</script>
 
