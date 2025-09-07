@@ -2642,6 +2642,27 @@ button,
   text-align: center;
 }
 
+/* Footer for Token Button Help Text */
+.token-button-help-text {
+  margin-top: 0.5rem; /* Space above the footer */
+  margin-bottom: 0.5rem; /* Space below the footer */
+  text-align: center; /* Center-align content */
+  width: 100%; /* Span the container */
+}
+
+/* Paragraph inside footer */
+.token-button-help-text p {
+  margin: 0; /* Remove default margin */
+}
+
+/* Media query for smaller screens (e.g., mobile) */
+@media (max-width: 600px) {
+  .token-button-help-text {
+    margin-top: 0.5rem; /* Maintain top margin */
+    margin-bottom: 0.5rem; /* Maintain bottom margin */
+  }
+}
+
 /* Remove extra margin from last button */
 .token-button:last-child {
   margin-right: 0;
