@@ -353,156 +353,128 @@
 
 			<script>
 				document.addEventListener('DOMContentLoaded', () => {
-					const container = document.querySelector('.scroll-container');
-					const slides = document.querySelectorAll('.scroll-box');
-					const totalSlides = 6;
-					let autoScrollInterval;
-					let touchStartX = 0;
-					let touchStartY = 0;
+					const container = document.querySelector('#token-partners');
+					const slides = document.querySelectorAll('#token-partners .scroll-box');
+					const totalSlides = slides.length;
+					let autoScrollInterval = null;
 
-					// Force start on Box 1 (Bouncy Ball)
+					// Initialize scroll position to first box
 					function setInitialPosition() {
-						container.scrollTo({ left: 0, behavior: 'instant' });
-						updateArrowStates();
+						if (container && container.scrollTo) {
+							container.scrollTo({ left: 0, behavior: 'instant' }); // Instant for snappy start
+							updateArrowStates();
+						}
 					}
 
 					// Calculate box width based on screen size
 					function getBoxWidth() {
 						if (window.innerWidth > 768) {
-							return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+							return slides[0].offsetWidth + 10; // Desktop: box width + gap
 						} else if (window.innerWidth <= 480) {
-							return 260 + 20; // Mobile: Box width + gap
+							return 260 + 20; // Mobile: box width + gap
 						} else {
-							return slides[0].offsetWidth; // Mid-range
+							return slides[0].offsetWidth; // Mid-range: box width
 						}
 					}
 
 					// Update arrow states based on scroll position
 					function updateArrowStates() {
 						const scrollLeft = container.scrollLeft;
-						const maxScroll = container.scrollWidth - container.clientWidth;
 						const boxWidth = getBoxWidth();
 						const currentSlideIndex = Math.round(scrollLeft / boxWidth);
 
 						slides.forEach((slide) => {
 							const leftArrow = slide.querySelector('.scroll-arrow.left');
 							const rightArrow = slide.querySelector('.scroll-arrow.right');
-							if (leftArrow && rightArrow) {
-								leftArrow.disabled = currentSlideIndex === 0;
-								rightArrow.disabled = currentSlideIndex === totalSlides - 1;
-							}
+							leftArrow.disabled = currentSlideIndex === 0;
+							rightArrow.disabled = currentSlideIndex === totalSlides - 1;
 						});
 					}
 
-					// Auto-scroll function
+					// Auto-scroll to next box
 					function startAutoScroll() {
-						let currentIndex = 0;
-
-						function resetAutoScroll() {
-							if (autoScrollInterval) {
-								clearInterval(autoScrollInterval);
+						stopAutoScroll(); // Clear existing interval
+						autoScrollInterval = setInterval(() => {
+							const scrollLeft = container.scrollLeft;
+							const boxWidth = getBoxWidth();
+							const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+							if (currentSlideIndex < totalSlides - 1) {
+								container.scrollBy({ left: boxWidth, behavior: 'smooth' });
+							} else {
+								container.scrollTo({ left: 0, behavior: 'smooth' }); // Loop to first box
 							}
-							autoScrollInterval = setInterval(() => {
-								currentIndex++;
-								if (currentIndex >= totalSlides) {
-									currentIndex = 0;
-									container.scrollTo({ left: 0, behavior: 'smooth' });
-								} else {
-									container.scrollTo({
-										left: currentIndex * getBoxWidth(),
-										behavior: 'smooth'
-									});
-								}
-								setTimeout(updateArrowStates, 300);
-							}, 12000); // 12 seconds
-						}
-
-						resetAutoScroll();
-
-						// Arrow click handlers
-						slides.forEach(slide => {
-							const leftArrow = slide.querySelector('.scroll-arrow.left');
-							const rightArrow = slide.querySelector('.scroll-arrow.right');
-							if (leftArrow && rightArrow) {
-								leftArrow.addEventListener('click', (e) => {
-									e.preventDefault();
-									container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
-									resetAutoScroll();
-								});
-								rightArrow.addEventListener('click', (e) => {
-									e.preventDefault();
-									container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
-									resetAutoScroll();
-								});
-							}
-						});
-
-						// Reset timer on slide tap/click (excluding arrows)
-						slides.forEach(slide => {
-							slide.addEventListener('click', (e) => {
-								if (!e.target.closest('.scroll-arrow')) {
-									resetAutoScroll();
-								}
-							});
-						});
+							setTimeout(updateArrowStates, 300); // Update after animation
+						}, 5000); // Auto-scroll every 5 seconds
 					}
 
-					// Handle touch events for mobile
+					// Stop auto-scroll
+					function stopAutoScroll() {
+						if (autoScrollInterval) {
+							clearInterval(autoScrollInterval);
+							autoScrollInterval = null;
+						}
+					}
+
+					// Handle arrow clicks
+					slides.forEach((slide) => {
+						const leftArrow = slide.querySelector('.scroll-arrow.left');
+						const rightArrow = slide.querySelector('.scroll-arrow.right');
+
+						leftArrow.addEventListener('click', () => {
+							stopAutoScroll(); // Pause auto-scroll
+							container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+							setTimeout(updateArrowStates, 300); // Update after animation
+							setTimeout(startAutoScroll, 10000); // Resume after 10s
+						});
+
+						rightArrow.addEventListener('click', () => {
+							stopAutoScroll(); // Pause auto-scroll
+							container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+							setTimeout(updateArrowStates, 300); // Update after animation
+							setTimeout(startAutoScroll, 10000); // Resume after 10s
+						});
+					});
+
+					// Handle touch swipe for mobile
+					let touchStartX = 0;
+					let touchEndX = 0;
+
 					container.addEventListener('touchstart', (e) => {
-						touchStartX = e.touches[0].clientX;
-						touchStartY = e.touches[0].clientY;
+						stopAutoScroll(); // Pause auto-scroll
+						touchStartX = e.changedTouches[0].screenX;
 					});
 
-					container.addEventListener('touchmove', (e) => {
-						const touchX = e.touches[0].clientX;
-						const touchY = e.touches[0].clientY;
-						const deltaX = touchX - touchStartX;
-						const deltaY = touchY - touchStartY;
-
-						// Prevent vertical scrolling if the gesture is primarily vertical
-						if (Math.abs(deltaY) > Math.abs(deltaX)) {
-							e.preventDefault(); // Block up/down scrolling
-						}
-					}, { passive: false }); // Ensure preventDefault works
-
-					// Detect horizontal swipe and reset timer
 					container.addEventListener('touchend', (e) => {
-						const touchEndX = e.changedTouches[0].clientX;
-						const deltaX = touchEndX - touchStartX;
-						const deltaY = e.changedTouches[0].clientY - touchStartY;
-
-						// Only reset timer for significant horizontal swipes
-						if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
-							if (autoScrollInterval) {
-								clearInterval(autoScrollInterval);
-								startAutoScroll(); // Restart auto-scroll
+						touchEndX = e.changedTouches[0].screenX;
+						const swipeDistance = touchEndX - touchStartX;
+						const boxWidth = getBoxWidth();
+						if (Math.abs(swipeDistance) > 50) { // Minimum swipe distance
+							if (swipeDistance > 0) {
+								container.scrollBy({ left: -boxWidth, behavior: 'smooth' });
+							} else {
+								container.scrollBy({ left: boxWidth, behavior: 'smooth' });
 							}
+							setTimeout(updateArrowStates, 300); // Update after animation
+							setTimeout(startAutoScroll, 10000); // Resume after 10s
 						}
 					});
+
+					// Pause auto-scroll on hover
+					container.addEventListener('mouseenter', stopAutoScroll);
+					container.addEventListener('mouseleave', startAutoScroll);
 
 					// Update arrows on scroll
 					container.addEventListener('scroll', updateArrowStates);
 
-					// Update arrows after arrow clicks
-					slides.forEach(slide => {
-						const arrows = slide.querySelectorAll('.scroll-arrow');
-						arrows.forEach(arrow => {
-							arrow.addEventListener('click', () => {
-								setTimeout(updateArrowStates, 300);
-							});
-						});
-					});
-
-					// Set initial position
+					// Set initial position and start auto-scroll
 					setInitialPosition();
-					window.addEventListener('load', setInitialPosition);
-
-					// Start auto-scroll
 					startAutoScroll();
 
 					// Handle resize
 					window.addEventListener('resize', () => {
+						stopAutoScroll();
 						setInitialPosition();
+						startAutoScroll();
 					});
 				});
 			</script>

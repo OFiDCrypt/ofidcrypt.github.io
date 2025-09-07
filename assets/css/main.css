@@ -5350,6 +5350,17 @@ section.livestream {
 	/* Firefox */
 }
 
+/* Add to existing @media (max-width: 480px) block */
+@media (max-width: 480px) {
+  .scroll-container {
+    justify-content: flex-start; /* Start boxes at left edge */
+  }
+
+  .scroll-box:first-child {
+    scroll-snap-align: start; /* Align first box to left edge */
+  }
+}
+
 /* Partners container - Flexbox for dynamic width on desktop */
 .partners-container {
   display: flex;
@@ -5830,28 +5841,75 @@ section.livestream {
   flex: 1;
 }
 
-/* Media Query for Larger Screens */
-@media (min-width: 737px) { /* Matches original max-width: 736px breakpoint */
+/* Media Query for Tablets and Above */
+@media (min-width: 737px) {
   .featured-service-items {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    grid-template-rows: repeat(2, 1fr); /* Equal row heights */
-    gap: 30px; /* Space between tiles */
-    grid-auto-flow: row; /* Tiles 1,2 in row 1; 3,4 in row 2 */
+    display: block; /* Stack tiles vertically, like mobile */
     width: 100%; /* Ensure full width */
+    max-width: 600px; /* Cap width for centering */
+    margin: 0 auto; /* Center the container */
   }
 
   .featured-service-item--featured {
-    flex-direction: row; /* Image left, heading/content right */
+    flex-direction: row; /* Image left, content right */
     align-items: center; /* Vertically center content */
     width: 100%;
+    max-width: 550px; /* Cap item width for better scaling */
+    margin: 0 auto 30px; /* Center items, add bottom margin */
+    height: auto; /* Allow natural height */
+  }
+
+  .featured-service-item--featured .image.left {
+    max-width: 250px; /* Fixed width for consistency */
+    margin-left: 15px;
+    margin-right: 15px;
+    display: flex; /* Center image within its container */
+    justify-content: center;
+    align-items: center;
+  }
+
+  .featured-service-item--featured .image.left img {
+    max-width: 100%; /* Original scaling */
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .featured-service-item--featured .quick-start-content {
+    text-align: center; /* Keep centered text */
+    flex: 1;
+  }
+}
+
+/* Media Query for Desktop */
+@media (min-width: 1200px) {
+  .featured-service-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(300px, 1fr)); /* 2 columns, min 300px */
+    grid-template-rows: auto; /* Auto rows for flexibility */
+    gap: 30px; /* Space between tiles */
+    grid-auto-flow: row; /* Tiles 1,2 in row 1; 3,4 in row 2 */
+    width: 100%;
+    max-width: 1200px; /* Cap grid width */
+    margin: 0 auto; /* Center grid */
+    justify-items: center; /* Center grid items */
+  }
+
+  .featured-service-item--featured {
+    flex-direction: row; /* Image left, content right */
+    align-items: center; /* Vertically center content */
+    width: 100%;
+    max-width: 550px; /* Cap item width */
     height: 100%; /* Fill grid cell */
   }
 
   .featured-service-item--featured .image.left {
-    max-width: 250px; /* Desktop */
+    max-width: 250px; /* Desktop, as per original */
     margin-left: 15px;
     margin-right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .featured-service-item--featured .image.left img {
