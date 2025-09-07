@@ -2606,7 +2606,7 @@ button,
     .button-pair {
         display: flex;
         flex-wrap: nowrap; /* Ensure buttons in a pair stay side by side */
-        gap: 0.5rem; /* Consistent gap between buttons in a pair */
+        gap: 1.5rem; /* Consistent gap between buttons in a pair */
         justify-content: center;
     }
 }
