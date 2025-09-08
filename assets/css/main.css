@@ -5564,6 +5564,128 @@ section.livestream {
 	}
 }
 
+/* Individual post styling for PR container */
+.PR-post.video.main {
+    flex: 1;
+    min-width: 340px; /* Ensure width ≥ 300px */
+    max-width: 340px; /* Matches iframe width */
+    height: auto; /* Adjust to content */
+    max-height: 380px; /* Desktop height, sum > 700px */
+    border: 2px solid #a200ff; /* Purple border */
+    border-radius: 5px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Remove horizontal scrollbar */
+    -webkit-overflow-scrolling: touch; /* Improve mobile scrolling */
+    display: flex;
+    flex-direction: column;
+    background-color: #fff !important; /* Enforce white background */
+}
+
+/* Wrapper for iframe */
+.iframe-wrapper {
+    width: 340px; /* Meets width ≥ 300px, sum > 700px */
+    height: 380px; /* Desktop height, sum > 700px */
+    background-color: #fff !important; /* Enforce white background */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Remove horizontal scrollbar */
+    -webkit-overflow-scrolling: touch; /* Improve mobile scrolling */
+}
+
+/* Style the iframe embed inside */
+.iframe-wrapper iframe {
+    width: 100%; /* Fill wrapper */
+    height: 100%; /* Fill wrapper */
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 0; /* Prevent excess space */
+    background-color: #fff !important; /* Enforce white background */
+    border: none; /* Remove iframe border */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .PR-container {
+        flex-direction: column;
+    }
+
+    .PR-post.video.main {
+        flex: none;
+        width: 100%;
+        max-width: 90%; /* Responsive width */
+        min-width: 340px; /* Ensure width ≥ 300px */
+        height: auto;
+        max-height: 760px; /* Doubled for mobile to fit content */
+        overflow-y: auto;
+        overflow-x: hidden; /* Remove horizontal scrollbar */
+        -webkit-overflow-scrolling: touch;
+        background-color: #fff !important;
+    }
+
+    .iframe-wrapper {
+        width: 100%; /* Full width within container */
+        min-width: 340px; /* Ensure width ≥ 300px */
+        height: 760px; /* Doubled for mobile to fit content */
+        background-color: #fff !important;
+        overflow-y: auto;
+        overflow-x: hidden; /* Remove horizontal scrollbar */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .iframe-wrapper iframe {
+        width: 100%;
+        height: 100%;
+        background-color: #fff !important;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .PR-post.video.main {
+        width: 100%;
+        max-width: 100%; /* Full width */
+        min-width: 340px; /* Ensure width ≥ 300px */
+        height: auto;
+        max-height: 760px; /* Doubled for mobile to fit content */
+        background-color: #fff !important;
+        overflow-y: auto;
+        overflow-x: hidden; /* Remove horizontal scrollbar */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .iframe-wrapper {
+        width: 100%;
+        min-width: 340px; /* Ensure width ≥ 300px */
+        height: 760px; /* Doubled for mobile to fit content */
+        background-color: #fff !important;
+        overflow-y: auto;
+        overflow-x: hidden; /* Remove horizontal scrollbar */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .iframe-wrapper iframe {
+        width: 100%;
+        height: 100%;
+        background-color: #fff !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .PR-post.video.main {
+        background-color: #fff !important;
+    }
+
+    .iframe-wrapper {
+        background-color: #fff !important;
+    }
+
+    .iframe-wrapper iframe {
+        background-color: #fff !important;
+        color: #000 !important; /* Ensure readable text */
+    }
+}
+
 /* Container for TikTok embed */
 .tiktok.video.main {
 	position: relative;
