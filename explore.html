@@ -130,6 +130,9 @@
 				</li>
 				<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
 				</li>
+				<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+							class="label">YouTube</span></a>
+				</li>
 				<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
 							class="label">TikTok</span></a></li>
 				<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
@@ -138,160 +141,165 @@
 							class="label">LinkedIn</span></a></li>
 			</ul>
 		</nav>
-		
+
 		<!-- Main -->
 		<div id="main">
 
 			<!-- Scrolling Ad Banner -->
-						<div id="expb-ball" class="ad-banner-wrapper">
-							<div class="ad-scroll-container">
-								<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index" class="ad-slide" style="border-bottom: none;">
-									<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1" style="max-width: 100%; height: auto;">
-								</a>
-								<a href="/bouncyball.html" class="ad-slide" style="border-bottom: none;">
-									<img src="/assets/images/expb-banner-01.png" alt="Ad Banner 2" style="max-width: 100%; height: auto;">
-								</a>
-								<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
-									<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 3" style="max-width: 100%; height: auto;">
-								</a>
-							</div>
-						</div>
-						
-						<script>
-							document.addEventListener('DOMContentLoaded', () => {
-								const container = document.querySelector('.ad-scroll-container');
-								const slides = document.querySelectorAll('.ad-slide');
-								const totalSlides = slides.length;
-								let autoScrollInterval;
-								let currentIndex = 0; // Track current index globally
+			<div id="expb-ball" class="ad-banner-wrapper">
+				<div class="ad-scroll-container">
+					<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="/bouncyball.html" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/expb-banner-01.png" alt="Ad Banner 2"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 3"
+							style="max-width: 100%; height: auto;">
+					</a>
+				</div>
+			</div>
 
-								// Exit if no slides
-								if (totalSlides === 0) {
-									console.warn('No slides found in .ad-scroll-container');
-									return;
-								}
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const container = document.querySelector('.ad-scroll-container');
+					const slides = document.querySelectorAll('.ad-slide');
+					const totalSlides = slides.length;
+					let autoScrollInterval;
+					let currentIndex = 0; // Track current index globally
 
-								// Clone first slide for continuous loop
-								const firstSlideClone = slides[0].cloneNode(true);
-								container.appendChild(firstSlideClone);
-								const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+					// Exit if no slides
+					if (totalSlides === 0) {
+						console.warn('No slides found in .ad-scroll-container');
+						return;
+					}
 
-								// Force start on first slide
-								function setInitialPosition() {
+					// Clone first slide for continuous loop
+					const firstSlideClone = slides[0].cloneNode(true);
+					container.appendChild(firstSlideClone);
+					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+					// Force start on first slide
+					function setInitialPosition() {
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						currentIndex = 0; // Reset index
+					}
+
+					// Calculate slide width
+					function getBoxWidth() {
+						const slideWidth = slides[0].offsetWidth; // Actual slide width
+						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+						const totalWidth = slideWidth + slideMargin;
+						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+						return totalWidth;
+					}
+
+					// Auto-scroll function
+					function startAutoScroll() {
+						function resetAutoScroll() {
+							if (autoScrollInterval) {
+								clearInterval(autoScrollInterval);
+							}
+							autoScrollInterval = setInterval(() => {
+								currentIndex++;
+								console.log('Scrolling to index:', currentIndex);
+								if (currentIndex >= totalSlides + 1) {
+									// Reached clone, reset to first slide instantly
 									container.scrollTo({ left: 0, behavior: 'instant' });
-									currentIndex = 0; // Reset index
+									currentIndex = 1; // Start from second slide
 								}
-
-								// Calculate slide width
-								function getBoxWidth() {
-									const slideWidth = slides[0].offsetWidth; // Actual slide width
-									const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
-									const totalWidth = slideWidth + slideMargin;
-									console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
-									return totalWidth;
-								}
-
-								// Auto-scroll function
-								function startAutoScroll() {
-									function resetAutoScroll() {
-										if (autoScrollInterval) {
-											clearInterval(autoScrollInterval);
-										}
-										autoScrollInterval = setInterval(() => {
-											currentIndex++;
-											console.log('Scrolling to index:', currentIndex);
-											if (currentIndex >= totalSlides + 1) {
-												// Reached clone, reset to first slide instantly
-												container.scrollTo({ left: 0, behavior: 'instant' });
-												currentIndex = 1; // Start from second slide
-											}
-											container.scrollTo({
-												left: currentIndex * getBoxWidth(),
-												behavior: 'smooth'
-											});
-										}, 8000); // 8 seconds
-									}
-
-									// Start auto-scrolling
-									resetAutoScroll();
-								}
-
-								// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
-								let touchStartX = 0;
-								let touchStartY = 0;
-								let touchMoved = false;
-
-								container.addEventListener('touchstart', (e) => {
-									touchStartX = e.touches[0].clientX;
-									touchStartY = e.touches[0].clientY;
-									touchMoved = false;
-								}, { passive: true });
-
-								container.addEventListener('touchmove', (e) => {
-									const touchX = e.touches[0].clientX;
-									const touchY = e.touches[0].clientY;
-									const deltaX = Math.abs(touchX - touchStartX);
-									const deltaY = Math.abs(touchY - touchStartY);
-
-									// Block horizontal swipe (deltaX > 10, deltaY < 50)
-									if (deltaX > 10 && deltaY < 50) {
-										e.preventDefault(); // Block swipe
-										touchMoved = true;
-									}
-									// Allow vertical scrolling (deltaY > 50)
-									if (deltaY > 50) {
-										touchMoved = true; // Mark as moved, but don't prevent default
-									}
-								}, { passive: false });
-
-								container.addEventListener('touchend', (e) => {
-									if (!touchMoved) {
-										// Treat as tap, allow link click
-										const touchEndX = e.changedTouches[0].clientX;
-										const touchEndY = e.changedTouches[0].clientY;
-										const deltaX = Math.abs(touchEndX - touchStartX);
-										const deltaY = Math.abs(touchEndY - touchStartY);
-
-										if (deltaX < 10 && deltaY < 10) {
-											const target = e.target.closest('a');
-											if (target && target.href) {
-												window.location.href = target.href; // Trigger link
-											}
-										}
-									}
-								}, { passive: true });
-
-								// Prevent wheel scrolling within carousel
-								container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
-
-								// Debounce resize handler, preserve current slide
-								let resizeTimeout;
-								window.addEventListener('resize', () => {
-									clearTimeout(resizeTimeout);
-									resizeTimeout = setTimeout(() => {
-										// Restore current slide position instead of resetting
-										container.scrollTo({
-											left: currentIndex * getBoxWidth(),
-											behavior: 'instant'
-										});
-										startAutoScroll();
-									}, 100); // 100ms debounce
+								container.scrollTo({
+									left: currentIndex * getBoxWidth(),
+									behavior: 'smooth'
 								});
+							}, 8000); // 8 seconds
+						}
 
-								// Initialize
-								setInitialPosition();
-								startAutoScroll();
+						// Start auto-scrolling
+						resetAutoScroll();
+					}
+
+					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchMoved = false;
+
+					container.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						touchMoved = false;
+					}, { passive: true });
+
+					container.addEventListener('touchmove', (e) => {
+						const touchX = e.touches[0].clientX;
+						const touchY = e.touches[0].clientY;
+						const deltaX = Math.abs(touchX - touchStartX);
+						const deltaY = Math.abs(touchY - touchStartY);
+
+						// Block horizontal swipe (deltaX > 10, deltaY < 50)
+						if (deltaX > 10 && deltaY < 50) {
+							e.preventDefault(); // Block swipe
+							touchMoved = true;
+						}
+						// Allow vertical scrolling (deltaY > 50)
+						if (deltaY > 50) {
+							touchMoved = true; // Mark as moved, but don't prevent default
+						}
+					}, { passive: false });
+
+					container.addEventListener('touchend', (e) => {
+						if (!touchMoved) {
+							// Treat as tap, allow link click
+							const touchEndX = e.changedTouches[0].clientX;
+							const touchEndY = e.changedTouches[0].clientY;
+							const deltaX = Math.abs(touchEndX - touchStartX);
+							const deltaY = Math.abs(touchEndY - touchStartY);
+
+							if (deltaX < 10 && deltaY < 10) {
+								const target = e.target.closest('a');
+								if (target && target.href) {
+									window.location.href = target.href; // Trigger link
+								}
+							}
+						}
+					}, { passive: true });
+
+					// Prevent wheel scrolling within carousel
+					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+					// Debounce resize handler, preserve current slide
+					let resizeTimeout;
+					window.addEventListener('resize', () => {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => {
+							// Restore current slide position instead of resetting
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'instant'
 							});
-						</script>
+							startAutoScroll();
+						}, 100); // 100ms debounce
+					});
+
+					// Initialize
+					setInitialPosition();
+					startAutoScroll();
+				});
+			</script>
 
 			<!-- Welcome & Intro  -->
 			<article class="post">
 				<header class="major">
 					<span class="date">OFiDCrypt Services</span>
 					<h1>Web3 <br /> Discovery</h1>
-					<p>Check out apps from leading innovators in the web3 space, promote with us or explore our library of
+					<p>Check out apps from leading innovators in the web3 space, promote with us or explore our library
+						of
 						knowledge articles; written and published by OFiDCrypt.</p>
-			
+
 					<!-- Apps & Learn Buttons -->
 					<div class="round-button-container">
 						<div class="button-pair">
@@ -319,7 +327,8 @@
 						<div class="quick-start-content">
 							<h3 class="quick-start-title">Hvr Browser</h3>
 							<p class="align-center">Rewards Promotion LIVE</p> <button class="round-button"><a
-									href="https://www.ofidcrypt.com/explore/app-featured-hvr.html#explore-featured">Try Hvr</a></button>
+									href="https://www.ofidcrypt.com/explore/app-featured-hvr.html#explore-featured">Try
+									Hvr</a></button>
 						</div>
 					</article>
 
@@ -336,7 +345,8 @@
 							<div class="quick-start-content">
 								<h3 class="quick-start-title">Get your Wallet</h3>
 								<p class="align-center">By Phantom Technologies Inc</p>
-								<button class="round-button"><a href="https://phantom.com/download">Download</a></button>
+								<button class="round-button"><a
+										href="https://phantom.com/download">Download</a></button>
 							</div>
 						</article>
 
@@ -372,13 +382,15 @@
 					<header class="major">
 						<span class="date">e𝕏P Learn & Featured</span>
 						<h2>Learn With <br />Articles</h2>
-						<p>Check out our <b>Featured Article</b> or keep scrolling to explore more content in our library!
+						<p>Check out our <b>Featured Article</b> or keep scrolling to explore more content in our
+							library!
 						</p>
 					</header>
 					<a href="https://ofidcrypt.ca/why-crypto-prices-go-up-and-why-its-not-magic" class="image fit"><img
 							src="assets/images/article-cover-06.jpg" alt="Article Title: Why Crypto Prices Go Up" /></a>
 					<ul class="actions special">
-						<li><a href="https://ofidcrypt.ca/why-crypto-prices-go-up-and-why-its-not-magic" class="button large">View Article</a>
+						<li><a href="https://ofidcrypt.ca/why-crypto-prices-go-up-and-why-its-not-magic"
+								class="button large">View Article</a>
 						</li>
 					</ul>
 				</article>
@@ -402,8 +414,7 @@
 						<article>
 							<header>
 								<span class="date">October 11, 2024</span>
-								<h2><a
-										href="https://ofidcrypt.ca/article-a-beginners-intro-to-cryptocurrency">01
+								<h2><a href="https://ofidcrypt.ca/article-a-beginners-intro-to-cryptocurrency">01
 										A Beginners Introduction<br /> to Crypto</a></h2>
 							</header>
 							<a href="https://ofidcrypt.ca/article-a-beginners-intro-to-cryptocurrency"
@@ -442,8 +453,7 @@
 						<article>
 							<header>
 								<span class="date">October 21, 2024</span>
-								<h2><a
-										href="https://ofidcrypt.ca/ep-learntm-crypto-101-fundamentals-breaking-barriers">03
+								<h2><a href="https://ofidcrypt.ca/ep-learntm-crypto-101-fundamentals-breaking-barriers">03
 										Crypto 101:<br /> Fundamentals</a></h2>
 							</header>
 							<a href="https://ofidcrypt.ca/ep-learntm-crypto-101-fundamentals-breaking-barriers"
@@ -561,6 +571,8 @@
 					<ul class="icons alt">
 						<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span
 									class="label">X</span></a></li>
+						<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+									class="label">YouTube</span></a></li>
 						<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
 									class="label">TikTok</span></a></li>
 						<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
@@ -590,7 +602,7 @@
 
 		<!-- Footer Extended Links Container -->
 		<div class="footer-extended-container">
-						<section class="footer-extended">
+			<section class="footer-extended">
 				<h1 class="left-aligned">
 					<span class="smaller-heading">Partner Token Projects</span><br />
 				</h1>
@@ -623,7 +635,7 @@
 				</ul>
 			</section>
 
-						<section class="footer-extended">
+			<section class="footer-extended">
 				<h1 class="left-aligned">
 					<span class="smaller-heading">Collab Communities</span><br />
 				</h1>
@@ -635,177 +647,177 @@
 			</section>
 		</div>
 
-	<script>
-		// Pagination Explore
-		document.addEventListener("DOMContentLoaded", function () {
-			const container = document.getElementById('posts-container');
-			let currentPage = '1';
-			let totalPages = 2; // Adjust this to the actual number of pages
+		<script>
+			// Pagination Explore
+			document.addEventListener("DOMContentLoaded", function () {
+				const container = document.getElementById('posts-container');
+				let currentPage = '1';
+				let totalPages = 2; // Adjust this to the actual number of pages
 
-			// Flag to prevent scroll events during transition
-			let isTransitioning = false;
+				// Flag to prevent scroll events during transition
+				let isTransitioning = false;
 
-			function loadPage(pageNumber, shouldScroll) {
-				let url;
-				if (pageNumber === '1') {
-					url = 'explore.html';
-				} else {
-					url = `posts-page${pageNumber}.html`;
-				}
-
-				container.classList.add('fade-out');
-				isTransitioning = true; // Start of transition
-
-				fetch(url).then(response => response.text()).then(data => {
-					const parser = new DOMParser();
-					const doc = parser.parseFromString(data, 'text/html');
-					let newContent = '';
-
+				function loadPage(pageNumber, shouldScroll) {
+					let url;
 					if (pageNumber === '1') {
-						newContent = doc.getElementById('explore-posts').querySelector('section.posts').outerHTML;
+						url = 'explore.html';
 					} else {
-						const pageContent = doc.getElementById(`posts-page${pageNumber}-posts`);
-						if (pageContent) {
-							newContent = pageContent.innerHTML;
-						} else {
-							newContent = doc.body.innerHTML || doc.querySelector('.posts').innerHTML;
-						}
+						url = `posts-page${pageNumber}.html`;
 					}
 
-					setTimeout(() => {
-						container.innerHTML = `<div id="explore-posts">${newContent}</div>`;
-						container.classList.remove('fade-out');
-						container.classList.add('fade-in');
+					container.classList.add('fade-out');
+					isTransitioning = true; // Start of transition
+
+					fetch(url).then(response => response.text()).then(data => {
+						const parser = new DOMParser();
+						const doc = parser.parseFromString(data, 'text/html');
+						let newContent = '';
+
+						if (pageNumber === '1') {
+							newContent = doc.getElementById('explore-posts').querySelector('section.posts').outerHTML;
+						} else {
+							const pageContent = doc.getElementById(`posts-page${pageNumber}-posts`);
+							if (pageContent) {
+								newContent = pageContent.innerHTML;
+							} else {
+								newContent = doc.body.innerHTML || doc.querySelector('.posts').innerHTML;
+							}
+						}
 
 						setTimeout(() => {
-							container.classList.remove('fade-in');
-							isTransitioning = false; // End of transition
+							container.innerHTML = `<div id="explore-posts">${newContent}</div>`;
+							container.classList.remove('fade-out');
+							container.classList.add('fade-in');
 
-							if (shouldScroll) {
-								scrollToFeaturedPost();
-							}
+							setTimeout(() => {
+								container.classList.remove('fade-in');
+								isTransitioning = false; // End of transition
 
-							updatePagination(pageNumber);
-						}, 500); // Delay for fade-in animation
+								if (shouldScroll) {
+									scrollToFeaturedPost();
+								}
 
-					}, 500); // Delay for fade-out animation
-				}).catch(error => {
-					console.error('Error loading page:', error);
-					container.classList.remove('fade-out');
-					isTransitioning = false; // End of transition in case of error
-				});
-			}
+								updatePagination(pageNumber);
+							}, 500); // Delay for fade-in animation
 
-			function scrollToFeaturedPost() {
-				const featuredPost = document.querySelector('.post.featured');
-				if (featuredPost) {
-					const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
-					window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
+						}, 500); // Delay for fade-out animation
+					}).catch(error => {
+						console.error('Error loading page:', error);
+						container.classList.remove('fade-out');
+						isTransitioning = false; // End of transition in case of error
+					});
 				}
-			}
 
-			function updatePagination(pageNumber) {
+				function scrollToFeaturedPost() {
+					const featuredPost = document.querySelector('.post.featured');
+					if (featuredPost) {
+						const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
+						window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
+					}
+				}
+
+				function updatePagination(pageNumber) {
+					document.querySelectorAll('.pagination .page').forEach(pageLink => {
+						pageLink.classList.remove('active');
+						if (pageLink.getAttribute('data-page') === pageNumber) {
+							pageLink.classList.add('active');
+						}
+					});
+					currentPage = pageNumber;
+				}
+
+				// Event listeners for both top and bottom pagination
 				document.querySelectorAll('.pagination .page').forEach(pageLink => {
-					pageLink.classList.remove('active');
-					if (pageLink.getAttribute('data-page') === pageNumber) {
-						pageLink.classList.add('active');
-					}
+					pageLink.addEventListener('click', function (event) {
+						event.preventDefault();
+						const pageNumber = this.getAttribute('data-page');
+						loadPage(pageNumber, true);
+					});
 				});
-				currentPage = pageNumber;
-			}
 
-			// Event listeners for both top and bottom pagination
-			document.querySelectorAll('.pagination .page').forEach(pageLink => {
-				pageLink.addEventListener('click', function (event) {
-					event.preventDefault();
-					const pageNumber = this.getAttribute('data-page');
-					loadPage(pageNumber, true);
+				document.querySelectorAll('.pagination .previous').forEach(prevLink => {
+					prevLink.addEventListener('click', function (event) {
+						event.preventDefault();
+						if (currentPage > '1') {
+							loadPage((parseInt(currentPage) - 1).toString(), true);
+						}
+					});
 				});
+
+				document.querySelectorAll('.pagination .next').forEach(nextLink => {
+					nextLink.addEventListener('click', function (event) {
+						event.preventDefault();
+						if (parseInt(currentPage) < totalPages) {
+							loadPage((parseInt(currentPage) + 1).toString(), true);
+						}
+					});
+				});
+
+				loadPage('1', false); // Load the first page on initial load without scrolling
 			});
+		</script>
 
-			document.querySelectorAll('.pagination .previous').forEach(prevLink => {
-				prevLink.addEventListener('click', function (event) {
-					event.preventDefault();
-					if (currentPage > '1') {
-						loadPage((parseInt(currentPage) - 1).toString(), true);
+		<script>
+			// Switch Visual Mode - Dark Mode Light Mode
+			document.addEventListener('DOMContentLoaded', (event) => {
+				console.log('DOM fully loaded and parsed');
+
+				const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
+				const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
+
+				function toggleDarkMode() {
+					document.body.classList.toggle('dark-mode');
+					darkModeToggle.classList.toggle('dark');
+					const isDarkMode = document.body.classList.contains('dark-mode');
+					localStorage.setItem('dark-mode', isDarkMode);
+
+					const icon = darkModeToggle.querySelector('i');
+					if (isDarkMode) {
+						icon.classList.remove('fa-sun');
+						icon.classList.add('fa-moon');
+						console.log('Switched to dark mode (moon icon)');
+					} else {
+						icon.classList.remove('fa-moon');
+						icon.classList.add('fa-sun');
+						console.log('Switched to light mode (sun icon)');
 					}
-				});
-			});
-
-			document.querySelectorAll('.pagination .next').forEach(nextLink => {
-				nextLink.addEventListener('click', function (event) {
-					event.preventDefault();
-					if (parseInt(currentPage) < totalPages) {
-						loadPage((parseInt(currentPage) + 1).toString(), true);
-					}
-				});
-			});
-
-			loadPage('1', false); // Load the first page on initial load without scrolling
-		});
-	</script>
-
-	<script>
-		// Switch Visual Mode - Dark Mode Light Mode
-		document.addEventListener('DOMContentLoaded', (event) => {
-			console.log('DOM fully loaded and parsed');
-
-			const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
-			const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
-
-			function toggleDarkMode() {
-				document.body.classList.toggle('dark-mode');
-				darkModeToggle.classList.toggle('dark');
-				const isDarkMode = document.body.classList.contains('dark-mode');
-				localStorage.setItem('dark-mode', isDarkMode);
-
-				const icon = darkModeToggle.querySelector('i');
-				if (isDarkMode) {
-					icon.classList.remove('fa-sun');
-					icon.classList.add('fa-moon');
-					console.log('Switched to dark mode (moon icon)');
-				} else {
-					icon.classList.remove('fa-moon');
-					icon.classList.add('fa-sun');
-					console.log('Switched to light mode (sun icon)');
 				}
-			}
 
-			// Check local storage for dark mode on page load
-			if (localStorage.getItem('dark-mode') === 'true') {
-				document.body.classList.add('dark-mode');
-				darkModeToggle.classList.add('dark');
-				const icon = darkModeToggle.querySelector('i');
-				icon.classList.add('fa-moon');
-				icon.classList.remove('fa-sun');
-				console.log('Dark mode restored from local storage');
-			}
+				// Check local storage for dark mode on page load
+				if (localStorage.getItem('dark-mode') === 'true') {
+					document.body.classList.add('dark-mode');
+					darkModeToggle.classList.add('dark');
+					const icon = darkModeToggle.querySelector('i');
+					icon.classList.add('fa-moon');
+					icon.classList.remove('fa-sun');
+					console.log('Dark mode restored from local storage');
+				}
 
-			// Event listener for original toggle button
-			if (darkModeToggle) {
-				darkModeToggle.addEventListener('click', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-			} else {
-				console.warn('Dark Mode Toggle button not found');
-			}
+				// Event listener for original toggle button
+				if (darkModeToggle) {
+					darkModeToggle.addEventListener('click', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('Dark Mode Toggle button not found');
+				}
 
-			// Event listener for the new button
-			if (newDarkModeToggle) {
-				newDarkModeToggle.parentElement.addEventListener('click', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-				newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-			} else {
-				console.warn('New Dark Mode Toggle button not found');
-			}
-		});
-	</script>
+				// Event listener for the new button
+				if (newDarkModeToggle) {
+					newDarkModeToggle.parentElement.addEventListener('click', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+					newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('New Dark Mode Toggle button not found');
+				}
+			});
+		</script>
 
 		<!-- Link to non-critical JavaScript files -->
 		<script src="assets/js/jquery.min.js"></script>
@@ -813,5 +825,6 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/jquery.scrollex.min.js"></script>
 		<script src="assets/js/jquery.scrolly.min.js"></script>
-	</body>
+</body>
+
 </html>
