@@ -128,6 +128,8 @@
 				</li>
 				<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
 				</li>
+				<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+							class="label">YouTube</span></a></li>
 				<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
 							class="label">TikTok</span></a></li>
 				<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
@@ -141,146 +143,150 @@
 		<div id="main">
 
 			<!-- Scrolling Ad Banner -->
-						<div id="expb-ball" class="ad-banner-wrapper">
-							<div class="ad-scroll-container">
-								<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index" class="ad-slide" style="border-bottom: none;">
-									<img src="../assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1" style="max-width: 100%; height: auto;">
-								</a>
-								<a href="../bouncyball.html" class="ad-slide" style="border-bottom: none;">
-									<img src="../assets/images/expb-banner-01.png" alt="Ad Banner 2" style="max-width: 100%; height: auto;">
-								</a>
-								<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
-									<img src="../assets/images/dobby-banner-01.png" alt="Ad Banner 3" style="max-width: 100%; height: auto;">
-								</a>
-							</div>
-						</div>
-						
-						<script>
-							document.addEventListener('DOMContentLoaded', () => {
-								const container = document.querySelector('.ad-scroll-container');
-								const slides = document.querySelectorAll('.ad-slide');
-								const totalSlides = slides.length;
-								let autoScrollInterval;
-								let currentIndex = 0; // Track current index globally
+			<div id="expb-ball" class="ad-banner-wrapper">
+				<div class="ad-scroll-container">
+					<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="../assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="../bouncyball.html" class="ad-slide" style="border-bottom: none;">
+						<img src="../assets/images/expb-banner-01.png" alt="Ad Banner 2"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+						<img src="../assets/images/dobby-banner-01.png" alt="Ad Banner 3"
+							style="max-width: 100%; height: auto;">
+					</a>
+				</div>
+			</div>
 
-								// Exit if no slides
-								if (totalSlides === 0) {
-									console.warn('No slides found in .ad-scroll-container');
-									return;
-								}
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const container = document.querySelector('.ad-scroll-container');
+					const slides = document.querySelectorAll('.ad-slide');
+					const totalSlides = slides.length;
+					let autoScrollInterval;
+					let currentIndex = 0; // Track current index globally
 
-								// Clone first slide for continuous loop
-								const firstSlideClone = slides[0].cloneNode(true);
-								container.appendChild(firstSlideClone);
-								const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+					// Exit if no slides
+					if (totalSlides === 0) {
+						console.warn('No slides found in .ad-scroll-container');
+						return;
+					}
 
-								// Force start on first slide
-								function setInitialPosition() {
+					// Clone first slide for continuous loop
+					const firstSlideClone = slides[0].cloneNode(true);
+					container.appendChild(firstSlideClone);
+					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+					// Force start on first slide
+					function setInitialPosition() {
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						currentIndex = 0; // Reset index
+					}
+
+					// Calculate slide width
+					function getBoxWidth() {
+						const slideWidth = slides[0].offsetWidth; // Actual slide width
+						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+						const totalWidth = slideWidth + slideMargin;
+						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+						return totalWidth;
+					}
+
+					// Auto-scroll function
+					function startAutoScroll() {
+						function resetAutoScroll() {
+							if (autoScrollInterval) {
+								clearInterval(autoScrollInterval);
+							}
+							autoScrollInterval = setInterval(() => {
+								currentIndex++;
+								console.log('Scrolling to index:', currentIndex);
+								if (currentIndex >= totalSlides + 1) {
+									// Reached clone, reset to first slide instantly
 									container.scrollTo({ left: 0, behavior: 'instant' });
-									currentIndex = 0; // Reset index
+									currentIndex = 1; // Start from second slide
 								}
-
-								// Calculate slide width
-								function getBoxWidth() {
-									const slideWidth = slides[0].offsetWidth; // Actual slide width
-									const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
-									const totalWidth = slideWidth + slideMargin;
-									console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
-									return totalWidth;
-								}
-
-								// Auto-scroll function
-								function startAutoScroll() {
-									function resetAutoScroll() {
-										if (autoScrollInterval) {
-											clearInterval(autoScrollInterval);
-										}
-										autoScrollInterval = setInterval(() => {
-											currentIndex++;
-											console.log('Scrolling to index:', currentIndex);
-											if (currentIndex >= totalSlides + 1) {
-												// Reached clone, reset to first slide instantly
-												container.scrollTo({ left: 0, behavior: 'instant' });
-												currentIndex = 1; // Start from second slide
-											}
-											container.scrollTo({
-												left: currentIndex * getBoxWidth(),
-												behavior: 'smooth'
-											});
-										}, 8000); // 8 seconds
-									}
-
-									// Start auto-scrolling
-									resetAutoScroll();
-								}
-
-								// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
-								let touchStartX = 0;
-								let touchStartY = 0;
-								let touchMoved = false;
-
-								container.addEventListener('touchstart', (e) => {
-									touchStartX = e.touches[0].clientX;
-									touchStartY = e.touches[0].clientY;
-									touchMoved = false;
-								}, { passive: true });
-
-								container.addEventListener('touchmove', (e) => {
-									const touchX = e.touches[0].clientX;
-									const touchY = e.touches[0].clientY;
-									const deltaX = Math.abs(touchX - touchStartX);
-									const deltaY = Math.abs(touchY - touchStartY);
-
-									// Block horizontal swipe (deltaX > 10, deltaY < 50)
-									if (deltaX > 10 && deltaY < 50) {
-										e.preventDefault(); // Block swipe
-										touchMoved = true;
-									}
-									// Allow vertical scrolling (deltaY > 50)
-									if (deltaY > 50) {
-										touchMoved = true; // Mark as moved, but don't prevent default
-									}
-								}, { passive: false });
-
-								container.addEventListener('touchend', (e) => {
-									if (!touchMoved) {
-										// Treat as tap, allow link click
-										const touchEndX = e.changedTouches[0].clientX;
-										const touchEndY = e.changedTouches[0].clientY;
-										const deltaX = Math.abs(touchEndX - touchStartX);
-										const deltaY = Math.abs(touchEndY - touchStartY);
-
-										if (deltaX < 10 && deltaY < 10) {
-											const target = e.target.closest('a');
-											if (target && target.href) {
-												window.location.href = target.href; // Trigger link
-											}
-										}
-									}
-								}, { passive: true });
-
-								// Prevent wheel scrolling within carousel
-								container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
-
-								// Debounce resize handler, preserve current slide
-								let resizeTimeout;
-								window.addEventListener('resize', () => {
-									clearTimeout(resizeTimeout);
-									resizeTimeout = setTimeout(() => {
-										// Restore current slide position instead of resetting
-										container.scrollTo({
-											left: currentIndex * getBoxWidth(),
-											behavior: 'instant'
-										});
-										startAutoScroll();
-									}, 100); // 100ms debounce
+								container.scrollTo({
+									left: currentIndex * getBoxWidth(),
+									behavior: 'smooth'
 								});
+							}, 8000); // 8 seconds
+						}
 
-								// Initialize
-								setInitialPosition();
-								startAutoScroll();
+						// Start auto-scrolling
+						resetAutoScroll();
+					}
+
+					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchMoved = false;
+
+					container.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						touchMoved = false;
+					}, { passive: true });
+
+					container.addEventListener('touchmove', (e) => {
+						const touchX = e.touches[0].clientX;
+						const touchY = e.touches[0].clientY;
+						const deltaX = Math.abs(touchX - touchStartX);
+						const deltaY = Math.abs(touchY - touchStartY);
+
+						// Block horizontal swipe (deltaX > 10, deltaY < 50)
+						if (deltaX > 10 && deltaY < 50) {
+							e.preventDefault(); // Block swipe
+							touchMoved = true;
+						}
+						// Allow vertical scrolling (deltaY > 50)
+						if (deltaY > 50) {
+							touchMoved = true; // Mark as moved, but don't prevent default
+						}
+					}, { passive: false });
+
+					container.addEventListener('touchend', (e) => {
+						if (!touchMoved) {
+							// Treat as tap, allow link click
+							const touchEndX = e.changedTouches[0].clientX;
+							const touchEndY = e.changedTouches[0].clientY;
+							const deltaX = Math.abs(touchEndX - touchStartX);
+							const deltaY = Math.abs(touchEndY - touchStartY);
+
+							if (deltaX < 10 && deltaY < 10) {
+								const target = e.target.closest('a');
+								if (target && target.href) {
+									window.location.href = target.href; // Trigger link
+								}
+							}
+						}
+					}, { passive: true });
+
+					// Prevent wheel scrolling within carousel
+					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+					// Debounce resize handler, preserve current slide
+					let resizeTimeout;
+					window.addEventListener('resize', () => {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => {
+							// Restore current slide position instead of resetting
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'instant'
 							});
-						</script>
+							startAutoScroll();
+						}, 100); // 100ms debounce
+					});
+
+					// Initialize
+					setInitialPosition();
+					startAutoScroll();
+				});
+			</script>
 
 			<!-- Section Title -->
 			<section class="post">
@@ -288,35 +294,38 @@
 					<span class="date">Est. September 2024</span>
 					<h1>We Steer<br />
 						Web3 Adoption</h1>
-					<p>We are a registered Canadian <b>Web3 Advocacy & Marketing Business</b> dedicated to helping brands get
-						noticed. Our process allows us to introduce everyone to digital wallets, crypto, and token assets through
+					<p>We are a registered Canadian <b>Web3 Advocacy & Marketing Business</b> dedicated to helping
+						brands get
+						noticed. Our process allows us to introduce everyone to digital wallets, crypto, and token
+						assets through
 						discounted services. </p>
 				</header>
-			
+
 				<!-- Why Web3: About Statistics -->
 				<article class="product-section">
 					<div class="product-wrapper">
 						<div class="product-content">
-			
+
 							<!-- Section  - Left Image -->
 							<a href="https://www.ofidcrypt.ca/">
 								<span class="image left"><img src="../assets/images/ofid-exp-discover.jpg"
 										alt="Hvr App Colorful Logo"></span>
 							</a>
-							<p>We don’t just educate our customers about on-chain opportunities—<b>we help those who
-									aren’t marketing clients too</b>. We create content and innovative pathways to deliver real value
-								through
-								savings and growth—all powered by our hybrid service model. Blockchain technology is rapidly gaining
-								traction
-								globally, with over 300 million people using it worldwide<a
-									href="https://www.demandsage.com/blockchain-statistics/">1</a>. The
-								blockchain market is predicted to reach $162.84 billion by 2027, highlighting its growing
-								significance.
+							<p>
+								We don’t just educate our customers about on-chain opportunities—<b>we help those who
+									aren’t marketing clients too</b>.
+								We create content and innovative pathways to deliver real value through savings and
+								growth—all powered by our hybrid service model.
+								Blockchain technology is rapidly gaining traction globally, with over 300 million people
+								using it worldwide<a
+									href="https://www.demandsage.com/blockchain-statistics/"><sup>1</sup></a>.
+								The blockchain market is predicted to reach $162.84 billion by 2027, highlighting its
+								growing significance.
 							</p>
-			
+
 							<!-- Horizontal Scroll Container -->
 							<div class="scroll-container">
-			
+
 								<!-- Box 1: Mission Statement -->
 								<article class="scroll-box">
 									<button class="scroll-arrow left" aria-label="Scroll Left"><i
@@ -325,11 +334,14 @@
 										<span class="image"><img src="../assets/images/ofid-expb-logo.png"
 												alt="OFiD Kid Rewards Poster"></span>
 										<h3>Our Mission</h3>
-										<p>To lead Web3 adoption by empowering everyone—businesses, consumers, and newcomers—with
+										<p>To lead Web3 adoption by empowering everyone—businesses, consumers, and
+											newcomers—with
 											#MicroEconomies,
-											a simple framework for discounted services, growth, and savings using e𝕏PB Bouncy Ball.
+											a simple framework for discounted services, growth, and savings using e𝕏PB
+											Bouncy Ball.
 											Through
-											strategic marketing and viral onboarding, we unite brands and regular folks in a
+											strategic marketing and viral onboarding, we unite brands and regular folks
+											in a
 											sustainable
 											digital economy,
 											paving the way for a peer-to-peer future.
@@ -338,7 +350,7 @@
 									<button class="scroll-arrow right" aria-label="Scroll Right"><i
 											class="fas fa-arrow-right"></i></button>
 								</article>
-			
+
 								<!-- Box 2: #MicroEconomies -->
 								<article class="scroll-box">
 									<button class="scroll-arrow left" aria-label="Scroll Left"><i
@@ -347,14 +359,17 @@
 										<span class="image"><img src="../assets/images/microeconomies.PNG"
 												alt="MicroEconomies Tile"></span>
 										<h3>Our Method</h3>
-										<p>We created <b>#MicroEconomies</b>—the secret sauce to accompany stablecoins and introduce
+										<p>We created <b>#MicroEconomies</b>—the secret sauce to accompany stablecoins
+											and introduce
 											a
 											brand-new wave of
-											savings and growth for service businesses and consumers! We're the first to implement
+											savings and growth for service businesses and consumers! We're the first to
+											implement
 											this
 											in our Web3
 											marketing business; and yes, we do everything a traditional company can! You
-											can read our white paper <a href="../docs/whitepaper2.html">here</a> to get a sneak peek
+											can read our white paper <a href="../docs/whitepaper2.html">here</a> to get
+											a sneak peek
 											at
 											the more
 											comprehensive and technical overview.</p>
@@ -362,7 +377,7 @@
 									<button class="scroll-arrow right" aria-label="Scroll Right"><i
 											class="fas fa-arrow-right"></i></button>
 								</article>
-			
+
 								<!-- Box 3: Our Token -->
 								<article class="scroll-box">
 									<button class="scroll-arrow left" aria-label="Scroll Left"><i
@@ -371,12 +386,14 @@
 										<span class="image"><img src="../assets/images/bouncy-ball-500.png"
 												alt="Bouncy Ball 3D Logo"></span>
 										<h3>Our Token</h3>
-										<p>e𝕏PB <b>Bouncy Ball</b> is our shiny gem—right at the heart of our entire ecosystem!
+										<p>e𝕏PB <b>Bouncy Ball</b> is our shiny gem—right at the heart of our entire
+											ecosystem!
 											It's
 											what makes
 											<b>#MicroEconomies</b>
 											possible. We even have a dedicated page for Bouncy Ball; you can click <a
-												href="../bouncyball.html#guide" target="_blank">here</a> to find out all you need to
+												href="../bouncyball.html#guide" target="_blank">here</a> to find out all
+											you need to
 											know.
 										</p>
 									</div>
@@ -384,7 +401,7 @@
 											class="fas fa-arrow-right"></i></button>
 								</article>
 							</div>
-			
+
 							<script>
 								document.addEventListener('DOMContentLoaded', () => {
 									const container = document.querySelector('.scroll-container');
@@ -452,37 +469,42 @@
 									window.addEventListener('resize', setInitialPosition);
 								});
 							</script>
-			
+
 							<p>
-								Bitcoin adoption has seen substantial growth, with over 41 million BTC addresses holding at least $1
-								worth of
-								Bitcoin<a href="https://www.tastycrypto.com/blog/bitcoin-adoption/">2</a>. As of 2025, around 5% of
-								the
-								global population has entered the cryptocurrency market.With foundations in utility and integration
-								across
+								Bitcoin adoption has seen substantial growth, with over 41 million BTC addresses holding
+								at least $1
+								worth of Bitcoin<a
+									href="https://www.tastycrypto.com/blog/bitcoin-adoption/"><sup>2</sup></a>. As of
+								2025, around 5% of
+								the global population has entered the cryptocurrency market. With foundations in utility
+								and integration across
 								emerging financial systems—potentially including fast, scalable networks like <a
-									href="../explore.html#article-featured">Solana</a>—this leaves an
-								untapped 95% of the global population as potential demand.</p>
-			
+									href="../explore.html#article-featured">Solana</a>—this leaves an untapped 95% of
+								the global population as potential demand.
+							</p>
+
 							<!-- Section 2 - Right Image -->
 							<a href="affiliate.html">
 								<span class="image right"><img src="../assets/images/IMG_8887.jpeg"
 										alt="Partnerships Tile"></span>
 							</a>
-							<p><b>We form relationships and strategic alliances</b>—including affiliate partnerships, tech partners,
+
+							<p><b>We form relationships and strategic alliances</b>—including affiliate partnerships,
+								tech partners,
 								site partners, partner token projects, and community collaborators—subtly introducing
 								people
-								to the
-								nuances of blockchain technology. Everyday applications that integrate blockchain allow users to
-								experience its
-								benefits without the need to navigate complex crypto trading.</p>
-			
-							<p>This inclusive approach keeps businesses and
-								individuals at the forefront of technological innovation. We actively support partner software and
-								initiatives,
-								helping brands grow their audiences through our like-minded network. Additionally, we guide users to
-								digital asset wallets,
-								making it easy to explore and manage their digital portfolios.</p>
+								to the nuances of blockchain technology. Everyday applications that integrate blockchain
+								allow users to
+								experience its benefits without the need to navigate complex crypto trading.
+							</p>
+
+							<p>This inclusive approach keeps businesses and individuals at the forefront of
+								technological innovation.
+								We actively support partner software and initiatives, helping brands grow their
+								audiences through our like-minded network.
+								Additionally, we guide users to digital asset wallets, making it easy to explore and
+								manage their digital portfolios.
+							</p>
 						</div>
 					</div>
 				</article>
@@ -578,6 +600,8 @@
 					<ul class="icons alt">
 						<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span
 									class="label">X</span></a></li>
+						<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+									class="label">YouTube</span></a></li>
 						<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
 									class="label">TikTok</span></a></li>
 						<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
@@ -607,7 +631,7 @@
 
 		<!-- Footer Extended Links Container -->
 		<div class="footer-extended-container">
-						<section class="footer-extended">
+			<section class="footer-extended">
 				<h1 class="left-aligned">
 					<span class="smaller-heading">Partner Token Projects</span><br />
 				</h1>
@@ -640,7 +664,7 @@
 				</ul>
 			</section>
 
-						<section class="footer-extended">
+			<section class="footer-extended">
 				<h1 class="left-aligned">
 					<span class="smaller-heading">Collab Communities</span><br />
 				</h1>
@@ -651,75 +675,75 @@
 				</ul>
 			</section>
 		</div>
-	<script>
-		// Switch Visual Mode - Dark Mode Light Mode
-		document.addEventListener('DOMContentLoaded', (event) => {
-			console.log('DOM fully loaded and parsed');
+		<script>
+			// Switch Visual Mode - Dark Mode Light Mode
+			document.addEventListener('DOMContentLoaded', (event) => {
+				console.log('DOM fully loaded and parsed');
 
-			const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
-			const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
+				const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
+				const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
 
-			function toggleDarkMode() {
-				document.body.classList.toggle('dark-mode');
-				darkModeToggle.classList.toggle('dark');
-				const isDarkMode = document.body.classList.contains('dark-mode');
-				localStorage.setItem('dark-mode', isDarkMode);
+				function toggleDarkMode() {
+					document.body.classList.toggle('dark-mode');
+					darkModeToggle.classList.toggle('dark');
+					const isDarkMode = document.body.classList.contains('dark-mode');
+					localStorage.setItem('dark-mode', isDarkMode);
 
-				const icon = darkModeToggle.querySelector('i');
-				if (isDarkMode) {
-					icon.classList.remove('fa-sun');
-					icon.classList.add('fa-moon');
-					console.log('Switched to dark mode (moon icon)');
-				} else {
-					icon.classList.remove('fa-moon');
-					icon.classList.add('fa-sun');
-					console.log('Switched to light mode (sun icon)');
+					const icon = darkModeToggle.querySelector('i');
+					if (isDarkMode) {
+						icon.classList.remove('fa-sun');
+						icon.classList.add('fa-moon');
+						console.log('Switched to dark mode (moon icon)');
+					} else {
+						icon.classList.remove('fa-moon');
+						icon.classList.add('fa-sun');
+						console.log('Switched to light mode (sun icon)');
+					}
 				}
-			}
 
-			// Check local storage for dark mode on page load
-			if (localStorage.getItem('dark-mode') === 'true') {
-				document.body.classList.add('dark-mode');
-				darkModeToggle.classList.add('dark');
-				const icon = darkModeToggle.querySelector('i');
-				icon.classList.add('fa-moon');
-				icon.classList.remove('fa-sun');
-				console.log('Dark mode restored from local storage');
-			}
+				// Check local storage for dark mode on page load
+				if (localStorage.getItem('dark-mode') === 'true') {
+					document.body.classList.add('dark-mode');
+					darkModeToggle.classList.add('dark');
+					const icon = darkModeToggle.querySelector('i');
+					icon.classList.add('fa-moon');
+					icon.classList.remove('fa-sun');
+					console.log('Dark mode restored from local storage');
+				}
 
-			// Event listener for original toggle button
-			if (darkModeToggle) {
-				darkModeToggle.addEventListener('click', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-			} else {
-				console.warn('Dark Mode Toggle button not found');
-			}
+				// Event listener for original toggle button
+				if (darkModeToggle) {
+					darkModeToggle.addEventListener('click', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('Dark Mode Toggle button not found');
+				}
 
-			// Event listener for the new button
-			if (newDarkModeToggle) {
-				newDarkModeToggle.parentElement.addEventListener('click', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-				newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
-					event.preventDefault();
-					toggleDarkMode();
-				});
-			} else {
-				console.warn('New Dark Mode Toggle button not found');
-			}
-		});
-	</script>
+				// Event listener for the new button
+				if (newDarkModeToggle) {
+					newDarkModeToggle.parentElement.addEventListener('click', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+					newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('New Dark Mode Toggle button not found');
+				}
+			});
+		</script>
 
-	<!-- Link to non-critical JavaScript files -->
-	<script src="../assets/js/browser.min.js"></script>
-	<script src="../assets/js/jquery.scrollex.min.js"></script>
-	<script src="../assets/js/jquery.scrolly.min.js"></script>
-	<script src="../assets/js/util.js"></script>
-	<script src="../assets/js/breakpoints.min.js"></script>
-	<script src="../assets/js/main.js"></script>
+		<!-- Link to non-critical JavaScript files -->
+		<script src="../assets/js/browser.min.js"></script>
+		<script src="../assets/js/jquery.scrollex.min.js"></script>
+		<script src="../assets/js/jquery.scrolly.min.js"></script>
+		<script src="../assets/js/util.js"></script>
+		<script src="../assets/js/breakpoints.min.js"></script>
+		<script src="../assets/js/main.js"></script>
 </body>
 
 </html>
