@@ -161,132 +161,101 @@
 				</div>
 			</div>
 
-			<script>
-				document.addEventListener('DOMContentLoaded', () => {
-					const container = document.querySelector('.ad-scroll-container');
-					const slides = document.querySelectorAll('.ad-slide');
-					const totalSlides = slides.length;
-					let autoScrollInterval;
-					let currentIndex = 0; // Track current index globally
+			document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.ad-scroll-container');
+    const slides = document.querySelectorAll('.ad-slide');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
 
-					// Exit if no slides
-					if (totalSlides === 0) {
-						console.warn('No slides found in .ad-scroll-container');
-						return;
-					}
+    // Exit if no slides
+    if (totalSlides === 0) {
+        console.warn('No slides found in .ad-scroll-container');
+        return;
+    }
 
-					// Clone first slide for continuous loop
-					const firstSlideClone = slides[0].cloneNode(true);
-					container.appendChild(firstSlideClone);
-					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+    // Clone first slide for continuous loop
+    const firstSlideClone = slides[0].cloneNode(true);
+    container.appendChild(firstSlideClone);
 
-					// Force start on first slide
-					function setInitialPosition() {
-						container.scrollTo({ left: 0, behavior: 'instant' });
-						currentIndex = 0; // Reset index
-					}
+    // Force start on first slide
+    function setInitialPosition() {
+        container.scrollTo({ left: 0, behavior: 'instant' });
+        currentIndex = 0;
+    }
 
-					// Calculate slide width
-					function getBoxWidth() {
-						const slideWidth = slides[0].offsetWidth; // Actual slide width
-						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
-						const totalWidth = slideWidth + slideMargin;
-						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
-						return totalWidth;
-					}
+    // Calculate slide width
+    function getBoxWidth() {
+        const slideWidth = slides[0].offsetWidth;
+        const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+        const totalWidth = slideWidth + slideMargin;
+        console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+        return totalWidth;
+    }
 
-					// Auto-scroll function
-					function startAutoScroll() {
-						function resetAutoScroll() {
-							if (autoScrollInterval) {
-								clearInterval(autoScrollInterval);
-							}
-							autoScrollInterval = setInterval(() => {
-								currentIndex++;
-								console.log('Scrolling to index:', currentIndex);
-								if (currentIndex >= totalSlides + 1) {
-									// Reached clone, reset to first slide instantly
-									container.scrollTo({ left: 0, behavior: 'instant' });
-									currentIndex = 1; // Start from second slide
-								}
-								container.scrollTo({
-									left: currentIndex * getBoxWidth(),
-									behavior: 'smooth'
-								});
-							}, 8000); // 8 seconds
-						}
+    // Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchMoved = false;
 
-						// Start auto-scrolling
-						resetAutoScroll();
-					}
+    container.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoved = false;
+    }, { passive: true });
 
-					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
-					let touchStartX = 0;
-					let touchStartY = 0;
-					let touchMoved = false;
+    container.addEventListener('touchmove', (e) => {
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const deltaX = Math.abs(touchX - touchStartX);
+        const deltaY = Math.abs(touchY - touchStartY);
 
-					container.addEventListener('touchstart', (e) => {
-						touchStartX = e.touches[0].clientX;
-						touchStartY = e.touches[0].clientY;
-						touchMoved = false;
-					}, { passive: true });
+        // Block horizontal swipe
+        if (deltaX > 10 && deltaY < 50) {
+            e.preventDefault();
+            touchMoved = true;
+        }
+        // Allow vertical scrolling
+        if (deltaY > 50) {
+            touchMoved = true;
+        }
+    }, { passive: false });
 
-					container.addEventListener('touchmove', (e) => {
-						const touchX = e.touches[0].clientX;
-						const touchY = e.touches[0].clientY;
-						const deltaX = Math.abs(touchX - touchStartX);
-						const deltaY = Math.abs(touchY - touchStartY);
+    container.addEventListener('touchend', (e) => {
+        if (!touchMoved) {
+            // Treat as tap, allow link click
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = Math.abs(touchEndX - touchStartX);
+            const deltaY = Math.abs(touchEndY - touchStartY);
 
-						// Block horizontal swipe (deltaX > 10, deltaY < 50)
-						if (deltaX > 10 && deltaY < 50) {
-							e.preventDefault(); // Block swipe
-							touchMoved = true;
-						}
-						// Allow vertical scrolling (deltaY > 50)
-						if (deltaY > 50) {
-							touchMoved = true; // Mark as moved, but don't prevent default
-						}
-					}, { passive: false });
+            if (deltaX < 10 && deltaY < 10) {
+                const target = e.target.closest('a');
+                if (target && target.href) {
+                    window.location.href = target.href;
+                }
+            }
+        }
+    }, { passive: true });
 
-					container.addEventListener('touchend', (e) => {
-						if (!touchMoved) {
-							// Treat as tap, allow link click
-							const touchEndX = e.changedTouches[0].clientX;
-							const touchEndY = e.changedTouches[0].clientY;
-							const deltaX = Math.abs(touchEndX - touchStartX);
-							const deltaY = Math.abs(touchEndY - touchStartY);
+    // Prevent wheel scrolling within carousel
+    container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
 
-							if (deltaX < 10 && deltaY < 10) {
-								const target = e.target.closest('a');
-								if (target && target.href) {
-									window.location.href = target.href; // Trigger link
-								}
-							}
-						}
-					}, { passive: true });
+    // Debounce resize handler, preserve current slide
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            container.scrollTo({
+                left: currentIndex * getBoxWidth(),
+                behavior: 'instant'
+            });
+        }, 100);
+    });
 
-					// Prevent wheel scrolling within carousel
-					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+    // Initialize
+    setInitialPosition();
+});
 
-					// Debounce resize handler, preserve current slide
-					let resizeTimeout;
-					window.addEventListener('resize', () => {
-						clearTimeout(resizeTimeout);
-						resizeTimeout = setTimeout(() => {
-							// Restore current slide position instead of resetting
-							container.scrollTo({
-								left: currentIndex * getBoxWidth(),
-								behavior: 'instant'
-							});
-							startAutoScroll();
-						}, 100); // 100ms debounce
-					});
-
-					// Initialize
-					setInitialPosition();
-					startAutoScroll();
-				});
-			</script>
 			<!-- Section Title -->
 			<section class="post">
 				<header class="major">
@@ -578,7 +547,7 @@
 				<!-- OFiD Crew Section -->
 				<section class="partner-section" id="meet-crew">
 					<header>
-						<h2>Meet the Crew</h2>
+						<h2>Characters</h2>
 					</header>
 
 					<!-- Horizontal Scroll Container -->
