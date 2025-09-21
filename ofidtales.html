@@ -161,141 +161,220 @@
 				</div>
 			</div>
 
-			document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.ad-scroll-container');
-    const slides = document.querySelectorAll('.ad-slide');
-    const totalSlides = slides.length;
-    let currentIndex = 0;
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const container = document.querySelector('.ad-scroll-container');
+					const slides = document.querySelectorAll('.ad-slide');
+					const totalSlides = slides.length;
+					let autoScrollInterval;
+					let currentIndex = 0; // Track current index globally
 
-    // Exit if no slides
-    if (totalSlides === 0) {
-        console.warn('No slides found in .ad-scroll-container');
-        return;
-    }
+					// Exit if no slides
+					if (totalSlides === 0) {
+						console.warn('No slides found in .ad-scroll-container');
+						return;
+					}
 
-    // Clone first slide for continuous loop
-    const firstSlideClone = slides[0].cloneNode(true);
-    container.appendChild(firstSlideClone);
+					// Clone first slide for continuous loop
+					const firstSlideClone = slides[0].cloneNode(true);
+					container.appendChild(firstSlideClone);
+					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
 
-    // Force start on first slide
-    function setInitialPosition() {
-        container.scrollTo({ left: 0, behavior: 'instant' });
-        currentIndex = 0;
-    }
+					// Force start on first slide
+					function setInitialPosition() {
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						currentIndex = 0; // Reset index
+					}
 
-    // Calculate slide width
-    function getBoxWidth() {
-        const slideWidth = slides[0].offsetWidth;
-        const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-        const totalWidth = slideWidth + slideMargin;
-        console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
-        return totalWidth;
-    }
+					// Calculate slide width
+					function getBoxWidth() {
+						const slideWidth = slides[0].offsetWidth; // Actual slide width
+						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+						const totalWidth = slideWidth + slideMargin;
+						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+						return totalWidth;
+					}
 
-    // Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchMoved = false;
+					// Auto-scroll function
+					function startAutoScroll() {
+						function resetAutoScroll() {
+							if (autoScrollInterval) {
+								clearInterval(autoScrollInterval);
+							}
+							autoScrollInterval = setInterval(() => {
+								currentIndex++;
+								console.log('Scrolling to index:', currentIndex);
+								if (currentIndex >= totalSlides + 1) {
+									// Reached clone, reset to first slide instantly
+									container.scrollTo({ left: 0, behavior: 'instant' });
+									currentIndex = 1; // Start from second slide
+								}
+								container.scrollTo({
+									left: currentIndex * getBoxWidth(),
+									behavior: 'smooth'
+								});
+							}, 8000); // 8 seconds
+						}
 
-    container.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        touchMoved = false;
-    }, { passive: true });
+						// Start auto-scrolling
+						resetAutoScroll();
+					}
 
-    container.addEventListener('touchmove', (e) => {
-        const touchX = e.touches[0].clientX;
-        const touchY = e.touches[0].clientY;
-        const deltaX = Math.abs(touchX - touchStartX);
-        const deltaY = Math.abs(touchY - touchStartY);
+					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchMoved = false;
 
-        // Block horizontal swipe
-        if (deltaX > 10 && deltaY < 50) {
-            e.preventDefault();
-            touchMoved = true;
-        }
-        // Allow vertical scrolling
-        if (deltaY > 50) {
-            touchMoved = true;
-        }
-    }, { passive: false });
+					container.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						touchMoved = false;
+					}, { passive: true });
 
-    container.addEventListener('touchend', (e) => {
-        if (!touchMoved) {
-            // Treat as tap, allow link click
-            const touchEndX = e.changedTouches[0].clientX;
-            const touchEndY = e.changedTouches[0].clientY;
-            const deltaX = Math.abs(touchEndX - touchStartX);
-            const deltaY = Math.abs(touchEndY - touchStartY);
+					container.addEventListener('touchmove', (e) => {
+						const touchX = e.touches[0].clientX;
+						const touchY = e.touches[0].clientY;
+						const deltaX = Math.abs(touchX - touchStartX);
+						const deltaY = Math.abs(touchY - touchStartY);
 
-            if (deltaX < 10 && deltaY < 10) {
-                const target = e.target.closest('a');
-                if (target && target.href) {
-                    window.location.href = target.href;
-                }
-            }
-        }
-    }, { passive: true });
+						// Block horizontal swipe (deltaX > 10, deltaY < 50)
+						if (deltaX > 10 && deltaY < 50) {
+							e.preventDefault(); // Block swipe
+							touchMoved = true;
+						}
+						// Allow vertical scrolling (deltaY > 50)
+						if (deltaY > 50) {
+							touchMoved = true; // Mark as moved, but don't prevent default
+						}
+					}, { passive: false });
 
-    // Prevent wheel scrolling within carousel
-    container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+					container.addEventListener('touchend', (e) => {
+						if (!touchMoved) {
+							// Treat as tap, allow link click
+							const touchEndX = e.changedTouches[0].clientX;
+							const touchEndY = e.changedTouches[0].clientY;
+							const deltaX = Math.abs(touchEndX - touchStartX);
+							const deltaY = Math.abs(touchEndY - touchStartY);
 
-    // Debounce resize handler, preserve current slide
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            container.scrollTo({
-                left: currentIndex * getBoxWidth(),
-                behavior: 'instant'
-            });
-        }, 100);
-    });
+							if (deltaX < 10 && deltaY < 10) {
+								const target = e.target.closest('a');
+								if (target && target.href) {
+									window.location.href = target.href; // Trigger link
+								}
+							}
+						}
+					}, { passive: true });
 
-    // Initialize
-    setInitialPosition();
-});
+					// Prevent wheel scrolling within carousel
+					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+					// Debounce resize handler, preserve current slide
+					let resizeTimeout;
+					window.addEventListener('resize', () => {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => {
+							// Restore current slide position instead of resetting
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'instant'
+							});
+							startAutoScroll();
+						}, 100); // 100ms debounce
+					});
+
+					// Initialize
+					setInitialPosition();
+					startAutoScroll();
+				});
+			</script>
 
 			<!-- Section Title -->
-			<section class="post">
-				<header class="major">
-					<span class="date">Giddy's by OFiDCrypt</span>
-					<h1>Giddy's Universe</h1>
-					<p>Giddy's Universe is the family-focused entertainment brand of OFiDCrypt; featuring <a
-							href="#meet-crew">Giddy,
-							Buster, Rex
-							& Grampa</a></p>
+<section class="post">
+    <header class="major">
+        <span class="date">Giddy's by OFiDCrypt</span>
+        <h1>Giddy's Universe</h1>
+        <p>Giddy's Universe is the family-focused entertainment brand of OFiDCrypt; featuring <a
+                href="#meet-crew">Giddy,
+                Buster, Rex
+                & Grampa</a></p>
 
-					<!-- YouTube Adaptation -->
-					<section class="youtube-iframe" id="latest-event">
-						<div class="stream video main">
-							<iframe width="560" height="315"
-								src="https://www.youtube.com/embed/7X1z83diqEQ?si=Mql--JNKTDTuQMR2"
-								title="YouTube video player" frameborder="0"
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-								referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-							</iframe>
-						</div>
-					</section>
+    <!-- YouTube Adaptation -->
+    <section class="youtube-iframe" id="latest-event">
+        <div class="stream video main">
+            <div id="player"></div>
+            <img id="poster-image" src="../assets/images/webp/bg-giddys.webp" alt="Giddy's Poster Image"
+                style="display: none; width: 100%; height: auto; max-width: 560px; aspect-ratio: 16/9;">
+        </div>
+    </section>
 
-					<!-- Revert video placeholder to poster image after video ends -->
-					<script>
-						document.addEventListener('DOMContentLoaded', function () {
-							var video = document.getElementById('myVideo');
+    <!-- Revert video placeholder to poster image after video ends -->
+    <script>
+        // Load YouTube IFrame Player API asynchronously
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-							// Ensure video loads before adding event listener
-							video.addEventListener('loadedmetadata', function () {
-								video.addEventListener('ended', function () {
-									this.currentTime = 0; // Reset video to start
-									this.pause(); // Pause the video
-									this.poster = '../assets/images/bglogo01.webp'; // Set the new poster image
-								});
-							});
-						});
-					</script>
+        // Global variable for the YouTube player
+        var player;
 
-					<p>Enjoy our animated series of short videos known as Giddy Tales, real world adventures with <a
-							href=" /ofidkid.html"> Baby Tokin</a> and series branded goods for kids from Giddys.Shop!
+        // Called when YouTube API is loaded
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '560',
+                videoId: '7X1z83diqEQ',
+                playerVars: {
+                    'playsinline': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'ecver': 2
+                },
+                events: {
+                    'onReady': function (event) {
+                        // Sync poster image size with player on load
+                        syncPosterSize();
+                    },
+                    'onStateChange': function (event) {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            // Video ended, hide player and show poster image
+                            document.getElementById('player').style.display = 'none';
+                            document.getElementById('poster-image').style.display = 'block';
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to sync poster image size with player
+        function syncPosterSize() {
+            const playerElement = document.getElementById('player');
+            const posterImage = document.getElementById('poster-image');
+            if (playerElement && posterImage) {
+                const playerWidth = playerElement.offsetWidth;
+                const playerHeight = playerElement.offsetHeight;
+                posterImage.style.width = playerWidth + 'px';
+                posterImage.style.height = playerHeight + 'px';
+                posterImage.style.maxWidth = '100%'; // Ensure it doesn't overflow container
+            }
+        }
+
+        // Ensure poster is hidden initially and sync size on load
+        document.addEventListener('DOMContentLoaded', function () {
+            const posterImage = document.getElementById('poster-image');
+            if (posterImage) {
+                posterImage.style.display = 'none';
+                syncPosterSize();
+            }
+        });
+
+        // Update poster size on window resize
+        window.addEventListener('resize', syncPosterSize);
+    </script>
+
+					<p>Enjoy our animated series of short videos known as Giddy Tales, real world adventures
+						with <a href=" /ofidkid.html"> Baby Tokin</a> and series branded goods for kids from
+						Giddys.Shop!
 					</p>
 				</header>
 
@@ -348,22 +427,27 @@
 								cite="https://www.tiktok.com/@giddys_ca/video/7550415000519691538"
 								data-video-id="7550415000519691538" style="max-width: 605px;min-width: 325px;">
 								<section> <a target="_blank" title="@giddys_ca"
-										href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a> INTRODUCING:
-									Giddy Tales 🪄 Presented by @OFiDCrypt e𝕏P Web3™ &#38; Giddy’s of Giddy’s
-									Universe—Series &#38; Shop 🛍️ Animated stories available across socials and books
+										href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a>
+									INTRODUCING:
+									Giddy Tales 🪄 Presented by @OFiDCrypt e𝕏P Web3™ &#38; Giddy’s of
+									Giddy’s
+									Universe—Series &#38; Shop 🛍️ Animated stories available across socials
+									and books
 									through online stores! <a title="giddys" target="_blank"
 										href="https://www.tiktok.com/tag/giddys?refer=embed">#Giddys</a> <a title="toys"
 										target="_blank" href="https://www.tiktok.com/tag/toys?refer=embed">#Toys</a> <a
 										title="books" target="_blank"
 										href="https://www.tiktok.com/tag/books?refer=embed">#Books</a> <a
 										title="stories" target="_blank"
-										href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a> <a
-										title="kids" target="_blank"
-										href="https://www.tiktok.com/tag/kids?refer=embed">#kids</a> @lilionethcore
+										href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a>
+									<a title="kids" target="_blank"
+										href="https://www.tiktok.com/tag/kids?refer=embed">#kids</a>
+									@lilionethcore
 									@Linda-Marie Emmerson @Crypto.com @Lillicity @HARRISON EUGENE <a target="_blank"
 										title="♬ Rockin - Chris Alan Lee"
 										href="https://www.tiktok.com/music/Rockin-6777263935914510337?refer=embed">♬
-										Rockin - Chris Alan Lee</a> </section>
+										Rockin - Chris Alan Lee</a>
+								</section>
 							</blockquote>
 							<script async src="https://www.tiktok.com/embed.js"></script>
 							<script async src="https://www.tiktok.com/embed.js"></script>
@@ -383,20 +467,26 @@
 								cite="https://www.tiktok.com/@giddys_ca/video/7550422618852183314"
 								data-video-id="7550422618852183314" style="max-width: 605px;min-width: 325px;">
 								<section> <a target="_blank" title="@giddys_ca"
-										href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a> Giddy Tales
-									S1 Ep.1 🪄 THE STORY BEGINS! “GiddyVerse Origins” is the first book in the series!
-									Enjoy video shorts across socials as we turn the pages—Grampa has a secret; and the
-									truth behind a Magical Bouncy Ball begins in “Grampa’s Attic!” Check out Giddys.Shop
+										href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a>
+									Giddy Tales
+									S1 Ep.1 🪄 THE STORY BEGINS! “GiddyVerse Origins” is the first book in
+									the series!
+									Enjoy video shorts across socials as we turn the pages—Grampa has a
+									secret; and the
+									truth behind a Magical Bouncy Ball begins in “Grampa’s Attic!” Check out
+									Giddys.Shop
 									where stories and narratives can be bought to own! <a title="kids" target="_blank"
 										href="https://www.tiktok.com/tag/kids?refer=embed">#Kids</a> <a title="giddys"
 										target="_blank" href="https://www.tiktok.com/tag/giddys?refer=embed">#Giddys</a>
 									<a title="stories" target="_blank"
-										href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a> <a
-										title="adventure" target="_blank"
-										href="https://www.tiktok.com/tag/adventure?refer=embed">#Adventure</a> <a
-										title="books" target="_blank"
-										href="https://www.tiktok.com/tag/books?refer=embed">#Books</a> @OFiDCrypt e𝕏P
-									Web3™ @lilionethcore @Linda-Marie Emmerson @Crypto.com @Lillicity @HARRISON EUGENE
+										href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a>
+									<a title="adventure" target="_blank"
+										href="https://www.tiktok.com/tag/adventure?refer=embed">#Adventure</a>
+									<a title="books" target="_blank"
+										href="https://www.tiktok.com/tag/books?refer=embed">#Books</a>
+									@OFiDCrypt e𝕏P
+									Web3™ @lilionethcore @Linda-Marie Emmerson @Crypto.com @Lillicity
+									@HARRISON EUGENE
 									@DeFi Space @Crypto Mason @Grampa <a target="_blank"
 										title="♬ Magic Kingdom Melody - Ausku Studio"
 										href="https://www.tiktok.com/music/Magic-Kingdom-Melody-7356176880491612186?refer=embed">♬
@@ -562,17 +652,23 @@
 										alt="OFiD Crew Giddy Character"></span>
 								<h3>Giddy</h3>
 								<p>
-									Giddy is the fun-loving, happy-go-lucky member of the OFiD Crew, bringing joy and
+									Giddy is the fun-loving, happy-go-lucky member of the OFiD Crew,
+									bringing joy and
 									excitement wherever she goes.
-									Adorned in vibrant shades of purple, pink, and teal, Giddy is a burst of color and
+									Adorned in vibrant shades of purple, pink, and teal, Giddy is a burst of
+									color and
 									energy. She is never seen without
-									her beloved bouncy ball, which she carries with her on all her adventures. Giddy's
+									her beloved bouncy ball, which she carries with her on all her
+									adventures. Giddy's
 									infectious enthusiasm and playful
-									nature make her the life of the party, always finding a way to make everyone smile.
+									nature make her the life of the party, always finding a way to make
+									everyone smile.
 									Whether it's cracking jokes or
-									leading the crew in a spontaneous dance-off, Giddy, also known as "She Giddy," knows
+									leading the crew in a spontaneous dance-off, Giddy, also known as "She
+									Giddy," knows
 									how to keep spirits high and
-									create unforgettable memories. Her positive outlook and carefree attitude make her
+									create unforgettable memories. Her positive outlook and carefree
+									attitude make her
 									an indispensable member of the OFiD Crew.
 								</p>
 							</div>
@@ -589,15 +685,20 @@
 										alt="OFiD Crew Buster Character"></span>
 								<h3>Buster the Bouncer</h3>
 								<p>
-									Buster is the rugged bouncer of the OFiD Crew, known for his tough exterior and
+									Buster is the rugged bouncer of the OFiD Crew, known for his tough
+									exterior and
 									heart of gold. With striking teal and
-									purple colors, Buster stands out in any crowd. He dons a leather jacket that adds to
+									purple colors, Buster stands out in any crowd. He dons a leather jacket
+									that adds to
 									his tough persona, but don't let
-									his appearance fool you—Buster, also known as "Buster Bounce," is fiercely loyal and
+									his appearance fool you—Buster, also known as "Buster Bounce," is
+									fiercely loyal and
 									protective of his friends.
-									As the unofficial guardian of the OFiD Crew on Telegram, Buster ensures that
+									As the unofficial guardian of the OFiD Crew on Telegram, Buster ensures
+									that
 									everyone stays safe while having a great time.
-									With his no-nonsense attitude and strong sense of duty, Buster is the backbone of
+									With his no-nonsense attitude and strong sense of duty, Buster is the
+									backbone of
 									the crew, always ready to step in and lend a hand.
 								</p>
 							</div>
@@ -614,15 +715,20 @@
 										alt="OFiD Crew Rex Character"></span>
 								<h3>Rex</h3>
 								<p>
-									Rex is the cute and shy member of the OFiD Crew, always wearing his denim vest and
+									Rex is the cute and shy member of the OFiD Crew, always wearing his
+									denim vest and
 									glasses. With this look and his short,
-									soft fur and striking red color, he is often seen as a stern and serious figure!
+									soft fur and striking red color, he is often seen as a stern and serious
+									figure!
 									Though introverted by nature, Rex is
-									incredibly smart and loves to give people the rundown of the latest tech specs.
+									incredibly smart and loves to give people the rundown of the latest tech
+									specs.
 									Speaking of which, Rex's specs, or glasses,
-									are a charming and essential part of his look, enhancing both his vision and his
+									are a charming and essential part of his look, enhancing both his vision
+									and his
 									approachable demeanor.
-									Rex, also known as "He-Rex," struts about with growing confidence and leadership. He
+									Rex, also known as "He-Rex," struts about with growing confidence and
+									leadership. He
 									might be soft-spoken, but his actions
 									speak volumes, making him an invaluable member of the OFiD Crew.
 								</p>
@@ -638,10 +744,15 @@
 					document.addEventListener('DOMContentLoaded', () => {
 						const container = document.querySelector('.scroll-container');
 						const slides = document.querySelectorAll('.scroll-box');
-						const totalSlides = slides.length; // 3 slides
-						let autoScrollInterval; // Store the interval ID
+						const totalSlides = slides.length;
 
-						// Force start on Box 1 (Telegram)
+						// Exit if no slides
+						if (totalSlides === 0) {
+							console.warn('No slides found in .scroll-container');
+							return;
+						}
+
+						// Force start on Box 1
 						function setInitialPosition() {
 							container.scrollTo({ left: 0, behavior: 'instant' });
 							updateArrowStates();
@@ -665,7 +776,7 @@
 							const boxWidth = getBoxWidth();
 							const currentSlideIndex = Math.round(scrollLeft / boxWidth);
 
-							slides.forEach((slide, index) => {
+							slides.forEach((slide) => {
 								const leftArrow = slide.querySelector('.scroll-arrow.left');
 								const rightArrow = slide.querySelector('.scroll-arrow.right');
 								leftArrow.disabled = currentSlideIndex === 0;
@@ -673,64 +784,26 @@
 							});
 						}
 
-						// Auto-scroll function for all screen sizes
-						function startAutoScroll() {
-							let currentIndex = 0;
+						// Arrow click handlers
+						slides.forEach(slide => {
+							const leftArrow = slide.querySelector('.scroll-arrow.left');
+							const rightArrow = slide.querySelector('.scroll-arrow.right');
 
-							// Function to reset and start the interval
-							function resetAutoScroll() {
-								if (autoScrollInterval) {
-									clearInterval(autoScrollInterval); // Clear existing interval
-								}
-								autoScrollInterval = setInterval(() => {
-									currentIndex++;
-									if (currentIndex >= totalSlides) {
-										currentIndex = 0;
-										container.scrollTo({ left: 0, behavior: 'smooth' });
-									} else {
-										container.scrollTo({
-											left: currentIndex * getBoxWidth(),
-											behavior: 'smooth'
-										});
-									}
-									setTimeout(updateArrowStates, 300); // Update arrows after scroll
-								}, 12000); // 12 seconds
-							}
-
-							// Initial start
-							resetAutoScroll();
-
-							// Reset timer on arrow clicks
-							slides.forEach(slide => {
-								const leftArrow = slide.querySelector('.scroll-arrow.left');
-								const rightArrow = slide.querySelector('.scroll-arrow.right');
-
-								leftArrow.addEventListener('click', () => {
-									container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
-									resetAutoScroll(); // Reset timer on click
-								});
-
-								rightArrow.addEventListener('click', () => {
-									container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
-									resetAutoScroll(); // Reset timer on click
-								});
+							leftArrow.addEventListener('click', () => {
+								container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+								setTimeout(updateArrowStates, 300); // Update arrows after scroll
 							});
 
-							// Reset timer on slide tap/click (for selecting a new box)
-							slides.forEach(slide => {
-								slide.addEventListener('click', (e) => {
-									// Only reset if the click isn’t on an arrow (to avoid double reset)
-									if (!e.target.classList.contains('scroll-arrow')) {
-										resetAutoScroll(); // Reset timer on slide click
-									}
-								});
+							rightArrow.addEventListener('click', () => {
+								container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+								setTimeout(updateArrowStates, 300); // Update arrows after scroll
 							});
-						}
+						});
 
 						// Update arrows on scroll
 						container.addEventListener('scroll', updateArrowStates);
 
-						// Update arrows after each click (for timing)
+						// Update arrows after each click
 						slides.forEach(slide => {
 							slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
 								arrow.addEventListener('click', () => {
@@ -745,13 +818,9 @@
 						// Ensure position after page fully renders
 						window.addEventListener('load', setInitialPosition);
 
-						// Start auto-scroll for all sizes
-						startAutoScroll();
-
 						// Handle resize
 						window.addEventListener('resize', () => {
 							setInitialPosition();
-							// Note: Auto-scroll continues; no need to restart unless width changes behavior significantly
 						});
 					});
 				</script>
@@ -949,155 +1018,6 @@
 		</div>
 
 		<!-- Page Specific Scripts -->
-		<script>
-			// Pagination
-			document.addEventListener("DOMContentLoaded", function () {
-				const container = document.getElementById('monthly-container');
-				if (!container) {
-					console.error("Container element not found");
-					return;
-				}
-
-				let currentPage = '1';
-				const totalPages = 3; // Adjust this to the actual number of pages
-
-				// Flag to prevent scroll events during transition
-				let isTransitioning = false;
-
-				function loadPage(pageNumber, shouldScroll = true) {
-					if (!container) return;
-
-					let url;
-					if (pageNumber === '1') {
-						url = 'community.html';
-					} else {
-						url = `monthly-posts-page${pageNumber}.html`;
-					}
-
-					container.classList.add('fade-out');
-					isTransitioning = true; // Start of transition
-
-					fetch(url)
-						.then(response => response.text())
-						.then(data => {
-							const parser = new DOMParser();
-							const doc = parser.parseFromString(data, 'text/html');
-							let newContent = '';
-
-							if (pageNumber === '1') {
-								newContent = doc.getElementById('monthly-community-posts').querySelector('section.monthly-posts').outerHTML;
-							} else {
-								const pageContent = doc.getElementById(`monthly-posts-page${pageNumber}-monthly-posts`);
-								if (pageContent) {
-									newContent = pageContent.innerHTML;
-								} else {
-									newContent = doc.body.innerHTML || doc.querySelector('.monthly-posts').innerHTML;
-								}
-							}
-
-							setTimeout(() => {
-								container.innerHTML = `<div id="monthly-community-posts">${newContent}</div>`;
-								container.classList.remove('fade-out');
-								container.classList.add('fade-in');
-
-								setTimeout(() => {
-									container.classList.remove('fade-in');
-									isTransitioning = false; // End of transition
-
-									if (shouldScroll) {
-										scrollToFeaturedPost();
-									}
-
-									updatePagination(pageNumber);
-								}, 500); // Delay for fade-in animation
-
-							}, 500); // Delay for fade-out animation
-						})
-						.catch(error => {
-							console.error('Error loading page:', error);
-							container.classList.remove('fade-out');
-							isTransitioning = false; // End of transition in case of error
-						});
-				}
-
-				function scrollToFeaturedPost() {
-					const featuredPost = document.querySelector('article.community.featured');
-					if (featuredPost) {
-						const featuredEnd = featuredPost.getBoundingClientRect().bottom + window.scrollY;
-						window.scrollTo({ top: featuredEnd, behavior: 'smooth' });
-					}
-				}
-
-				function updatePagination(pageNumber) {
-					document.querySelectorAll('.pagination .page').forEach(pageLink => {
-						pageLink.classList.toggle('active', pageLink.getAttribute('data-page') === pageNumber);
-					});
-
-					// Show or hide the extra span and page 2 based on the active page
-					document.querySelectorAll('.pagination .extra').forEach(extra => {
-						extra.classList.toggle('hidden', pageNumber === '2');
-					});
-
-					document.querySelectorAll('.pagination .page[data-page="2"]').forEach(page2 => {
-						page2.style.display = (pageNumber === '2') ? 'inline-block' : 'none';
-					});
-
-					currentPage = pageNumber;
-
-					// Update first and last button states
-					document.querySelectorAll('.pagination .first').forEach(first => {
-						first.style.display = currentPage > 1 ? 'inline' : 'none';
-					});
-					document.querySelectorAll('.pagination .last').forEach(last => {
-						last.style.display = currentPage < totalPages ? 'inline' : 'none';
-					});
-				}
-
-				// Event listeners for pagination
-				document.querySelectorAll('.pagination .page').forEach(pageLink => {
-					pageLink.addEventListener('click', function (event) {
-						event.preventDefault();
-						const pageNumber = this.getAttribute('data-page');
-						loadPage(pageNumber, true);
-					});
-				});
-
-				document.querySelectorAll('.pagination .previous').forEach(prevLink => {
-					prevLink.addEventListener('click', function (event) {
-						event.preventDefault();
-						if (currentPage > '1') {
-							loadPage((parseInt(currentPage) - 1).toString(), true);
-						}
-					});
-				});
-
-				document.querySelectorAll('.pagination .next').forEach(nextLink => {
-					nextLink.addEventListener('click', function (event) {
-						event.preventDefault();
-						if (parseInt(currentPage) < totalPages) {
-							loadPage((parseInt(currentPage) + 1).toString(), true);
-						}
-					});
-				});
-
-				document.querySelectorAll('.pagination .first').forEach(firstLink => {
-					firstLink.addEventListener('click', function (event) {
-						event.preventDefault();
-						loadPage('1', true);
-					});
-				});
-
-				document.querySelectorAll('.pagination .last').forEach(lastLink => {
-					lastLink.addEventListener('click', function (event) {
-						event.preventDefault();
-						loadPage(totalPages.toString(), true);
-					});
-				});
-
-				loadPage('1', false); // Load the first page without scrolling
-			});
-		</script>
-
 		<script>
 			// Switch Visual Mode - Dark Mode Light Mode
 			document.addEventListener('DOMContentLoaded', (event) => {
