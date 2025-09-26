@@ -2640,37 +2640,67 @@ button,
 
 /* Token Button Container */
 .token-button-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 1rem;
-	margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
 /* Individual Token Buttons */
 .token-button {
-	background-color: var(--button-bg-color);
-	border-radius: 20px;
-	transition: background-color 0.3s ease;
-	flex: 1 1 calc(50% - 1rem);
-	/* Two buttons per row with gap */
-	display: flex;
-	/* Enable flexbox */
-	align-items: center;
-	/* Vertical centering */
-	justify-content: center;
-	/* Horizontal centering */
-	padding: 0.75rem 1.5rem;
-	text-align: center;
+    background-color: var(--button-bg-color);
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    flex: 1 1 calc(50% - 1rem); /* Two buttons per row with gap */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+}
+
+/* Make the first and last buttons double wide */
+.token-button:first-child,
+.token-button:last-child {
+    flex: 1 1 100%; /* Full width for the first and last buttons */
+}
+
+/* Green and white split for the first button (Pump Fun) */
+.token-button:first-child {
+    background: linear-gradient(to right, green 50%, white 50%);
 }
 
 /* Link inside button */
 .token-button a {
-	text-decoration: none;
-	font-weight: bold;
-	display: inline-block;
-	width: 100%;
-	text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* Style for Pump text (right-aligned in left half, white text) */
+.token-button:first-child .pump-text {
+    color: white;
+    flex: 1;
+    text-align: right;
+    padding-right: 0.75rem; /* Matches top/bottom padding to bring text closer to center */
+}
+
+/* Style for Fun text (left-aligned in right half, green text) */
+.token-button:first-child .fun-text {
+    color: green;
+    flex: 1;
+    text-align: left;
+    padding-left: 0.75rem; /* Matches top/bottom padding to bring text closer to center */
+}
+
+/* Ensure other buttons' links remain centered */
+.token-button:not(:first-child) a {
+    justify-content: center;
 }
 
 /* Footer for Token Button Help Text */
