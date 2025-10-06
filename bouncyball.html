@@ -313,6 +313,219 @@
 					}
 				</script>
 
+				<!-- Buttons to trigger modals -->
+				 <header id="guide">
+					<h2>Digital Gifts</h2>
+				<div class="round-button-container">
+					<div class="button-pair">
+						<button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
+						<button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
+					</div>
+					<button class="round-button" onclick="openModal('check')">Validate User & Wallet</button>
+				</div>
+				</header>
+
+				<!-- Modal Windows -->
+				<div id="waitlist-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('waitlist')">&times;</span>
+						<h2>Join Waitlist</h2>
+						<form>
+							<input type="text" id="waitlist-input" placeholder="Enter your email" required>
+							<button type="submit">Submit</button>
+						</form>
+					</div>
+				</div>
+
+				<div id="redeem-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('redeem')">&times;</span>
+						<h2>Redeem Code</h2>
+						<form>
+							<input type="text" id="redeem-input" placeholder="Enter your code" required>
+							<button type="submit">Redeem</button>
+						</form>
+					</div>
+				</div>
+
+				<div id="check-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('check')">&times;</span>
+						<h2>Validate User & Wallet</h2> <!-- Updated to match button name -->
+						<form>
+							<input type="text" id="check-input" placeholder="Enter wallet/username" required>
+							<button type="submit">Check</button>
+						</form>
+					</div>
+				</div>
+
+				<style>
+					/* Modal-specific styles using your existing variables */
+					body {
+						font-family: Arial, sans-serif;
+						/* Fallback, override if you have a custom font */
+						transition: all 0.3s ease;
+					}
+
+					/* Explore Button */
+					.round-button-container {
+						display: flex;
+						flex-wrap: wrap;
+						/* Allow pairs to wrap on desktop */
+						justify-content: center;
+						gap: 1.5rem;
+						/* Reduced gap between pairs for consistency */
+						margin-top: 20px;
+						/* Retained from previous request */
+						margin-bottom: 3rem;
+						/* Updated to match provided style */
+					}
+
+					/* Individual Button Styling */
+					.round-button {
+						background-color: var(--button-bg-color);
+						border-radius: 20px;
+						transition: background-color 0.3s ease, transform 0.2s ease;
+					}
+
+					/* Remove unnecessary margin-right rule */
+					.round-button:last-child {
+						margin-right: 0;
+						/* Kept, though likely redundant due to gap property */
+					}
+
+					/* Button Pair Styling */
+					.button-pair {
+						display: flex;
+						flex-wrap: nowrap;
+						/* Ensure buttons in a pair stay side by side */
+						gap: 1.5rem;
+						/* Consistent gap between buttons in a pair */
+						justify-content: center;
+					}
+
+					.round-button:hover {
+						transform: scale(1.05);
+						/* Retained hover effect for consistency */
+					}
+
+					.modal {
+						display: none;
+						position: fixed;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						background-color: rgba(0, 0, 0, 0.5);
+						align-items: center;
+						justify-content: center;
+						z-index: 1000;
+					}
+
+					.modal-content {
+						background-color: var(--main-bg-color);
+						padding: 20px;
+						border-radius: 10px;
+						width: 300px;
+						/* Default for mobile */
+						text-align: center;
+						animation: slideIn 0.3s ease-out;
+						border: 2px solid var(--quick-start-border-color);
+						position: relative;
+						/* Ensure close button is positioned relative to modal-content */
+					}
+
+					/* Desktop width adjustment */
+					@media (min-width: 768px) {
+						.modal-content {
+							width: 400px;
+							/* Wider for desktop to fit titles like "Validate User & Wallet" */
+						}
+					}
+
+					@keyframes slideIn {
+						from {
+							transform: translateY(-50px);
+							opacity: 0;
+						}
+
+						to {
+							transform: translateY(0);
+							opacity: 1;
+						}
+					}
+
+					.close {
+						position: absolute;
+						top: 10px;
+						right: 10px;
+						/* Inside the modal-content */
+						font-size: 24px;
+						cursor: pointer;
+						color: var(--text-color);
+						line-height: 1;
+						/* Proper vertical alignment */
+					}
+
+					.close:hover {
+						color: var(--link-hover-color);
+					}
+
+					form {
+						display: flex;
+						flex-direction: column;
+						gap: 10px;
+					}
+
+					input {
+						padding: 10px;
+						border: 1px solid var(--form-border-color);
+						border-radius: 5px;
+						background-color: var(--main-bg-color);
+						color: var(--text-color);
+					}
+
+					input:focus {
+						outline: none;
+						border-color: var(--form-focus-border-color);
+					}
+				</style>
+
+				<script>
+					// Modal control functions
+					function openModal(modalId) {
+						document.getElementById(`${modalId}-modal`).style.display = 'flex';
+					}
+
+					function closeModal(modalId) {
+						document.getElementById(`${modalId}-modal`).style.display = 'none';
+					}
+
+					// Form submission handling
+					document.querySelectorAll('form').forEach(form => {
+						form.addEventListener('submit', (e) => {
+							e.preventDefault();
+							const input = form.querySelector('input').value;
+							const modalId = form.closest('.modal').id.split('-')[0];
+							const action = modalId === 'waitlist' ? 'Waitlist joined' :
+								modalId === 'redeem' ? 'Code redeemed' :
+									'User & Wallet validated'; // Updated to match button name
+							alert(`${action}: ${input}`);
+							form.closest('.modal').style.display = 'none';
+						});
+					});
+
+					// Check if theme is configured as black and purple
+					function isThemeConfigured() {
+						const root = getComputedStyle(document.documentElement);
+						const primaryColor = root.getPropertyValue('--link-color').trim();
+						const secondaryColor = root.getPropertyValue('--bg-light-color').trim();
+						return primaryColor === '#7019c7' && secondaryColor === '#212931';
+					}
+
+					console.log('Theme configured (black and purple):', isThemeConfigured());
+				</script>
+
 				<!-- Header -->
 				<header id="guide">
 					<h2>What is Bouncy Ball?</h2>
