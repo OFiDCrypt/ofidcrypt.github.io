@@ -314,353 +314,381 @@
 				</script>
 
 				<!-- Buttons to trigger modals -->
-<header id="guide">
-    <h2>Digital Gifts</h2>
-    <p>Be the first to hear about new products from <a href="ofidtales.html">Giddy's Shop</a> — Redeem tokens and check OFiDCrypt wallets for authenticity!</p>
-    <div class="round-button-container">
-        <div class="button-pair">
-            <button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
-            <button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
-        </div>
-        <button class="round-button" onclick="openModal('check')">Validate Wallet</button>
-    </div>
-</header>
+				<header id="digital-gifts">
+					<h2>Digital Gifts</h2>
+					<p>Be the first to hear about new products from <a href="ofidtales.html">Giddy's Shop</a> — Redeem
+						tokens and check OFiDCrypt wallets for authenticity!</p>
+					<div class="round-button-container">
+						<div class="button-pair">
+							<button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
+							<button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
+						</div>
+						<button class="round-button" onclick="openModal('check')">Validate Wallet</button>
+					</div>
+				</header>
 
-<!-- Modal Windows -->
-<div id="waitlist-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('waitlist')">&times;</span>
-        <h2>Join Waitlist</h2>
-        <form>
-            <input type="text" id="waitlist-input" placeholder="Enter your email" required>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</div>
+				<!-- Modal Windows -->
+				<div id="waitlist-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('waitlist')">&times;</span>
+						<h2>Join Waitlist</h2>
+						<form>
+							<input type="text" id="waitlist-input" placeholder="Enter your email" required>
+							<button type="submit">Submit</button>
+						</form>
+					</div>
+				</div>
 
-<div id="redeem-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('redeem')">&times;</span>
-        <h2>Redeem Code</h2>
-        <form>
-            <input type="text" id="redeem-input" placeholder="Enter your code" required>
-            <button type="submit">Redeem</button>
-        </form>
-    </div>
-</div>
+				<div id="redeem-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('redeem')">&times;</span>
+						<h2>Redeem Code</h2>
+						<form>
+							<input type="text" id="redeem-input" placeholder="Enter your code" required>
+							<button type="submit">Redeem</button>
+						</form>
+					</div>
+				</div>
 
-<div id="check-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('check')">&times;</span>
-        <h2>Validate Wallet</h2>
-        <form>
-            <input type="text" id="check-input" placeholder="Enter wallet address (Solana)" required>
-            <div id="validation-message" style="margin-top: 5px; font-size: 14px;"></div>
-            <button type="submit" id="validate-button">Validate</button>
-            <div id="success-message" style="margin-top: 5px; font-size: 14px; display: none;"></div> <!-- Added for success -->
-            <div id="check-another-message" style="margin-top: 5px; font-size: 14px; display: none;"></div>
-        </form>
-    </div>
-</div>
+				<div id="check-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('check')">&times;</span>
+						<h2>Validate Wallet</h2>
+						<form>
+							<input type="text" id="check-input" placeholder="Enter wallet address (Solana)" required>
+							<div id="validation-message" style="margin-top: 5px; font-size: 14px;"></div>
+							<button type="submit" id="validate-button">Validate</button>
+							<div id="success-message" style="margin-top: 5px; font-size: 14px; display: none;"></div>
+							<!-- Added for success -->
+							<div id="check-another-message" style="margin-top: 5px; font-size: 14px; display: none;">
+							</div>
+						</form>
+					</div>
+				</div>
 
 				<style>
-/* Modal-specific styles using your existing variables */
-body {
-    font-family: Arial, sans-serif; /* Fallback, override if you have a custom font */
-    transition: all 0.3s ease;
-}
+					/* Modal-specific styles using your existing variables */
+					body {
+						font-family: Arial, sans-serif;
+						/* Fallback, override if you have a custom font */
+						transition: all 0.3s ease;
+					}
 
-/* Explore Button */
-.round-button-container {
-    display: flex;
-    flex-wrap: wrap; /* Allow pairs to wrap on desktop */
-    justify-content: center;
-    gap: 1.5rem; /* Reduced gap between pairs for consistency */
-    margin-top: 20px; /* Retained from previous request */
-    margin-bottom: 3rem; /* Updated to match provided style */
-}
+					/* Explore Button */
+					.round-button-container {
+						display: flex;
+						flex-wrap: wrap;
+						/* Allow pairs to wrap on desktop */
+						justify-content: center;
+						gap: 1.5rem;
+						/* Reduced gap between pairs for consistency */
+						margin-top: 20px;
+						/* Retained from previous request */
+						margin-bottom: 3rem;
+						/* Updated to match provided style */
+					}
 
-/* Individual Button Styling */
-.round-button {
-    background-color: var(--button-bg-color);
-    border-radius: 20px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+					/* Individual Button Styling */
+					.round-button {
+						background-color: var(--button-bg-color);
+						border-radius: 20px;
+						transition: background-color 0.3s ease, transform 0.2s ease;
+					}
 
-/* Remove unnecessary margin-right rule */
-.round-button:last-child {
-    margin-right: 0; /* Kept, though likely redundant due to gap property */
-}
+					/* Remove unnecessary margin-right rule */
+					.round-button:last-child {
+						margin-right: 0;
+						/* Kept, though likely redundant due to gap property */
+					}
 
-/* Button Pair Styling */
-.button-pair {
-    display: flex;
-    flex-wrap: nowrap; /* Ensure buttons in a pair stay side by side */
-    gap: 1.5rem; /* Consistent gap between buttons in a pair */
-    justify-content: center;
-}
+					/* Button Pair Styling */
+					.button-pair {
+						display: flex;
+						flex-wrap: nowrap;
+						/* Ensure buttons in a pair stay side by side */
+						gap: 1.5rem;
+						/* Consistent gap between buttons in a pair */
+						justify-content: center;
+					}
 
-.round-button:hover {
-    transform: scale(1.05); /* Retained hover effect for consistency */
-}
+					.round-button:hover {
+						transform: scale(1.05);
+						/* Retained hover effect for consistency */
+					}
 
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
+					.modal {
+						display: none;
+						position: fixed;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						background-color: rgba(0, 0, 0, 0.5);
+						align-items: center;
+						justify-content: center;
+						z-index: 1000;
+					}
 
-.modal-content {
-    background-color: var(--main-bg-color);
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px; /* Default for mobile */
-    text-align: center;
-    animation: slideIn 0.3s ease-out;
-    border: 2px solid var(--quick-start-border-color);
-    position: relative; /* Ensure close button is positioned relative to modal-content */
-}
+					.modal-content {
+						background-color: var(--main-bg-color);
+						padding: 20px;
+						border-radius: 10px;
+						width: 300px;
+						/* Default for mobile */
+						text-align: center;
+						animation: slideIn 0.3s ease-out;
+						border: 2px solid var(--quick-start-border-color);
+						position: relative;
+						/* Ensure close button is positioned relative to modal-content */
+					}
 
-/* Desktop width adjustment */
-@media (min-width: 768px) {
-    .modal-content {
-        width: 400px; /* Wider for desktop to fit titles like "Validate Wallet" */
-    }
-}
+					/* Desktop width adjustment */
+					@media (min-width: 768px) {
+						.modal-content {
+							width: 400px;
+							/* Wider for desktop to fit titles like "Validate Wallet" */
+						}
+					}
 
-@keyframes slideIn {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
+					@keyframes slideIn {
+						from {
+							transform: translateY(-50px);
+							opacity: 0;
+						}
 
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px; /* Inside the modal-content */
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--text-color);
-    line-height: 1; /* Proper vertical alignment */
-}
+						to {
+							transform: translateY(0);
+							opacity: 1;
+						}
+					}
 
-.close:hover {
-    color: var(--link-hover-color);
-}
+					.close {
+						position: absolute;
+						top: 10px;
+						right: 10px;
+						/* Inside the modal-content */
+						font-size: 24px;
+						cursor: pointer;
+						color: var(--text-color);
+						line-height: 1;
+						/* Proper vertical alignment */
+					}
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+					.close:hover {
+						color: var(--link-hover-color);
+					}
 
-input {
-    padding: 10px;
-    border: 1px solid var(--form-border-color);
-    border-radius: 5px;
-    background-color: var(--main-bg-color);
-    color: var(--text-color);
-}
+					form {
+						display: flex;
+						flex-direction: column;
+						gap: 10px;
+					}
 
-input:focus {
-    outline: none;
-    border-color: var(--form-focus-border-color);
-}
+					input {
+						padding: 10px;
+						border: 1px solid var(--form-border-color);
+						border-radius: 5px;
+						background-color: var(--main-bg-color);
+						color: var(--text-color);
+					}
 
-/* Validation message styling */
-#validation-message {
-    min-height: 20px;
-    color: #f44336; /* Red for error */
-}
+					input:focus {
+						outline: none;
+						border-color: var(--form-focus-border-color);
+					}
 
-/* Success message styling */
-#success-message {
-    min-height: 20px;
-    color: var(--text-color); /* Plain text, matches theme */
-    font-size: 14px;
-}
+					/* Validation message styling */
+					#validation-message {
+						min-height: 20px;
+						color: #f44336;
+						/* Red for error */
+					}
 
-/* Check another message styling */
-#check-another-message {
-    min-height: 20px;
-    color: var(--text-color); /* Plain text, matches theme */
-    font-size: 14px;
-}
+					/* Success message styling */
+					#success-message {
+						min-height: 20px;
+						color: var(--text-color);
+						/* Plain text, matches theme */
+						font-size: 14px;
+					}
 
-/* Validation button states */
-#validate-button {
-    position: relative;
-    padding: 10px 30px; /* Balanced padding for centering */
-    border-radius: 20px; /* Match round-button style */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center text */
-    text-align: center;
-    min-width: 120px; /* Ensure enough space for "NO MATCH" */
-}
+					/* Check another message styling */
+					#check-another-message {
+						min-height: 20px;
+						color: var(--text-color);
+						/* Plain text, matches theme */
+						font-size: 14px;
+					}
 
-#validate-button.success {
-    background-color: #4caf50; /* Green for success */
-    color: white;
-}
+					/* Validation button states */
+					#validate-button {
+						position: relative;
+						padding: 10px 30px;
+						/* Balanced padding for centering */
+						border-radius: 20px;
+						/* Match round-button style */
+						transition: background-color 0.3s ease, transform 0.2s ease;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						/* Center text */
+						text-align: center;
+						min-width: 120px;
+						/* Ensure enough space for "NO MATCH" */
+					}
 
-#validate-button.success::after {
-    content: '✔'; /* White checkmark */
-    position: absolute;
-    right: 10px;
-    font-size: 16px;
-}
+					#validate-button.success {
+						background-color: #4caf50;
+						/* Green for success */
+						color: white;
+					}
 
-#validate-button.failure {
-    background-color: #f44336; /* Red for failure */
-    color: white;
-}
-</style>
+					#validate-button.success::after {
+						content: '✔';
+						/* White checkmark */
+						position: absolute;
+						right: 10px;
+						font-size: 16px;
+					}
+
+					#validate-button.failure {
+						background-color: #f44336;
+						/* Red for failure */
+						color: white;
+					}
+				</style>
 
 				<script>
-// Modal control functions
-function openModal(modalId) {
-    document.getElementById(`${modalId}-modal`).style.display = 'flex';
-    // Reset validate button state and messages
-    const validateButton = document.getElementById('validate-button');
-    if (validateButton) {
-        validateButton.classList.remove('success', 'failure');
-        validateButton.textContent = 'Validate';
-    }
-    const validationMessage = document.getElementById('validation-message');
-    if (validationMessage) validationMessage.textContent = '';
-    const successMessage = document.getElementById('success-message');
-    if (successMessage) successMessage.style.display = 'none';
-    const checkAnotherMessage = document.getElementById('check-another-message');
-    if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
-}
+					// Modal control functions
+					function openModal(modalId) {
+						document.getElementById(`${modalId}-modal`).style.display = 'flex';
+						// Reset validate button state and messages
+						const validateButton = document.getElementById('validate-button');
+						if (validateButton) {
+							validateButton.classList.remove('success', 'failure');
+							validateButton.textContent = 'Validate';
+						}
+						const validationMessage = document.getElementById('validation-message');
+						if (validationMessage) validationMessage.textContent = '';
+						const successMessage = document.getElementById('success-message');
+						if (successMessage) successMessage.style.display = 'none';
+						const checkAnotherMessage = document.getElementById('check-another-message');
+						if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
+					}
 
-function closeModal(modalId) {
-    document.getElementById(`${modalId}-modal`).style.display = 'none';
-    // Reset validate button state and messages
-    const validateButton = document.getElementById('validate-button');
-    if (validateButton) {
-        validateButton.classList.remove('success', 'failure');
-        validateButton.textContent = 'Validate';
-    }
-    const validationMessage = document.getElementById('validation-message');
-    if (validationMessage) validationMessage.textContent = '';
-    const successMessage = document.getElementById('success-message');
-    if (successMessage) successMessage.style.display = 'none';
-    const checkAnotherMessage = document.getElementById('check-another-message');
-    if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
-}
+					function closeModal(modalId) {
+						document.getElementById(`${modalId}-modal`).style.display = 'none';
+						// Reset validate button state and messages
+						const validateButton = document.getElementById('validate-button');
+						if (validateButton) {
+							validateButton.classList.remove('success', 'failure');
+							validateButton.textContent = 'Validate';
+						}
+						const validationMessage = document.getElementById('validation-message');
+						if (validationMessage) validationMessage.textContent = '';
+						const successMessage = document.getElementById('success-message');
+						if (successMessage) successMessage.style.display = 'none';
+						const checkAnotherMessage = document.getElementById('check-another-message');
+						if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
+					}
 
-// Solana wallet address trust list with wallet types
-const trustList = {
-    'BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5': 'Confirmed Community Donation Wallet',
-    'DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC': 'Confirmed Developer Wallet',
-    'H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc': 'Confirmed Rewards Wallet'
-};
+					// Solana wallet address trust list with wallet types
+					const trustList = {
+						'BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5': 'Confirmed Community Donation Wallet',
+						'DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC': 'Confirmed Developer Wallet',
+						'H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc': 'Confirmed Rewards Wallet'
+					};
 
-// Solana wallet address format validation (true/false)
-function isValidSolanaFormat(address) {
-    if (!address) return false;
-    const length = address.length;
-    const base58Regex = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
-    return length >= 32 && length <= 44 && base58Regex.test(address);
-}
+					// Solana wallet address format validation (true/false)
+					function isValidSolanaFormat(address) {
+						if (!address) return false;
+						const length = address.length;
+						const base58Regex = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+						return length >= 32 && length <= 44 && base58Regex.test(address);
+					}
 
-// Form submission handling
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const input = form.querySelector('input').value.trim();
-        const modalId = form.closest('.modal').id.split('-')[0];
-        
-        if (modalId === 'check') {
-            const validateButton = document.getElementById('validate-button');
-            const validationMessage = document.getElementById('validation-message');
-            const successMessage = document.getElementById('success-message');
-            const checkAnotherMessage = document.getElementById('check-another-message');
-            
-            if (!input) {
-                validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
-                validateButton.classList.remove('success');
-                validateButton.classList.add('failure');
-                validateButton.textContent = 'NO MATCH';
-                checkAnotherMessage.textContent = 'Click button again to check another';
-                checkAnotherMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-                return;
-            }
+					// Form submission handling
+					document.querySelectorAll('form').forEach(form => {
+						form.addEventListener('submit', (e) => {
+							e.preventDefault();
+							const input = form.querySelector('input').value.trim();
+							const modalId = form.closest('.modal').id.split('-')[0];
 
-            // Wallet validation logic
-            if (trustList[input]) {
-                // Exact match in trust list
-                validationMessage.textContent = ''; // Clear any previous message
-                checkAnotherMessage.style.display = 'none'; // Hide check another message
-                validateButton.classList.remove('failure');
-                validateButton.classList.add('success');
-                validateButton.textContent = 'MATCH';
-                successMessage.textContent = trustList[input]; // Display wallet type
-                successMessage.style.display = 'block';
-                // Modal stays open until manually closed
-            } else if (isValidSolanaFormat(input)) {
-                // Valid format but not in trust list
-                validationMessage.textContent = 'CAUTION: This address does not belong to us — DO NOT send assets here for OFiD promotions or services';
-                validateButton.classList.remove('success');
-                validateButton.classList.add('failure');
-                validateButton.textContent = 'NO MATCH';
-                checkAnotherMessage.textContent = 'Click button again to check another';
-                checkAnotherMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-            } else {
-                // Invalid format
-                validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
-                validateButton.classList.remove('success');
-                validateButton.classList.add('failure');
-                validateButton.textContent = 'NO MATCH';
-                checkAnotherMessage.textContent = 'Click button again to check another';
-                checkAnotherMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-            }
-        } else {
-            // Other modals (waitlist, redeem)
-            if (!input) {
-                alert(`Error: Please enter a ${modalId === 'waitlist' ? 'valid email address' : 'valid code'}.`);
-                return;
-            }
-            const action = modalId === 'waitlist' ? 'Waitlist joined' : 'Code redeemed';
-            alert(`${action}: ${input}`);
-            form.closest('.modal').style.display = 'none';
-        }
-    });
-});
+							if (modalId === 'check') {
+								const validateButton = document.getElementById('validate-button');
+								const validationMessage = document.getElementById('validation-message');
+								const successMessage = document.getElementById('success-message');
+								const checkAnotherMessage = document.getElementById('check-another-message');
 
-// Check if theme is configured as black and purple
-function isThemeConfigured() {
-    const root = getComputedStyle(document.documentElement);
-    const primaryColor = root.getPropertyValue('--link-color').trim();
-    const secondaryColor = root.getPropertyValue('--bg-light-color').trim();
-    return primaryColor === '#7019c7' && secondaryColor === '#212931';
-}
+								if (!input) {
+									validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
+									validateButton.classList.remove('success');
+									validateButton.classList.add('failure');
+									validateButton.textContent = 'NO MATCH';
+									checkAnotherMessage.textContent = 'Click button again to check another';
+									checkAnotherMessage.style.display = 'block';
+									successMessage.style.display = 'none';
+									return;
+								}
 
-console.log('Theme configured (black and purple):', isThemeConfigured());
+								// Wallet validation logic
+								if (trustList[input]) {
+									// Exact match in trust list
+									validationMessage.textContent = ''; // Clear any previous message
+									checkAnotherMessage.style.display = 'none'; // Hide check another message
+									validateButton.classList.remove('failure');
+									validateButton.classList.add('success');
+									validateButton.textContent = 'MATCH';
+									successMessage.textContent = trustList[input]; // Display wallet type
+									successMessage.style.display = 'block';
+									// Modal stays open until manually closed
+								} else if (isValidSolanaFormat(input)) {
+									// Valid format but not in trust list
+									validationMessage.textContent = 'CAUTION: This address does not belong to us — DO NOT send assets here for OFiD promotions or services';
+									validateButton.classList.remove('success');
+									validateButton.classList.add('failure');
+									validateButton.textContent = 'NO MATCH';
+									checkAnotherMessage.textContent = 'Click button again to check another';
+									checkAnotherMessage.style.display = 'block';
+									successMessage.style.display = 'none';
+								} else {
+									// Invalid format
+									validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
+									validateButton.classList.remove('success');
+									validateButton.classList.add('failure');
+									validateButton.textContent = 'NO MATCH';
+									checkAnotherMessage.textContent = 'Click button again to check another';
+									checkAnotherMessage.style.display = 'block';
+									successMessage.style.display = 'none';
+								}
+							} else {
+								// Other modals (waitlist, redeem)
+								if (!input) {
+									alert(`Error: Please enter a ${modalId === 'waitlist' ? 'valid email address' : 'valid code'}.`);
+									return;
+								}
+								const action = modalId === 'waitlist' ? 'Waitlist joined' : 'Code redeemed';
+								alert(`${action}: ${input}`);
+								form.closest('.modal').style.display = 'none';
+							}
+						});
+					});
 
-// Test the example addresses
-console.log('Example address valid:', !!trustList['BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5']);
-console.log('Example address valid:', !!trustList['DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC']);
-console.log('Example address valid:', !!trustList['H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc']);
-</script>
+					// Check if theme is configured as black and purple
+					function isThemeConfigured() {
+						const root = getComputedStyle(document.documentElement);
+						const primaryColor = root.getPropertyValue('--link-color').trim();
+						const secondaryColor = root.getPropertyValue('--bg-light-color').trim();
+						return primaryColor === '#7019c7' && secondaryColor === '#212931';
+					}
+
+					console.log('Theme configured (black and purple):', isThemeConfigured());
+
+					// Test the example addresses
+					console.log('Example address valid:', !!trustList['BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5']);
+					console.log('Example address valid:', !!trustList['DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC']);
+					console.log('Example address valid:', !!trustList['H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc']);
+				</script>
 
 				<!-- Header -->
 				<header id="guide">
