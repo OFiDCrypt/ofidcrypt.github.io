@@ -1,7 +1,94 @@
 {
-    "name": "GIDDY",
-    "symbol": "GIDDY",
-    "description": "Canada’s first commerce-backed Stabletokin. Minted to mirror $119.247B CAD held in cash as of January 31, 2025 (Source: Bank of Canada – Selected Monetary Aggregates). Anchoring gifting, redemption, and #MicroEconomies by OFiDCrypt, GIDDY models stablecoin/crypto parity with Bouncy Ball’s kinetic flow. Not legal tender at time of mint. Whimsical, practical, and proudly ours.",
-    "image": "https://ofidcrypt.github.io/giddy-logo.png",
-    "decimals": 6
+  "name": "GIDDY",
+  "symbol": "GIDDY",
+  "description": "Canada’s first commerce-backed Stabletokin. Minted to mirror $119.247B CAD held in cash as of January 31, 2025 (Source: Bank of Canada – Selected Monetary Aggregates). Anchoring gifting, redemption, and #MicroEconomies by OFiDCrypt, GIDDY models stablecoin/crypto parity with Bouncy Ball’s kinetic flow. Not legal tender at time of mint. Whimsical, practical, and proudly ours. Follow us: Twitter @OFiDCrypt, @Giddys_CA, TikTok @Giddys_CA, YouTube @OFiDCrypt, GitHub @OFiDCrypt, Facebook @OFiDCrypt, Instagram @OFiDCrypt, LinkedIn @OFiDCrypt.",
+  "image": "https://ofidcrypt.github.io/giddy-logo.png",
+  "external_url": "https://ofidcrypt.github.io",
+  "seller_fee_basis_points": 500,
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Stabletokin"
+    },
+    {
+      "trait_type": "Backing 1:1 Exchange",
+      "value": "CAD $119.247B (Bank of Canada, Jan 31, 2025)"
+    },
+    {
+      "trait_type": "Decimals",
+      "value": "6"
+    },
+    {
+      "trait_type": "Purpose",
+      "value": "Gifting, Redemption, #MicroEconomies"
+    },
+    {
+      "trait_type": "Theme",
+      "value": "Bouncy Ball Kinetic Flow"
+    },
+    {
+      "trait_type": "Legal Tender",
+      "value": "No"
+    },
+    {
+      "trait_type": "Twitter",
+      "value": "https://twitter.com/OFiDCrypt, https://twitter.com/Giddys_CA"
+    },
+    {
+      "trait_type": "TikTok",
+      "value": "https://tiktok.com/@Giddys_CA"
+    },
+    {
+      "trait_type": "YouTube",
+      "value": "https://youtube.com/@OFiDCrypt"
+    },
+    {
+      "trait_type": "GitHub",
+      "value": "https://github.com/OFiDCrypt"
+    },
+    {
+      "trait_type": "Facebook",
+      "value": "https://facebook.com/OFiDCrypt"
+    },
+    {
+      "trait_type": "Instagram",
+      "value": "https://instagram.com/OFiDCrypt"
+    },
+    {
+      "trait_type": "LinkedIn",
+      "value": "https://linkedin.com/company/OFiDCrypt"
+    }
+  ],
+  "collection": {
+    "name": "OFiDCrypt Stabletokins",
+    "family": "GIDDY'S Universe: Series & Shop"
+  },
+  "properties": {
+    "files": [
+      {
+        "uri": "https://ofidcrypt.github.io/giddy-logo.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc",
+        "share": 100
+      }
+    ],
+    "socials": {
+      "twitter": [
+        "https://twitter.com/OFiDCrypt",
+        "https://twitter.com/Giddys_CA"
+      ],
+      "tiktok": "https://tiktok.com/@Giddys_CA",
+      "youtube": "https://youtube.com/@OFiDCrypt",
+      "github": "https://github.com/OFiDCrypt",
+      "facebook": "https://facebook.com/OFiDCrypt",
+      "instagram": "https://instagram.com/OFiDCrypt",
+      "linkedin": "https://linkedin.com/company/OFiDCrypt"
+    }
+  },
+  "animation_url": "https://youtube.com/@OFiDCrypt"
 }
