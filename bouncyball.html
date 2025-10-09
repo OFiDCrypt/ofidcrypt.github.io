@@ -366,6 +366,15 @@
 					</div>
 				</div>
 
+				<!-- Advisory Modal for Redemption Maintenance -->
+				<div id="advisory-modal" class="modal">
+					<div class="modal-content">
+						<span class="close" onclick="closeModal('advisory')">&times;</span>
+						<h2>Auto-Redeem</h2>
+						<p>🛠️ Under Maintenance 🛠️<br>Please click <a href="#contact-form">here</a> to manually submit your code in our form</p>
+					</div>
+				</div>
+
 				<style>
 					/* Modal-specific styles using your existing variables */
 					body {
@@ -556,6 +565,34 @@
 						/* Red for failure */
 						color: white;
 					}
+
+					/* TEMPORARY Advisory Modal Styling (inherits existing modal styles) */
+					.modal#advisory-modal .modal-content {
+						/* Ensure consistency with existing modals */
+						width: 300px;
+						/* Default for mobile, matches existing */
+					}
+
+					@media (min-width: 768px) {
+						.modal#advisory-modal .modal-content {
+							width: 400px;
+							/* Matches existing desktop width */
+						}
+					}
+
+					/* Style for the 'here' link */
+					.modal#advisory-modal a {
+						color: var(--link-color);
+					}
+
+					.modal#advisory-modal a:hover {
+						color: var(--link-hover-color);
+					}
+
+					/* Center the subtext */
+					.modal#advisory-modal p {
+						text-align: center;
+					}
 				</style>
 
 				<script>
@@ -690,6 +727,35 @@
 					console.log('Example address valid:', !!trustList['H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc']);
 				</script>
 
+				<script>
+					// TEMPORARY: Show advisory modal instead of redeem modal during maintenance
+					function openModal(modalId) {
+						if (modalId === 'redeem') {
+							// Show advisory modal instead of redeem modal during maintenance
+							document.getElementById('advisory-modal').style.display = 'flex';
+						} else {
+							document.getElementById(`${modalId}-modal`).style.display = 'flex';
+						}
+						// Reset validate button state and messages (for check modal)
+						const validateButton = document.getElementById('validate-button');
+						if (validateButton) {
+							validateButton.classList.remove('success', 'failure');
+							validateButton.textContent = 'Validate';
+						}
+						const validationMessage = document.getElementById('validation-message');
+						if (validationMessage) validationMessage.textContent = '';
+						const successMessage = document.getElementById('success-message');
+						if (successMessage) successMessage.style.display = 'none';
+						const checkAnotherMessage = document.getElementById('check-another-message');
+						if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
+					}
+
+					// Close advisory modal when clicking the jump link
+					document.querySelector('#advisory-modal a').addEventListener('click', () => {
+						closeModal('advisory');
+					});
+				</script>
+
 				<!-- Header -->
 				<header id="guide">
 					<h2>What is Bouncy Ball?</h2>
@@ -822,9 +888,9 @@
 
 		<!-- Footer -->
 		<footer id="footer">
-			<section>
+			<section id="contact-form">
 				<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
-					<h2 class="centered-heading">Contact Us</h2>
+					<h2 class="centered-heading">Redeem</h2>
 					<div class="fields">
 						<div class="field">
 							<label for="name">Name</label>
@@ -835,7 +901,7 @@
 							<input type="email" name="email" id="email" required>
 						</div>
 						<div class="field">
-							<label for="message">Message</label>
+							<label for="message">Redemption Code</label>
 							<textarea name="message" id="message" rows="3" required></textarea>
 						</div>
 					</div>
@@ -858,7 +924,7 @@
 			</section>
 
 			<!-- Footer Social Location, Links & Other Contact -->
-			<section class="split contact">
+			<section class="split contact" id="socials">
 				<section>
 					<h3>Location</h3>
 					<p>British Columbia, Canada</p>
