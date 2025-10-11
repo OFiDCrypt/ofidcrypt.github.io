@@ -323,7 +323,7 @@
 							<button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
 							<button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
 						</div>
-						<button class="round-button" onclick="openModal('check')">Validate Wallet</button>
+						<button class="round-button" onclick="openModal('check')">Check</button>
 					</div>
 				</header>
 
@@ -353,13 +353,12 @@
 				<div id="check-modal" class="modal">
 					<div class="modal-content">
 						<span class="close" onclick="closeModal('check')">&times;</span>
-						<h2>Validate Wallet</h2>
+						<h2>Validate Address</h2>
 						<form>
-							<input type="text" id="check-input" placeholder="Enter wallet address (Solana)" required>
+							<input type="text" id="check-input" placeholder="Enter address/contract (Solana)" required>
 							<div id="validation-message" style="margin-top: 5px; font-size: 14px;"></div>
-							<button type="submit" id="validate-button">Validate</button>
+							<button type="submit" id="validate-button">Validate Address</button>
 							<div id="success-message" style="margin-top: 5px; font-size: 14px; display: none;"></div>
-							<!-- Added for success -->
 							<div id="check-another-message" style="margin-top: 5px; font-size: 14px; display: none;">
 							</div>
 						</form>
@@ -371,7 +370,8 @@
 					<div class="modal-content">
 						<span class="close" onclick="closeModal('advisory')">&times;</span>
 						<h2>Auto-Redeem</h2>
-						<p><b>🛠️ COMING SOON 🛠️</b><br>Please click <a href="#contact-form">here</a> to manually submit your code in our form</p>
+						<p><b>🛠️ COMING SOON 🛠️</b><br>Please click <a href="#contact-form">here</a> to manually
+							submit your code in our form</p>
 					</div>
 				</div>
 
@@ -455,7 +455,7 @@
 					@media (min-width: 768px) {
 						.modal-content {
 							width: 400px;
-							/* Wider for desktop to fit titles like "Validate Wallet" */
+							/* Wider for desktop to fit titles like "VALIDATE ADDRESS" */
 						}
 					}
 
@@ -519,6 +519,11 @@
 						color: var(--text-color);
 						/* Plain text, matches theme */
 						font-size: 14px;
+					}
+
+					/* Ensure bold tags in success message are styled */
+					#success-message b {
+						font-weight: bold;
 					}
 
 					/* Check another message styling */
@@ -598,12 +603,17 @@
 				<script>
 					// Modal control functions
 					function openModal(modalId) {
-						document.getElementById(`${modalId}-modal`).style.display = 'flex';
+						if (modalId === 'redeem') {
+							// Show advisory modal instead of redeem modal during maintenance
+							document.getElementById('advisory-modal').style.display = 'flex';
+						} else {
+							document.getElementById(`${modalId}-modal`).style.display = 'flex';
+						}
 						// Reset validate button state and messages
 						const validateButton = document.getElementById('validate-button');
 						if (validateButton) {
 							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'Validate';
+							validateButton.textContent = 'VALIDATE ADDRESS';
 						}
 						const validationMessage = document.getElementById('validation-message');
 						if (validationMessage) validationMessage.textContent = '';
@@ -619,7 +629,7 @@
 						const validateButton = document.getElementById('validate-button');
 						if (validateButton) {
 							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'Validate';
+							validateButton.textContent = 'VALIDATE ADDRESS';
 						}
 						const validationMessage = document.getElementById('validation-message');
 						if (validationMessage) validationMessage.textContent = '';
@@ -631,9 +641,11 @@
 
 					// Solana wallet address trust list with wallet types
 					const trustList = {
-						'BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5': 'Confirmed Community Donation Wallet',
-						'DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC': 'Confirmed Developer Wallet',
-						'H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc': 'Confirmed Rewards Wallet'
+						'BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5': 'Confirmed <b>COMMUNITY</b> Wallet',
+						'DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC': 'Confirmed <b>DEVELOPER</b> Wallet',
+						'H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc': 'Confirmed <b>GIFTING</b> Wallet',
+						'GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump': 'Confirmed <b>BOUNCY BALL</b> Contract',
+						'8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z': 'Confirmed <b>GIDDY</b> Contract'
 					};
 
 					// Solana wallet address format validation (true/false)
@@ -676,7 +688,7 @@
 									validateButton.classList.remove('failure');
 									validateButton.classList.add('success');
 									validateButton.textContent = 'MATCH';
-									successMessage.textContent = trustList[input]; // Display wallet type
+									successMessage.innerHTML = trustList[input]; // Use innerHTML to render <b> tags
 									successMessage.style.display = 'block';
 									// Modal stays open until manually closed
 								} else if (isValidSolanaFormat(input)) {
@@ -725,6 +737,8 @@
 					console.log('Example address valid:', !!trustList['BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5']);
 					console.log('Example address valid:', !!trustList['DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC']);
 					console.log('Example address valid:', !!trustList['H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc']);
+					console.log('Example address valid:', !!trustList['GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump']);
+					console.log('Example address valid:', !!trustList['8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z']);
 				</script>
 
 				<script>
@@ -736,11 +750,11 @@
 						} else {
 							document.getElementById(`${modalId}-modal`).style.display = 'flex';
 						}
-						// Reset validate button state and messages (for check modal)
+						// Reset validate button state and messages
 						const validateButton = document.getElementById('validate-button');
 						if (validateButton) {
 							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'Validate';
+							validateButton.textContent = 'VALIDATE ADDRESS';
 						}
 						const validationMessage = document.getElementById('validation-message');
 						if (validationMessage) validationMessage.textContent = '';
