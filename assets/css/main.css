@@ -2735,6 +2735,36 @@ button,
 	}
 }
 
+/* Token Button Container */
+.token-button-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+/* Individual Token Buttons 2 */
+.token-button-2 {
+	background-color: var(--button-bg-color);
+	border-radius: 20px;
+	transition: background-color 0.3s ease;
+	flex: 1 1 calc(50% - 1rem);
+	/* Two buttons per row with gap */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.75rem 1.5rem;
+	text-align: center;
+}
+
+/* Make the first and last buttons double wide */
+.token-button-2:first-child,
+.token-button-2:last-child {
+	flex: 1 1 100%;
+	/* Full width for the first and last buttons */
+}
+
 /* Remove extra margin from last button */
 .token-button:last-child {
 	margin-right: 0;
