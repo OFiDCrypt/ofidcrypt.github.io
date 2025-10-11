@@ -323,7 +323,7 @@
 							<button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
 							<button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
 						</div>
-						<button class="round-button" onclick="openModal('check')">Check</button>
+						<button class="round-button" onclick="openModal('check')">Validate Address</button>
 					</div>
 				</header>
 
@@ -353,11 +353,11 @@
 				<div id="check-modal" class="modal">
 					<div class="modal-content">
 						<span class="close" onclick="closeModal('check')">&times;</span>
-						<h2>Validate Address</h2>
+						<h2>VALIDATE ADDRESS</h2>
 						<form>
 							<input type="text" id="check-input" placeholder="Enter address/contract (Solana)" required>
 							<div id="validation-message" style="margin-top: 5px; font-size: 14px;"></div>
-							<button type="submit" id="validate-button">Validate Address</button>
+							<button type="submit" id="validate-button">Check</button>
 							<div id="success-message" style="margin-top: 5px; font-size: 14px; display: none;"></div>
 							<div id="check-another-message" style="margin-top: 5px; font-size: 14px; display: none;">
 							</div>
@@ -613,7 +613,7 @@
 						const validateButton = document.getElementById('validate-button');
 						if (validateButton) {
 							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'VALIDATE ADDRESS';
+							validateButton.textContent = 'Check';
 						}
 						const validationMessage = document.getElementById('validation-message');
 						if (validationMessage) validationMessage.textContent = '';
@@ -629,7 +629,7 @@
 						const validateButton = document.getElementById('validate-button');
 						if (validateButton) {
 							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'VALIDATE ADDRESS';
+							validateButton.textContent = 'Check';
 						}
 						const validationMessage = document.getElementById('validation-message');
 						if (validationMessage) validationMessage.textContent = '';
@@ -754,7 +754,7 @@
 						const validateButton = document.getElementById('validate-button');
 						if (validateButton) {
 							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'VALIDATE ADDRESS';
+							validateButton.textContent = 'Check';
 						}
 						const validationMessage = document.getElementById('validation-message');
 						if (validationMessage) validationMessage.textContent = '';
