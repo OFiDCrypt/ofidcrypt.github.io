@@ -289,88 +289,88 @@
 			</script>
 
 			<!-- Section Title -->
-<section class="post">
-    <header class="major">
-        <span class="date">Giddy's by OFiDCrypt</span>
-        <h1>Giddy's Universe</h1>
-        <p>Giddy's Universe is the family-focused entertainment brand of OFiDCrypt; featuring <a
-                href="#meet-crew">Giddy,
-                Buster, Rex
-                & Grampa</a></p>
+			<section class="post">
+				<header class="major">
+					<span class="date">Giddy's by OFiDCrypt</span>
+					<h1>Giddy's Universe</h1>
+					<p>Giddy's Universe is the family-focused entertainment brand of OFiDCrypt; featuring <a
+							href="#meet-crew">Giddy,
+							Buster, Rex
+							& Grampa</a></p>
 
-    <!-- YouTube Adaptation -->
-    <section class="youtube-iframe" id="latest-event">
-        <div class="stream video main">
-            <div id="player"></div>
-            <img id="poster-image" src="../assets/images/webp/bg-giddys.webp" alt="Giddy's Poster Image"
-                style="display: none; width: 100%; height: auto; max-width: 560px; aspect-ratio: 16/9;">
-        </div>
-    </section>
+					<!-- YouTube Adaptation -->
+					<section class="youtube-iframe" id="latest-event">
+						<div class="stream video main">
+							<div id="player"></div>
+							<img id="poster-image" src="../assets/images/webp/bg-giddys.webp" alt="Giddy's Poster Image"
+								style="display: none; width: 100%; height: auto; max-width: 560px; aspect-ratio: 16/9;">
+						</div>
+					</section>
 
-    <!-- Revert video placeholder to poster image after video ends -->
-    <script>
-        // Load YouTube IFrame Player API asynchronously
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+					<!-- Revert video placeholder to poster image after video ends -->
+					<script>
+						// Load YouTube IFrame Player API asynchronously
+						var tag = document.createElement('script');
+						tag.src = "https://www.youtube.com/iframe_api";
+						var firstScriptTag = document.getElementsByTagName('script')[0];
+						firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Global variable for the YouTube player
-        var player;
+						// Global variable for the YouTube player
+						var player;
 
-        // Called when YouTube API is loaded
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '315',
-                width: '560',
-                videoId: '7X1z83diqEQ',
-                playerVars: {
-                    'playsinline': 1,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'ecver': 2
-                },
-                events: {
-                    'onReady': function (event) {
-                        // Sync poster image size with player on load
-                        syncPosterSize();
-                    },
-                    'onStateChange': function (event) {
-                        if (event.data === YT.PlayerState.ENDED) {
-                            // Video ended, hide player and show poster image
-                            document.getElementById('player').style.display = 'none';
-                            document.getElementById('poster-image').style.display = 'block';
-                        }
-                    }
-                }
-            });
-        }
+						// Called when YouTube API is loaded
+						function onYouTubeIframeAPIReady() {
+							player = new YT.Player('player', {
+								height: '315',
+								width: '560',
+								videoId: '7X1z83diqEQ',
+								playerVars: {
+									'playsinline': 1,
+									'rel': 0,
+									'showinfo': 0,
+									'ecver': 2
+								},
+								events: {
+									'onReady': function (event) {
+										// Sync poster image size with player on load
+										syncPosterSize();
+									},
+									'onStateChange': function (event) {
+										if (event.data === YT.PlayerState.ENDED) {
+											// Video ended, hide player and show poster image
+											document.getElementById('player').style.display = 'none';
+											document.getElementById('poster-image').style.display = 'block';
+										}
+									}
+								}
+							});
+						}
 
-        // Function to sync poster image size with player
-        function syncPosterSize() {
-            const playerElement = document.getElementById('player');
-            const posterImage = document.getElementById('poster-image');
-            if (playerElement && posterImage) {
-                const playerWidth = playerElement.offsetWidth;
-                const playerHeight = playerElement.offsetHeight;
-                posterImage.style.width = playerWidth + 'px';
-                posterImage.style.height = playerHeight + 'px';
-                posterImage.style.maxWidth = '100%'; // Ensure it doesn't overflow container
-            }
-        }
+						// Function to sync poster image size with player
+						function syncPosterSize() {
+							const playerElement = document.getElementById('player');
+							const posterImage = document.getElementById('poster-image');
+							if (playerElement && posterImage) {
+								const playerWidth = playerElement.offsetWidth;
+								const playerHeight = playerElement.offsetHeight;
+								posterImage.style.width = playerWidth + 'px';
+								posterImage.style.height = playerHeight + 'px';
+								posterImage.style.maxWidth = '100%'; // Ensure it doesn't overflow container
+							}
+						}
 
-        // Ensure poster is hidden initially and sync size on load
-        document.addEventListener('DOMContentLoaded', function () {
-            const posterImage = document.getElementById('poster-image');
-            if (posterImage) {
-                posterImage.style.display = 'none';
-                syncPosterSize();
-            }
-        });
+						// Ensure poster is hidden initially and sync size on load
+						document.addEventListener('DOMContentLoaded', function () {
+							const posterImage = document.getElementById('poster-image');
+							if (posterImage) {
+								posterImage.style.display = 'none';
+								syncPosterSize();
+							}
+						});
 
-        // Update poster size on window resize
-        window.addEventListener('resize', syncPosterSize);
-    </script>
+						// Update poster size on window resize
+						window.addEventListener('resize', syncPosterSize);
+					</script>
 
 					<p>Enjoy our animated series of short videos known as Giddy Tales, real world adventures
 						with <a href=" /ofidkid.html"> Baby Tokin</a> and series branded goods for kids from
@@ -388,7 +388,9 @@
 								<h3 class="quick-start-title">Giddy Tales</h3>
 								<p class="align-center">Animated Adventures</p>
 							</div>
-							<button class="round-button"><a href="#giddy-tales">View Series</a></button>
+							<button class="round-button" onclick="window.location.href='#giddy-tales'">
+								View Series
+							</button>
 						</article>
 
 						<article class="quick-start-item">
@@ -399,7 +401,9 @@
 								<h3 class="quick-start-title">Giddy's Shop</h3>
 								<p class="align-center">Series Goods & Toys</p>
 							</div>
-							<button class="round-button"><a href="#">Coming Soon</a></button>
+							<button class="round-button" onclick="window.location.href='#'">
+  Coming Soon
+</button>
 						</article>
 
 						<article class="quick-start-item">
@@ -410,7 +414,9 @@
 								<h3 class="quick-start-title">Meet The Crew</h3>
 								<p class="align-center">Featured Characters</p>
 							</div>
-							<button class="round-button"><a href="#meet-crew">Profiles</a></button>
+							<button class="round-button" onclick="window.location.href='#meet-crew'">
+  Profiles
+</button>
 						</article>
 					</div>
 				</section>
