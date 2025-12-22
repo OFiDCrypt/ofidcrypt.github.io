@@ -1,6 +1,5 @@
 User-agent: *
 Disallow: /explore/app-featured-hvr
-Disallow: /cashlinks
 Disallow: /pages/vipwithcode
 Disallow: /404
 Disallow: /promote/client-directory
