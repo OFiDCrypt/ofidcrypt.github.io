@@ -194,44 +194,15 @@
 				<!-- Revert video placeholder to poster image after video ends -->
 				<script>
 					document.addEventListener('DOMContentLoaded', function () {
-						const video = document.getElementById('myVideo');
-						if (!video) return;
+						var video = document.getElementById('myVideo');
 
-						const originalSrc = video.src; // Save original src (or get from <source>)
-						const posterImage = '../assets/images/bg-kinnected-digital-gifts.PNG';
-
-						// Set poster immediately
-						video.poster = posterImage;
-
-						// Attach ended listener once (outside loadedmetadata)
-						video.addEventListener('ended', function () {
-							this.pause();
-							this.currentTime = 0;
-
-							// Critical: Force poster to show by reloading video state
-							this.src = ''; // Temporarily clear src
-							this.poster = posterImage;
-							this.load(); // Reload with new poster
-							this.src = originalSrc; // Restore src
-							this.load(); // Reload again (now with original src but poster visible)
-						});
-
-						// Optional: Re-set poster after metadata (for stubborn browsers)
+						// Ensure video loads before adding event listener
 						video.addEventListener('loadedmetadata', function () {
-							this.poster = posterImage;
-						});
-
-						// Your fullscreen on play
-						video.addEventListener('play', function () {
-							if (!document.fullscreenElement) {
-								if (this.requestFullscreen) {
-									this.requestFullscreen();
-								} else if (this.webkitRequestFullscreen) {
-									this.webkitRequestFullscreen();
-								} else if (this.msRequestFullscreen) {
-									this.msRequestFullscreen();
-								}
-							}
+							video.addEventListener('ended', function () {
+								this.currentTime = 0; // Reset video to start
+								this.pause(); // Pause the video
+								this.poster = '../bg-kinnected-digital-gifts.PNG'; // Set the new poster image
+							});
 						});
 					});
 				</script>
