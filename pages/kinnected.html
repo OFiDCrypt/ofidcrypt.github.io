@@ -169,7 +169,7 @@
 
 				<div>
 					<header>
-						<h2 class="align-center">A New Social Wallet</h2>
+						<h2 class="align-center">A Fresh Social Experience</h2>
 						<!-- Section Description -->
 						<p class="align-center">Kinnected Wallet is more than just a secure place to store your tokens;
 							it's also a tool for
@@ -178,17 +178,15 @@
 
 						<div class="video main">
 							<video id="myVideo" width="100%" controls
-								poster="../assets/images/webp/bg-kinnected-cashlinks.webp">
+								poster="../assets/images/bg-kinnected-digital-gifts.PNG">
 								<source src="../assets/videos/kinnected-intro.mp4" type="video/mp4">
 							</video>
 						</div>
 
 						<p class="align-center">
-							Interact with creator services
-							and purchase content using Kin with just a tap.
-							For instance, members are utilizing Code Wallet with platforms like Fable and Pennypost to
-							write articles and creative stories.
-							Code enables you to charge as little as $0.25 for anything you create online.
+							Interact with other app users, known as Advocvates! Participate in community discusions or
+							make your own. Seermlessly swap, share of send a friend tokens, even if they don't have the
+							app yet! Enjoy the most comprehensive messaging experience in any crypto wallet.
 						</p>
 					</header>
 				</div>
@@ -197,26 +195,41 @@
 				<script>
 					document.addEventListener('DOMContentLoaded', function () {
 						const video = document.getElementById('myVideo');
-						if (!video) return; // defensive: prevents cross‑page conflicts
+						if (!video) return;
 
-						// Reset poster when video ends
-						video.addEventListener('loadedmetadata', function () {
-							video.addEventListener('ended', function () {
-								this.currentTime = 0;
-								this.pause();
-								this.poster = '../assets/images/webp/bg-kinnected-cashlinks.webp';
-							});
+						const originalSrc = video.src; // Save original src (or get from <source>)
+						const posterImage = '../assets/images/bg-kinnected-digital-gifts.PNG';
+
+						// Set poster immediately
+						video.poster = posterImage;
+
+						// Attach ended listener once (outside loadedmetadata)
+						video.addEventListener('ended', function () {
+							this.pause();
+							this.currentTime = 0;
+
+							// Critical: Force poster to show by reloading video state
+							this.src = ''; // Temporarily clear src
+							this.poster = posterImage;
+							this.load(); // Reload with new poster
+							this.src = originalSrc; // Restore src
+							this.load(); // Reload again (now with original src but poster visible)
 						});
 
-						// Go fullscreen when user presses play (desktop-friendly)
+						// Optional: Re-set poster after metadata (for stubborn browsers)
+						video.addEventListener('loadedmetadata', function () {
+							this.poster = posterImage;
+						});
+
+						// Your fullscreen on play
 						video.addEventListener('play', function () {
 							if (!document.fullscreenElement) {
-								if (video.requestFullscreen) {
-									video.requestFullscreen();
-								} else if (video.webkitRequestFullscreen) {
-									video.webkitRequestFullscreen();
-								} else if (video.msRequestFullscreen) {
-									video.msRequestFullscreen();
+								if (this.requestFullscreen) {
+									this.requestFullscreen();
+								} else if (this.webkitRequestFullscreen) {
+									this.webkitRequestFullscreen();
+								} else if (this.msRequestFullscreen) {
+									this.msRequestFullscreen();
 								}
 							}
 						});
