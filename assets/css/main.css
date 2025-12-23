@@ -6098,6 +6098,135 @@ section.youtube-iframe {
 	}
 }
 
+/* Cash Links Section */
+
+.cashlinks-title {
+    margin-top: 1.5rem;
+}
+
+#main .cashlinks-section {
+    margin-bottom: 0rem;
+}
+
+#main .cashlinks-section .button {
+    margin-top: auto;
+}
+
+/* Each row container (.cashlinks-items) */
+#main .cashlinks-section .cashlinks-items {
+    display: flex;
+    flex-direction: column;     /* Stacked on mobile */
+    gap: 1.5rem;                /* Vertical gap between individual items inside a row */
+}
+
+/* Add 1.5rem gap BELOW each full row (between the three rows) */
+#main .cashlinks-section .cashlinks-items + .cashlinks-items {
+    margin-top: 1.5rem;
+}
+
+#main .cashlinks-section .cashlinks-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid var(--cashlinks-border-color, var(--quick-start-border-color));
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    background-color: var(--cashlinks-bg-color, var(--quick-start-bg-color));
+}
+
+#main .cashlinks-section .image.left {
+    margin-right: 15px;
+    flex-shrink: 0;             /* Prevent image from shrinking too much */
+}
+
+#main .cashlinks-section .cashlinks-content {
+    flex: 1;
+}
+
+/* Featured item styles (kept for completeness, even if not used) */
+#main .cashlinks-section .cashlinks-featured {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border: 1px solid var(--cashlinks-border-color, var(--quick-start-border-color));
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 100%;
+}
+
+#main .cashlinks-section .cashlinks-featured .image.left {
+    max-width: 60%;
+}
+
+#main .cashlinks-section .cashlinks-featured .cashlinks-content {
+    text-align: center;
+}
+
+/* Desktop layout only (>= 980px) */
+@media (min-width: 980px) {
+    #main .cashlinks-section .cashlinks-items {
+        flex-direction: row;            /* Horizontal layout: 3 items side by side */
+        gap: 1.5rem;
+    }
+
+    #main .cashlinks-section .cashlinks-item {
+        flex-direction: column;
+        align-items: center;
+        width: calc(33.33% - 1rem);
+    }
+
+    #main .cashlinks-section .image.left {
+        margin: 5px 0;
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Mobile: Force individual cards to stack vertically (image above content) */
+@media (max-width: 979px) {
+    #main .cashlinks-section .cashlinks-item {
+        flex-direction: column;      /* Stack image above content */
+        align-items: flex-start;     /* Left-align content for better readability */
+        text-align: center;          /* Optional: center text/button if preferred */
+    }
+
+    #main .cashlinks-section .image.left {
+        margin-right: 0;
+        margin-bottom: 1rem;         /* Space between image and content */
+        width: 100%;
+        max-width: 300px;            /* Optional: limit image width on mobile */
+        flex-shrink: 0;
+    }
+
+    #main .cashlinks-section .cashlinks-content {
+        width: 100%;
+        text-align: center;          /* Center the title and button */
+    }
+
+    /* Ensure button stretches nicely or stays centered */
+    #main .cashlinks-section .button {
+        width: 100%;
+        max-width: 250px;            /* Optional: prevent button from being too wide */
+        margin: 0 auto;
+    }
+}
+
+/* Ensures consistent gap before the reCAPTCHA widget if it's placed after the content */
+.g-recaptcha,
+#rc-imageselect,
+.cashlinks-section ~ .g-recaptcha {  /* adjust selector based on your actual placement */
+    margin-top: 1.5rem;
+}
+
+/* Or more generally, if reCAPTCHA is inside or immediately after the section: */
+#main .cashlinks-section > .g-recaptcha,
+#main .cashlinks-section + .g-recaptcha {
+    margin-top: 1.5rem;
+}
+
 #main .partner-section .product-content .image.left {
 	float: left;
 	margin-right: 20px;
@@ -8056,66 +8185,53 @@ body.dark-mode #darkModeToggle.dark i::before {
 }
 
 .video-main {
-    width: 100%;                  /* Takes full width of its parent */
-    max-width: 600px;             /* Optional: limit max width for desktop (adjust as needed) */
-    margin: 0 auto;               /* Centers the container horizontally */
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .video-main {
+    max-width: 320px;  /* Your smaller desktop preview size */
+  }
 }
 
 .video-hosted-portrait {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 9 / 16;         /* Forces exact 9:16 ratio (tall portrait) */
-    overflow: hidden;             /* Prevents any overflow */
-    background: #000;             /* Optional: black background for letterboxing */
-    border-radius: 12px;          /* Optional: nice rounded corners for preview feel */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Optional: subtle shadow */
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: #000;  /* Black bars where needed */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .video-hosted-portrait video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;            /* Crops to fill the container (great for previews – no black bars) */
-    /* Use object-fit: contain; instead if you want to show the full video with letterboxing */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* Key change: Shows full video with letterboxing (black side bars if wider) */
+  background: #000;     /* Ensures clean black bars */
 }
 
-.video-hosted-portrait {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 9 / 16;
-    overflow: hidden;
-    background: #000;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.video-hosted-portrait video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
+/* Rest remains the same */
 .video-poster-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-    pointer-events: none; /* Allows clicks to pass through to video controls */
-    transition: opacity 0.4s ease;
-    z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* Poster can still cover fully for thumbnail appeal */
+  border-radius: 12px;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 2;
 }
 
-/* Hide overlay when video is playing */
 .video-hosted-portrait.playing .video-poster-overlay {
-    opacity: 0;
+  opacity: 0;
 }
 
 /* Unique styling for specific video(s) */
