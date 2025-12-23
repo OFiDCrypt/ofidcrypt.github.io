@@ -172,15 +172,19 @@
 						<h2 class="align-center">A Fresh Social Experience</h2>
 						<!-- Section Description -->
 						<p class="align-center">Kinnected Wallet is more than just a secure place to store your tokens;
-							it's also a tool for
-							sending and receiving payments among friends. It serves as your gateway to a new generation
+							it's also a tool for sending and receiving payments among friends. It serves as your gateway
+							to a new generation
 							of communities and spending.</p>
 
-						<div class="video main">
-							<video id="myVideo" width="100%" controls
-								poster="../assets/images/bg-kinnected-digital-gifts.PNG">
+						<!-- Video container with poster overlay -->
+						<div class="video-main video-hosted-portrait">
+							<video id="myVideo" controls playsinline preload="metadata">
 								<source src="../assets/videos/kinnected-intro.mp4" type="video/mp4">
+								Your browser does not support the video tag.
 							</video>
+							<!-- Poster overlay (visible before play and after video ends) -->
+							<img class="video-poster-overlay" src="../assets/images/bg-kinnected-wallpaper.jpg"
+								alt="Kinnected video thumbnail">
 						</div>
 
 						<p class="align-center">
@@ -191,22 +195,33 @@
 					</header>
 				</div>
 
-				<!-- Revert video placeholder to poster image after video ends -->
+				<!-- JavaScript to control poster visibility -->
 				<script>
 					document.addEventListener('DOMContentLoaded', function () {
-						var video = document.getElementById('myVideo');
+						const video = document.getElementById('myVideo');
+						const container = video.parentElement; // .video-hosted-portrait
 
-						// Ensure video loads before adding event listener
-						video.addEventListener('loadedmetadata', function () {
-							video.addEventListener('ended', function () {
-								this.currentTime = 0; // Reset video to start
-								this.pause(); // Pause the video
-								this.poster = '../bg-kinnected-digital-gifts.PNG'; // Set the new poster image
-							});
+						// Hide poster when video starts playing
+						video.addEventListener('play', function () {
+							container.classList.add('playing');
+						});
+
+						// Show poster again when video ends
+						video.addEventListener('ended', function () {
+							video.currentTime = 0; // Rewind to start (optional)
+							container.classList.remove('playing');
+						});
+
+						// Optional: If user pauses mid-video, keep video visible (don't show poster)
+						// Only show poster again if it actually ended
+						video.addEventListener('pause', function () {
+							if (!video.ended) {
+								// Still playing content visible if paused mid-video
+								container.classList.add('playing');
+							}
 						});
 					});
 				</script>
-
 				<!-- Section Heading -->
 				<header id="get-ahead-section">
 					<h2 class="align-center">Start Exploring</h2>
