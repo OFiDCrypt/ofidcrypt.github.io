@@ -315,66 +315,62 @@
 				</script>
 
 				<!-- Buttons to trigger modals -->
-				<header id="digital-gifts">
-					<h2>Digital Gifts</h2>
-					<p>Be the first to hear about new products from <a href="ofidtales.html">Giddy's Shop</a> — Redeem
-						tokens and check OFiDCrypt wallets for authenticity!</p>
-					<div class="round-button-container">
-						<div class="button-pair">
-							<button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
-							<button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
-						</div>
-						<button class="round-button" onclick="openModal('check')">Validate Address</button>
-					</div>
-				</header>
+<header id="digital-gifts">
+    <h2>Digital Gifts</h2>
+    <p>Be the first to hear about new products from <a href="ofidtales.html">Giddy's Shop</a> — Redeem
+        tokens and check OFiDCrypt wallets for authenticity!</p>
+    <div class="round-button-container">
+        <div class="button-pair">
+            <button class="round-button" onclick="openModal('waitlist')">Join Waitlist</button>
+            <button class="round-button" onclick="openModal('redeem')">Redeem Code</button>
+        </div>
+        <button class="round-button" onclick="openModal('check')">Validate Address</button>
+    </div>
+</header>
 
-				<!-- Modal Windows -->
-				<div id="waitlist-modal" class="modal">
-					<div class="modal-content">
-						<span class="close" onclick="closeModal('waitlist')">&times;</span>
-						<h2>Waitlist</h2>
-						<form>
-							<input type="text" id="waitlist-input" placeholder="Enter your email" required>
-							<button type="submit">Submit</button>
-						</form>
-					</div>
-				</div>
+<!-- Modal Windows -->
+<div id="waitlist-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('waitlist')">&times;</span>
+        <h2>Waitlist</h2>
+        <form id="waitlist-form">
+            <input type="email" id="waitlist-input" placeholder="Enter your email" required>
+            <div id="waitlist-message" style="margin-top: 10px; font-size: 14px; min-height: 20px;"></div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 
-				<div id="redeem-modal" class="modal">
-					<div class="modal-content">
-						<span class="close" onclick="closeModal('redeem')">&times;</span>
-						<h2>Redeem Code</h2>
-						<form>
-							<input type="text" id="redeem-input" placeholder="Enter your code" required>
-							<button type="submit">Redeem</button>
-						</form>
-					</div>
-				</div>
+<div id="redeem-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('redeem')">&times;</span>
+        <h2>Redeem Code</h2>
+        <form id="redeem-form">
+            <input type="text" id="redeem-input" placeholder="Enter your 13-digit code" maxlength="13"
+                pattern="[0-9]{13}" title="Please enter exactly 13 digits" required>
+            <small style="display: block; margin-top: 5px; color: #666; font-size: 13px;">
+                Exactly 13 digits (numbers only)
+            </small>
+            <div id="redeem-message" style="margin-top: 10px; font-size: 14px; min-height: 20px;"></div>
+            <button type="submit">Redeem</button>
+        </form>
+    </div>
+</div>
 
-				<div id="check-modal" class="modal">
-					<div class="modal-content">
-						<span class="close" onclick="closeModal('check')">&times;</span>
-						<h2>Address</h2>
-						<form>
-							<input type="text" id="check-input" placeholder="Enter address/contract (Solana)" required>
-							<div id="validation-message" style="margin-top: 5px; font-size: 14px;"></div>
-							<button type="submit" id="validate-button">Check</button>
-							<div id="success-message" style="margin-top: 5px; font-size: 14px; display: none;"></div>
-							<div id="check-another-message" style="margin-top: 5px; font-size: 14px; display: none;">
-							</div>
-						</form>
-					</div>
-				</div>
+<div id="check-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('check')">&times;</span>
+        <h2>Check Address</h2>
+        <form id="check-form">
+            <input type="text" id="check-input" placeholder="Enter address/contract (Solana)" required>
+            <div id="validation-message" style="margin-top: 8px; font-size: 14px; min-height: 20px;"></div>
+            <button type="submit" id="validate-button">Check</button>
+            <div id="success-message" style="margin-top: 10px; font-size: 14px; display: none;"></div>
+            <div id="check-another-message" style="margin-top: 10px; font-size: 14px; display: none;"></div>
+        </form>
+    </div>
+</div>
 
-				<!-- Advisory Modal for Redemption Maintenance -->
-				<div id="advisory-modal" class="modal">
-					<div class="modal-content">
-						<span class="close" onclick="closeModal('advisory')">&times;</span>
-						<h2>Auto-Redeem</h2>
-						<p><b>🛠️ COMING SOON 🛠️</b><br>Please click <a href="#contact-form">here</a> to manually
-							submit your code in our form</p>
-					</div>
-				</div>
 
 				<style>
 					/* Modal-specific styles using your existing variables */
@@ -602,174 +598,211 @@
 				</style>
 
 				<script>
-					// Modal control functions
-					function openModal(modalId) {
-						if (modalId === 'redeem') {
-							// Show advisory modal instead of redeem modal during maintenance
-							document.getElementById('advisory-modal').style.display = 'flex';
-						} else {
-							document.getElementById(`${modalId}-modal`).style.display = 'flex';
-						}
-						// Reset validate button state and messages
-						const validateButton = document.getElementById('validate-button');
-						if (validateButton) {
-							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'Check';
-						}
-						const validationMessage = document.getElementById('validation-message');
-						if (validationMessage) validationMessage.textContent = '';
-						const successMessage = document.getElementById('success-message');
-						if (successMessage) successMessage.style.display = 'none';
-						const checkAnotherMessage = document.getElementById('check-another-message');
-						if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
-					}
+    // Modal control functions
+    function openModal(modalId) {
+        if (modalId === 'redeem') {
+            document.getElementById('redeem-modal').style.display = 'flex';
+            resetRedeemForm();
+        } else {
+            document.getElementById(`${modalId}-modal`).style.display = 'flex';
+            if (modalId === 'waitlist') resetWaitlistForm();
+            if (modalId === 'check') resetCheckForm();
+        }
+    }
 
-					function closeModal(modalId) {
-						document.getElementById(`${modalId}-modal`).style.display = 'none';
-						// Reset validate button state and messages
-						const validateButton = document.getElementById('validate-button');
-						if (validateButton) {
-							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'Check';
-						}
-						const validationMessage = document.getElementById('validation-message');
-						if (validationMessage) validationMessage.textContent = '';
-						const successMessage = document.getElementById('success-message');
-						if (successMessage) successMessage.style.display = 'none';
-						const checkAnotherMessage = document.getElementById('check-another-message');
-						if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
-					}
+    function closeModal(modalId) {
+        document.getElementById(`${modalId}-modal`).style.display = 'none';
+        if (modalId === 'redeem') resetRedeemForm();
+        if (modalId === 'waitlist') resetWaitlistForm();
+        if (modalId === 'check') resetCheckForm();
+    }
 
-					// Solana wallet address trust list with wallet types
-					const trustList = {
-						'BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5': 'Confirmed <b>COMMUNITY</b> Wallet',
-						'DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC': 'Confirmed <b>DEVELOPER</b> Wallet',
-						'H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc': 'Confirmed <b>GIFTING</b> Wallet',
-						'GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump': 'Confirmed <b>BOUNCY BALL</b> Contract',
-						'8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z': 'Confirmed <b>GIDDY</b> Contract'
-					};
+    // Reset functions
+    function resetCheckForm() {
+        const validateButton = document.getElementById('validate-button');
+        if (validateButton) {
+            validateButton.classList.remove('success', 'failure');
+            validateButton.textContent = 'Check';
+        }
+        const validationMessage = document.getElementById('validation-message');
+        if (validationMessage) validationMessage.textContent = '';
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) successMessage.style.display = 'none';
+        const checkAnotherMessage = document.getElementById('check-another-message');
+        if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
+        document.getElementById('check-input').value = '';
+    }
 
-					// Solana wallet address format validation (true/false)
-					function isValidSolanaFormat(address) {
-						if (!address) return false;
-						const length = address.length;
-						const base58Regex = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
-						return length >= 32 && length <= 44 && base58Regex.test(address);
-					}
+    function resetRedeemForm() {
+        document.getElementById('redeem-input').value = '';
+        const msg = document.getElementById('redeem-message');
+        if (msg) {
+            msg.textContent = '';
+            msg.style.color = '';
+        }
+        const btn = document.querySelector('#redeem-form button');
+        if (btn) {
+            btn.classList.remove('success', 'failure');
+            btn.textContent = 'Redeem';
+            btn.disabled = false;
+        }
+    }
 
-					// Form submission handling
-					document.querySelectorAll('form').forEach(form => {
-						form.addEventListener('submit', (e) => {
-							e.preventDefault();
-							const input = form.querySelector('input').value.trim();
-							const modalId = form.closest('.modal').id.split('-')[0];
+    function resetWaitlistForm() {
+        document.getElementById('waitlist-input').value = '';
+        const msg = document.getElementById('waitlist-message');
+        if (msg) {
+            msg.textContent = '';
+            msg.style.color = '';
+        }
+        const btn = document.querySelector('#waitlist-form button');
+        if (btn) {
+            btn.classList.remove('success');
+            btn.textContent = 'Submit';
+            btn.disabled = false;
+        }
+    }
 
-							if (modalId === 'check') {
-								const validateButton = document.getElementById('validate-button');
-								const validationMessage = document.getElementById('validation-message');
-								const successMessage = document.getElementById('success-message');
-								const checkAnotherMessage = document.getElementById('check-another-message');
+    // Solana trust list & validation
+    const trustList = {
+        'BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5': 'Confirmed <b>COMMUNITY</b> Wallet',
+        'DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC': 'Confirmed <b>DEVELOPER</b> Wallet',
+        'H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc': 'Confirmed <b>GIFTING</b> Wallet',
+        'GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump': 'Confirmed <b>BOUNCY BALL</b> Contract',
+        '8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z': 'Confirmed <b>GIDDY</b> Contract'
+    };
 
-								if (!input) {
-									validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
-									validateButton.classList.remove('success');
-									validateButton.classList.add('failure');
-									validateButton.textContent = 'NO MATCH';
-									checkAnotherMessage.textContent = 'Click button again to check another';
-									checkAnotherMessage.style.display = 'block';
-									successMessage.style.display = 'none';
-									return;
-								}
+    function isValidSolanaFormat(address) {
+        if (!address) return false;
+        const length = address.length;
+        const base58Regex = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
+        return length >= 32 && length <= 44 && base58Regex.test(address);
+    }
 
-								// Wallet validation logic
-								if (trustList[input]) {
-									// Exact match in trust list
-									validationMessage.textContent = ''; // Clear any previous message
-									checkAnotherMessage.style.display = 'none'; // Hide check another message
-									validateButton.classList.remove('failure');
-									validateButton.classList.add('success');
-									validateButton.textContent = 'MATCH';
-									successMessage.innerHTML = trustList[input]; // Use innerHTML to render <b> tags
-									successMessage.style.display = 'block';
-									// Modal stays open until manually closed
-								} else if (isValidSolanaFormat(input)) {
-									// Valid format but not in trust list
-									validationMessage.textContent = 'CAUTION: This address does not belong to us — DO NOT send assets here for OFiD promotions or services';
-									validateButton.classList.remove('success');
-									validateButton.classList.add('failure');
-									validateButton.textContent = 'NO MATCH';
-									checkAnotherMessage.textContent = 'Click button again to check another';
-									checkAnotherMessage.style.display = 'block';
-									successMessage.style.display = 'none';
-								} else {
-									// Invalid format
-									validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
-									validateButton.classList.remove('success');
-									validateButton.classList.add('failure');
-									validateButton.textContent = 'NO MATCH';
-									checkAnotherMessage.textContent = 'Click button again to check another';
-									checkAnotherMessage.style.display = 'block';
-									successMessage.style.display = 'none';
-								}
-							} else {
-								// Other modals (waitlist, redeem)
-								if (!input) {
-									alert(`Error: Please enter a ${modalId === 'waitlist' ? 'valid email address' : 'valid code'}.`);
-									return;
-								}
-								const action = modalId === 'waitlist' ? 'Waitlist joined' : 'Code redeemed';
-								alert(`${action}: ${input}`);
-								form.closest('.modal').style.display = 'none';
-							}
-						});
-					});
+    // Form submission handling
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-					// Check if theme is configured as black and purple
-					function isThemeConfigured() {
-						const root = getComputedStyle(document.documentElement);
-						const primaryColor = root.getPropertyValue('--link-color').trim();
-						const secondaryColor = root.getPropertyValue('--bg-light-color').trim();
-						return primaryColor === '#7019c7' && secondaryColor === '#212931';
-					}
+            const modal = form.closest('.modal');
+            const modalId = modal.id.split('-')[0];
 
-					console.log('Theme configured (black and purple):', isThemeConfigured());
+            if (modalId === 'check') {
+                // === CHECK MODAL LOGIC (unchanged) ===
+                const input = document.getElementById('check-input').value.trim();
+                const validateButton = document.getElementById('validate-button');
+                const validationMessage = document.getElementById('validation-message');
+                const successMessage = document.getElementById('success-message');
+                const checkAnotherMessage = document.getElementById('check-another-message');
 
-					// Test the example addresses
-					console.log('Example address valid:', !!trustList['BaRKpuXPDtr5XUsvS52ihd189BXDJe7BYt1nS9zRAJ5']);
-					console.log('Example address valid:', !!trustList['DjEttUjqtTFS2kVsZtyac1FZCjKTekJ2tHSFua97sbXC']);
-					console.log('Example address valid:', !!trustList['H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc']);
-					console.log('Example address valid:', !!trustList['GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump']);
-					console.log('Example address valid:', !!trustList['8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z']);
-				</script>
+                validationMessage.textContent = '';
+                successMessage.style.display = 'none';
+                checkAnotherMessage.style.display = 'none';
 
-				<script>
-					// TEMPORARY: Show advisory modal instead of redeem modal during maintenance
-					function openModal(modalId) {
-						if (modalId === 'redeem') {
-							// Show advisory modal instead of redeem modal during maintenance
-							document.getElementById('advisory-modal').style.display = 'flex';
-						} else {
-							document.getElementById(`${modalId}-modal`).style.display = 'flex';
-						}
-						// Reset validate button state and messages
-						const validateButton = document.getElementById('validate-button');
-						if (validateButton) {
-							validateButton.classList.remove('success', 'failure');
-							validateButton.textContent = 'Check';
-						}
-						const validationMessage = document.getElementById('validation-message');
-						if (validationMessage) validationMessage.textContent = '';
-						const successMessage = document.getElementById('success-message');
-						if (successMessage) successMessage.style.display = 'none';
-						const checkAnotherMessage = document.getElementById('check-another-message');
-						if (checkAnotherMessage) checkAnotherMessage.style.display = 'none';
-					}
+                if (!input) {
+                    validationMessage.textContent = 'Please enter a Solana address.';
+                    validateButton.classList.remove('success');
+                    validateButton.classList.add('failure');
+                    validateButton.textContent = 'NO MATCH';
+                    return;
+                }
 
-					// Close advisory modal when clicking the jump link
-					document.querySelector('#advisory-modal a').addEventListener('click', () => {
-						closeModal('advisory');
-					});
-				</script>
+                if (trustList[input]) {
+                    validationMessage.textContent = '';
+                    validateButton.classList.remove('failure');
+                    validateButton.classList.add('success');
+                    validateButton.textContent = 'MATCH';
+                    successMessage.innerHTML = trustList[input];
+                    successMessage.style.display = 'block';
+                } else if (isValidSolanaFormat(input)) {
+                    validationMessage.textContent = 'CAUTION: This address does not belong to us — DO NOT send assets here for OFiD promotions or services';
+                    validateButton.classList.remove('success');
+                    validateButton.classList.add('failure');
+                    validateButton.textContent = 'NO MATCH';
+                    checkAnotherMessage.textContent = 'Click button again to check another';
+                    checkAnotherMessage.style.display = 'block';
+                } else {
+                    validationMessage.textContent = 'Invalid Solana wallet address (must be 32-44 base58 characters).';
+                    validateButton.classList.remove('success');
+                    validateButton.classList.add('failure');
+                    validateButton.textContent = 'NO MATCH';
+                    checkAnotherMessage.textContent = 'Click button again to check another';
+                    checkAnotherMessage.style.display = 'block';
+                }
+
+            } else if (modalId === 'redeem') {
+                // === REDEEM MODAL LOGIC ===
+                const input = document.getElementById('redeem-input').value.trim();
+                const messageDiv = document.getElementById('redeem-message');
+                const button = form.querySelector('button');
+
+                messageDiv.textContent = '';
+                messageDiv.style.color = '#2ecc71';
+                button.classList.remove('success', 'failure');
+
+                if (!input) {
+                    messageDiv.textContent = 'Please enter a code.';
+                    messageDiv.style.color = '#e74c3c';
+                    button.classList.add('failure');
+                    return;
+                }
+
+                if (!/^\d{13}$/.test(input)) {
+                    messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+                    messageDiv.style.color = '#e74c3c';
+                    button.classList.add('failure');
+                    button.textContent = 'INVALID';
+                    return;
+                }
+
+                messageDiv.textContent = 'Checking code follow prompts to redeem';
+                button.textContent = 'Checking...';
+                button.disabled = true;
+
+                setTimeout(() => {
+                    window.location.href = `https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
+                }, 800);
+
+            } else if (modalId === 'waitlist') {
+                // === WAITLIST MODAL LOGIC (improved) ===
+                const input = document.getElementById('waitlist-input').value.trim();
+                const messageDiv = document.getElementById('waitlist-message');
+                const button = form.querySelector('button');
+
+                messageDiv.textContent = '';
+                button.classList.remove('success');
+
+                if (!input || !/^\S+@\S+\.\S+$/.test(input)) {
+                    messageDiv.textContent = 'Please enter a valid email address.';
+                    messageDiv.style.color = '#e74c3c';
+                    return;
+                }
+
+                // Success!
+                messageDiv.textContent = 'Thank you! You\'ve been added to the waitlist.';
+                messageDiv.style.color = '#2ecc71';
+                button.textContent = 'Added!';
+                button.classList.add('success');
+                button.disabled = true;
+
+                // Auto-close after 2 seconds
+                setTimeout(() => {
+                    closeModal('waitlist');
+                }, 2000);
+            }
+        });
+    });
+
+    // Theme check
+    function isThemeConfigured() {
+        const root = getComputedStyle(document.documentElement);
+        const primaryColor = root.getPropertyValue('--link-color').trim();
+        const secondaryColor = root.getPropertyValue('--bg-light-color').trim();
+        return primaryColor === '#7019c7' && secondaryColor === '#212931';
+    }
+
+    console.log('Theme configured (black and purple):', isThemeConfigured());
+</script>
 
 				<!-- Header -->
 				<header id="guide">

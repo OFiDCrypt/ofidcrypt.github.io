@@ -305,15 +305,16 @@
 							</article>
 						</div>
 
-						<div id="recaptchaForLinks" class="g-recaptcha"
-							data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
-						<ul class="actions special">
-							<li>
-								<button class="button" onclick="window.location.href='/pages/kinnected.html';">
-									Learn More
-								</button>
-							</li>
-						</ul>
+						<div id="recaptcha-links-section">
+							<div id="recaptchaForLinks" class="g-recaptcha"
+								data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+							<ul class="actions special">
+								<li>
+									<button class="button" onclick="window.location.href='/pages/kinnected.html';">
+										Learn More
+									</button>
+								</li>
+							</ul>
 					</section>
 				</header>
 			</article>
@@ -514,26 +515,41 @@
 		</script>
 
 		<script>
+			// Initialize reCAPTCHA widget IDs
+			var grecaptchaForLinksWidgetId;
+			var grecaptchaForFormWidgetId;
+
+			// Callback function to initialize reCAPTCHA widgets
+			window.onloadCallback = function () {
+				grecaptchaForLinksWidgetId = grecaptcha.render('recaptchaForLinks', {
+					'sitekey': '6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa'
+				});
+
+				grecaptchaForFormWidgetId = grecaptcha.render('recaptchaForForm', {
+					'sitekey': '6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa'
+				});
+			};
+
 			// Function to verify reCAPTCHA before allowing link click
 			function verifyRecaptchaForLinks(button) {
 				var response = grecaptcha.getResponse(grecaptchaForLinksWidgetId);
 				if (response.length === 0) {
-					alert("Please complete the reCAPTCHA for the links.");
+					alert("Please complete the reCAPTCHA below to claim cash links.");
+
+					// Smooth scroll to the reCAPTCHA for cash links
+					document.getElementById('recaptcha-links-section').scrollIntoView({
+						behavior: 'smooth',
+						block: 'center'
+					});
+
 					return false;
 				} else {
-					// Get the URL from the 'data-link' attribute of the button's anchor tag
+					// Get the URL from the 'data-link' attribute
 					var anchor = button.querySelector('a');
-					if (anchor) {
-						var linkUrl = anchor.getAttribute('data-link');
-						if (linkUrl) {
-							window.location.href = linkUrl;
-						} else {
-							alert("Error: No URL specified for this link.");
-							return false;
-						}
+					if (anchor && anchor.getAttribute('data-link')) {
+						window.location.href = anchor.getAttribute('data-link');
 					} else {
-						alert("Error: No anchor tag found within the button.");
-						return false;
+						alert("Error: No link found.");
 					}
 					return true;
 				}
@@ -544,28 +560,15 @@
 				var response = grecaptcha.getResponse(grecaptchaForFormWidgetId);
 				if (response.length === 0) {
 					alert("Please complete the reCAPTCHA for the form.");
+					// Optional: scroll to form reCAPTCHA too
+					document.getElementById('recaptchaForForm').scrollIntoView({
+						behavior: 'smooth',
+						block: 'center'
+					});
 					return false;
-				} else {
-					return true;
 				}
+				return true;
 			}
-
-			// Initialize reCAPTCHA widget IDs
-			var grecaptchaForLinksWidgetId;
-			var grecaptchaForFormWidgetId;
-
-			// Callback function to initialize reCAPTCHA widgets
-			window.onloadCallback = function () {
-				grecaptchaForLinksWidgetId = grecaptcha.render('recaptchaForLinks', {
-					'sitekey': '6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa',
-					'callback': function () { /* Optional callback for links */ }
-				});
-
-				grecaptchaForFormWidgetId = grecaptcha.render('recaptchaForForm', {
-					'sitekey': '6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa',
-					'callback': function () { /* Optional callback for form */ }
-				});
-			};
 		</script>
 
 		<!-- Link to non-critical JavaScript files -->
