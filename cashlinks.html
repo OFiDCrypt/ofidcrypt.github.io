@@ -153,12 +153,12 @@
 			</section>
 
 			<!-- Cash Links Header -->
-			<article class="post">
+			<article id="cashlinks-header" class="post">
 				<header class="major">
 					<span class="date">Kinnected! Wallet</span>
 
 					<!-- Cash Links Section -->
-					<section class="cashlinks-section">
+					<section id="cashlinks" class="cashlinks-section">
 						<header>
 							<h2>Digital Gifts</h2>
 						</header>
@@ -305,9 +305,15 @@
 							</article>
 						</div>
 
+						<!-- reCAPTCHA + Return to Top Link (opens modal) -->
 						<div id="recaptcha-links-section">
 							<div id="recaptchaForLinks" class="g-recaptcha"
 								data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+
+							<p class="align-center">
+								<a href="javascript:void(0);" onclick="openModal('token-directory')">Return to Token</a>
+							</p>
+
 							<ul class="actions special">
 								<li>
 									<button class="button" onclick="window.location.href='/pages/kinnected.html';">
@@ -315,10 +321,209 @@
 									</button>
 								</li>
 							</ul>
+						</div>
 					</section>
 				</header>
 			</article>
 		</div>
+
+		<!-- Token Directory Modal -->
+		<div id="token-directory-modal" class="modal">
+			<div class="modal-content">
+				<span class="close" onclick="closeModal('token-directory')">&times;</span>
+				<h2>Select a Token</h2>
+
+				<!-- Desktop/Tablet: Original button grid (uses your full .button styling) -->
+				<div class="token-grid">
+					<a href="javascript:void(0);" onclick="scrollToToken('expb')" class="button">eXPB</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('giddy')" class="button">GIDDY</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('dobby')" class="button">DOBBY</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('one')" class="button">ONE</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('kin')" class="button">KIN</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('duno')" class="button">DUNO</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('cpt')" class="button">CPT</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('mylo')" class="button">MYLO</a>
+					<a href="javascript:void(0);" onclick="scrollToToken('sinu')" class="button">SINU</a>
+				</div>
+
+				<!-- Mobile: Styled dropdown that matches your theme perfectly -->
+				<div class="token-dropdown-container">
+					<select id="token-select"
+						onchange="if(this.value){scrollToToken(this.value); this.selectedIndex=0;}">
+						<option value="" selected disabled>Select a token to jump to...</option>
+						<option value="expb">eXPB</option>
+						<option value="giddy">GIDDY</option>
+						<option value="dobby">DOBBY</option>
+						<option value="one">ONE</option>
+						<option value="kin">KIN</option>
+						<option value="duno">DUNO</option>
+						<option value="cpt">CPT</option>
+						<option value="mylo">MYLO</option>
+						<option value="sinu">SINU</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<style>
+    /* Apply to ALL screen sizes */
+    #token-select,
+    #token-select option {
+        background-color: var(--main-bg-color) !important;
+        color: var(--text-color) !important;
+    }
+
+    /* WebKit fix */
+    #token-select option {
+        -webkit-text-fill-color: var(--text-color) !important;
+    }
+
+    /* Modal base styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: var(--main-bg-color);
+        padding: 30px 20px 35px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 550px;
+        text-align: center;
+        animation: slideIn 0.3s ease-out;
+        border: 2px solid var(--quick-start-border-color);
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 28px;
+        cursor: pointer;
+        color: var(--text-color);
+        line-height: 1;
+    }
+
+    .close:hover {
+        color: var(--link-hover-color);
+    }
+
+    /* Desktop & Tablet: Original 3×3 grid */
+    .token-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 25px;
+        justify-items: center;
+    }
+
+    /* Mobile: Hide grid, show dropdown */
+    @media (max-width: 600px) {
+        .token-grid {
+            display: none;
+        }
+
+        .token-dropdown-container {
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        #token-select {
+            width: 100%;
+            padding: 16px 36px 16px 16px;
+            font-size: 1.1em;
+            font-family: inherit;
+            border-radius: 12px;
+            border: 2px solid var(--quick-start-border-color);
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+
+            background-image:
+                linear-gradient(45deg, transparent 60%, var(--text-color) 60%),
+                linear-gradient(-45deg, transparent 60%, var(--text-color) 60%);
+            background-position:
+                calc(100% - 18px) 50%,
+                calc(100% - 13px) 50%;
+            background-size: 8px 8px, 8px 8px;
+            background-repeat: no-repeat;
+        }
+
+        #token-select:hover,
+        #token-select:active {
+            background-color: rgba(160, 0, 255, 0.1);
+            border-color: var(--link-hover-color);
+        }
+
+        #token-select:focus {
+            outline: none;
+            border-color: var(--link-hover-color);
+            box-shadow: 0 0 0 4px rgba(160, 0, 255, 0.2);
+        }
+
+        #token-select option:checked {
+            background-color: var(--link-hover-color) !important;
+            color: #ffffff !important;
+        }
+    }
+
+    /* Help browsers respect dark mode for native controls */
+    #token-directory-modal {
+        color-scheme: light dark;
+    }
+</style>
+
+
+		<script>
+			function openModal(modalId) {
+				const modal = document.getElementById(`${modalId}-modal`);
+				if (modal) modal.style.display = 'flex';
+			}
+
+			function closeModal(modalId) {
+				const modal = document.getElementById(`${modalId}-modal`);
+				if (modal) modal.style.display = 'none';
+			}
+
+			function scrollToToken(tokenId) {
+				closeModal('token-directory');
+				const element = document.getElementById(tokenId);
+				if (element) {
+					element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					element.style.transition = 'background-color 0.8s ease';
+					element.style.backgroundColor = 'rgba(100, 200, 255, 0.15)';
+					setTimeout(() => { element.style.backgroundColor = ''; }, 1600);
+				}
+			}
+
+			// Close when clicking outside
+			window.onclick = function (event) {
+				const modal = document.getElementById('token-directory-modal');
+				if (event.target === modal) {
+					closeModal('token-directory');
+				}
+			}
+		</script>
 
 		<!-- Footer -->
 		<footer id="footer">
