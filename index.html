@@ -99,7 +99,7 @@
 		<!-- Intro -->
 		<div id="intro">
 			<h1 class="left-aligned">
-				<span class="smaller-heading">Bouncy Ball<br />Presented By</span><br />
+				<span class="smaller-heading">Bouncy Ball Token<br />Features in</span><br />
 				OFiDCrypt
 			</h1>
 
@@ -109,12 +109,12 @@
 				</a>
 				<span class="plus-sign">∞</span>
 				<a href="/ofidtales.html" class="no-style-link">
-					<img src="/assets/images/giddys-logo-300.png" alt="Phantom Logo & Link to Download">
+					<img src="/assets/images/giddys-logo-border-300.PNG" alt="Phantom Logo & Link to Download">
 				</a>
 			</div>
 			<div>
 				<h1 class="left-aligned">Universe<br />
-					<span class="smaller-heading-bottom">Series & Shop</span>
+					<span class="smaller-heading-bottom">Goods + Gifts</span>
 				</h1>
 			</div>
 
@@ -335,8 +335,8 @@
 			<!-- Welcome & Intro -->
 			<article class="post">
 				<header class="major">
-					<span class="date">OFiDCrypt Services</span>
-					<h1>Products<br /> with Digital Gifts</h1>
+					<span class="date">OFiDCrypt & Giddy's</span>
+					<h1>Purchases<br /> come with Cash</h1>
 					<p class="align-center">OFiDCrypt & Giddy’s have redefined how kids and families interact with
 						digital assets. For the first time, the things you love to buy come with cash‑backed value — a
 						real thank‑you for your brand loyalty!</p>
@@ -345,7 +345,7 @@
 					<section class="featured-service">
 						<div class="featured-service-items">
 
-							
+
 							<!-- Tile 1: Giddy's Universe -->
 							<article class="featured-service-item--featured">
 								<span class="image left"><img src="/assets/images/giddys-card-4x3.jpeg"
@@ -381,7 +381,7 @@
 								<!-- DESCRIPTION -->
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Explore </br>Apps</h3>
-									<p class="align-center">Try Apps · Grow Your Business · Earn Rewards</p>
+									<p class="align-center">Try Apps · Grow Your Business · Get Social</p>
 									<button class="round-button"><a href="/explore.html">Explore Now</a></button>
 								</div>
 							</article>
@@ -406,184 +406,234 @@
 
 				<!-- Quick Start Section -->
 				<section class="quick-start-section">
-					<header id="jump-ahead">
-						<h2>New Digital Wallets: Unlock More than Money</h2>
-
-						<p>OFiDCrypt is one of the first of its kind; <b>where innovation meets affordability</b> — 
+					<header id="intro-video">
+						<h2>Introduction: What We Do</h2>
+						<p>OFiDCrypt is one of the first of its kind; <b>where innovation meets affordability</b> —
 							unlock exclusive savings on OFiDCrypt Services and Giddy’s Goods when you set up your
 							first digital
-							wallet. Dive into our secure, in-house digital currency and experience the future of smart
-							spending. Need Help?</br><a href="#guide"> Check Our Guides</a></p>
+							wallet.</p>
+						<!-- Video container with poster overlay -->
+						<div class="video-main video-hosted-portrait">
+							<video id="myVideo" controls playsinline preload="metadata">
+								<source src="../assets/videos/ofidcrypt-intro.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+							<!-- Poster overlay (visible before play and after video ends) -->
+							<img class="video-poster-overlay" src="../assets/images/ofid-poster.PNG"
+								alt="OFiDCrypt Intro Video Poster">
+						</div>
 					</header>
 
-					<div class="quick-start-items">
-						<article class="quick-start-item">
-							<span class="image left">
-								<img src="/assets/images/300x300-phantom.png" alt="Wallet Icon">
-							</span>
-							<div class="quick-start-content">
-								<h3 class="quick-start-title">Get your Wallet</h3>
-								<p class="align-center">By Phantom Technologies Inc · Buy · Swap</p>
-								<button class="round-button">
-									<a href="https://phantom.com/download">Download</a>
-								</button>
+					<!-- JavaScript to control poster visibility -->
+				<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const video = document.getElementById('myVideo');
+						const container = video.parentElement; // .video-hosted-portrait
+
+						// Hide poster when video starts playing
+						video.addEventListener('play', function () {
+							container.classList.add('playing');
+						});
+
+						// Show poster again when video ends
+						video.addEventListener('ended', function () {
+							video.currentTime = 0; // Rewind to start (optional)
+							container.classList.remove('playing');
+						});
+
+						// Optional: If user pauses mid-video, keep video visible (don't show poster)
+						// Only show poster again if it actually ended
+						video.addEventListener('pause', function () {
+							if (!video.ended) {
+								// Still playing content visible if paused mid-video
+								container.classList.add('playing');
+							}
+						});
+					});
+				</script>
+
+					<!-- Quick Start Section -->
+					<section class="quick-start-section">
+						<header id="jump-ahead">
+							<h2>New Digital Wallets: Unlock More than Money</h2>
+
+							<p>Dive into our secure, in-house digital currency and experience the future of
+								smart
+								spending. Need Help?</br><a href="#guide"> Check Our Guides</a></p>
+						</header>
+
+						<div class="quick-start-items">
+							<article class="quick-start-item">
+								<span class="image left">
+									<img src="/assets/images/300x300-phantom.png" alt="Wallet Icon">
+								</span>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Get your Wallet</h3>
+									<p class="align-center">By Phantom Technologies Inc · Buy · Swap</p>
+									<button class="round-button">
+										<a href="https://phantom.com/download">Download</a>
+									</button>
+								</div>
+							</article>
+
+							<article class="quick-start-item">
+								<span class="image left">
+									<img src="/assets/images/expb-dreams.PNG" alt="e𝕏PB Icon">
+								</span>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Get Bouncy Ball</h3>
+									<p class="align-center">Spend Less · Grow More · A New Portfolio</p>
+									<button class="round-button">
+										<a href="/bouncyball.html#buy-expb">Token Page</a>
+									</button>
+								</div>
+							</article>
+
+							<article class="quick-start-item">
+								<span class="image left">
+									<img src="/assets/images/partner-affiliate-kraken.png" alt="Learn Icon">
+								</span>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Open Your Account</h3>
+									<p class="align-center">Payward Inc · Buy · Sell · Swap · Earn</p>
+									<button class="round-button">
+										<a href="/pages/affiliate.html#kraken">Sign Up Free</a>
+									</button>
+								</div>
+							</article>
+						</div>
+					</section>
+
+					<header id="guide">
+						<h2>Wallet Guide</h2>
+						<!-- Section Description -->
+						<p>Solana cryptocurrency operates on the <b>Solana Program Library</b>, similar to how cash
+							transactions are processed
+							on Visa or
+							Mastercard networks. With just a click, you can swap Solana for our <b>Bouncy Ball Token</b>
+							or
+							others operating
+							on SPL.
+							Find out how by checking out our Phantom Wallet 3 Part Tutorial below!</p>
+
+						<div class="tiktok-videos-container">
+							<!-- First TikTok Embed -->
+							<div class="tiktok-video-wrapper" id="part1">
+								<header class="tiktok-header">
+									<h2>Part 1: Download Wallet</h2>
+								</header>
+								<div class="tiktok video main">
+									<blockquote class="tiktok-embed"
+										cite="https://www.tiktok.com/@ofidkid/video/7483289569861897527"
+										data-video-id="7483289569861897527" style="max-width: 605px;min-width: 325px;">
+										<section>
+											<a target="_blank" title="@ofidkid"
+												href="https://www.tiktok.com/@ofidkid?refer=embed">@Giddys_CA</a>
+											Get Your First Wallet! Do it all from one app; a safe place for earned
+											tokens!
+											🥳 PART 1 of 3:
+											Downloading
+											Phantom Wallet 📲
+											<a title="crypto" target="_blank"
+												href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a>
+											<a title="solana" target="_blank"
+												href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a>
+											<a title="web3" target="_blank"
+												href="https://www.tiktok.com/tag/web3?refer=embed">#web3</a>
+											<a title="tokens" target="_blank"
+												href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a>
+											<a title="ofidkid" target="_blank"
+												href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a>
+											<a title="baby" target="_blank"
+												href="https://www.tiktok.com/tag/baby?refer=embed">#baby</a>
+											<a title="babytokin" target="_blank"
+												href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a>
+											<a title="fyp" target="_blank"
+												href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a>
+											<a title="foryoupage" target="_blank"
+												href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a>
+											<a target="_blank" title="♬ Thank You for Being a Friend - Alyssa Bonagura"
+												href="https://www.tiktok.com/music/Thank-You-for-Being-a-Friend-6799317023240226818?refer=embed">♬
+												Thank
+												You for Being a Friend - Alyssa Bonagura</a>
+										</section>
+									</blockquote>
+									<script async src="https://www.tiktok.com/embed.js"></script>
+								</div>
 							</div>
-						</article>
 
-						<article class="quick-start-item">
-							<span class="image left">
-								<img src="/assets/images/expb-ball03.gif" alt="e𝕏PB Icon">
-							</span>
-							<div class="quick-start-content">
-								<h3 class="quick-start-title">Get Bouncy Ball</h3>
-								<p class="align-center">Spend Less · Grow More · A New Portfolio</p>
-								<button class="round-button">
-									<a href="/bouncyball.html#buy-expb">Token Page</a>
-								</button>
-							</div>
-						</article>
-
-						<article class="quick-start-item">
-							<span class="image left">
-								<img src="/assets/images/partner-affiliate-kraken.png" alt="Learn Icon">
-							</span>
-							<div class="quick-start-content">
-								<h3 class="quick-start-title">Open Your Account</h3>
-								<p class="align-center">Payward Inc · Buy · Sell · Swap · Earn</p>
-								<button class="round-button">
-									<a href="/pages/affiliate.html#kraken">Sign Up Free</a>
-								</button>
-							</div>
-						</article>
-					</div>
-				</section>
-
-				<header id="guide">
-					<h2>Wallet Guide</h2>
-					<!-- Section Description -->
-					<p>Solana cryptocurrency operates on the <b>Solana Program Library</b>, similar to how cash
-						transactions are processed
-						on Visa or
-						Mastercard networks. With just a click, you can swap Solana for our <b>Bouncy Ball Token</b> or
-						others operating
-						on SPL.
-						Find out how by checking out our Phantom Wallet 3 Part Tutorial below!</p>
-
-					<div class="tiktok-videos-container">
-						<!-- First TikTok Embed -->
-						<div class="tiktok-video-wrapper" id="part1">
-							<header class="tiktok-header">
-								<h2>Part 1: Download Wallet</h2>
-							</header>
-							<div class="tiktok video main">
-								<blockquote class="tiktok-embed"
-									cite="https://www.tiktok.com/@ofidkid/video/7483289569861897527"
-									data-video-id="7483289569861897527" style="max-width: 605px;min-width: 325px;">
-									<section>
-										<a target="_blank" title="@ofidkid"
-											href="https://www.tiktok.com/@ofidkid?refer=embed">@Giddys_CA</a>
-										Get Your First Wallet! Do it all from one app; a safe place for earned tokens!
-										🥳 PART 1 of 3:
-										Downloading
-										Phantom Wallet 📲
-										<a title="crypto" target="_blank"
-											href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a>
-										<a title="solana" target="_blank"
-											href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a>
-										<a title="web3" target="_blank"
-											href="https://www.tiktok.com/tag/web3?refer=embed">#web3</a>
-										<a title="tokens" target="_blank"
-											href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a>
-										<a title="ofidkid" target="_blank"
-											href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a>
-										<a title="baby" target="_blank"
-											href="https://www.tiktok.com/tag/baby?refer=embed">#baby</a>
-										<a title="babytokin" target="_blank"
-											href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a>
-										<a title="fyp" target="_blank"
-											href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a>
-										<a title="foryoupage" target="_blank"
-											href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a>
-										<a target="_blank" title="♬ Thank You for Being a Friend - Alyssa Bonagura"
-											href="https://www.tiktok.com/music/Thank-You-for-Being-a-Friend-6799317023240226818?refer=embed">♬
-											Thank
-											You for Being a Friend - Alyssa Bonagura</a>
-									</section>
-								</blockquote>
-								<script async src="https://www.tiktok.com/embed.js"></script>
+							<!-- Second TikTok Embed -->
+							<div class="tiktok-video-wrapper" id="part2">
+								<header class="tiktok-header">
+									<h2>Part 2: Buy Solana</h2>
+								</header>
+								<div class="tiktok video main">
+									<blockquote class="tiktok-embed"
+										cite="https://www.tiktok.com/@Giddys_CA/video/7504331353756847365"
+										data-video-id="7504331353756847365" style="max-width: 605px;min-width: 325px;">
+										<section> <a target="_blank" title="@Giddys_CA"
+												href="https://www.tiktok.com/@Giddys_CA?refer=embed">@Giddys_CA</a> PART
+											2
+											of 3: How to Buy
+											Solana!
+											Phantom Wallet Tutorial: Do it all from one app; a safe place to store your
+											crypto and earned
+											tokens! <a title="crypto" target="_blank"
+												href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a> <a
+												title="solana" target="_blank"
+												href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a> <a
+												title="web3" target="_blank"
+												href="https://www.tiktok.com/tag/web3?refer=embed">#web3</a> <a
+												title="cryptowallet" target="_blank"
+												href="https://www.tiktok.com/tag/cryptowallet?refer=embed">#cryptowallet</a>
+											<a title="tokens" target="_blank"
+												href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a> <a
+												title="ofidkid" target="_blank"
+												href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a> <a
+												title="tutorial" target="_blank"
+												href="https://www.tiktok.com/tag/tutorial?refer=embed">#tutorial</a> <a
+												title="babytokin" target="_blank"
+												href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a>
+											<a title="fyp" target="_blank"
+												href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a> <a
+												title="foryoupage" target="_blank"
+												href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a>
+											@Crypto Mason
+											@Linda-Marie
+											Emmerson @DeFi Space @Tiffany <a target="_blank"
+												title="♬ Little Things - Adrián Berenguer"
+												href="https://www.tiktok.com/music/Little-Things-6981828410792216577?refer=embed">♬
+												Little
+												Things -
+												Adrián Berenguer</a>
+										</section>
+									</blockquote>
+									<script async src="https://www.tiktok.com/embed.js"></script>
+								</div>
 							</div>
 						</div>
 
-						<!-- Second TikTok Embed -->
-						<div class="tiktok-video-wrapper" id="part2">
-							<header class="tiktok-header">
-								<h2>Part 2: Buy Solana</h2>
-							</header>
-							<div class="tiktok video main">
-								<blockquote class="tiktok-embed"
-									cite="https://www.tiktok.com/@Giddys_CA/video/7504331353756847365"
-									data-video-id="7504331353756847365" style="max-width: 605px;min-width: 325px;">
-									<section> <a target="_blank" title="@Giddys_CA"
-											href="https://www.tiktok.com/@Giddys_CA?refer=embed">@Giddys_CA</a> PART 2
-										of 3: How to Buy
-										Solana!
-										Phantom Wallet Tutorial: Do it all from one app; a safe place to store your
-										crypto and earned
-										tokens! <a title="crypto" target="_blank"
-											href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a> <a
-											title="solana" target="_blank"
-											href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a> <a
-											title="web3" target="_blank"
-											href="https://www.tiktok.com/tag/web3?refer=embed">#web3</a> <a
-											title="cryptowallet" target="_blank"
-											href="https://www.tiktok.com/tag/cryptowallet?refer=embed">#cryptowallet</a>
-										<a title="tokens" target="_blank"
-											href="https://www.tiktok.com/tag/tokens?refer=embed">#tokens</a> <a
-											title="ofidkid" target="_blank"
-											href="https://www.tiktok.com/tag/ofidkid?refer=embed">#OFiDKid</a> <a
-											title="tutorial" target="_blank"
-											href="https://www.tiktok.com/tag/tutorial?refer=embed">#tutorial</a> <a
-											title="babytokin" target="_blank"
-											href="https://www.tiktok.com/tag/babytokin?refer=embed">#BabyTokin</a> <a
-											title="fyp" target="_blank"
-											href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a> <a
-											title="foryoupage" target="_blank"
-											href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a>
-										@Crypto Mason
-										@Linda-Marie
-										Emmerson @DeFi Space @Tiffany <a target="_blank"
-											title="♬ Little Things - Adrián Berenguer"
-											href="https://www.tiktok.com/music/Little-Things-6981828410792216577?refer=embed">♬
-											Little
-											Things -
-											Adrián Berenguer</a>
-									</section>
-								</blockquote>
-								<script async src="https://www.tiktok.com/embed.js"></script>
-							</div>
-						</div>
-					</div>
+						<!-- Chart Button & Header-->
+						<section class="partner-section">
+							<section id="docs-banner" class="ad-banner">
 
-					<!-- Chart Button & Header-->
-					<section class="partner-section">
-						<section id="docs-banner" class="ad-banner">
-
-							<!-- Chart Button <div>
+								<!-- Chart Button <div>
 																	<button class="round-button"><a href="chart.html#dexscreener-embed">Price Chart</a></button>
 																	</div>
 																	</section>
 																	</section>
 																-->
-				</header>
+					</header>
 
-				<p class="align-center">Ready? <a href="#jump-ahead">Download Phantom Wallet</a></p>
+					<p class="align-center">Ready? <a href="#jump-ahead">Download Phantom Wallet</a></p>
 
-				<!-- Docs Button -->
-				<div class="image button-image">
-					<a href="/docs/main.html" target="_blank">
-						<img src="../assets/images/button-see-the-docs.png" alt="Login Button Image for Code Wallet" />
-					</a>
-				</div>
+					<!-- Docs Button -->
+					<div class="image button-image">
+						<a href="/docs/main.html" target="_blank">
+							<img src="../assets/images/button-see-the-docs.png"
+								alt="Login Button Image for Code Wallet" />
+						</a>
+					</div>
 		</div>
 
 		<!-- Footer -->
