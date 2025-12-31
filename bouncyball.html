@@ -809,6 +809,7 @@
 
 				<!-- Header -->
 				<header id="guide">
+					<section class="quick-start-section"></section>
 					<h2>What is Bouncy Ball?</h2>
 
 					<!-- Description -->
@@ -821,6 +822,46 @@
 						Web3
 						adoption, and enhancing entertainment.
 					</p>
+
+						<!-- Video container with poster overlay -->
+						<div id="expb-intro-video"class="video-main video-hosted-portrait">
+							<video id="myVideo" controls playsinline preload="metadata">
+								<source src="../assets/videos/bouncy-ball-intro.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+							<!-- Poster overlay (visible before play and after video ends) -->
+							<img class="video-poster-overlay" src="../assets/images/expb-dream-poster.png"
+								alt="OFiDCrypt Intro Video Poster">
+						</div>
+					</header>
+
+					<!-- JavaScript to control poster visibility -->
+				<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const video = document.getElementById('myVideo');
+						const container = video.parentElement; // .video-hosted-portrait
+
+						// Hide poster when video starts playing
+						video.addEventListener('play', function () {
+							container.classList.add('playing');
+						});
+
+						// Show poster again when video ends
+						video.addEventListener('ended', function () {
+							video.currentTime = 0; // Rewind to start (optional)
+							container.classList.remove('playing');
+						});
+
+						// Optional: If user pauses mid-video, keep video visible (don't show poster)
+						// Only show poster again if it actually ended
+						video.addEventListener('pause', function () {
+							if (!video.ended) {
+								// Still playing content visible if paused mid-video
+								container.classList.add('playing');
+							}
+						});
+					});
+				</script>
 
 					<p style="text-align: center;">
 						Easy to get and safe to hold, Bouncy Ball grows in many ways — such as through our
