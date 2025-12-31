@@ -103,11 +103,10 @@
 		<nav id="nav">
 			<ul class="links">
 				<li><a href="index.html">Home</a></li>
-				<li><a href="explore.html">Services</a></li>
-				<li><a href="community.html">News</a></li>
-				<li><a href="pages/livestream.html">Events</a></li>
-				<li><a href="ofidtales.html">Giddy's</a></li>
-				<li><a href="pages/about.html">About Us</a></li>
+				<li><a href="ofidtales.html">Giddy's Shop</a></li>
+				<li><a href="explore.html">Wallets & Apps</a></li>
+				<li class="active"><a href="onegiddy.html">Swap Token</a></li>
+				<li><a href="cashlinks.html">Digital Gifts</a></li>
 			</ul>
 			<ul class="icons">
 				<li>
@@ -280,13 +279,127 @@
 				});
 			</script>
 
-			<!-- Chart -->
+			<!-- Chart 
 			<section id="expb-chart">
 				<div id="dexscreener-embed"><iframe
 						src="https://dexscreener.com/solana/gskulqskcenfqxuk4icteqjc11av8wiqw31cxzqzpump?embed=1&loadChartSettings=0&chartLeftToolbar=0&loadChartSettings=0&chartDefaultOnMobile=0&chartTheme=dark&theme=dark&chartStyle=1&chartType=usd&interval=15"></iframe>
 				</div>
 			</section>
+			-->
 
+			<!-- CoinGecko Ticker -->
+			<section id="coingecko-ticker">
+				<a href="https://www.coingecko.com/en/coins/bouncy-ball-of-ofid-fun" target="_blank" rel="noopener"
+					class="ticker-link">
+
+					<div id="gecko-coin-ticker-embed">
+						<script src="https://widgets.coingecko.com/gecko-coin-ticker-widget.js"></script>
+
+						<gecko-coin-ticker-widget locale="en" transparent-background="true" outlined="true"
+							coin-id="bouncy-ball-of-ofid-fun" initial-currency="cad">
+						</gecko-coin-ticker-widget>
+					</div>
+
+				</a>
+			</section>
+
+			<style>
+				#coingecko-ticker {
+					width: 100%;
+					padding: 20px 8rem 0;
+					/* Desktop default */
+				}
+
+				#gecko-coin-ticker-embed {
+					width: 100%;
+					max-width: none;
+					margin: 0 auto;
+					overflow: hidden;
+					border-radius: 12px;
+				}
+
+				gecko-coin-ticker-widget {
+					display: block;
+					width: 100% !important;
+					min-height: 320px;
+				}
+
+				/* MOBILE + TABLET: restore original 20px padding */
+				@media (max-width: 768px) {
+					#coingecko-ticker {
+						padding: 20px 20px 0;
+						/* ← original mobile padding */
+						padding-bottom: 0;
+					}
+
+					gecko-coin-ticker-widget {
+						min-height: 280px;
+					}
+				}
+
+				@media (max-width: 480px) {
+					#coingecko-ticker {
+						padding: 2rem 2rem 0;
+						/* ensure consistency */
+					}
+
+					#gecko-coin-ticker-embed {
+						padding-bottom: 10px;
+					}
+
+					gecko-coin-ticker-widget {
+						min-height: 300px;
+					}
+				}
+
+				@media (max-width: 360px) {
+					gecko-coin-ticker-widget {
+						min-height: 280px;
+					}
+				}
+
+				.ticker-link,
+				.ticker-link:hover,
+				.ticker-link:focus,
+				.ticker-link:active {
+					text-decoration: none;
+					color: inherit;
+				}
+			</style>
+
+			<script>
+				function updateGeckoWidgetTheme() {
+					const widget = document.querySelector('gecko-coin-ticker-widget');
+					if (!widget) return;
+
+					// Your site uses 'dark-mode' class on <body>
+					const isDark = document.body.classList.contains('dark-mode');
+
+					if (isDark) {
+						widget.setAttribute('dark-mode', 'true');
+					} else {
+						widget.removeAttribute('dark-mode');
+					}
+				}
+
+				// Initial update (after page load)
+				document.addEventListener('DOMContentLoaded', updateGeckoWidgetTheme);
+
+				// Update whenever the class changes (your toggle adds/removes 'dark-mode' on body)
+				const observer = new MutationObserver((mutations) => {
+					mutations.forEach((mutation) => {
+						if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+							updateGeckoWidgetTheme();
+						}
+					});
+				});
+				observer.observe(document.body, { attributes: true });
+
+				// Also catch system theme changes (in case the widget listens to it)
+				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateGeckoWidgetTheme);
+			</script>
+
+			</section>
 			<section class="post">
 				<header class="major" id="bouncy">
 					<span class="date">OFiDCrypt & Giddy's</span>
@@ -823,19 +936,19 @@
 						adoption, and enhancing entertainment.
 					</p>
 
-						<!-- Video container with poster overlay -->
-						<div id="expb-intro-video"class="video-main video-hosted-portrait">
-							<video id="myVideo" controls playsinline preload="metadata">
-								<source src="../assets/videos/bouncy-ball-intro.mp4" type="video/mp4">
-								Your browser does not support the video tag.
-							</video>
-							<!-- Poster overlay (visible before play and after video ends) -->
-							<img class="video-poster-overlay" src="../assets/images/expb-dream-poster.png"
-								alt="OFiDCrypt Intro Video Poster">
-						</div>
-					</header>
+					<!-- Video container with poster overlay -->
+					<div id="expb-intro-video" class="video-main video-hosted-portrait">
+						<video id="myVideo" controls playsinline preload="metadata">
+							<source src="../assets/videos/bouncy-ball-intro.mp4" type="video/mp4">
+							Your browser does not support the video tag.
+						</video>
+						<!-- Poster overlay (visible before play and after video ends) -->
+						<img class="video-poster-overlay" src="../assets/images/expb-dream-poster.png"
+							alt="OFiDCrypt Intro Video Poster">
+					</div>
+				</header>
 
-					<!-- JavaScript to control poster visibility -->
+				<!-- JavaScript to control poster visibility -->
 				<script>
 					document.addEventListener('DOMContentLoaded', function () {
 						const video = document.getElementById('myVideo');
@@ -863,117 +976,83 @@
 					});
 				</script>
 
-					<p style="text-align: center;">
-						Easy to get and safe to hold, Bouncy Ball grows in many ways — such as through our
-						<a href="/ofidtales.html#giddy-tales-nav">Giddy Tales Series</a> as it gains popularity, and
-						through the
-						redistribution of tokens within our ecosystem from every sale.
-						Whether for gifting, innovation, or fun, it's rolling toward a future where Web3 meets
-						creativity — and the more
-						businesses that adopt
-						<a href="https://ofidcrypt.ca/microeconomies-growing-wealth-without-the-crypto-trading-magic-trick"
-							target="_blank">#MicroEconomies</a> — the faster we all grow! 🚀
-					</p>
+				<p style="text-align: center;">
+					Easy to get and safe to hold, Bouncy Ball grows in many ways — such as through our
+					<a href="/ofidtales.html#giddy-tales-nav">Giddy Tales Series</a> as it gains popularity, and
+					through the
+					redistribution of tokens within our ecosystem from every sale.
+					Whether for gifting, innovation, or fun, it's rolling toward a future where Web3 meets
+					creativity — and the more
+					businesses that adopt
+					<a href="https://ofidcrypt.ca/microeconomies-growing-wealth-without-the-crypto-trading-magic-trick"
+						target="_blank">#MicroEconomies</a> — the faster we all grow! 🚀
+				</p>
 
-					<!-- Bulletins & Social Links Buttons -->
-					<div class="round-button-container">
-						<button class="round-button"
-							onclick="window.open('https://ofidcrypt.ca/new-ofid-bouncy-ball-epb', '_blank')">
-							Learn More
-						</button>
-					</div>
-					<!-- Header -->
-					<div>
-						<header class="major" id="buy-expb">
-							<span class="date">Dynamic Growth Token</span>
-							<h1>Get Bouncy</h1>
-						</header>
-					</div>
-
-					<!-- Info Tile -->
-					<section id="provider-tile" class="provider-tile">
-						<a href="https://t.me/c/2292263577/35699" target="_blank">
-							<img src="/assets/images/expb-providers-1.png" alt="Providers">
-						</a>
-
-						<!-- Token Buttons -->
-						<div class="token-button-container">
-							<button class="token-button"
-								onclick="window.open('https://pump.fun/coin/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">
-								<span class="pump-text">Pump</span><span class="fun-text">Fun</span>
-							</button>
-
-							<button class="token-button"
-								onclick="window.open('https://phantom.com/tokens/solana/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump?referralId=3hjgncz9qx4', '_blank')">Phantom</button>
-
-							<button class="token-button"
-								onclick="window.open('https://moonshot.com/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump?ref=NnJDmKfzpM', '_blank')">Moonshot</button>
-
-							<button class="token-button"
-								onclick="window.open('https://jup.ag/tokens/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">Jupiter</button>
-
-							<button class="token-button"
-								onclick="window.open('https://raydium.io/swap/?inputMint=sol&outputMint=GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">Raydium</button>
-
-							<button class="token-button"
-								onclick="window.open('https://www.coingecko.com/en/coins/bouncy-ball-of-ofid-fun', '_blank')">CoinGecko</button>
-
-							<button class="token-button"
-								onclick="window.open('https://coinranking.com/coin/h0ynh5w7U+bouncyballofofidfun-epb', '_blank')">CoinRanking</button>
-
-							<button class="token-button"
-								onclick="window.open('https://solscan.io/token/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">Solscan</button>
-
-							<footer class="token-button-help-text">
-								<p class="align-center">
-									<a href="#guide" target="_blank">💡 Why Buy?</a>
-								</p>
-							</footer>
-						</div>
-					</section>
-
-					<!-- Section Description -->
-					<header>
-						<p style="text-align: center;">
-							Giddy’s Bouncy Ball (e𝕏PB) is verified on Solscan and listed on CoinGecko. Explore your
-							favorite wallet apps and data providers
-							above to buy your own Bouncy Ball Tokens!
-						</p>
-					</header>
-
-					<!-- TikTok Embed 
-				<div class="tiktok-videos-container"> -->
-					<!-- Video 1 - TikTok Embed -->
-					<!--<div class="tiktok-video-wrapper">
-						<header class="tiktok-header">
-							<h2>Bulletins</h2>
-						</header>
-						<div class="tiktok video main">
-							<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@ofidcrypt/video/7504411238621924663"
-								data-video-id="7504411238621924663" style="max-width: 605px;min-width: 325px;">
-								<section> <a target="_blank" title="@ofidcrypt"
-										href="https://www.tiktok.com/@ofidcrypt?refer=embed">@ofidcrypt</a> 🤫 Come check this.. eXPB on
-									Solana 🇨🇦 Visit OFiDCrypt.com to get started with your first digital asset, or head over to @OFiD
-									Crew &#38; Giddy Tales 🪄 to see why you should <a title="solana" target="_blank"
-										href="https://www.tiktok.com/tag/solana?refer=embed">#solana</a> <a title="crypto"
-										target="_blank" href="https://www.tiktok.com/tag/crypto?refer=embed">#crypto</a> <a
-										title="digitalcurrency" target="_blank"
-										href="https://www.tiktok.com/tag/digitalcurrency?refer=embed">#digitalcurrency</a> <a
-										title="wallet" target="_blank" href="https://www.tiktok.com/tag/wallet?refer=embed">#wallet</a>
-									<a title="fyp" target="_blank" href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a> <a
-										title="foryoupage" target="_blank"
-										href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a> @DeFi Space
-									@Linda-Marie Emmerson @Crypto Mason <a target="_blank"
-										title="♬ Come Check This (Quickie Edit) - FETISH"
-										href="https://www.tiktok.com/music/Come-Check-This-Quickie-Edit-7231091243878795265?refer=embed">♬
-										Come Check This (Quickie Edit) - FETISH</a> </section>
-							</blockquote>
-							<script async src="https://www.tiktok.com/embed.js"></script>
-						</div>
-					</div>
+				<!-- Bulletins & Social Links Buttons -->
+				<div class="round-button-container">
+					<button class="round-button"
+						onclick="window.open('https://ofidcrypt.ca/new-ofid-bouncy-ball-epb', '_blank')">
+						Learn More
+					</button>
 				</div>
-				-->
+				<!-- Header -->
+				<div>
+					<header class="major" id="buy-expb">
+						<span class="date">Dynamic Growth Token</span>
+						<h1>Get Bouncy</h1>
+					</header>
+				</div>
 
+				<!-- Info Tile -->
+				<section id="provider-tile" class="provider-tile">
+					<a href="https://t.me/c/2292263577/35699" target="_blank">
+						<img src="/assets/images/expb-providers-1.png" alt="Providers">
+					</a>
+
+					<!-- Token Buttons -->
+					<div class="token-button-container">
+						<button class="token-button"
+							onclick="window.open('https://pump.fun/coin/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">
+							<span class="pump-text">Pump</span><span class="fun-text">Fun</span>
+						</button>
+
+						<button class="token-button"
+							onclick="window.open('https://phantom.com/tokens/solana/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump?referralId=3hjgncz9qx4', '_blank')">Phantom</button>
+
+						<button class="token-button"
+							onclick="window.open('https://moonshot.com/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump?ref=NnJDmKfzpM', '_blank')">Moonshot</button>
+
+						<button class="token-button"
+							onclick="window.open('https://jup.ag/tokens/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">Jupiter</button>
+
+						<button class="token-button"
+							onclick="window.open('https://raydium.io/swap/?inputMint=sol&outputMint=GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">Raydium</button>
+
+						<button class="token-button"
+							onclick="window.open('https://www.coingecko.com/en/coins/bouncy-ball-of-ofid-fun', '_blank')">CoinGecko</button>
+
+						<button class="token-button"
+							onclick="window.open('https://coinranking.com/coin/h0ynh5w7U+bouncyballofofidfun-epb', '_blank')">CoinRanking</button>
+
+						<button class="token-button"
+							onclick="window.open('https://solscan.io/token/GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump', '_blank')">Solscan</button>
+
+						<footer class="token-button-help-text">
+							<p class="align-center">
+								<a href="#guide" target="_blank">💡 Why Buy?</a>
+							</p>
+						</footer>
+					</div>
+				</section>
+
+				<!-- Section Description -->
+				<header>
+					<p style="text-align: center;">
+						Giddy’s Bouncy Ball (e𝕏PB) is verified on Solscan and listed on
+						<a href="#coingecko-ticker">CoinGecko</a> —
+						Explore your favorite wallet apps and data providers above to buy your own Bouncy Ball Tokens!
+					</p>
+				</header>
 			</section>
 			</section>
 		</div>
