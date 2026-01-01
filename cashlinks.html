@@ -141,15 +141,160 @@
 		<!-- Main -->
 		<div id="main">
 
-			<!-- Ad Banner -->
-			<section id="expb-ball" class="ad-banner">
-				<div style="text-align: center;">
-					<a href="https://t.co/gQBLmw20Qp" style="border-bottom: none;">
-						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner"
+			<!-- Scrolling Ad Banner -->
+			<div id="expb-ball" class="ad-banner-wrapper">
+				<div class="ad-scroll-container">
+					<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
 							style="max-width: 100%; height: auto;">
 					</a>
+					<a href="https://kraken.pxf.io/xLox1A"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://freeproducer.ca/" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="/bouncyball.html#buy-expb" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5"
+							style="max-width: 100%; height: auto;">
+										</a>
 				</div>
-			</section>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const container = document.querySelector('.ad-scroll-container');
+					const slides = document.querySelectorAll('.ad-slide');
+					const totalSlides = slides.length;
+					let autoScrollInterval;
+					let currentIndex = 0; // Track current index globally
+
+					// Exit if no slides
+					if (totalSlides === 0) {
+						console.warn('No slides found in .ad-scroll-container');
+						return;
+					}
+
+					// Clone first slide for continuous loop
+					const firstSlideClone = slides[0].cloneNode(true);
+					container.appendChild(firstSlideClone);
+					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+					// Force start on first slide
+					function setInitialPosition() {
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						currentIndex = 0; // Reset index
+					}
+
+					// Calculate slide width
+					function getBoxWidth() {
+						const slideWidth = slides[0].offsetWidth; // Actual slide width
+						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+						const totalWidth = slideWidth + slideMargin;
+						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+						return totalWidth;
+					}
+
+					// Auto-scroll function
+					function startAutoScroll() {
+						function resetAutoScroll() {
+							if (autoScrollInterval) {
+								clearInterval(autoScrollInterval);
+							}
+							autoScrollInterval = setInterval(() => {
+								currentIndex++;
+								console.log('Scrolling to index:', currentIndex);
+								if (currentIndex >= totalSlides + 1) {
+									// Reached clone, reset to first slide instantly
+									container.scrollTo({ left: 0, behavior: 'instant' });
+									currentIndex = 1; // Start from second slide
+								}
+								container.scrollTo({
+									left: currentIndex * getBoxWidth(),
+									behavior: 'smooth'
+								});
+							}, 8000); // 8 seconds
+						}
+
+						// Start auto-scrolling
+						resetAutoScroll();
+					}
+
+					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchMoved = false;
+
+					container.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						touchMoved = false;
+					}, { passive: true });
+
+					container.addEventListener('touchmove', (e) => {
+						const touchX = e.touches[0].clientX;
+						const touchY = e.touches[0].clientY;
+						const deltaX = Math.abs(touchX - touchStartX);
+						const deltaY = Math.abs(touchY - touchStartY);
+
+						// Block horizontal swipe (deltaX > 10, deltaY < 50)
+						if (deltaX > 10 && deltaY < 50) {
+							e.preventDefault(); // Block swipe
+							touchMoved = true;
+						}
+						// Allow vertical scrolling (deltaY > 50)
+						if (deltaY > 50) {
+							touchMoved = true; // Mark as moved, but don't prevent default
+						}
+					}, { passive: false });
+
+					container.addEventListener('touchend', (e) => {
+						if (!touchMoved) {
+							// Treat as tap, allow link click
+							const touchEndX = e.changedTouches[0].clientX;
+							const touchEndY = e.changedTouches[0].clientY;
+							const deltaX = Math.abs(touchEndX - touchStartX);
+							const deltaY = Math.abs(touchEndY - touchStartY);
+
+							if (deltaX < 10 && deltaY < 10) {
+								const target = e.target.closest('a');
+								if (target && target.href) {
+									window.location.href = target.href; // Trigger link
+								}
+							}
+						}
+					}, { passive: true });
+
+					// Prevent wheel scrolling within carousel
+					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+					// Debounce resize handler, preserve current slide
+					let resizeTimeout;
+					window.addEventListener('resize', () => {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => {
+							// Restore current slide position instead of resetting
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'instant'
+							});
+							startAutoScroll();
+						}, 100); // 100ms debounce
+					});
+
+					// Initialize
+					setInitialPosition();
+					startAutoScroll();
+				});
+			</script>
 
 			<!-- Cash Links Header -->
 			<article id="cashlinks-header" class="post">
