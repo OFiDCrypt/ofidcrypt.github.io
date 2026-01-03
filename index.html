@@ -190,8 +190,7 @@
 						<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
 							style="max-width: 100%; height: auto;">
 					</a>
-					<a href="https://kraken.pxf.io/xLox1A"
-						class="ad-slide" style="border-bottom: none;">
+					<a href="https://kraken.pxf.io/xLox1A" class="ad-slide" style="border-bottom: none;">
 						<img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2"
 							style="max-width: 100%; height: auto;">
 					</a>
@@ -206,7 +205,7 @@
 					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
 						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5"
 							style="max-width: 100%; height: auto;">
-										</a>
+					</a>
 				</div>
 			</div>
 
@@ -353,56 +352,63 @@
 
 							<!-- Tile 1: Giddy's Universe -->
 							<article class="featured-service-item--featured">
-								<span class="image left"><img src="/assets/images/giddys-card-4x3.jpeg"
-										alt="e𝕏PB Business Promote Icon"></span>
+								<span class="image left">
+									<img src="/assets/images/giddys-card-4x3.jpeg" alt="e𝕏PB Business Promote Icon">
+								</span>
 
-								<!-- DESCRIPTION -->
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Giddy's Universe</h3>
 									<p class="align-center">Family Goods · Kids Toys · Collectibles · Animated Series
 									</p>
-									<button class="round-button"><a href="/ofidtales.html">Explore Now</a></button>
+									<button class="round-button" onclick="location.href='/ofidtales.html'">
+										Explore Now
+									</button>
 								</div>
 							</article>
 
 							<!-- Tile 2: Get Started: Partners -->
 							<article class="featured-service-item--featured">
-								<span class="image left"><img src="/assets/images/get-started-partners-4x3.PNG"
-										alt="e𝕏PB Member Explore Icon"></span>
+								<span class="image left">
+									<img src="/assets/images/get-started-partners-4x3.PNG"
+										alt="e𝕏PB Member Explore Icon">
+								</span>
 
-								<!-- DESCRIPTION -->
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Wallets & Tokens</h3>
 									<p class="align-center">Unlock Discounts · Get Your Wallet · Open Your Account</p>
-									<button class="round-button"><a href="#jump-ahead">Get Started</a></button>
+									<button class="round-button" data-scroll="#jump-ahead">
+										Get Started
+									</button>
 								</div>
 							</article>
 
 							<!-- Tile 3: Explore Services -->
 							<article class="featured-service-item--featured">
-								<span class="image left"><img src="/assets/images/expb-member-explore5.png"
-										alt="e𝕏PB Member Explore Icon"></span>
+								<span class="image left">
+									<img src="/assets/images/expb-member-explore5.png" alt="e𝕏PB Member Explore Icon">
+								</span>
 
-								<!-- DESCRIPTION -->
 								<div class="quick-start-content">
-									<h3 class="quick-start-title">Explore </br>Apps</h3>
+									<h3 class="quick-start-title">Explore <br>Apps</h3>
 									<p class="align-center">Try Apps · Grow Your Business · Get Social</p>
-									<button class="round-button"><a href="/explore.html">Explore Now</a></button>
+									<button class="round-button" onclick="location.href='/explore.html'">
+										Explore Now
+									</button>
 								</div>
 							</article>
 
 							<!-- Tile 4: Learn -->
 							<article class="featured-service-item--featured">
-								<span class="image left"><img src="/assets/images/expb-learn-card-4x3.png"
-										alt="e𝕏PB Business Promote Icon"></span>
+								<span class="image left">
+									<img src="/assets/images/expb-learn-card-4x3.png" alt="e𝕏PB Business Promote Icon">
+								</span>
 
-								<!-- DESCRIPTION -->
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Learn About Digital Assets</h3>
-									<p class="align-center">Fundamentals · Basics · Tips · Portfolio Growth · Security
-									</p>
-									<button class="round-button"><a href="/explore.html#article-featured">Go to
-											Articles</a></button>
+									<p class="align-center">Fundamentals · Basics · Tips · Security</p>
+									<button class="round-button" data-scroll="#article-featured">
+										Go to Articles
+									</button>
 								</div>
 							</article>
 						</div>
@@ -430,32 +436,32 @@
 					</header>
 
 					<!-- JavaScript to control poster visibility -->
-				<script>
-					document.addEventListener('DOMContentLoaded', function () {
-						const video = document.getElementById('myVideo');
-						const container = video.parentElement; // .video-hosted-portrait
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							const video = document.getElementById('myVideo');
+							const container = video.parentElement; // .video-hosted-portrait
 
-						// Hide poster when video starts playing
-						video.addEventListener('play', function () {
-							container.classList.add('playing');
-						});
-
-						// Show poster again when video ends
-						video.addEventListener('ended', function () {
-							video.currentTime = 0; // Rewind to start (optional)
-							container.classList.remove('playing');
-						});
-
-						// Optional: If user pauses mid-video, keep video visible (don't show poster)
-						// Only show poster again if it actually ended
-						video.addEventListener('pause', function () {
-							if (!video.ended) {
-								// Still playing content visible if paused mid-video
+							// Hide poster when video starts playing
+							video.addEventListener('play', function () {
 								container.classList.add('playing');
-							}
+							});
+
+							// Show poster again when video ends
+							video.addEventListener('ended', function () {
+								video.currentTime = 0; // Rewind to start (optional)
+								container.classList.remove('playing');
+							});
+
+							// Optional: If user pauses mid-video, keep video visible (don't show poster)
+							// Only show poster again if it actually ended
+							video.addEventListener('pause', function () {
+								if (!video.ended) {
+									// Still playing content visible if paused mid-video
+									container.classList.add('playing');
+								}
+							});
 						});
-					});
-				</script>
+					</script>
 
 					<!-- Quick Start Section -->
 					<section class="quick-start-section">
@@ -464,7 +470,8 @@
 
 							<p>Dive into our secure, in-house digital currency and experience the future of
 								smart
-								spending. Get started with a wallet, a 2-in-1 solution to meet like-minded people and store your digital cash. Collect or earn — your journey starts here!</p>
+								spending. Get started with a wallet, a 2-in-1 solution to meet like-minded people and
+								store your digital cash. Collect or earn — your journey starts here!</p>
 						</header>
 
 						<div class="quick-start-items">
@@ -476,8 +483,8 @@
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Get your Wallet</h3>
 									<p class="align-center">By GFDevSoft · Gift · Chat · Swap</p>
-									<button class="round-button">
-										<a href="/pages/kinnected.html">Learn More</a>
+									<button class="round-button" onclick="location.href='/pages/kinnected.html'">
+										Learn More
 									</button>
 								</div>
 							</article>
@@ -489,8 +496,8 @@
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Bouncy Ball</h3>
 									<p class="align-center">Dynamic Token · Save · Grow · Digital Cash</p>
-									<button class="round-button">
-										<a href="/bouncyball.html#guide">Token Page</a>
+									<button class="round-button" onclick="location.href='/bouncyball.html#guide'">
+										Token Page
 									</button>
 								</div>
 							</article>
@@ -502,11 +509,12 @@
 								<div class="quick-start-content">
 									<h3 class="quick-start-title">Giddy Stablecoin</h3>
 									<p class="align-center">A Digital Dollar · Swap · Spend · Send</p>
-									<button class="round-button">
-										<a href="/onegiddy.html#giddy-guide">Explore GIDDY</a>
+									<button class="round-button" onclick="location.href='/onegiddy.html#giddy-guide'">
+										Explore GIDDY
 									</button>
 								</div>
 							</article>
+
 						</div>
 					</section>
 				</section>

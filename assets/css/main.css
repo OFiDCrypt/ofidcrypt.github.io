@@ -5614,18 +5614,35 @@ section.youtube-iframe {
 	text-align: center;
 }
 
-/* Mobile: up to 410px — stacked */
+/* Mobile: up to 410px — stacked, no gap */
 .button-container {
-    text-align: center;
     margin: 10px 0;
 }
 
-/* From 410px and up — side by side with gap */
+.button-container .button {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.button-container .button:last-child {
+    margin-bottom: 0;
+}
+
+/* From 410px and up — side by side, equal widths */
 @media (min-width: 410px) {
     .button-container {
         display: flex;
         justify-content: center;
         gap: 1rem;
+        width: 100%;
+    }
+
+    .button-container .button {
+        flex: 1;            /* equal widths */
+        margin-bottom: 0;
+        text-align: center; /* ensures text stays centered */
     }
 }
 
