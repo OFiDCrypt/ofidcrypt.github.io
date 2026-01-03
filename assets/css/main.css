@@ -5614,10 +5614,19 @@ section.youtube-iframe {
 	text-align: center;
 }
 
-/* Button container */
+/* Mobile: up to 410px — stacked */
 .button-container {
-	text-align: center;
-	margin: 10px 0;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* From 410px and up — side by side with gap */
+@media (min-width: 410px) {
+    .button-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
 }
 
 /* Mobile responsive design */
