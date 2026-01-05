@@ -389,7 +389,7 @@
 					</p>
 				</header>
 
-				<section class="quick-start-section">
+				<section id="giddys-nav" class="quick-start-section">
 					<div class="quick-start-items">
 						<article id="giddy-tales-nav" class="quick-start-item">
 							<span class="image left">
@@ -406,7 +406,7 @@
 
 						<article class="quick-start-item">
 							<span class="image left" id="expb-get">
-								<img src="/assets/images/giddys-shop-logo.png" alt="Giddy's Shop Logo">
+								<img src="/assets/images/giddyts-shop-products.png" alt="Giddy's Shop Logo">
 							</span>
 							<div class="quick-start-content">
 								<h3 class="quick-start-title">Giddy's Shop</h3>
@@ -422,101 +422,162 @@
 								<img src="/assets/images/ofid-crew-characters.png" alt="OFiD Crew Buster Character">
 							</span>
 							<div class="quick-start-content">
-								<h3 class="quick-start-title">Meet The Crew</h3>
-								<p class="align-center">Featured Characters</p>
+								<h3 class="quick-start-title">The Crew</h3>
+								<p class="align-center">Meet the Characters</p>
 							</div>
 							<button class="round-button" data-scroll="#meet-crew">
 								Profiles
 							</button>
 						</article>
+
+						<article class="quick-start-item">
+							<span class="image left" id="expb-get">
+								<img src="/assets/images/giddys-blinko-logo.PNG" alt="Giddy's Blinko Logo">
+							</span>
+							<div class="quick-start-content">
+								<h3 class="quick-start-title">Blinko</h3>
+								<p class="align-center">Giddy retro game</p>
+							</div>
+							<button class="round-button" onclick="window.location.href='../game/play.html#blinko-trailer'">
+								Play Now
+							</button>
+						</article>
 					</div>
 				</section>
 
-				<!-- TikTok Embed -  FEATURED-->
-				<div class="tiktok-videos-container">
-					<!-- Video 1 - TikTok Embed -->
-					<div class="tiktok-video-wrapper">
-						<header class="tiktok-header">
-							<h2>Intro: Magical Adventures</h2>
-						</header>
-						<div class="tiktok video main">
-							<blockquote class="tiktok-embed"
-								cite="https://www.tiktok.com/@giddys_ca/video/7550415000519691538"
-								data-video-id="7550415000519691538" style="max-width: 605px;min-width: 325px;">
-								<section> <a target="_blank" title="@giddys_ca"
-										href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a>
-									INTRODUCING:
-									Giddy Tales 🪄 Presented by @OFiDCrypt e𝕏P Web3™ &#38; Giddy’s of
-									Giddy’s
-									Universe—Series &#38; Shop 🛍️ Animated stories available across socials
-									and books
-									through online stores! <a title="giddys" target="_blank"
-										href="https://www.tiktok.com/tag/giddys?refer=embed">#Giddys</a> <a title="toys"
-										target="_blank" href="https://www.tiktok.com/tag/toys?refer=embed">#Toys</a> <a
-										title="books" target="_blank"
-										href="https://www.tiktok.com/tag/books?refer=embed">#Books</a> <a
-										title="stories" target="_blank"
-										href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a>
-									<a title="kids" target="_blank"
-										href="https://www.tiktok.com/tag/kids?refer=embed">#kids</a>
-									@lilionethcore
-									@Linda-Marie Emmerson @Crypto.com @Lillicity @HARRISON EUGENE <a target="_blank"
-										title="♬ Rockin - Chris Alan Lee"
-										href="https://www.tiktok.com/music/Rockin-6777263935914510337?refer=embed">♬
-										Rockin - Chris Alan Lee</a>
-								</section>
-							</blockquote>
-							<script async src="https://www.tiktok.com/embed.js"></script>
-							<script async src="https://www.tiktok.com/embed.js"></script>
+				<!-- Quick Start Section -->
+				<section class="quick-start-section">
+					<header id="intro-video">
+						<h2>Intro: King Laine & Big Bahbreh</h2>
+						<p>As our universe expands, we're bringing you more exciting adventures and stories! Meet our
+							antagonists King Laine and Big Bahbreh in this animated short!</p>
+						<!-- Video container with poster overlay -->
+						<div class="video-main video-hosted-portrait">
+							<video id="myVideo" controls playsinline preload="metadata">
+								<source src="../assets/videos/ofid-tales-king-laine-teaser.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+							<!-- Poster overlay (visible before play and after video ends) -->
+							<img class="video-poster-overlay" src="../assets/images/ofid-poster.PNG"
+								alt="OFiDCrypt Intro Video Poster">
+						</div>
+					</header>
+
+					<!-- JavaScript to control poster visibility -->
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							const video = document.getElementById('myVideo');
+							const container = video.parentElement; // .video-hosted-portrait
+
+							// Hide poster when video starts playing
+							video.addEventListener('play', function () {
+								container.classList.add('playing');
+							});
+
+							// Show poster again when video ends
+							video.addEventListener('ended', function () {
+								video.currentTime = 0; // Rewind to start (optional)
+								container.classList.remove('playing');
+							});
+
+							// Optional: If user pauses mid-video, keep video visible (don't show poster)
+							// Only show poster again if it actually ended
+							video.addEventListener('pause', function () {
+								if (!video.ended) {
+									// Still playing content visible if paused mid-video
+									container.classList.add('playing');
+								}
+							});
+						});
+					</script>
+
+					<!-- TikTok Embed -  FEATURED-->
+					<div class="tiktok-videos-container">
+						<!-- Video 1 - TikTok Embed -->
+						<div class="tiktok-video-wrapper">
+							<header class="tiktok-header">
+								<h2>Intro: Giddy's Universe</h2>
+							</header>
+							<div class="tiktok video main">
+								<blockquote class="tiktok-embed"
+									cite="https://www.tiktok.com/@giddys_ca/video/7550415000519691538"
+									data-video-id="7550415000519691538" style="max-width: 605px;min-width: 325px;">
+									<section> <a target="_blank" title="@giddys_ca"
+											href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a>
+										INTRODUCING:
+										Giddy Tales 🪄 Presented by @OFiDCrypt e𝕏P Web3™ &#38; Giddy’s of
+										Giddy’s
+										Universe—Series &#38; Shop 🛍️ Animated stories available across socials
+										and books
+										through online stores! <a title="giddys" target="_blank"
+											href="https://www.tiktok.com/tag/giddys?refer=embed">#Giddys</a> <a
+											title="toys" target="_blank"
+											href="https://www.tiktok.com/tag/toys?refer=embed">#Toys</a> <a
+											title="books" target="_blank"
+											href="https://www.tiktok.com/tag/books?refer=embed">#Books</a> <a
+											title="stories" target="_blank"
+											href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a>
+										<a title="kids" target="_blank"
+											href="https://www.tiktok.com/tag/kids?refer=embed">#kids</a>
+										@lilionethcore
+										@Linda-Marie Emmerson @Crypto.com @Lillicity @HARRISON EUGENE <a target="_blank"
+											title="♬ Rockin - Chris Alan Lee"
+											href="https://www.tiktok.com/music/Rockin-6777263935914510337?refer=embed">♬
+											Rockin - Chris Alan Lee</a>
+									</section>
+								</blockquote>
+								<script async src="https://www.tiktok.com/embed.js"></script>
+								<script async src="https://www.tiktok.com/embed.js"></script>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- TikTok Embed - EPISODES - BLOCK 2-->
-				<div class="tiktok-videos-container-pair" id="giddy-tales">
-					<!-- Third TikTok Embed -->
-					<div class="tiktok-video-wrapper" id="ep1">
-						<header class="tiktok-header">
-							<h2>Ep. 1: Grampa's Attic</h2>
-						</header>
-						<div class="tiktok video main">
-							<blockquote class="tiktok-embed"
-								cite="https://www.tiktok.com/@giddys_ca/video/7550422618852183314"
-								data-video-id="7550422618852183314" style="max-width: 605px;min-width: 325px;">
-								<section> <a target="_blank" title="@giddys_ca"
-										href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a>
-									Giddy Tales
-									S1 Ep.1 🪄 THE STORY BEGINS! “GiddyVerse Origins” is the first book in
-									the series!
-									Enjoy video shorts across socials as we turn the pages—Grampa has a
-									secret; and the
-									truth behind a Magical Bouncy Ball begins in “Grampa’s Attic!” Check out
-									Giddys.Shop
-									where stories and narratives can be bought to own! <a title="kids" target="_blank"
-										href="https://www.tiktok.com/tag/kids?refer=embed">#Kids</a> <a title="giddys"
-										target="_blank" href="https://www.tiktok.com/tag/giddys?refer=embed">#Giddys</a>
-									<a title="stories" target="_blank"
-										href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a>
-									<a title="adventure" target="_blank"
-										href="https://www.tiktok.com/tag/adventure?refer=embed">#Adventure</a>
-									<a title="books" target="_blank"
-										href="https://www.tiktok.com/tag/books?refer=embed">#Books</a>
-									@OFiDCrypt e𝕏P
-									Web3™ @lilionethcore @Linda-Marie Emmerson @Crypto.com @Lillicity
-									@HARRISON EUGENE
-									@DeFi Space @Crypto Mason @Grampa <a target="_blank"
-										title="♬ Magic Kingdom Melody - Ausku Studio"
-										href="https://www.tiktok.com/music/Magic-Kingdom-Melody-7356176880491612186?refer=embed">♬
-										Magic Kingdom Melody - Ausku Studio</a>
-								</section>
-							</blockquote>
-							<script async src="https://www.tiktok.com/embed.js"></script>
+					<!-- TikTok Embed - EPISODES - BLOCK 2-->
+					<div class="tiktok-videos-container-pair" id="giddy-tales">
+						<!-- Third TikTok Embed -->
+						<div class="tiktok-video-wrapper" id="ep1">
+							<header class="tiktok-header">
+								<h2>Ep. 1: Grampa's Attic</h2>
+							</header>
+							<div class="tiktok video main">
+								<blockquote class="tiktok-embed"
+									cite="https://www.tiktok.com/@giddys_ca/video/7550422618852183314"
+									data-video-id="7550422618852183314" style="max-width: 605px;min-width: 325px;">
+									<section> <a target="_blank" title="@giddys_ca"
+											href="https://www.tiktok.com/@giddys_ca?refer=embed">@giddys_ca</a>
+										Giddy Tales
+										S1 Ep.1 🪄 THE STORY BEGINS! “GiddyVerse Origins” is the first book in
+										the series!
+										Enjoy video shorts across socials as we turn the pages—Grampa has a
+										secret; and the
+										truth behind a Magical Bouncy Ball begins in “Grampa’s Attic!” Check out
+										Giddys.Shop
+										where stories and narratives can be bought to own! <a title="kids"
+											target="_blank" href="https://www.tiktok.com/tag/kids?refer=embed">#Kids</a>
+										<a title="giddys" target="_blank"
+											href="https://www.tiktok.com/tag/giddys?refer=embed">#Giddys</a>
+										<a title="stories" target="_blank"
+											href="https://www.tiktok.com/tag/stories?refer=embed">#Stories</a>
+										<a title="adventure" target="_blank"
+											href="https://www.tiktok.com/tag/adventure?refer=embed">#Adventure</a>
+										<a title="books" target="_blank"
+											href="https://www.tiktok.com/tag/books?refer=embed">#Books</a>
+										@OFiDCrypt e𝕏P
+										Web3™ @lilionethcore @Linda-Marie Emmerson @Crypto.com @Lillicity
+										@HARRISON EUGENE
+										@DeFi Space @Crypto Mason @Grampa <a target="_blank"
+											title="♬ Magic Kingdom Melody - Ausku Studio"
+											href="https://www.tiktok.com/music/Magic-Kingdom-Melody-7356176880491612186?refer=embed">♬
+											Magic Kingdom Melody - Ausku Studio</a>
+									</section>
+								</blockquote>
+								<script async src="https://www.tiktok.com/embed.js"></script>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<!-- TikTok Embed - EPISODES - BLOCK 1 -->
-				<!-- First TikTok Embed 
+					<!-- TikTok Embed - EPISODES - BLOCK 1 -->
+					<!-- First TikTok Embed 
 				<div class="tiktok-videos-container-pair" id="giddy-tales">
 
 					<div class="tiktok-video-wrapper" id="ep1">
@@ -565,7 +626,7 @@
 					</div>
 					-->
 
-				<!-- Second TikTok Embed 
+					<!-- Second TikTok Embed 
 					<div class="tiktok-video-wrapper" id="ep2">
 						<header class="tiktok-header">
 							<h2>Ep. 2: A Giddy Dream</h2>
@@ -616,7 +677,7 @@
 				</div>
 				-->
 
-				<!-- Quick Start Section 
+					<!-- Quick Start Section 
 				<section class="quick-start-section" id="meet-crew">
 					<header>
 						<h2>Meet the Crew!</h2>
@@ -651,320 +712,326 @@
 				</section>
 				-->
 
-				<!-- OFiD Crew Section -->
-				<section class="partner-section" id="meet-crew">
-					<header>
-						<h2>Characters</h2>
-					</header>
+					<!-- OFiD Crew Section -->
+					<section class="partner-section" id="meet-crew">
+						<header>
+							<h2>Characters</h2>
+						</header>
 
-					<!-- Horizontal Scroll Container -->
-					<div class="scroll-container">
+						<!-- Horizontal Scroll Container -->
+						<div class="scroll-container">
 
-						<!-- Box 1: Giddy -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<span class="image"><img src="assets/images/ofidtales-giddy.PNG"
-										alt="OFiD Crew Giddy Character"></span>
-								<h3>Giddy</h3>
-								<p>
-									Giddy is the fun-loving, happy-go-lucky member of the OFiD Crew,
-									bringing joy and
-									excitement wherever she goes.
-									Adorned in vibrant shades of purple, pink, and teal, Giddy is a burst of
-									color and
-									energy. She is never seen without
-									her beloved bouncy ball, which she carries with her on all her
-									adventures. Giddy's
-									infectious enthusiasm and playful
-									nature make her the life of the party, always finding a way to make
-									everyone smile.
-									Whether it's cracking jokes or
-									leading the crew in a spontaneous dance-off, Giddy, also known as "She
-									Giddy," knows
-									how to keep spirits high and
-									create unforgettable memories. Her positive outlook and carefree
-									attitude make her
-									an indispensable member of the OFiD Crew.
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+							<!-- Box 1: Giddy -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<span class="image"><img src="assets/images/ofidtales-giddy.PNG"
+											alt="OFiD Crew Giddy Character"></span>
+									<h3>Giddy</h3>
+									<p>
+										Giddy is the fun-loving, happy-go-lucky member of the OFiD Crew,
+										bringing joy and
+										excitement wherever she goes.
+										Adorned in vibrant shades of purple, pink, and teal, Giddy is a burst of
+										color and
+										energy. She is never seen without
+										her beloved bouncy ball, which she carries with her on all her
+										adventures. Giddy's
+										infectious enthusiasm and playful
+										nature make her the life of the party, always finding a way to make
+										everyone smile.
+										Whether it's cracking jokes or
+										leading the crew in a spontaneous dance-off, Giddy, also known as "She
+										Giddy," knows
+										how to keep spirits high and
+										create unforgettable memories. Her positive outlook and carefree
+										attitude make her
+										an indispensable member of the OFiD Crew.
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-						<!-- Box 2: Buster -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<span class="image"><img src="assets/images/ofidtales-buster.PNG"
-										alt="OFiD Crew Buster Character"></span>
-								<h3>Buster the Bouncer</h3>
-								<p>
-									Buster is the rugged bouncer of the OFiD Crew, known for his tough
-									exterior and
-									heart of gold. With striking teal and
-									purple colors, Buster stands out in any crowd. He dons a leather jacket
-									that adds to
-									his tough persona, but don't let
-									his appearance fool you—Buster, also known as "Buster Bounce," is
-									fiercely loyal and
-									protective of his friends.
-									As the unofficial guardian of the OFiD Crew on Telegram, Buster ensures
-									that
-									everyone stays safe while having a great time.
-									With his no-nonsense attitude and strong sense of duty, Buster is the
-									backbone of
-									the crew, always ready to step in and lend a hand.
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+							<!-- Box 2: Buster -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<span class="image"><img src="assets/images/ofidtales-buster.PNG"
+											alt="OFiD Crew Buster Character"></span>
+									<h3>Buster the Bouncer</h3>
+									<p>
+										Buster is the rugged bouncer of the OFiD Crew, known for his tough
+										exterior and
+										heart of gold. With striking teal and
+										purple colors, Buster stands out in any crowd. He dons a leather jacket
+										that adds to
+										his tough persona, but don't let
+										his appearance fool you—Buster, also known as "Buster Bounce," is
+										fiercely loyal and
+										protective of his friends.
+										As the unofficial guardian of the OFiD Crew on Telegram, Buster ensures
+										that
+										everyone stays safe while having a great time.
+										With his no-nonsense attitude and strong sense of duty, Buster is the
+										backbone of
+										the crew, always ready to step in and lend a hand.
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-						<!-- Box 3: Rex -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<span class="image"><img src="assets/images/ofidtales-rex.PNG"
-										alt="OFiD Crew Rex Character"></span>
-								<h3>Rex</h3>
-								<p>
-									Rex is the cute and shy member of the OFiD Crew, always wearing his
-									denim vest and
-									glasses. With this look and his short,
-									soft fur and striking red color, he is often seen as a stern and serious
-									figure!
-									Though introverted by nature, Rex is
-									incredibly smart and loves to give people the rundown of the latest tech
-									specs.
-									Speaking of which, Rex's specs, or glasses,
-									are a charming and essential part of his look, enhancing both his vision
-									and his
-									approachable demeanor.
-									Rex, also known as "He-Rex," struts about with growing confidence and
-									leadership. He
-									might be soft-spoken, but his actions
-									speak volumes, making him an invaluable member of the OFiD Crew.
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+							<!-- Box 3: Rex -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<span class="image"><img src="assets/images/ofidtales-rex.PNG"
+											alt="OFiD Crew Rex Character"></span>
+									<h3>Rex</h3>
+									<p>
+										Rex is the cute and shy member of the OFiD Crew, always wearing his
+										denim vest and
+										glasses. With this look and his short,
+										soft fur and striking red color, he is often seen as a stern and serious
+										figure!
+										Though introverted by nature, Rex is
+										incredibly smart and loves to give people the rundown of the latest tech
+										specs.
+										Speaking of which, Rex's specs, or glasses,
+										are a charming and essential part of his look, enhancing both his vision
+										and his
+										approachable demeanor.
+										Rex, also known as "He-Rex," struts about with growing confidence and
+										leadership. He
+										might be soft-spoken, but his actions
+										speak volumes, making him an invaluable member of the OFiD Crew.
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-						<!-- Box 4: Grampa -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<span class="image"><img src="assets/images/ofidtales-grampa.PNG"
-										alt="OFiD Crew Grampa Character"></span>
-								<h3>Grampa</h3>
-								<p>
+							<!-- Box 4: Grampa -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<span class="image"><img src="assets/images/ofidtales-grampa.PNG"
+											alt="OFiD Crew Grampa Character"></span>
+									<h3>Grampa</h3>
+									<p>
 
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-						<!-- Box 5: Baby Tokin -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<a href="/ofidkid.html">
-									<span class="image">
-										<img src="assets/images/ofidtales-baby-tokin.PNG"
-											alt="OFiD Crew Baby Tokin Character">
-									</span>
-								</a>
-								<h3>Baby Tokin</h3>
-								<p>Baby Tokin is the adventurous, joyous heart of the OFiD Crew, spreading happiness
-									with every laugh and milestone. A lover of bananas, peaches, and blueberries, his
-									favorite treats mirror his sweet nature. Tokin’s curiosity knows no bounds—mastering
-									crawling, standing, and even his first steps, he’s always on the move. His
-									infectious giggles, spirited "Mama!" calls, and love for exploring create countless
-									cherished moments. Whether it’s delighting in Buster's hat or scaling new heights,
-									Baby Tokin’s boundless energy and charm light up every room, making him the crew’s
-									cherished little explorer and genuine leader.
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+							<!-- Box 5: Baby Tokin -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<a href="/ofidkid.html">
+										<span class="image">
+											<img src="assets/images/ofidtales-baby-tokin.PNG"
+												alt="OFiD Crew Baby Tokin Character">
+										</span>
+									</a>
+									<h3>Baby Tokin</h3>
+									<p>Baby Tokin is the adventurous, joyous heart of the OFiD Crew, spreading happiness
+										with every laugh and milestone. A lover of bananas, peaches, and blueberries,
+										his
+										favorite treats mirror his sweet nature. Tokin’s curiosity knows no
+										bounds—mastering
+										crawling, standing, and even his first steps, he’s always on the move. His
+										infectious giggles, spirited "Mama!" calls, and love for exploring create
+										countless
+										cherished moments. Whether it’s delighting in Buster's hat or scaling new
+										heights,
+										Baby Tokin’s boundless energy and charm light up every room, making him the
+										crew’s
+										cherished little explorer and genuine leader.
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-						<!-- Box 6: King Laine -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<span class="image"><img src="assets/images/ofidtales-king-laine.PNG"
-										alt="OFiD Crew King Laine Character"></span>
-								<h3>King Laine</h3>
-								<p>
+							<!-- Box 6: King Laine -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<span class="image"><img src="assets/images/ofidtales-king-laine.PNG"
+											alt="OFiD Crew King Laine Character"></span>
+									<h3>King Laine</h3>
+									<p>
 
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-						<!-- Box 7: Big Bahbreh -->
-						<article class="scroll-box">
-							<button class="scroll-arrow left" aria-label="Scroll Left"><i
-									class="fas fa-arrow-left"></i></button>
-							<div class="box-content">
-								<span class="image"><img src="assets/images/ofidtales-big-bahbreh.jpg"
-										alt="OFiD Crew Bahbreh Character"></span>
-								<h3>Big Bahbreh</h3>
-								<p>
+							<!-- Box 7: Big Bahbreh -->
+							<article class="scroll-box">
+								<button class="scroll-arrow left" aria-label="Scroll Left"><i
+										class="fas fa-arrow-left"></i></button>
+								<div class="box-content">
+									<span class="image"><img src="assets/images/ofidtales-big-bahbreh.jpg"
+											alt="OFiD Crew Bahbreh Character"></span>
+									<h3>Big Bahbreh</h3>
+									<p>
 
-								</p>
-							</div>
-							<button class="scroll-arrow right" aria-label="Scroll Right"><i
-									class="fas fa-arrow-right"></i></button>
-						</article>
+									</p>
+								</div>
+								<button class="scroll-arrow right" aria-label="Scroll Right"><i
+										class="fas fa-arrow-right"></i></button>
+							</article>
 
-					</div>
-				</section>
+						</div>
+					</section>
 
-				<script>
-					document.addEventListener('DOMContentLoaded', () => {
-						const container = document.querySelector('.scroll-container');
-						const slides = document.querySelectorAll('.scroll-box');
-						const totalSlides = slides.length;
+					<script>
+						document.addEventListener('DOMContentLoaded', () => {
+							const container = document.querySelector('.scroll-container');
+							const slides = document.querySelectorAll('.scroll-box');
+							const totalSlides = slides.length;
 
-						// Exit if no slides
-						if (totalSlides === 0) {
-							console.warn('No slides found in .scroll-container');
-							return;
-						}
-
-						// Force start on Box 1
-						function setInitialPosition() {
-							container.scrollTo({ left: 0, behavior: 'instant' });
-							updateArrowStates();
-						}
-
-						// Scroll by one box width based on screen size
-						function getBoxWidth() {
-							if (window.innerWidth > 768) {
-								return slides[0].offsetWidth + 10; // Desktop: Box width + gap
-							} else if (window.innerWidth <= 480) {
-								return 260 + 20; // Mobile: Box width + gap
-							} else {
-								return slides[0].offsetWidth; // Mid-range: Stacked box width
+							// Exit if no slides
+							if (totalSlides === 0) {
+								console.warn('No slides found in .scroll-container');
+								return;
 							}
-						}
 
-						// Update arrow states based on current scroll position
-						function updateArrowStates() {
-							const scrollLeft = container.scrollLeft;
-							const maxScroll = container.scrollWidth - container.clientWidth;
-							const boxWidth = getBoxWidth();
-							const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+							// Force start on Box 1
+							function setInitialPosition() {
+								container.scrollTo({ left: 0, behavior: 'instant' });
+								updateArrowStates();
+							}
 
-							slides.forEach((slide) => {
+							// Scroll by one box width based on screen size
+							function getBoxWidth() {
+								if (window.innerWidth > 768) {
+									return slides[0].offsetWidth + 10; // Desktop: Box width + gap
+								} else if (window.innerWidth <= 480) {
+									return 260 + 20; // Mobile: Box width + gap
+								} else {
+									return slides[0].offsetWidth; // Mid-range: Stacked box width
+								}
+							}
+
+							// Update arrow states based on current scroll position
+							function updateArrowStates() {
+								const scrollLeft = container.scrollLeft;
+								const maxScroll = container.scrollWidth - container.clientWidth;
+								const boxWidth = getBoxWidth();
+								const currentSlideIndex = Math.round(scrollLeft / boxWidth);
+
+								slides.forEach((slide) => {
+									const leftArrow = slide.querySelector('.scroll-arrow.left');
+									const rightArrow = slide.querySelector('.scroll-arrow.right');
+									leftArrow.disabled = currentSlideIndex === 0;
+									rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+								});
+							}
+
+							// Arrow click handlers
+							slides.forEach(slide => {
 								const leftArrow = slide.querySelector('.scroll-arrow.left');
 								const rightArrow = slide.querySelector('.scroll-arrow.right');
-								leftArrow.disabled = currentSlideIndex === 0;
-								rightArrow.disabled = currentSlideIndex === totalSlides - 1;
-							});
-						}
 
-						// Arrow click handlers
-						slides.forEach(slide => {
-							const leftArrow = slide.querySelector('.scroll-arrow.left');
-							const rightArrow = slide.querySelector('.scroll-arrow.right');
+								leftArrow.addEventListener('click', () => {
+									container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+									setTimeout(updateArrowStates, 300); // Update arrows after scroll
+								});
 
-							leftArrow.addEventListener('click', () => {
-								container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
-								setTimeout(updateArrowStates, 300); // Update arrows after scroll
-							});
-
-							rightArrow.addEventListener('click', () => {
-								container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
-								setTimeout(updateArrowStates, 300); // Update arrows after scroll
-							});
-						});
-
-						// Update arrows on scroll
-						container.addEventListener('scroll', updateArrowStates);
-
-						// Update arrows after each click
-						slides.forEach(slide => {
-							slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
-								arrow.addEventListener('click', () => {
-									setTimeout(updateArrowStates, 300); // Match smooth scroll duration
+								rightArrow.addEventListener('click', () => {
+									container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+									setTimeout(updateArrowStates, 300); // Update arrows after scroll
 								});
 							});
-						});
 
-						// Set initial position after DOM is fully loaded
-						setInitialPosition();
+							// Update arrows on scroll
+							container.addEventListener('scroll', updateArrowStates);
 
-						// Ensure position after page fully renders
-						window.addEventListener('load', setInitialPosition);
+							// Update arrows after each click
+							slides.forEach(slide => {
+								slide.querySelectorAll('.scroll-arrow').forEach(arrow => {
+									arrow.addEventListener('click', () => {
+										setTimeout(updateArrowStates, 300); // Match smooth scroll duration
+									});
+								});
+							});
 
-						// Handle resize
-						window.addEventListener('resize', () => {
+							// Set initial position after DOM is fully loaded
 							setInitialPosition();
+
+							// Ensure position after page fully renders
+							window.addEventListener('load', setInitialPosition);
+
+							// Handle resize
+							window.addEventListener('resize', () => {
+								setInitialPosition();
+							});
 						});
-					});
-				</script>
+					</script>
 
-				<!-- Community Links Table -->
-				<section class="community-links">
-					<table>
-						<!-- Ad Banner -->
-						<section id="socials-banner" class="ad-banner">
-							<div style="text-align: center;">
-								<img src="/assets/images/banner-giddys-social.PNG" alt="Giddy's Social Banner"
-									style="max-width: 100%; height: auto;">
-							</div>
-						</section>
-						<tbody>
-							<tr>
-								<td style="text-align: center; vertical-align: middle;">
-									<a href="https://x.com/Giddys_CA">
-										<img src="/assets/images/social-logo/IMG_1844.png" alt="X Logo"
-											style="max-width: 35%; height: auto; display: block; margin: auto;">
-									</a>
-								</td>
-								<td style="text-align: center; vertical-align: middle;">
-									<a href="https://x.com/Giddys_CA">@Giddys_CA</a>
-								</td>
-							</tr>
-							<tr>
-								<td style="text-align: center; vertical-align: middle;">
-									<a href="https://www.tiktok.com/@Giddys_CA">
-										<img src="/assets/images/social-logo/tiktok-transparent.png" alt="TikTok Logo"
-											style="max-width: 35%; height: auto; display: block; margin: auto;">
-									</a>
-								</td>
-								<td style="text-align: center; vertical-align: middle;">
-									<a href="https://www.tiktok.com/@Giddys_CA">@Giddys_CA</a>
-								</td>
-							</tr>
-							<tr>
-								<td style="text-align: center; vertical-align: middle;">
-									<a href="https://youtube.com/@ofidcrypt">
-										<img src="/assets/images/social-logo/youtube-bw-tp.png" alt="YouTube Logo"
-											style="max-width: 35%; height: auto; display: block; margin: auto;">
-									</a>
-								</td>
-								<td style="text-align: center; vertical-align: middle;">
-									<a href="https://youtube.com/@ofidcrypt">@OFiDCrypt</a>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<!-- Community Links Table -->
+					<section class="community-links">
+						<table>
+							<!-- Ad Banner -->
+							<section id="socials-banner" class="ad-banner">
+								<div style="text-align: center;">
+									<img src="/assets/images/banner-giddys-social.PNG" alt="Giddy's Social Banner"
+										style="max-width: 100%; height: auto;">
+								</div>
+							</section>
+							<tbody>
+								<tr>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://x.com/Giddys_CA">
+											<img src="/assets/images/social-logo/IMG_1844.png" alt="X Logo"
+												style="max-width: 35%; height: auto; display: block; margin: auto;">
+										</a>
+									</td>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://x.com/Giddys_CA">@Giddys_CA</a>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://www.tiktok.com/@Giddys_CA">
+											<img src="/assets/images/social-logo/tiktok-transparent.png"
+												alt="TikTok Logo"
+												style="max-width: 35%; height: auto; display: block; margin: auto;">
+										</a>
+									</td>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://www.tiktok.com/@Giddys_CA">@Giddys_CA</a>
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://youtube.com/@ofidcrypt">
+											<img src="/assets/images/social-logo/youtube-bw-tp.png" alt="YouTube Logo"
+												style="max-width: 35%; height: auto; display: block; margin: auto;">
+										</a>
+									</td>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://youtube.com/@ofidcrypt">@OFiDCrypt</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</section>
+
 				</section>
-
-			</section>
 			</section>
 		</div>
 
