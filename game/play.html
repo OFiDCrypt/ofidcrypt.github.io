@@ -90,14 +90,25 @@
     <!-- Unity Template Styles (integrated to match your site) -->
     <link rel="stylesheet" href="TemplateData/style.css"> <!-- Ensure TemplateData/ is uploaded -->
 
-    <!-- Final Custom Styles - Perfect Mobile Centering -->
     <style>
+        /* ============================
+       BASE UNITY CONTAINER
+       ============================ */
         #unity-container {
             width: 100%;
             max-width: 960px;
             margin: 0 auto;
+            position: relative;
         }
 
+        #unity-canvas {
+            width: 100%;
+            height: auto;
+        }
+
+        /* ============================
+       FOOTER BAR
+       ============================ */
         #unity-footer {
             display: flex;
             justify-content: center;
@@ -106,7 +117,6 @@
             position: relative;
             background: rgba(0, 0, 0, 0.5);
             padding: 8px 10px;
-            /* Symmetric left/right padding */
             box-sizing: border-box;
         }
 
@@ -131,8 +141,43 @@
             cursor: pointer;
         }
 
-        /* Mobile: Full screen + symmetric margins */
+        /* ============================
+       ⭐ CENTER THE UNITY LOADING BAR ⭐
+       ============================ */
+        #unity-loading-bar {
+            position: absolute !important;
+            top: 58% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+
+            width: 60%;
+            height: auto;
+
+            display: flex;
+            /* <-- no !important */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            visibility: visible;
+            /* Unity will hide via display:none */
+            pointer-events: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #unity-logo,
+        #unity-progress-bar-empty,
+        #unity-progress-bar-full {
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* ============================
+       MOBILE FULLSCREEN MODE
+       ============================ */
         @media screen and (max-width: 768px) {
+
             #unity-container {
                 width: 100vw !important;
                 height: 100vh !important;
@@ -151,23 +196,25 @@
 
             #unity-loading-bar {
                 width: 70%;
+                top: 60% !important;
             }
 
             #unity-footer {
                 width: auto;
-
             }
 
             #unity-fullscreen-button {
                 right: 10px;
-                /* Matches left padding for symmetry */
                 width: 36px;
                 height: 36px;
             }
         }
 
-        /* Extra small phones (<420px) */
+        /* ============================
+       EXTRA SMALL PHONES
+       ============================ */
         @media screen and (max-width: 420px) {
+
             #unity-fullscreen-button {
                 right: 10px;
                 width: 32px;
@@ -411,19 +458,58 @@
                         wallet for digital gifts!</p>
                 </header>
 
-                <div class="unity-container unity-desktop">
-                    <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
-                    <div id="unity-loading-bar">
-                        <div id="unity-logo"></div>
-                        <div id="unity-progress-bar-empty">
-                            <div id="unity-progress-bar-full"></div>
-                        </div>
+                <!-- MOBILE-ONLY LAUNCHER -->
+                <div class="mobile-launcher" onclick="window.location.href='/game/app-play.html'" style="
+            display: none;
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto 20px auto;
+            aspect-ratio: 9 / 16;
+            background: #000 url('../assets/images/play-giddys-blinko.PNG') center/cover no-repeat;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+         ">
+                    <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #000;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        ">
+                        ▶
                     </div>
-                    <div id="unity-warning"></div>
-                    <div id="unity-footer">
-                        <div id="unity-webgl-logo"></div>
-                        <div id="unity-fullscreen-button"></div>
-                        <div id="unity-build-title">Giddy's Blinko</div>
+                </div>
+
+                <!-- DESKTOP-ONLY UNITY EMBED -->
+                <div class="desktop-only">
+                    <div class="unity-container unity-desktop">
+                        <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
+
+                        <div id="unity-loading-bar">
+                            <div id="unity-logo"></div>
+                            <div id="unity-progress-bar-empty">
+                                <div id="unity-progress-bar-full"></div>
+                            </div>
+                        </div>
+
+                        <div id="unity-warning"></div>
+
+                        <div id="unity-footer">
+                            <div id="unity-webgl-logo"></div>
+                            <div id="unity-fullscreen-button"></div>
+                            <div id="unity-build-title">Giddy's Blinko</div>
+                        </div>
                     </div>
                 </div>
 
@@ -434,6 +520,27 @@
                 </footer>
             </section>
         </div>
+
+        <!-- MOBILE/DESKTOP TOGGLE CSS -->
+        <style>
+            .mobile-launcher {
+                display: none;
+            }
+
+            .desktop-only {
+                display: block;
+            }
+
+            @media (max-width: 768px) {
+                .mobile-launcher {
+                    display: block !important;
+                }
+
+                .desktop-only {
+                    display: none !important;
+                }
+            }
+        </style>
 
         <!-- Footer -->
         <footer id="footer">
