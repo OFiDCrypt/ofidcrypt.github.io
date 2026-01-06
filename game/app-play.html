@@ -2,14 +2,101 @@
 <html lang="en-us">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Unity WebGL Player | giddy</title>
-  <link rel="shortcut icon" href="TemplateData/favicon.ico">
-  <link rel="stylesheet" href="TemplateData/style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3KX9VK5CCH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-3KX9VK5CCH');
+  </script>
+
+  <!-- JSON -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OFiDCrypt",
+      "url": "https://www.ofidcrypt.com",
+      "logo": [
+        "https://www.ofidcrypt.com/assets/images/ofid-logo-saturn01.png",
+        "https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp"
+      ],
+      "sameAs": [
+        "https://x.com/OFiDCrypt",
+        "https://x.com/Giddys_CA",
+        "https://youtube.com/@OFiDCrypt",
+        "https://www.tiktok.com/@Giddys_CA",
+        "https://www.facebook.com/OFiDCrypt",
+        "https://linkedin.com/company/OFiDCrypt",
+        "https://www.instagram.com/OFiDCrypt"
+      ]
+    }
+    </script>
+
+  <!-- Meta Description (for SEO) -->
+  <title>Giddy's Blinko | OFiDCrypt</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description"
+    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta name="keywords" content="cryptocurrency, kinnected wallet, vip, OFiDCrypt, crypto community">
+  <meta name="author" content="Tokin ⬢">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Giddy's Blinko | OFiDCrypt">
+  <meta property="og:description"
+    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta property="og:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp">
+  <meta property="og:url" content="https://www.ofidcrypt.com/game/app-play">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Giddy's Blinko | OFiDCrypt">
+  <meta name="twitter:description"
+    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta name="twitter:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp">
+  <meta name="twitter:url" content="https://www.ofidcrypt.com/game/app-play">
+
+  <!-- Default ICO file with multiple sizes -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+  <!-- Specific PNG sizes for modern browsers -->
+  <link rel="icon" type="image/png" sizes="1280x1280" href="../favicon.png">
+
+  <!-- Default Apple-Touch-Icon sizes -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+  <!-- Apple Compatibility -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Canonical Preferred URL -->
+  <link rel="canonical" href="https://www.ofidcrypt.com/game/app-play">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <noscript>
+    <link rel="stylesheet" href="../assets/css/noscript.css">
+  </noscript>
+
+  <!-- Unity Template Styles (integrated to match your site) -->
+  <link rel="stylesheet" href="TemplateData/style.css"> <!-- Ensure TemplateData/ is uploaded -->
+
+  <!-- JavaScript Libraries -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="../assets/js/jquery.min.js"></script>
+  <script src="../assets/js/browser.min.js"></script>
+
+  <!-- Meta Language -->
+  <meta http-equiv='content-language' content='en-gb'>
 </head>
 
 <body>
+
   <div id="unity-container" class="unity-desktop">
     <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
     <div id="unity-loading-bar">
@@ -22,9 +109,10 @@
     <div id="unity-footer">
       <div id="unity-webgl-logo"></div>
       <div id="unity-fullscreen-button"></div>
-      <div id="unity-build-title">giddy</div>
+      <div id="unity-build-title">Giddy's Blinko</div>
     </div>
   </div>
+
   <script>
 
     var container = document.querySelector("#unity-container");
@@ -129,6 +217,14 @@
     document.body.appendChild(script);
 
   </script>
+
+  <!-- Link to non-critical JavaScript files -->
+  <script src="../assets/js/browser.min.js"></script>
+  <script src="../assets/js/jquery.scrollex.min.js"></script>
+  <script src="../assets/js/jquery.scrolly.min.js"></script>
+  <script src="../assets/js/util.js"></script>
+  <script src="../assets/js/breakpoints.min.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
 
 </html>
