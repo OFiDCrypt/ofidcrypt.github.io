@@ -37,7 +37,7 @@
     </script>
 
     <!-- Meta Description (for SEO) -->
-    <title>Giddy's Blinko Game | OFiDCrypt</title>
+    <title>Play Giddy's Blinko | OFiDCrypt</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="description"
@@ -46,7 +46,7 @@
     <meta name="author" content="Tokin ⬢">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Giddy's Blinko Game | OFiDCrypt">
+    <meta property="og:title" content="Play Giddy's Blinko | OFiDCrypt">
     <meta property="og:description"
         content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
     <meta property="og:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp">
@@ -55,11 +55,13 @@
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Giddy's Blinko Game | OFiDCrypt">
+    <meta name="twitter:title" content="Play Giddy's Blinko | OFiDCrypt">
     <meta name="twitter:description"
         content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
     <meta name="twitter:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp">
     <meta name="twitter:url" content="https://www.ofidcrypt.com/game/play">
+
+
 
     <!-- Default ICO file with multiple sizes -->
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -69,6 +71,12 @@
 
     <!-- Default Apple-Touch-Icon sizes -->
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+    <!-- Apple Compatibility -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
 
     <!-- Canonical Preferred URL -->
     <link rel="canonical" href="https://www.ofidcrypt.com/game/play">
@@ -421,8 +429,7 @@
 
                 <footer>
                     <p class="align-center">Giddy's Blinko — Live Now! <br />
-                        <a
-                            href="blinko.html">More Information</a>
+                        <a href="blinko.html">More Information</a>
                     </p>
                 </footer>
             </section>
@@ -631,7 +638,6 @@
         </script>
 
         <script>
-
             var container = document.querySelector("#unity-container");
             var canvas = document.querySelector("#unity-canvas");
             var loadingBar = document.querySelector("#unity-loading-bar");
@@ -639,12 +645,6 @@
             var fullscreenButton = document.querySelector("#unity-fullscreen-button");
             var warningBanner = document.querySelector("#unity-warning");
 
-            // Shows a temporary message banner/ribbon for a few seconds, or
-            // a permanent error message on top of the canvas if type=='error'.
-            // If type=='warning', a yellow highlight color is used.
-            // Modify or remove this function to customize the visually presented
-            // way that non-critical warnings and error messages are presented to the
-            // user.
             function unityShowBanner(msg, type) {
                 function updateBannerVisibility() {
                     warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
@@ -676,24 +676,8 @@
                 showBanner: unityShowBanner,
             };
 
-            // By default, Unity keeps WebGL canvas render target size matched with
-            // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-            // Set this to false if you want to decouple this synchronization from
-            // happening inside the engine, and you would instead like to size up
-            // the canvas DOM size and WebGL render target sizes yourself.
-            // config.matchWebGLToCanvasSize = false;
-
-            // If you would like all file writes inside Unity Application.persistentDataPath
-            // directory to automatically persist so that the contents are remembered when
-            // the user revisits the site the next time, uncomment the following line:
-            // config.autoSyncPersistentDataPath = true;
-            // This autosyncing is currently not the default behavior to avoid regressing
-            // existing user projects that might rely on the earlier manual
-            // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
-            // expected to change.
-
             if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                // Mobile device style: fill the whole browser client area with the game canvas:
+                // Mobile device style: fill the whole browser client area with the game canvas
 
                 var meta = document.createElement('meta');
                 meta.name = 'viewport';
@@ -702,14 +686,52 @@
                 container.className = "unity-mobile";
                 canvas.className = "unity-mobile";
 
-                // To lower canvas resolution on mobile devices to gain some
-                // performance, uncomment the following line:
+                // === iOS PWA / Fullscreen Improvements ===
+                // Enable fullscreen when added to Home Screen
+                var appleCapable = document.createElement('meta');
+                appleCapable.name = 'apple-mobile-web-app-capable';
+                appleCapable.content = 'yes';
+                document.getElementsByTagName('head')[0].appendChild(appleCapable);
+
+                var appleStatusBar = document.createElement('meta');
+                appleStatusBar.name = 'apple-mobile-web-app-status-bar-style';
+                appleStatusBar.content = 'black-translucent';
+                document.getElementsByTagName('head')[0].appendChild(appleStatusBar);
+
+                // Optional: Gentle prompt for iOS users to add to Home Screen (only shows if not already installed)
+                if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
+                    var pwaPrompt = document.createElement('div');
+                    pwaPrompt.id = 'pwa-prompt';
+                    pwaPrompt.innerHTML = 'For the best experience (including fullscreen), tap Share → Add to Home Screen';
+                    pwaPrompt.style.cssText = `
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background: rgba(0,0,0,0.8);
+                color: white;
+                text-align: center;
+                padding: 12px;
+                font-size: 14px;
+                z-index: 1000;
+                box-sizing: border-box;
+            `;
+                    document.body.appendChild(pwaPrompt);
+
+                    // Auto-hide after 8 seconds
+                    setTimeout(() => {
+                        if (pwaPrompt && pwaPrompt.parentNode) {
+                            pwaPrompt.style.transition = 'opacity 0.5s';
+                            pwaPrompt.style.opacity = '0';
+                            setTimeout(() => pwaPrompt.remove(), 500);
+                        }
+                    }, 8000);
+                }
+                // === End iOS Improvements ===
+
+                // To lower canvas resolution on mobile devices to gain some performance, uncomment the following line:
                 // config.devicePixelRatio = 1;
-
-
             } else {
-                // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
                 canvas.style.width = "960px";
                 canvas.style.height = "600px";
             }
@@ -726,13 +748,16 @@
                     fullscreenButton.onclick = () => {
                         unityInstance.SetFullscreen(1);
                     };
+                    fullscreenButton.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        unityInstance.SetFullscreen(1);
+                    });
                 }).catch((message) => {
                     alert(message);
                 });
             };
 
             document.body.appendChild(script);
-
         </script>
 
         <!-- Link to non-critical JavaScript files -->
