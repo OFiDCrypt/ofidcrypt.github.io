@@ -191,20 +191,19 @@
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
+
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
 
-        // Show the banner on mobile
-        bottomBanner.style.display = 'block';
+        // ❌ REMOVE THIS — it forces banner on iPhone
+        // bottomBanner.style.display = 'block';
 
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
         // config.devicePixelRatio = 1;
 
-
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-
         canvas.style.width = "960px";
         canvas.style.height = "600px";
       }

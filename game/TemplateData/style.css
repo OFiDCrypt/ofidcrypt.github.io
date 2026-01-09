@@ -144,6 +144,11 @@ body {
 .is-android #unity-container.unity-mobile #unity-canvas {
   height: calc(100dvh - 110px);
   max-height: calc(100dvh - 110px);
+
+  /* Slight width boost to remove narrow look */
+  width: 102vw;
+  max-width: 102vw;
+  margin-left: -1vw; /* recenter after width boost */
 }
 
 /* ANDROID TALL-SCREEN OVERRIDES */
@@ -151,6 +156,11 @@ body {
   .is-android #unity-container.unity-mobile #unity-canvas {
     height: calc(100dvh - 130px);
     max-height: calc(100dvh - 130px);
+
+    /* keep width boost on tall screens too */
+    width: 102vw;
+    max-width: 102vw;
+    margin-left: -1vw;
   }
 
   .is-android #unity-container.unity-mobile #bottom-banner {
