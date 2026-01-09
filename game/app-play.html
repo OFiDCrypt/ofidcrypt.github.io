@@ -97,25 +97,33 @@
 
 <body>
 
-  <div id="unity-container" class="unity-desktop">
-    <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-    <div id="unity-loading-bar">
-      <div id="unity-logo"></div>
-      <div id="unity-progress-bar-empty">
-        <div id="unity-progress-bar-full"></div>
-      </div>
+ <div id="unity-container" class="unity-desktop">
+  <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+  <div id="unity-loading-bar">
+    <div id="unity-logo"></div>
+    <div id="unity-progress-bar-empty">
+      <div id="unity-progress-bar-full"></div>
     </div>
-    <div id="unity-warning"> </div>
-    <div id="unity-footer">
-      <div id="unity-webgl-logo"></div>
-      <div id="unity-fullscreen-button"></div>
-      <div id="unity-build-title">Giddy's Blinko</div>
-    </div>
-    <!-- Add banner HTML here (easier to manage than CSS ::after) -->
-    <div id="bottom-banner"
-      style="display: none; height: 90px; width: 100%; background: url('https://ofidcrypt.github.io/assets/images/banner-free-producer.PNG') center/contain no-repeat #111; border-top: 2px solid #333; cursor: pointer; z-index: 10;">
-    </div>
-    </div>
+  </div>
+  <div id="unity-warning"></div>
+  <div id="unity-footer">
+    <div id="unity-webgl-logo"></div>
+    <div id="unity-fullscreen-button"></div>
+    <div id="unity-build-title">Giddy's Blinko</div>
+  </div>
+  <!-- Bottom banner — shown on mobile/PWA -->
+  <div id="bottom-banner" style="
+    display: none;
+    height: 90px;
+    width: 100%;
+    background: url('https://ofidcrypt.github.io/assets/images/banner-free-producer.PNG') center/contain no-repeat;
+    background-color: #111;
+    border-top: 2px solid #333;
+    cursor: pointer;
+    z-index: 10;
+    flex-shrink: 0;  /* Ensures banner stays visible */
+  "></div>
+</div>
 
   <script>
 
@@ -226,15 +234,23 @@
 
   </script>
 
-  <script>
-  // Make bottom banner clickable
-  const container = document.querySelector('#unity-container');
-  if (container) {
-    container.addEventListener('click', function(e) {
-      // Only trigger if click is in the bottom banner area
-      if (e.clientY > window.innerHeight - 100) {  // Approx bottom 100px
-        window.open('https://freeproducer.ca/', '_blank');  // ← YOUR AFFILIATE LINK HERE
-      }
+<script>
+  const bottomBanner = document.getElementById('bottom-banner');
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+  if (bottomBanner && (isAndroid || isPWA)) {
+    bottomBanner.style.display = 'block';
+  }
+
+  // Make banner clickable (mouse + touch)
+  if (bottomBanner) {
+    const openLink = () => window.open('https://freeproducer.ca/', '_blank');
+
+    bottomBanner.addEventListener('click', openLink);
+    bottomBanner.addEventListener('touchend', (e) => {
+      e.preventDefault();  // Prevent ghost click
+      openLink();
     });
   }
 </script>

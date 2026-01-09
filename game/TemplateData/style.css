@@ -32,11 +32,36 @@ body { padding: 0; margin: 0 }
 
 .unity-mobile #unity-canvas {
   width: 100vw;                          /* Fill full width */
-  height: calc(100vw * (16 / 10));         /* Locked height for 10:16 portrait ratio */
+  height: calc(100vw * (16 / 10));         /* Locked height for 10:16 portrait ratio (standard mobile) */
   max-height: 100vh;                     /* Critical: Adds top/bottom black bars on tall screens */
-  aspect-ratio: 9 / 16;                  /* Exact portrait ratio */
+  aspect-ratio: 10 / 16;                  /* Exact portrait ratio (match the calc) */
   object-fit: contain;                   /* No stretch, no crop */
   background: #231F20;                   /* Your canvas background */
   display: block;
   margin: 0 auto;                        /* Extra safety for horizontal centering */
+}
+
+/* Bottom banner styling (for your HTML div) */
+.unity-mobile #bottom-banner {
+  flex-shrink: 0;
+  background-color: #111;
+}
+
+/* Make canvas stop before the banner area */
+.unity-mobile #unity-canvas {
+  width: 100vw;
+  height: calc(100vh - 90px);  /* Subtract banner height */
+  max-height: calc(100vh - 90px);
+  object-fit: contain;
+  background: #231F20;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Banner on top and clickable */
+.unity-mobile #bottom-banner {
+  position: relative;
+  z-index: 9999;                 /* Above canvas */
+  pointer-events: auto;          /* Receives clicks */
+  flex-shrink: 0;
 }
