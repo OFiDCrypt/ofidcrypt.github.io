@@ -4,5 +4,5 @@ Disallow: /pages/vipwithcode
 Disallow: /404
 Disallow: /promote
 Disallow: /promote/client-directory
-Disallow: /game/robots-index
+Disallow: /game/app-play-backup
 Sitemap: https://www.ofidcrypt.com/sitemap.xml
