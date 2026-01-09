@@ -172,3 +172,60 @@ body {
     margin-bottom: 20px;
   }
 }
+
+/* Carousel Wrapper */
+.ad-banner-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Horizontal scroll container */
+.ad-scroll-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 0 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Each slide */
+.ad-slide {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 300px;
+  scroll-snap-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Remove underline */
+  text-decoration: none;
+}
+
+/* Also remove underline from the <a> itself */
+.ad-slide:link,
+.ad-slide:visited,
+.ad-slide:hover,
+.ad-slide:active {
+  text-decoration: none;
+}
+
+/* Image styling */
+.ad-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+#bottom-banner .ad-slide {
+  display: block !important;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+#bottom-banner .ad-slide img {
+  display: block;
+}
