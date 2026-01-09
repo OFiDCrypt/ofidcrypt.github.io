@@ -32,7 +32,7 @@ body { padding: 0; margin: 0 }
 
 .unity-mobile #unity-canvas {
   width: 100vw;                          /* Fill full width */
-  height: calc(100vw * (16 / 9));         /* Locked height for 9:16 portrait ratio */
+  height: calc(100vw * (16 / 10));         /* Locked height for 10:16 portrait ratio */
   max-height: 100vh;                     /* Critical: Adds top/bottom black bars on tall screens */
   aspect-ratio: 9 / 16;                  /* Exact portrait ratio */
   object-fit: contain;                   /* No stretch, no crop */
