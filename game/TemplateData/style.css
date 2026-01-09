@@ -18,7 +18,7 @@ body {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100dvh; /* dynamic viewport height for Android */
+  height: 100dvh; /* dynamic viewport height for Android + iPhone */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -31,11 +31,13 @@ body {
   background: #231F20;
 }
 
-/* Base mobile canvas */
+/* -------------------------------------------------- */
+/* BASE MOBILE CANVAS — FULL HEIGHT (iPhone FIX HERE) */
+/* -------------------------------------------------- */
 .unity-mobile #unity-canvas {
   width: 100vw;
-  height: calc(100dvh - 90px);      /* leave room for banner */
-  max-height: calc(100dvh - 90px);
+  height: 100dvh;        /* iPhone gets full height again */
+  max-height: 100dvh;
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -140,9 +142,12 @@ body {
   border-radius: 10px;
 }
 
-/* ANDROID OVERRIDES */
+/* ----------------------------- */
+/* ANDROID OVERRIDES             */
+/* ----------------------------- */
+
 .is-android #unity-container.unity-mobile #unity-canvas {
-  height: calc(100dvh - 110px);
+  height: calc(100dvh - 110px); /* subtract banner */
   max-height: calc(100dvh - 110px);
 
   /* Slight width boost to remove narrow look */
@@ -151,7 +156,10 @@ body {
   margin-left: -1vw; /* recenter after width boost */
 }
 
+/* ----------------------------- */
 /* ANDROID TALL-SCREEN OVERRIDES */
+/* ----------------------------- */
+
 @media screen and (min-aspect-ratio: 10/19) {
   .is-android #unity-container.unity-mobile #unity-canvas {
     height: calc(100dvh - 130px);
