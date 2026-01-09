@@ -15,15 +15,18 @@ body { padding: 0; margin: 0 }
 #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
 #unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
 
-/* Improved fix: Preserve aspect ratio on mobile (fixes stretching in home screen/PWA while keeping browser view good) */
+/* Improved mobile fix: Proper centering + full-screen black bars, no "top half" issue */
 .unity-mobile #unity-container {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #000;  /* Black bars */
+  justify-content: center;   /* Horizontal center */
+  align-items: center;       /* Vertical center */
+  background: #000;          /* Full black background */
+  overflow: hidden;
 }
 
 .unity-mobile #unity-canvas {
@@ -31,12 +34,8 @@ body { padding: 0; margin: 0 }
   height: 100vmin;
   max-width: 100vw;
   max-height: 100vh;
-  aspect-ratio: 16 / 10;  /* Confirm: 960x600 = 16:10 — change to 16/9 if your game is designed for that */
-  object-fit: contain;     /* Prevents stretching + adds black bars */
-  background: #231F20;     /* Your original canvas color */
-}
-
-/* Optional: Hide Unity footer in mobile for cleaner app feel */
-.unity-mobile #unity-footer {
-  display: none !important;
+  aspect-ratio: 16 / 10;     /* Your exact ratio */
+  object-fit: contain;
+  background: #231F20;       /* Game canvas color */
+  display: block;
 }
