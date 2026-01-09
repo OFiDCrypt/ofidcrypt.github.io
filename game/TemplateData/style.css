@@ -15,38 +15,28 @@ body { padding: 0; margin: 0 }
 #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
 #unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
 
-/* === NEW FIX BELOW — ADD THIS AT THE END === */
-/* Fix for PWA / Home Screen mode (standalone) — preserves aspect ratio with black bars */
-@media all and (display-mode: standalone) {
-  body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: #000; /* Black bars background */
-  }
-  #unity-container.unity-mobile {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000;
-  }
-  .unity-mobile #unity-canvas {
-    width: 100vmin;
-    height: 100vmin;
-    max-width: 100vw;
-    max-height: 100vh;
-    aspect-ratio: 16 / 10; /* Your game's ratio: 960x600 = 16:10 */
-    object-fit: contain; /* Key: Adds black bars, prevents stretching */
-    background: #231F20; /* Keeps your original canvas background */
-  }
-  /* Optional: Cleaner app-like look in standalone mode */
-  #unity-footer {
-    display: none !important;
-  }
-  #unity-loading-bar {
-    z-index: 9999; /* Ensures loading bar stays visible if needed */
-  }
+/* Improved fix: Preserve aspect ratio on mobile (fixes stretching in home screen/PWA while keeping browser view good) */
+.unity-mobile #unity-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;  /* Black bars */
+}
+
+.unity-mobile #unity-canvas {
+  width: 100vmin;
+  height: 100vmin;
+  max-width: 100vw;
+  max-height: 100vh;
+  aspect-ratio: 16 / 10;  /* Confirm: 960x600 = 16:10 — change to 16/9 if your game is designed for that */
+  object-fit: contain;     /* Prevents stretching + adds black bars */
+  background: #231F20;     /* Your original canvas color */
+}
+
+/* Optional: Hide Unity footer in mobile for cleaner app feel */
+.unity-mobile #unity-footer {
+  display: none !important;
 }
