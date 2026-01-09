@@ -126,7 +126,7 @@ body {
 .unity-mobile #bottom-banner {
   display: block;
   height: 90px;
-  width: calc(100% - 5px);
+  width: calc(100% - 20px);
   margin: 10px auto 20px auto;
   box-sizing: border-box;
 
