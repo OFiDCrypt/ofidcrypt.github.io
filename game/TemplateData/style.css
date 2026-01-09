@@ -18,7 +18,7 @@ body {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100dvh; /* dynamic viewport height for Android + iPhone */
+  height: 100dvh; /* Android uses this, iPhone will override via canvas rule */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -32,17 +32,18 @@ body {
 }
 
 /* -------------------------------------------------- */
-/* BASE MOBILE CANVAS — FULL HEIGHT (iPhone FIX HERE) */
+/* BASE MOBILE CANVAS — iPHONE FULLSCREEN FIX         */
 /* -------------------------------------------------- */
+/* iPhone gets height: 100% (Safari-safe fullscreen) */
 .unity-mobile #unity-canvas {
-  width: 100vw;
-  height: 100dvh;        /* iPhone gets full height again */
-  max-height: 100dvh;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   object-fit: contain;
   display: block;
   margin: 0 auto;
   position: relative;
-  z-index: 1; /* canvas stays behind loading bar + banner */
+  z-index: 1;
 }
 
 /* Loading bar MUST be above everything */
@@ -52,7 +53,7 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   display: none;
-  z-index: 99999; /* highest priority */
+  z-index: 99999;
 }
 
 #unity-logo {
@@ -126,18 +127,15 @@ body {
   display: block;
   height: 90px;
 
-  /* spacing */
   width: calc(100% - 40px);
   margin: 10px auto;
   box-sizing: border-box;
 
-  /* clean card look */
   background: none;
   border: none;
 
-  /* layout */
   position: relative;
-  z-index: 9999; /* below loading bar, above canvas */
+  z-index: 9999;
   pointer-events: auto;
   border-radius: 10px;
 }
@@ -150,10 +148,9 @@ body {
   height: calc(100dvh - 110px); /* subtract banner */
   max-height: calc(100dvh - 110px);
 
-  /* Slight width boost to remove narrow look */
-  width: 102vw;
+  width: 102vw;       /* slight width boost */
   max-width: 102vw;
-  margin-left: -1vw; /* recenter after width boost */
+  margin-left: -1vw;  /* recenter */
 }
 
 /* ----------------------------- */
@@ -165,7 +162,6 @@ body {
     height: calc(100dvh - 130px);
     max-height: calc(100dvh - 130px);
 
-    /* keep width boost on tall screens too */
     width: 102vw;
     max-width: 102vw;
     margin-left: -1vw;
