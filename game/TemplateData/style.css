@@ -15,53 +15,28 @@ body { padding: 0; margin: 0 }
 #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
 #unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
 
-/* Full-screen fill on mobile/PWA — no black bars, game fills entire screen */
+/* Portrait letterboxing — black bars top/bottom on tall screens, perfectly centered, no dead space below */
 .unity-mobile #unity-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #231F20;  /* Matches your canvas background — no visible "bars" */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* Vertical centering of canvas */
+  align-items: center;       /* Horizontal centering */
+  background: #000;          /* Black bars top and bottom */
   overflow: hidden;
 }
 
 .unity-mobile #unity-canvas {
-  width: 100vw !important;
-  height: 100vh !important;
-  object-fit: cover;     /* Fills screen completely — crops edges if needed */
-  /* Alternative: use 'fill' for stretch (slight distortion on very tall phones) */
-  /* object-fit: fill; */
-  background: #231F20;
+  width: 100vw;                          /* Fill full width */
+  height: calc(100vw * (16 / 9));         /* Locked height for 9:16 portrait ratio */
+  max-height: 100vh;                     /* Critical: Adds top/bottom black bars on tall screens */
+  aspect-ratio: 9 / 16;                  /* Exact portrait ratio */
+  object-fit: contain;                   /* No stretch, no crop */
+  background: #231F20;                   /* Your canvas background */
   display: block;
-}
-
-/* Keep loading splash/logo/progress perfectly centered */
-.unity-mobile #unity-loading-bar {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-/* Slightly larger splash elements for mobile */
-.unity-mobile #unity-logo {
-  width: 220px;
-  height: 187px;
-}
-
-.unity-mobile #unity-progress-bar-empty {
-  width: 220px;
-  height: 28px;
-  background-size: contain;
-}
-
-.unity-mobile #unity-progress-bar-full {
-  height: 28px;
+  margin: 0 auto;                        /* Extra safety for horizontal centering */
 }
