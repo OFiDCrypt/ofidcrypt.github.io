@@ -15,7 +15,7 @@ body { padding: 0; margin: 0 }
 #unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
 #unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
 
-/* Improved mobile fix: Proper centering + full-screen black bars, no "top half" issue */
+/* Portrait letterboxing — black bars top/bottom on tall screens, perfectly centered, no dead space below */
 .unity-mobile #unity-container {
   position: fixed;
   top: 0;
@@ -23,19 +23,20 @@ body { padding: 0; margin: 0 }
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;   /* Horizontal center */
-  align-items: center;       /* Vertical center */
-  background: #000;          /* Full black background */
+  flex-direction: column;
+  justify-content: center;   /* Vertical centering of canvas */
+  align-items: center;       /* Horizontal centering */
+  background: #000;          /* Black bars top and bottom */
   overflow: hidden;
 }
 
 .unity-mobile #unity-canvas {
-  width: 100vmin;
-  height: 100vmin;
-  max-width: 100vw;
-  max-height: 100vh;
-  aspect-ratio: 16 / 10;     /* Your exact ratio */
-  object-fit: contain;
-  background: #231F20;       /* Game canvas color */
+  width: 100vw;                          /* Fill full width */
+  height: calc(100vw * (16 / 9));         /* Locked height for 9:16 portrait ratio */
+  max-height: 100vh;                     /* Critical: Adds top/bottom black bars on tall screens */
+  aspect-ratio: 9 / 16;                  /* Exact portrait ratio */
+  object-fit: contain;                   /* No stretch, no crop */
+  background: #231F20;                   /* Your canvas background */
   display: block;
+  margin: 0 auto;                        /* Extra safety for horizontal centering */
 }
