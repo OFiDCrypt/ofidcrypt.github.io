@@ -96,7 +96,6 @@
 </head>
 
 <body>
-
   <div id="unity-container" class="unity-desktop">
     <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
     <div id="unity-loading-bar">
@@ -111,8 +110,6 @@
       <div id="unity-fullscreen-button"></div>
       <div id="unity-build-title">Giddy's Blinko</div>
     </div>
-
-    <!-- Bottom banner — shown on mobile/PWA -->
     <!-- Bottom Banner Carousel -->
     <div id="bottom-banner" class="ad-banner-wrapper" style="
   display: none;
@@ -125,101 +122,80 @@
           class="ad-slide">
           <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
         </a>
-
         <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
           <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
         </a>
-
         <a href="https://freeproducer.ca/" class="ad-slide">
           <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
         </a>
-
         <a href="/bouncyball.html#buy-expb" class="ad-slide">
           <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
         </a>
-
         <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
           <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
         </a>
       </div>
     </div>
-
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-
         // Only run carousel if banner is visible (Android or PWA)
         const isAndroid = /Android/i.test(navigator.userAgent);
         const isPWA =
-          (window.matchMedia('(display-mode: standalone)').matches ||
-            window.navigator.standalone === true) &&
-          !/iPhone|iPad|iPod/.test(navigator.userAgent);
-
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true;
         if (!isAndroid && !isPWA) {
-          return;
+          return; // iPhone or desktop → no carousel JS needed
         }
-
         const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
         const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
         const totalSlides = slides.length;
-
         if (!container || totalSlides === 0) {
           console.warn('Carousel: No slides found.');
           return;
         }
-
         let autoScrollInterval;
         let currentIndex = 0;
-
         // Clone first slide for looping
         const firstClone = slides[0].cloneNode(true);
         container.appendChild(firstClone);
-
         // Force start at first slide
         function setInitialPosition() {
           container.scrollTo({ left: 0, behavior: 'instant' });
           currentIndex = 0;
         }
-
         // Calculate slide width
         function getBoxWidth() {
           const slideWidth = slides[0].offsetWidth;
           const slideMargin = window.innerWidth <= 480 ? 10 : 40;
           return slideWidth + slideMargin;
         }
-
         // Auto-scroll loop
         function startAutoScroll() {
           clearInterval(autoScrollInterval);
           autoScrollInterval = setInterval(() => {
             currentIndex++;
-
             if (currentIndex >= totalSlides + 1) {
               container.scrollTo({ left: 0, behavior: 'instant' });
               currentIndex = 1;
             }
-
             container.scrollTo({
               left: currentIndex * getBoxWidth(),
               behavior: 'smooth'
             });
           }, 8000);
         }
-
         // Touch handling (tap vs swipe)
         let touchStartX = 0;
         let touchStartY = 0;
         let touchMoved = false;
-
         container.addEventListener('touchstart', (e) => {
           touchStartX = e.touches[0].clientX;
           touchStartY = e.touches[0].clientY;
           touchMoved = false;
         }, { passive: true });
-
         container.addEventListener('touchmove', (e) => {
           const dx = Math.abs(e.touches[0].clientX - touchStartX);
           const dy = Math.abs(e.touches[0].clientY - touchStartY);
-
           if (dx > 10 && dy < 50) {
             e.preventDefault();
             touchMoved = true;
@@ -228,7 +204,6 @@
             touchMoved = true;
           }
         }, { passive: false });
-
         container.addEventListener('touchend', (e) => {
           if (!touchMoved) {
             const target = e.target.closest('a');
@@ -237,10 +212,8 @@
             }
           }
         }, { passive: true });
-
         // Prevent wheel scroll inside banner
         container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
-
         // Resize handling
         let resizeTimeout;
         window.addEventListener('resize', () => {
@@ -253,15 +226,12 @@
             startAutoScroll();
           }, 100);
         });
-
         // Init
         setInitialPosition();
         startAutoScroll();
       });
     </script>
-
     <script>
-
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
       var loadingBar = document.querySelector("#unity-loading-bar");
@@ -269,7 +239,6 @@
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
       var warningBanner = document.querySelector("#unity-warning");
       var bottomBanner = document.querySelector("#bottom-banner");
-
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
       // If type=='warning', a yellow highlight color is used.
@@ -293,7 +262,6 @@
         }
         updateBannerVisibility();
       }
-
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/GiddGameWeb.loader.js";
       var config = {
@@ -306,14 +274,12 @@
         productVersion: "1.0",
         showBanner: unityShowBanner,
       };
-
       // By default, Unity keeps WebGL canvas render target size matched with
       // the DOM size of the canvas element (scaled by window.devicePixelRatio)
       // Set this to false if you want to decouple this synchronization from
       // happening inside the engine, and you would instead like to size up
       // the canvas DOM size and WebGL render target sizes yourself.
       // config.matchWebGLToCanvasSize = false;
-
       // If you would like all file writes inside Unity Application.persistentDataPath
       // directory to automatically persist so that the contents are remembered when
       // the user revisits the site the next time, uncomment the following line:
@@ -322,33 +288,23 @@
       // existing user projects that might rely on the earlier manual
       // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
       // expected to change.
-
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
-
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
-
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
-
-        // ❌ REMOVE THIS — it forces banner on iPhone
-        //bottomBanner.style.display = 'block';
-
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
         // config.devicePixelRatio = 1;
-
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
         canvas.style.width = "960px";
         canvas.style.height = "600px";
       }
-
       loadingBar.style.display = "block";
-
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
@@ -363,36 +319,36 @@
           alert(message);
         });
       };
-
       document.body.appendChild(script);
-
     </script>
-
     <script>
       // Detect platform
       const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
       const isPWA =
-        (window.matchMedia('(display-mode: standalone)').matches ||
-          window.navigator.standalone === true) &&
-        !/iPhone|iPad|iPod/.test(navigator.userAgent);
-
-      // Show banner only on Android or PWA (your original logic)
-      if (bottomBanner && (isAndroid || isPWA)) {
-        bottomBanner.style.display = 'block';
-      }
-
-      // Add Android-only class for CSS targeting
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+      // Add classes for CSS targeting
       if (isAndroid) {
         document.body.classList.add('is-android');
       }
+      if (isIOS) {
+        document.body.classList.add('is-ios');
+      }
+      if (isPWA) {
+        document.body.classList.add('is-pwa');
+      }
+      // Show banner only on Android or PWA + add class for height adjustments
+      if (bottomBanner && (isAndroid || isPWA)) {
+        bottomBanner.style.display = 'block';
+        document.body.classList.add('banner-visible');  // ← new: for canvas height subtraction
+      }
     </script>
-
     <!-- Link to non-critical JavaScript files -->
     <script src="../assets/js/jquery.scrollex.min.js"></script>
     <script src="../assets/js/jquery.scrolly.min.js"></script>
     <script src="../assets/js/util.js"></script>
     <script src="../assets/js/breakpoints.min.js"></script>
     <script src="../assets/js/main.js"></script>
+  </div>
 </body>
-
-</html>

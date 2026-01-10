@@ -3,7 +3,6 @@ body {
   padding: 0;
   margin: 0;
 }
-
 /* UNITY CONTAINER BASE */
 #unity-container {
   position: absolute;
@@ -15,7 +14,6 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-
 /* MOBILE FULLSCREEN CONTAINER */
 #unity-container.unity-mobile {
   position: fixed;
@@ -30,13 +28,11 @@ body {
   background: #000;
   overflow: hidden;
 }
-
 /* CANVAS BASE */
 #unity-canvas {
   background: #231F20;
 }
-
-/* iPHONE FULLSCREEN FIX */
+/* iPHONE/iOS FULLSCREEN FIX */
 .unity-mobile #unity-canvas {
   width: 100%;
   height: 100%;
@@ -47,7 +43,6 @@ body {
   position: relative;
   z-index: 1;
 }
-
 /* LOADING BAR */
 #unity-loading-bar {
   position: absolute;
@@ -57,13 +52,11 @@ body {
   display: none;
   z-index: 99999;
 }
-
 #unity-logo {
   width: 154px;
   height: 130px;
   background: url('unity-logo-dark.png') no-repeat center;
 }
-
 /* PROGRESS BAR */
 #unity-progress-bar-empty {
   width: 141px;
@@ -75,7 +68,6 @@ body {
   overflow: hidden;
   box-sizing: content-box;
 }
-
 #unity-progress-bar-full {
   width: 0%;
   height: 18px;
@@ -85,23 +77,19 @@ body {
   left: 0;
   box-sizing: content-box;
 }
-
 /* FOOTER */
 #unity-footer {
   position: relative;
 }
-
 .unity-mobile #unity-footer {
   display: none;
 }
-
 #unity-webgl-logo {
   float: left;
   width: 204px;
   height: 38px;
   background: url('webgl-logo.png') no-repeat center;
 }
-
 #unity-build-title {
   float: right;
   margin-right: 10px;
@@ -110,7 +98,6 @@ body {
   color: white;
   font-size: 18px;
 }
-
 #unity-fullscreen-button {
   cursor: pointer;
   float: right;
@@ -118,7 +105,6 @@ body {
   height: 38px;
   background: url('fullscreen-button.png') no-repeat center;
 }
-
 #unity-warning {
   position: absolute;
   left: 50%;
@@ -128,11 +114,9 @@ body {
   padding: 10px;
   display: none;
 }
-
 /* ----------------------------- */
-/* CLICKABLE BOTTOM BANNER       */
+/* CLICKABLE BOTTOM BANNER */
 /* ----------------------------- */
-
 .unity-mobile #bottom-banner {
   height: 90px;
   width: calc(100% - 20px);
@@ -144,45 +128,39 @@ body {
   z-index: 9999;
   pointer-events: auto;
   border-radius: 10px;
-
   /* override inline display:block */
   display: flex !important;
-  align-items: center;      /* vertical centering */
-  justify-content: center;  /* horizontal centering */
+  align-items: center; /* vertical centering */
+  justify-content: center; /* horizontal centering */
 }
-
-/* ANDROID OVERRIDES */
-.is-android #unity-container.unity-mobile #unity-canvas {
+/* BANNER-VISIBLE OVERRIDES (Android or PWA) */
+.banner-visible #unity-container.unity-mobile #unity-canvas {
   height: calc(100dvh - 90px);
   max-height: calc(100dvh - 90px);
   width: 102vw;
   max-width: 102vw;
   margin-left: -1vw;
 }
-
-/* ANDROID TALL-SCREEN OVERRIDES */
+/* TALL-SCREEN OVERRIDES (for very tall devices) */
 @media screen and (min-aspect-ratio: 10/19) {
-  .is-android #unity-container.unity-mobile #unity-canvas {
+  .banner-visible #unity-container.unity-mobile #unity-canvas {
     height: calc(100dvh - 100px);
     max-height: calc(100dvh - 100px);
     width: 102vw;
     max-width: 102vw;
     margin-left: -1vw;
   }
-
-  .is-android #unity-container.unity-mobile #bottom-banner {
+  .banner-visible #unity-container.unity-mobile #bottom-banner {
     margin-top: 20px;
     margin-bottom: 20px;
   }
 }
-
 /* CAROUSEL WRAPPER */
 .ad-banner-wrapper {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
-
 /* MOBILE SCROLL CONTAINER */
 .ad-scroll-container-mobile {
   display: flex;
@@ -195,11 +173,9 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
 .ad-scroll-container-mobile::-webkit-scrollbar {
   display: none;
 }
-
 /* SLIDES */
 .ad-scroll-container-mobile .ad-slide {
   flex: 0 0 auto;
@@ -210,7 +186,6 @@ body {
   text-decoration: none !important;
   border: none !important;
 }
-
 /* LINK STATES */
 .ad-scroll-container-mobile .ad-slide:link,
 .ad-scroll-container-mobile .ad-slide:visited,
@@ -222,7 +197,6 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
-
 /* IMAGES */
 .ad-scroll-container-mobile .ad-slide img {
   width: 100%;
@@ -230,16 +204,16 @@ body {
   border-radius: 10px;
   display: block;
 }
-
 /* ENSURE INNER CONTAINER DOESN’T FIGHT CENTERING */
 .unity-mobile #bottom-banner .ad-scroll-container-mobile {
   height: auto;
   margin: 0;
   padding: 0 10px;
 }
-
+/* iPhone browser only (not PWA) — extra fullscreen nudge */
 @supports (-webkit-touch-callout: none) {
-  #bottom-banner {
-    display: none !important;
+  body:not(.is-pwa) #unity-canvas {
+    height: 100% !important;
+    max-height: 100% !important;
   }
 }
