@@ -496,16 +496,16 @@
                     <div class="unity-scale-wrapper">
                         <div class="unity-container unity-desktop">
                             <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
-                
+
                             <div id="unity-loading-bar">
                                 <div id="unity-logo"></div>
                                 <div id="unity-progress-bar-empty">
                                     <div id="unity-progress-bar-full"></div>
                                 </div>
                             </div>
-                
+
                             <div id="unity-warning"></div>
-                
+
                             <div id="unity-footer">
                                 <div id="unity-webgl-logo"></div>
                                 <div id="unity-fullscreen-button"></div>
@@ -514,61 +514,61 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <footer>
                     <p class="align-center">Giddy's Blinko — Live Now! <br />
                         <a href="blinko.html">More Information</a>
                     </p>
                 </footer>
-                </section>
-                </div>
-                
-                <!-- MOBILE/DESKTOP TOGGLE CSS -->
-                <style>
-                    .mobile-launcher {
-                        display: none;
-                    }
-                
-                    .desktop-only {
-                        display: flex;
-                        justify-content: center;
-                        width: 100%;
-                        overflow: hidden;
-                    }
-                
-                    @media (max-width: 768px) {
-                        .mobile-launcher {
-                            display: block !important;
-                        }
-                
-                        .desktop-only {
-                            display: none !important;
-                        }
-                    }
-                
-                    /* Wrapper reserved for any future transform-based tricks */
-                    .unity-scale-wrapper {
-                        transform-origin: top center;
-                    }
-                
-                    /* Let the Unity container shrink but not exceed its designed width */
-                    .unity-container {
-                        max-width: 960px;
-                        width: 100%;
-                    }
-                
-                    /* Make the main screen scale with the container */
-                    #unity-canvas {
-                        width: 100% !important;
-                        height: auto !important;
-                        display: block;
-                    }
-                
-                    /* Make the footer span the same width as the canvas */
-                    #unity-footer {
-                        width: 100%;
-                    }
-                </style>
+            </section>
+        </div>
+
+        <!-- MOBILE/DESKTOP TOGGLE CSS -->
+        <style>
+            .mobile-launcher {
+                display: none;
+            }
+
+            .desktop-only {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                overflow: hidden;
+            }
+
+            @media (max-width: 768px) {
+                .mobile-launcher {
+                    display: block !important;
+                }
+
+                .desktop-only {
+                    display: none !important;
+                }
+            }
+
+            /* Wrapper reserved for any future transform-based tricks */
+            .unity-scale-wrapper {
+                transform-origin: top center;
+            }
+
+            /* Let the Unity container shrink but not exceed its designed width */
+            .unity-container {
+                max-width: 960px;
+                width: 100%;
+            }
+
+            /* Make the main screen scale with the container */
+            #unity-canvas {
+                width: 100% !important;
+                height: auto !important;
+                display: block;
+            }
+
+            /* Make the footer span the same width as the canvas */
+            #unity-footer {
+                width: 100%;
+            }
+        </style>
 
         <!-- Footer -->
         <footer id="footer">
@@ -822,6 +822,7 @@
                 canvas.className = "unity-mobile";
 
                 // === iOS PWA / Fullscreen Improvements ===
+
                 // Enable fullscreen when added to Home Screen
                 var appleCapable = document.createElement('meta');
                 appleCapable.name = 'apple-mobile-web-app-capable';
@@ -835,33 +836,55 @@
 
                 // Optional: Gentle prompt for iOS users to add to Home Screen (only shows if not already installed)
                 if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
+
                     var pwaPrompt = document.createElement('div');
                     pwaPrompt.id = 'pwa-prompt';
-                    pwaPrompt.innerHTML = 'For the best experience (including fullscreen), tap Share → Add to Home Screen';
                     pwaPrompt.style.cssText = `
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                background: rgba(0,0,0,0.8);
-                color: white;
-                text-align: center;
-                padding: 12px;
-                font-size: 14px;
-                z-index: 1000;
-                box-sizing: border-box;
-            `;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        text-align: center;
+        padding: 12px 40px 12px 12px;
+        font-size: 14px;
+        z-index: 1000;
+        box-sizing: border-box;
+        transition: opacity 0.4s ease;
+    `;
+
+                    // Add message + dismiss button
+                    pwaPrompt.innerHTML = `
+        For the best experience (including fullscreen), tap Play → Share → More → Add to Home Screen
+        <span id="pwa-dismiss" style="
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.8;
+        ">✕</span>
+    `;
+
                     document.body.appendChild(pwaPrompt);
+
+                    // Dismiss button logic
+                    document.getElementById('pwa-dismiss').addEventListener('click', () => {
+                        pwaPrompt.style.opacity = '0';
+                        setTimeout(() => pwaPrompt.remove(), 400);
+                    });
 
                     // Auto-hide after 8 seconds
                     setTimeout(() => {
                         if (pwaPrompt && pwaPrompt.parentNode) {
-                            pwaPrompt.style.transition = 'opacity 0.5s';
                             pwaPrompt.style.opacity = '0';
-                            setTimeout(() => pwaPrompt.remove(), 500);
+                            setTimeout(() => pwaPrompt.remove(), 400);
                         }
                     }, 8000);
                 }
+
                 // === End iOS Improvements ===
 
                 // To lower canvas resolution on mobile devices to gain some performance, uncomment the following line:
