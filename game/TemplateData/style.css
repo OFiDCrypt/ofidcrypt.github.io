@@ -1,24 +1,28 @@
+/* RESET */
 body {
   padding: 0;
   margin: 0;
 }
 
+/* UNITY CONTAINER BASE */
 #unity-container {
   position: absolute;
 }
 
+/* DESKTOP CENTERING */
 #unity-container.unity-desktop {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
+/* MOBILE FULLSCREEN CONTAINER */
 #unity-container.unity-mobile {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100dvh; /* Android uses this, iPhone will override via canvas rule */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -27,14 +31,12 @@ body {
   overflow: hidden;
 }
 
+/* CANVAS BASE */
 #unity-canvas {
   background: #231F20;
 }
 
-/* -------------------------------------------------- */
-/* BASE MOBILE CANVAS — iPHONE FULLSCREEN FIX         */
-/* -------------------------------------------------- */
-/* iPhone gets height: 100% (Safari-safe fullscreen) */
+/* iPHONE FULLSCREEN FIX */
 .unity-mobile #unity-canvas {
   width: 100%;
   height: 100%;
@@ -46,7 +48,7 @@ body {
   z-index: 1;
 }
 
-/* Loading bar MUST be above everything */
+/* LOADING BAR */
 #unity-loading-bar {
   position: absolute;
   left: 50%;
@@ -62,21 +64,29 @@ body {
   background: url('unity-logo-dark.png') no-repeat center;
 }
 
+/* PROGRESS BAR */
 #unity-progress-bar-empty {
   width: 141px;
   height: 18px;
   margin-top: 10px;
   margin-left: 6.5px;
-  background: url('progress-bar-empty-dark.png') no-repeat center;
+  background: url('progress-bar-empty-dark.png') no-repeat left;
+  position: relative;
+  overflow: hidden;
+  box-sizing: content-box;
 }
 
 #unity-progress-bar-full {
   width: 0%;
   height: 18px;
-  margin-top: 10px;
-  background: url('progress-bar-full-dark.png') no-repeat center;
+  background: url('progress-bar-full-dark.png') no-repeat left;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: content-box;
 }
 
+/* FOOTER */
 #unity-footer {
   position: relative;
 }
@@ -120,47 +130,41 @@ body {
 }
 
 /* ----------------------------- */
-/* CLICKABLE BOTTOM BANNER FIXED */
+/* CLICKABLE BOTTOM BANNER       */
 /* ----------------------------- */
 
 .unity-mobile #bottom-banner {
-  display: block;
   height: 90px;
   width: calc(100% - 20px);
-  margin: 10px auto 20px auto;
+  margin: auto;
   box-sizing: border-box;
-
   background: none;
   border: none;
-
   position: relative;
   z-index: 9999;
   pointer-events: auto;
   border-radius: 10px;
+
+  /* override inline display:block */
+  display: flex !important;
+  align-items: center;      /* vertical centering */
+  justify-content: center;  /* horizontal centering */
 }
 
-/* ----------------------------- */
-/* ANDROID OVERRIDES             */
-/* ----------------------------- */
-
+/* ANDROID OVERRIDES */
 .is-android #unity-container.unity-mobile #unity-canvas {
-  height: calc(100dvh - 110px); /* subtract banner */
-  max-height: calc(100dvh - 110px);
-
-  width: 102vw;       /* slight width boost */
+  height: calc(100dvh - 90px);
+  max-height: calc(100dvh - 90px);
+  width: 102vw;
   max-width: 102vw;
-  margin-left: -1vw;  /* recenter */
+  margin-left: -1vw;
 }
 
-/* ----------------------------- */
 /* ANDROID TALL-SCREEN OVERRIDES */
-/* ----------------------------- */
-
 @media screen and (min-aspect-ratio: 10/19) {
   .is-android #unity-container.unity-mobile #unity-canvas {
-    height: calc(100dvh - 130px);
-    max-height: calc(100dvh - 130px);
-
+    height: calc(100dvh - 100px);
+    max-height: calc(100dvh - 100px);
     width: 102vw;
     max-width: 102vw;
     margin-left: -1vw;
@@ -172,15 +176,15 @@ body {
   }
 }
 
-/* Carousel Wrapper */
+/* CAROUSEL WRAPPER */
 .ad-banner-wrapper {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
-/* Horizontal scroll container */
-.ad-scroll-container {
+/* MOBILE SCROLL CONTAINER */
+.ad-scroll-container-mobile {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -188,43 +192,48 @@ body {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* Each slide */
-.ad-slide {
+.ad-scroll-container-mobile::-webkit-scrollbar {
+  display: none;
+}
+
+/* SLIDES */
+.ad-scroll-container-mobile .ad-slide {
   flex: 0 0 auto;
   width: 100%;
   max-width: 300px;
   scroll-snap-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  /* Remove underline */
-  text-decoration: none;
-}
-
-/* Also remove underline from the <a> itself */
-.ad-slide:link,
-.ad-slide:visited,
-.ad-slide:hover,
-.ad-slide:active {
-  text-decoration: none;
-}
-
-/* Image styling */
-.ad-slide img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-
-#bottom-banner .ad-slide {
   display: block !important;
   text-decoration: none !important;
   border: none !important;
 }
 
-#bottom-banner .ad-slide img {
+/* LINK STATES */
+.ad-scroll-container-mobile .ad-slide:link,
+.ad-scroll-container-mobile .ad-slide:visited,
+.ad-scroll-container-mobile .ad-slide:hover,
+.ad-scroll-container-mobile .ad-slide:active,
+.ad-scroll-container-mobile .ad-slide:focus {
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* IMAGES */
+.ad-scroll-container-mobile .ad-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
   display: block;
+}
+
+/* ENSURE INNER CONTAINER DOESN’T FIGHT CENTERING */
+.unity-mobile #bottom-banner .ad-scroll-container-mobile {
+  height: auto;
+  margin: 0;
+  padding: 0 10px;
 }
