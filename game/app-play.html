@@ -120,145 +120,144 @@
   flex-shrink: 0;
   z-index: 10;
 ">
-">
-      <div class="ad-scroll-container">
-        <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
-          class="ad-slide">
-          <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
-        </a>
+      <div class="ad-scroll-container-mobile">
+    <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+      class="ad-slide">
+      <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
+    </a>
 
-        <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
-          <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
-        </a>
+    <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
+      <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
+    </a>
 
-        <a href="https://freeproducer.ca/" class="ad-slide">
-          <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
-        </a>
+    <a href="https://freeproducer.ca/" class="ad-slide">
+      <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
+    </a>
 
-        <a href="/bouncyball.html#buy-expb" class="ad-slide">
-          <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
-        </a>
+    <a href="/bouncyball.html#buy-expb" class="ad-slide">
+      <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
+    </a>
 
-        <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
-          <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
-        </a>
-      </div>
-    </div>
+    <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
+      <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
+    </a>
+</div>
+</div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-        // Only run carousel if banner is visible (Android or PWA)
-        const isAndroid = /Android/i.test(navigator.userAgent);
-        const isPWA =
-          window.matchMedia('(display-mode: standalone)').matches ||
-          window.navigator.standalone === true;
+    // Only run carousel if banner is visible (Android or PWA)
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isPWA =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
 
-        if (!isAndroid && !isPWA) {
-          return; // iPhone or desktop → no carousel JS needed
-        }
+    if (!isAndroid && !isPWA) {
+        return; // iPhone or desktop → no carousel JS needed
+    }
 
-        const container = document.querySelector('#bottom-banner .ad-scroll-container');
-        const slides = document.querySelectorAll('#bottom-banner .ad-slide');
-        const totalSlides = slides.length;
+    const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
+    const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
+    const totalSlides = slides.length;
 
-        if (!container || totalSlides === 0) {
-          console.warn('Carousel: No slides found.');
-          return;
-        }
+    if (!container || totalSlides === 0) {
+        console.warn('Carousel: No slides found.');
+        return;
+    }
 
-        let autoScrollInterval;
-        let currentIndex = 0;
+    let autoScrollInterval;
+    let currentIndex = 0;
 
-        // Clone first slide for looping
-        const firstClone = slides[0].cloneNode(true);
-        container.appendChild(firstClone);
+    // Clone first slide for looping
+    const firstClone = slides[0].cloneNode(true);
+    container.appendChild(firstClone);
 
-        // Force start at first slide
-        function setInitialPosition() {
-          container.scrollTo({ left: 0, behavior: 'instant' });
-          currentIndex = 0;
-        }
+    // Force start at first slide
+    function setInitialPosition() {
+        container.scrollTo({ left: 0, behavior: 'instant' });
+        currentIndex = 0;
+    }
 
-        // Calculate slide width
-        function getBoxWidth() {
-          const slideWidth = slides[0].offsetWidth;
-          const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-          return slideWidth + slideMargin;
-        }
+    // Calculate slide width
+    function getBoxWidth() {
+        const slideWidth = slides[0].offsetWidth;
+        const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+        return slideWidth + slideMargin;
+    }
 
-        // Auto-scroll loop
-        function startAutoScroll() {
-          clearInterval(autoScrollInterval);
-          autoScrollInterval = setInterval(() => {
+    // Auto-scroll loop
+    function startAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(() => {
             currentIndex++;
 
             if (currentIndex >= totalSlides + 1) {
-              container.scrollTo({ left: 0, behavior: 'instant' });
-              currentIndex = 1;
+                container.scrollTo({ left: 0, behavior: 'instant' });
+                currentIndex = 1;
             }
 
             container.scrollTo({
-              left: currentIndex * getBoxWidth(),
-              behavior: 'smooth'
+                left: currentIndex * getBoxWidth(),
+                behavior: 'smooth'
             });
-          }, 8000);
-        }
+        }, 8000);
+    }
 
-        // Touch handling (tap vs swipe)
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchMoved = false;
+    // Touch handling (tap vs swipe)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchMoved = false;
 
-        container.addEventListener('touchstart', (e) => {
-          touchStartX = e.touches[0].clientX;
-          touchStartY = e.touches[0].clientY;
-          touchMoved = false;
-        }, { passive: true });
+    container.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoved = false;
+    }, { passive: true });
 
-        container.addEventListener('touchmove', (e) => {
-          const dx = Math.abs(e.touches[0].clientX - touchStartX);
-          const dy = Math.abs(e.touches[0].clientY - touchStartY);
+    container.addEventListener('touchmove', (e) => {
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
 
-          if (dx > 10 && dy < 50) {
+        if (dx > 10 && dy < 50) {
             e.preventDefault();
             touchMoved = true;
-          }
-          if (dy > 50) {
+        }
+        if (dy > 50) {
             touchMoved = true;
-          }
-        }, { passive: false });
+        }
+    }, { passive: false });
 
-        container.addEventListener('touchend', (e) => {
-          if (!touchMoved) {
+    container.addEventListener('touchend', (e) => {
+        if (!touchMoved) {
             const target = e.target.closest('a');
             if (target && target.href) {
-              window.location.href = target.href;
+                window.location.href = target.href;
             }
-          }
-        }, { passive: true });
+        }
+    }, { passive: true });
 
-        // Prevent wheel scroll inside banner
-        container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+    // Prevent wheel scroll inside banner
+    container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
 
-        // Resize handling
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(() => {
+    // Resize handling
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
             container.scrollTo({
-              left: currentIndex * getBoxWidth(),
-              behavior: 'instant'
+                left: currentIndex * getBoxWidth(),
+                behavior: 'instant'
             });
             startAutoScroll();
-          }, 100);
-        });
+        }, 100);
+    });
 
-        // Init
-        setInitialPosition();
-        startAutoScroll();
-      });
-    </script>
+    // Init
+    setInitialPosition();
+    startAutoScroll();
+});
+</script>
 
     <script>
 
