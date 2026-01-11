@@ -96,8 +96,10 @@
 </head>
 
 <body>
-  <div id="unity-container" class="unity-desktop">
-    <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+   <!-- ⭐ Unity Container (must contain ONLY Unity elements) -->
+<div id="unity-container">
+
+    <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
 
     <div id="unity-loading-bar">
       <div id="unity-logo"></div>
@@ -113,47 +115,49 @@
       <div id="unity-fullscreen-button"></div>
       <div id="unity-build-title">Giddy's Blinko</div>
     </div>
+  </div>
 
-    <!-- ⭐ iPhone Drawer Wrapper -->
-    <div id="banner-drawer">
-      <div id="banner-drawer-handle"></div>
 
-      <div id="banner-drawer-content">
+  <!-- ⭐ iPhone Drawer Wrapper (MOVED OUTSIDE unity-container) -->
+  <div id="banner-drawer">
+    <div id="banner-drawer-handle"></div>
 
-        <!-- ⭐ Your existing banner stays EXACTLY the same -->
-        <div id="bottom-banner" class="ad-banner-wrapper" style="
-          display: none;
-          height: 90px;
-          flex-shrink: 0;
-          z-index: 10;
-        ">
-          <div class="ad-scroll-container-mobile">
+    <div id="banner-drawer-content">
 
-            <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
-              class="ad-slide">
-              <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
-            </a>
+      <div id="bottom-banner" class="ad-banner-wrapper" style="
+        display: none;
+        height: 90px;
+        flex-shrink: 0;
+        z-index: 10;
+      ">
+        <div class="ad-scroll-container-mobile">
 
-            <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
-              <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
-            </a>
+          <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+            class="ad-slide">
+            <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
+          </a>
 
-            <a href="https://freeproducer.ca/" class="ad-slide">
-              <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
-            </a>
+          <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
+            <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
+          </a>
 
-            <a href="/bouncyball.html#buy-expb" class="ad-slide">
-              <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
-            </a>
+          <a href="https://freeproducer.ca/" class="ad-slide">
+            <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
+          </a>
 
-            <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
-              <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
-            </a>
+          <a href="/bouncyball.html#buy-expb" class="ad-slide">
+            <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
+          </a>
 
-          </div>
+          <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
+            <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
+          </a>
+
         </div>
-
       </div>
+
+    </div>
+
     </div>
 
 <script>
