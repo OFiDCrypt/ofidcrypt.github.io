@@ -2,10 +2,15 @@
 body {
   padding: 0;
   margin: 0;
+  background: #000;
 }
-/* UNITY CONTAINER BASE */
+
+/* ============================================
+   UNITY CONTAINER BASE
+   ============================================ */
 #unity-container {
   position: absolute;
+  width: 100%;
 }
 
 /* DESKTOP CENTERING */
@@ -14,13 +19,16 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-/* MOBILE FULLSCREEN CONTAINER */
+
+/* ============================================
+   MOBILE FULLSCREEN CONTAINER
+   ============================================ */
 #unity-container.unity-mobile {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100dvh;
+  height: 100dvh; /* true fullscreen */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -28,22 +36,29 @@ body {
   background: #000;
   overflow: hidden;
 }
-/* CANVAS BASE */
+
+/* ============================================
+   UNITY CANVAS — TRUE 10:16 PORTRAIT SCALING
+   ============================================ */
 #unity-canvas {
   background: #231F20;
 }
-/* iPHONE/iOS FULLSCREEN FIX */
+
 .unity-mobile #unity-canvas {
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
+  width: 100vw;          /* fill width */
+  height: auto;          /* scale by width */
+  aspect-ratio: 10 / 16; /* enforce portrait */
+  max-height: 100dvh;    /* prevent overflow */
   object-fit: contain;
   display: block;
   margin: 0 auto;
   position: relative;
   z-index: 1;
 }
-/* LOADING BAR */
+
+/* ============================================
+   UNITY LOADING BAR (RESTORED)
+   ============================================ */
 #unity-loading-bar {
   position: absolute;
   left: 50%;
@@ -52,12 +67,13 @@ body {
   display: none;
   z-index: 99999;
 }
+
 #unity-logo {
   width: 154px;
   height: 130px;
   background: url('unity-logo-dark.png') no-repeat center;
 }
-/* PROGRESS BAR */
+
 #unity-progress-bar-empty {
   width: 141px;
   height: 18px;
@@ -68,6 +84,7 @@ body {
   overflow: hidden;
   box-sizing: content-box;
 }
+
 #unity-progress-bar-full {
   width: 0%;
   height: 18px;
@@ -77,19 +94,25 @@ body {
   left: 0;
   box-sizing: content-box;
 }
-/* FOOTER */
+
+/* ============================================
+   UNITY FOOTER (DESKTOP ONLY)
+   ============================================ */
 #unity-footer {
   position: relative;
 }
+
 .unity-mobile #unity-footer {
   display: none;
 }
+
 #unity-webgl-logo {
   float: left;
   width: 204px;
   height: 38px;
   background: url('webgl-logo.png') no-repeat center;
 }
+
 #unity-build-title {
   float: right;
   margin-right: 10px;
@@ -98,6 +121,7 @@ body {
   color: white;
   font-size: 18px;
 }
+
 #unity-fullscreen-button {
   cursor: pointer;
   float: right;
@@ -105,6 +129,7 @@ body {
   height: 38px;
   background: url('fullscreen-button.png') no-repeat center;
 }
+
 #unity-warning {
   position: absolute;
   left: 50%;
@@ -115,21 +140,29 @@ body {
   display: none;
 }
 
-/* WHEN DRAWER IS OPEN — SHRINK GAME */
-body.drawer-open #unity-container.unity-mobile {
-  height: calc(100dvh - 90px);
+/* ============================================
+   BANNER DRAWER — FIXED TO BOTTOM
+   ============================================ */
+#banner-drawer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #000;
+  transition: transform 0.25s ease-out;
+  will-change: transform;
+  z-index: 9998;
 }
 
-@media screen and (min-aspect-ratio: 10/19) {
-  body.drawer-open #unity-container.unity-mobile {
-    height: calc(100dvh - 100px);
-  }
+/* Drawer content */
+#banner-drawer-content {
+  width: 100%;
+  background: #000;
+  transition: opacity 0.25s ease;
+  overflow: hidden;
 }
 
-/* ----------------------------- */
-/* ORIGINAL BOTTOM BANNER STYLING (RESTORED) */
-/* ----------------------------- */
-
+/* Banner wrapper */
 #banner-drawer #bottom-banner {
   height: 90px;
   width: calc(100% - 20px);
@@ -146,7 +179,7 @@ body.drawer-open #unity-container.unity-mobile {
   justify-content: center;
 }
 
-/* TALL-SCREEN OVERRIDES */
+/* Tall screens */
 @media screen and (min-aspect-ratio: 10/19) {
   #banner-drawer #bottom-banner {
     height: 100px;
@@ -155,14 +188,15 @@ body.drawer-open #unity-container.unity-mobile {
   }
 }
 
-/* CAROUSEL WRAPPER (original) */
+/* ============================================
+   CAROUSEL
+   ============================================ */
 .ad-banner-wrapper {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
-/* MOBILE SCROLL CONTAINER (original) */
 .ad-scroll-container-mobile {
   display: flex;
   flex-direction: row;
@@ -174,11 +208,11 @@ body.drawer-open #unity-container.unity-mobile {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .ad-scroll-container-mobile::-webkit-scrollbar {
   display: none;
 }
 
-/* SLIDES (original) */
 .ad-scroll-container-mobile .ad-slide {
   flex: 0 0 auto;
   width: 100%;
@@ -189,7 +223,6 @@ body.drawer-open #unity-container.unity-mobile {
   border: none !important;
 }
 
-/* IMAGES (original) */
 .ad-scroll-container-mobile .ad-slide img {
   width: 100%;
   height: auto;
@@ -198,29 +231,7 @@ body.drawer-open #unity-container.unity-mobile {
 }
 
 /* ============================================
-   BANNER DRAWER — CONTAINER
-   ============================================ */
-#banner-drawer {
-  width: 100%;
-  position: relative;
-  background: #000;
-  transition: transform 0.25s ease-out;
-  will-change: transform;
-  z-index: 9998;
-}
-
-/* ============================================
-   BANNER DRAWER — CONTENT WRAPPER
-   ============================================ */
-#banner-drawer-content {
-  width: 100%;
-  background: #000;
-  transition: opacity 0.25s ease;
-  overflow: hidden;
-}
-
-/* ============================================
-   BANNER DRAWER — HANDLE (ARROW BUTTON)
+   DRAWER HANDLE
    ============================================ */
 #banner-drawer-handle {
   position: fixed;
@@ -229,32 +240,24 @@ body.drawer-open #unity-container.unity-mobile {
   transform: translateX(-50%);
   width: 36px;
   height: 26px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 20px;
   color: white;
-
   cursor: pointer;
   background: rgba(0,0,0,0.35);
   border-radius: 14px;
-
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-
   z-index: 9999;
 }
 
-/* ARROW RAISED WHEN CLOSED */
 #banner-drawer.closed #banner-drawer-handle {
   bottom: 20px;
 }
 
-/* ============================================
-   BANNER DRAWER — CLOSED STATE
-   ============================================ */
+/* Drawer closed state */
 #banner-drawer.closed {
   transform: translateY(calc(100dvh));
 }
@@ -264,65 +267,13 @@ body.drawer-open #unity-container.unity-mobile {
   pointer-events: none;
 }
 
-/* REMOVE PSEUDO ARROWS */
+/* Remove pseudo arrows */
 #banner-drawer-handle::after {
   content: none !important;
 }
 
-/* HIDE ARROW ON ANDROID + PWA */
+/* Hide arrow on Android + PWA */
 body.is-android #banner-drawer-handle,
 body.is-pwa #banner-drawer-handle {
   display: none !important;
-}
-
-/* ============================================
-   UNITY FOOTER — KEEP HIDDEN ON MOBILE
-   ============================================ */
-.unity-mobile #unity-footer {
-  display: none;
-}
-
-/* ============================================
-   ⭐ RESTORE UNITY LOADING BAR (GLOBAL)
-   ============================================ */
-#unity-loading-bar {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: none; /* Unity JS will show it */
-  z-index: 99999;
-}
-
-/* ============================================
-   ⭐ RESTORE UNITY FOOTER ON DESKTOP
-   ============================================ */
-#unity-container.unity-desktop #unity-footer {
-  display: block;
-}
-
-/* ============================================
-   BANNER DRAWER — CONTAINER (FIXED TO BOTTOM)
-   ============================================ */
-#banner-drawer {
-  width: 100%;
-  position: fixed;      /* ⭐ FIX: anchor to bottom */
-  bottom: 0;            /* ⭐ FIX */
-  left: 0;              /* ⭐ FIX */
-  background: #000;
-  transition: transform 0.25s ease-out;
-  will-change: transform;
-  z-index: 9998;
-}
-
-/* Prevent banner from overlapping Unity */
-body.banner-visible #unity-container.unity-mobile {
-  padding-bottom: 90px; /* same as banner height */
-  box-sizing: border-box;
-}
-
-@media screen and (min-aspect-ratio: 10/19) {
-  body.banner-visible #unity-container.unity-mobile {
-    padding-bottom: 100px;
-  }
 }
