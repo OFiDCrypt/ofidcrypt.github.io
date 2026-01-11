@@ -166,39 +166,59 @@
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
 
-  // -----------------------------
-  // ⭐ iPhone Safari Drawer Logic
-  // -----------------------------
-  if (isIOS && !isPWA) {
-    const drawer = document.getElementById('banner-drawer');
-    const handle = document.getElementById('banner-drawer-handle');
-    const unityCanvas = document.getElementById('unity-canvas');
+// -----------------------------
+// ⭐ iPhone Safari Drawer Logic
+// -----------------------------
+if (isIOS && !isPWA) {
+  const drawer = document.getElementById('banner-drawer');
+  const handle = document.getElementById('banner-drawer-handle');
+  const unityCanvas = document.getElementById('unity-canvas');
 
-    let drawerOpen = true;
+  let drawerOpen = true;
 
-    handle.textContent = "▾";
-    unityCanvas.style.height = `calc(100dvh - 90px)`;
-
-    handle.addEventListener('click', () => {
-  drawerOpen = !drawerOpen;
-
-  if (drawerOpen) {
-    drawer.classList.remove('closed');
-    drawer.offsetHeight; // force repaint
-    document.body.classList.add('banner-visible');
-    unityCanvas.style.height = `calc(100dvh - 90px)`;
-    unityCanvas.getBoundingClientRect();
-    handle.textContent = "▾";
-  } else {
-    drawer.classList.add('closed');
-    drawer.offsetHeight; // force repaint
-    document.body.classList.remove('banner-visible');
-    unityCanvas.style.height = `100dvh`;
-    unityCanvas.getBoundingClientRect();
-    handle.textContent = "▴";
+  // Measure drawer height dynamically
+  function getDrawerHeight() {
+    return drawer.getBoundingClientRect().height;
   }
-});
+
+  // Update canvas height based on drawer state
+  function updateCanvasHeight() {
+    if (drawerOpen) {
+      // Banner visible → shrink canvas
+      unityCanvas.style.height = `calc(100dvh - ${getDrawerHeight()}px)`;
+    } else {
+      // Banner hidden → fullscreen
+      unityCanvas.style.height = `100dvh`;
+    }
+
+    // Force layout commit (iOS + Chrome iOS)
+    unityCanvas.getBoundingClientRect();
   }
+
+  // Initial arrow + canvas size
+  handle.textContent = "▾";
+  updateCanvasHeight();
+
+  handle.addEventListener('click', () => {
+    drawerOpen = !drawerOpen;
+
+    if (drawerOpen) {
+      drawer.classList.remove('closed');
+      handle.textContent = "▾";   // down arrow
+      document.body.classList.add('banner-visible');
+    } else {
+      drawer.classList.add('closed');
+      handle.textContent = "▴";   // up arrow
+      document.body.classList.remove('banner-visible');
+    }
+
+    // Force repaint for transform transitions
+    drawer.offsetHeight;
+
+    // Resize canvas to match new drawer state
+    updateCanvasHeight();
+  });
+}
 
   // -----------------------------
   // ⭐ Carousel Activation Logic
