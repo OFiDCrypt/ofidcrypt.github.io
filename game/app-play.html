@@ -176,26 +176,22 @@ if (isIOS && !isPWA) {
 
   let drawerOpen = true;
 
-  // Measure drawer height dynamically
+  // Dynamically measure drawer height
   function getDrawerHeight() {
     return drawer.getBoundingClientRect().height;
   }
 
-  // Update canvas height based on drawer state
+  // Resize canvas based on drawer state
   function updateCanvasHeight() {
     if (drawerOpen) {
-      // Banner visible → shrink canvas
       unityCanvas.style.height = `calc(100dvh - ${getDrawerHeight()}px)`;
     } else {
-      // Banner hidden → fullscreen
       unityCanvas.style.height = `100dvh`;
     }
-
-    // Force layout commit (iOS + Chrome iOS)
-    unityCanvas.getBoundingClientRect();
+    unityCanvas.getBoundingClientRect(); // force layout
   }
 
-  // Initial arrow + canvas size
+  // Initial arrow + canvas sizing
   handle.textContent = "▾";
   updateCanvasHeight();
 
@@ -204,18 +200,13 @@ if (isIOS && !isPWA) {
 
     if (drawerOpen) {
       drawer.classList.remove('closed');
-      handle.textContent = "▾";   // down arrow
-      document.body.classList.add('banner-visible');
+      handle.textContent = "▾";
     } else {
       drawer.classList.add('closed');
-      handle.textContent = "▴";   // up arrow
-      document.body.classList.remove('banner-visible');
+      handle.textContent = "▴";
     }
 
-    // Force repaint for transform transitions
-    drawer.offsetHeight;
-
-    // Resize canvas to match new drawer state
+    drawer.offsetHeight; // force repaint
     updateCanvasHeight();
   });
 }
