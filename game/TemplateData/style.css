@@ -7,7 +7,6 @@ body {
 #unity-container {
   position: absolute;
 }
-
 /* DESKTOP CENTERING */
 #unity-container.unity-desktop {
   left: 50%;
@@ -210,10 +209,17 @@ body {
   margin: 0;
   padding: 0 10px;
 }
-/* iPhone browser only (not PWA) — extra fullscreen nudge */
+/* iPhone browser only (not PWA) — extra fullscreen nudge + push banner off */
 @supports (-webkit-touch-callout: none) {
   body:not(.is-pwa) #unity-canvas {
     height: 100% !important;
     max-height: 100% !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Optional: Hide banner completely in regular iPhone browser if desired */
+  body:not(.is-pwa) #bottom-banner {
+    display: none !important;
   }
 }
