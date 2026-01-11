@@ -17,15 +17,15 @@ body {
 #unity-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;                      /* ← dynamic viewport height for browser UI changes */
   background: #000;
   overflow: hidden;
   padding-top: env(safe-area-inset-top);
 }
 
-/* When banner is visible - reserve **exactly** the banner height + bottom inset */
+/* When banner is visible - reserve exactly the banner height + bottom inset */
 body.banner-visible #unity-container {
-  height: calc(100vh - 90px);
+  height: calc(100dvh - 90px);         /* ← tighter fit using dvh */
   padding-bottom: calc(90px + env(safe-area-inset-bottom));
 }
 
@@ -42,15 +42,40 @@ body.banner-visible #unity-container {
 /* MOBILE CANVAS - fill the container completely, crop sides in portrait */
 .unity-mobile #unity-canvas {
   position: absolute;
-  inset: 0;                     /* top:0 right:0 bottom:0 left:0 */
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;            /* fills tightly → crops excess (mainly sides) */
+  object-fit: cover;                   /* fills tightly → crops excess (mainly sides) */
   background: #231F20;
 }
 
-/* UNITY LOADING BAR - centered */
+/* PWA/standalone mode - preserve full game visibility (less aggressive crop) */
+@media (display-mode: standalone) {
+  .unity-mobile #unity-canvas {
+    object-fit: contain;               /* fits fully, less side cutoff in PWA */
+  }
+}
+
+/* Landscape orientation - wide mode support */
+@media (orientation: landscape) {
+  #unity-container {
+    height: 100dvh;
+    padding: 0;
+  }
+  .unity-mobile #unity-canvas {
+    width: auto;
+    height: 100%;
+    max-width: 100dvh * (960 / 600);   /* preserve native 960x600 landscape aspect */
+    margin: 0 auto;
+    object-fit: contain;
+  }
+  body.banner-visible #unity-container {
+    height: 100dvh;
+  }
+}
+
+/* UNITY LOADING BAR - centered (unchanged from your version) */
 #unity-loading-bar {
   position: absolute;
   left: 50%;
@@ -64,7 +89,6 @@ body.banner-visible #unity-container {
   width: 154px;
   height: 130px;
   background: url('unity-logo-dark.png') no-repeat center;
-  background-size: contain;
 }
 
 #unity-progress-bar-empty {
