@@ -2,14 +2,12 @@
 body {
   padding: 0;
   margin: 0;
-  padding-bottom: env(safe-area-inset-bottom); /* prevents home bar overlap */
-  padding-top: env(safe-area-inset-top);       /* status bar */
 }
 
 /* UNITY CONTAINER BASE */
 #unity-container {
   position: absolute;
-  overflow: hidden;
+  overflow: hidden; /* lock scroll inside container */
 }
 
 /* DESKTOP CENTERING */
@@ -236,5 +234,21 @@ body {
   body:not(.is-pwa) #unity-canvas {
     height: 100% !important;
     max-height: 100% !important;
+  }
+}
+
+/* Safe-area support block - ensures no partial bars/cut-offs on iPhone 16 & similar */
+@supports (padding-top: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .unity-mobile #unity-canvas {
+    height: calc(100dvh - 90px - env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  #bottom-banner {
+    padding-bottom: env(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
   }
 }
