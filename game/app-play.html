@@ -11,7 +11,7 @@
     gtag('config', 'G-3KX9VK5CCH');
   </script>
 
-  <!-- JSON-LD Schema -->
+  <!-- JSON -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -32,19 +32,18 @@
         "https://www.instagram.com/OFiDCrypt"
       ]
     }
-  </script>
+    </script>
 
-  <!-- Meta & SEO -->
+  <!-- Meta Description (for SEO) -->
   <title>Giddy's Blinko | OFiDCrypt</title>
   <meta charset="utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <meta name="description"
     content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="keywords" content="cryptocurrency, kinnected wallet, vip, OFiDCrypt, crypto community">
   <meta name="author" content="Tokin ⬢">
 
-  <!-- Open Graph / Twitter Cards -->
+  <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="Giddy's Blinko | OFiDCrypt">
   <meta property="og:description"
     content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
@@ -52,337 +51,315 @@
   <meta property="og:url" content="https://www.ofidcrypt.com/game/app-play">
   <meta property="og:type" content="website">
 
+  <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Giddy's Blinko | OFiDCrypt">
   <meta name="twitter:description"
     content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="twitter:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddy-blinko.webp">
+  <meta name="twitter:url" content="https://www.ofidcrypt.com/game/app-play">
 
-  <!-- Icons & Apple/PWA Support -->
+  <!-- Default ICO file -->
   <link rel="icon" type="image/x-icon" href="TemplateData/favicon.ico">
+
+  <!-- PNG favicon -->
   <link rel="icon" type="image/png" sizes="1280x1280" href="TemplateData/favicon.png">
+
+  <!-- Apple Touch Icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="TemplateData/apple-touch-icon.png">
 
+  <!-- Apple Compatibility -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#000000">
 
-  <!-- Canonical -->
+  <!-- Canonical Preferred URL -->
   <link rel="canonical" href="https://www.ofidcrypt.com/game/app-play">
 
-  <!-- Styles -->
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="../assets/css/main.css">
   <noscript>
     <link rel="stylesheet" href="../assets/css/noscript.css">
   </noscript>
-  <link rel="stylesheet" href="TemplateData/style.css">
 
-  <!-- Scripts -->
+  <!-- Unity Template Styles (integrated to match your site) -->
+  <link rel="stylesheet" href="TemplateData/style.css"> <!-- Ensure TemplateData/ is uploaded -->
+
+  <!-- JavaScript Libraries -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="../assets/js/jquery.min.js"></script>
   <script src="../assets/js/browser.min.js"></script>
+
+  <!-- Meta Language -->
+  <meta http-equiv='content-language' content='en-gb'>
 </head>
 
 <body>
-  <!-- Unity Container -->
-  <div id="unity-container">
-    <canvas id="unity-canvas" tabindex="-1"></canvas>
-
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
     <div id="unity-loading-bar">
       <div id="unity-logo"></div>
       <div id="unity-progress-bar-empty">
         <div id="unity-progress-bar-full"></div>
       </div>
     </div>
-
     <div id="unity-warning"></div>
-
     <div id="unity-footer">
       <div id="unity-webgl-logo"></div>
       <div id="unity-fullscreen-button"></div>
       <div id="unity-build-title">Giddy's Blinko</div>
     </div>
-  </div>
-
-  <!-- iPhone Drawer / Banner (outside unity-container) -->
-  <div id="banner-drawer">
-    <div id="banner-drawer-handle"></div>
-
-    <div id="banner-drawer-content">
-      <div id="bottom-banner" class="ad-banner-wrapper"
-        style="display: none; height: 90px; flex-shrink: 0; z-index: 10;">
-        <div class="ad-scroll-container-mobile">
-          <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
-            class="ad-slide">
-            <img src="/assets/images/ledger-nano-s-plus.png" alt="Ledger Nano S Plus">
-          </a>
-          <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
-            <img src="/assets/images/kraken-banner-01.PNG" alt="Kraken">
-          </a>
-          <a href="https://freeproducer.ca/" class="ad-slide">
-            <img src="/assets/images/banner-free-producer.PNG" alt="Free Producer">
-          </a>
-          <a href="/bouncyball.html#buy-expb" class="ad-slide">
-            <img src="/assets/images/expb-banner-01.png" alt="EXPB">
-          </a>
-          <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
-            <img src="/assets/images/dobby-banner-01.png" alt="Dobby">
-          </a>
-        </div>
+    <!-- Bottom Banner Carousel -->
+    <div id="bottom-banner" class="ad-banner-wrapper" style="
+  display: none;
+  height: 90px;
+  flex-shrink: 0;
+  z-index: 10;
+">
+      <div class="ad-scroll-container-mobile">
+        <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+          class="ad-slide">
+          <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
+        </a>
+        <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
+          <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
+        </a>
+        <a href="https://freeproducer.ca/" class="ad-slide">
+          <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
+        </a>
+        <a href="/bouncyball.html#buy-expb" class="ad-slide">
+          <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
+        </a>
+        <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
+          <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
+        </a>
       </div>
     </div>
-  </div>
 
-  <!-- Drawer + Carousel + Fullscreen Logic -->
-  <script>
+    <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPod/i.test(navigator.userAgent); // iPhone only
-  const isMobile = isAndroid || isIOS;
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-  // Drawer collapse logic – only for iOS Safari (non-PWA)
-  if (isIOS && !isPWA) {
-    const drawer = document.getElementById('banner-drawer');
-    const handle = document.getElementById('banner-drawer-handle');
+  // Run on iPhone Safari, Android, and PWAs — NOT desktop
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isPWA =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
 
-    if (drawer && handle) {
-      let drawerOpen = true;
-      handle.textContent = "▾";
-
-      handle.addEventListener('click', () => {
-        if (!drawerOpen) return;
-
-        drawerOpen = false;
-        drawer.classList.add('closed');
-        handle.textContent = "▴";
-
-        setTimeout(() => {
-          handle.style.display = 'none';
-        }, 300);
-
-        // Trigger fullscreen + force resize
-        const aspect = window.innerHeight / window.innerWidth;
-        if (aspect <= 2.0 && window.unityInstance) {
-          window.unityInstance.SetFullscreen(1);
-
-          // Force canvas resize AFTER transition (0.35s + buffer)
-          setTimeout(() => {
-            if (window.unityInstance && /iPhone/i.test(navigator.userAgent) && !navigator.standalone) {
-              const canvas = document.querySelector('#unity-canvas');
-              if (canvas) {
-                canvas.style.width = '100vw';
-                canvas.style.height = '100dvh';
-              }
-              window.dispatchEvent(new Event('resize'));
-            }
-          }, 450);  // matches 0.35s transition + buffer
-        }
-      });
-    }
+  if (!isMobile && !isPWA) {
+    return; // desktop only → no carousel
   }
 
-  // Carousel logic (unchanged from your original)
   const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
   const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
   const totalSlides = slides.length;
 
-  if (container && totalSlides > 0 && (isMobile || isPWA)) {
-    let autoScrollInterval;
-    let currentIndex = 0;
-
-    const firstClone = slides[0].cloneNode(true);
-    container.appendChild(firstClone);
-
-    function setInitialPosition() {
-      container.scrollTo({ left: 0, behavior: 'instant' });
-      currentIndex = 0;
-    }
-
-    function getBoxWidth() {
-      const slideWidth = slides[0].offsetWidth;
-      const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-      return slideWidth + slideMargin;
-    }
-
-    function startAutoScroll() {
-      clearInterval(autoScrollInterval);
-      autoScrollInterval = setInterval(() => {
-        currentIndex++;
-        if (currentIndex >= totalSlides + 1) {
-          container.scrollTo({ left: 0, behavior: 'instant' });
-          currentIndex = 1;
-        }
-        container.scrollTo({
-          left: currentIndex * getBoxWidth(),
-          behavior: 'smooth'
-        });
-      }, 8000);
-    }
-
-    // Touch handling to prevent conflict with game
-    let touchStartX = 0, touchStartY = 0, touchMoved = false;
-
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      touchMoved = false;
-    }, { passive: true });
-
-    container.addEventListener('touchmove', (e) => {
-      const dx = Math.abs(e.touches[0].clientX - touchStartX);
-      const dy = Math.abs(e.touches[0].clientY - touchStartY);
-      if (dx > dy) {
-        e.preventDefault();
-        touchMoved = true;
-      }
-    }, { passive: false });
-
-    container.addEventListener('touchend', (e) => {
-      if (!touchMoved) {
-        const target = e.target.closest('a');
-        if (target && target.href) window.location.href = target.href;
-      }
-    }, { passive: true });
-
-    function realignCarousel() {
-      container.scrollTo({ left: currentIndex * getBoxWidth(), behavior: 'instant' });
-      startAutoScroll();
-    }
-
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(realignCarousel, 100);
-    });
-
-    window.addEventListener('pageshow', (event) => {
-      if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
-        setInitialPosition();
-        startAutoScroll();
-      }
-    });
-
-    setInitialPosition();
-    startAutoScroll();
+  if (!container || totalSlides === 0) {
+    console.warn('Carousel: No slides found.');
+    return;
   }
-});
-</script>
 
-<!-- Unity Loader -->
-  <script>
-    var container = document.querySelector("#unity-container");
-    var canvas = document.querySelector("#unity-canvas");
-    var loadingBar = document.querySelector("#unity-loading-bar");
-    var progressBarFull = document.querySelector("#unity-progress-bar-full");
-    var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-    var warningBanner = document.querySelector("#unity-warning");
+  let autoScrollInterval;
+  let currentIndex = 0;
 
-    function unityShowBanner(msg, type) {
-      function updateBannerVisibility() {
-        warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+  // Clone first slide for looping
+  const firstClone = slides[0].cloneNode(true);
+  container.appendChild(firstClone);
+
+  function setInitialPosition() {
+    container.scrollTo({ left: 0, behavior: 'instant' });
+    currentIndex = 0;
+  }
+
+  function getBoxWidth() {
+    const slideWidth = slides[0].offsetWidth;
+    const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+    return slideWidth + slideMargin;
+  }
+
+  function startAutoScroll() {
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex >= totalSlides + 1) {
+        container.scrollTo({ left: 0, behavior: 'instant' });
+        currentIndex = 1;
       }
-      var div = document.createElement('div');
-      div.innerHTML = msg;
-      warningBanner.appendChild(div);
-      if (type == 'error') div.style = 'background: red; padding: 10px;';
-      else {
-        if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-        setTimeout(() => {
-          warningBanner.removeChild(div);
-          updateBannerVisibility();
-        }, 5000);
-      }
-      updateBannerVisibility();
-    }
-
-    var buildUrl = "Build";
-    var loaderUrl = buildUrl + "/GiddGameWeb.loader.js";
-    var config = {
-      dataUrl: buildUrl + "/GiddGameWeb.data.unityweb",
-      frameworkUrl: buildUrl + "/GiddGameWeb.framework.js.unityweb",
-      codeUrl: buildUrl + "/GiddGameWeb.wasm.unityweb",
-      streamingAssetsUrl: "StreamingAssets",
-      companyName: "DefaultCompany",
-      productName: "giddy",
-      productVersion: "1.0",
-      showBanner: unityShowBanner,
-    };
-
-    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      container.classList.add("unity-mobile");
-      canvas.classList.add("unity-mobile");
-    } else {
-      container.classList.add("unity-desktop");
-      canvas.style.width = "960px";
-      canvas.style.height = "600px";
-    }
-
-    loadingBar.style.display = "block";
-
-    var script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = () => {
-      createUnityInstance(canvas, config, (progress) => {
-        progressBarFull.style.width = (100 * progress) + "%";
-      }).then((unityInstance) => {
-        loadingBar.style.display = "none";
-        window.unityInstance = unityInstance; // Make accessible for fullscreen trigger
-        if (fullscreenButton) {
-          fullscreenButton.onclick = () => unityInstance.SetFullscreen(1);
-        }
-      }).catch((message) => alert(message));
-    };
-    document.body.appendChild(script);
-  </script>
-
-  <!-- Global resize handler for dynamic changes (address bar collapse, rotation, fullscreen) -->
-  <script>
-    // Runs continuously – catches address bar hide, rotation, fullscreen changes
-    window.addEventListener('resize', () => {
-      if (window.unityInstance) {
-        const canvas = document.querySelector('#unity-canvas');
-        if (canvas) {
-          canvas.style.width = '100vw';
-          canvas.style.height = '100dvh';
-          // Extra kick for Unity engine resize
-          window.unityInstance.SendMessage('GameController', 'OnResize'); // optional - if you have a method in Unity
-        }
-      }
-    });
-
-    // iOS-specific visualViewport for address bar collapse detection
-    if ('visualViewport' in window) {
-      window.visualViewport.addEventListener('resize', () => {
-        window.dispatchEvent(new Event('resize'));
+      container.scrollTo({
+        left: currentIndex * getBoxWidth(),
+        behavior: 'smooth'
       });
+    }, 8000);
+  }
+
+  // Disable ALL manual scrolling
+  container.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  container.addEventListener('wheel', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  // Tap detection
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+
+  container.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    if (!touchMoved) {
+      const target = e.target.closest('a');
+      if (target && target.href) {
+        window.location.href = target.href;
+      }
     }
-  </script>
+  }, { passive: true });
 
-  <!-- Platform Flags + Banner Visibility -->
-  <script>
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    const isIOS = /iPhone|iPod/i.test(navigator.userAgent);
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  // Resize handling
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      container.scrollTo({
+        left: currentIndex * getBoxWidth(),
+        behavior: 'instant'
+      });
+      startAutoScroll();
+    }, 100);
+  });
 
-    if (isAndroid) document.body.classList.add('is-android');
-    if (isIOS) document.body.classList.add('is-ios');
-    if (isPWA) document.body.classList.add('is-pwa');
+  // Init
+  setInitialPosition();
+  startAutoScroll();
+});
+    </script>
 
-    const bottomBanner = document.querySelector('#bottom-banner');
-    if (bottomBanner && (isAndroid || isPWA || (isIOS && !isPWA))) {
-      bottomBanner.style.display = 'block';
-      document.body.classList.add('banner-visible');
-    }
-  </script>
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var warningBanner = document.querySelector("#unity-warning");
+      var bottomBanner = document.querySelector("#bottom-banner");
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function () {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/GiddGameWeb.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/GiddGameWeb.data.unityweb",
+        frameworkUrl: buildUrl + "/GiddGameWeb.framework.js.unityweb",
+        codeUrl: buildUrl + "/GiddGameWeb.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "giddy",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        container.className = "unity-mobile";
+        canvas.className = "unity-mobile";
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
+      loadingBar.style.display = "block";
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
 
-  <!-- Site scripts (non-critical) -->
-  <script src="../assets/js/jquery.scrollex.min.js"></script>
-  <script src="../assets/js/jquery.scrolly.min.js"></script>
-  <script src="../assets/js/util.js"></script>
-  <script src="../assets/js/breakpoints.min.js"></script>
-  <script src="../assets/js/main.js"></script>
+    <script>
+      // Detect platform
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isPWA =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+      // Add classes for CSS targeting
+      if (isAndroid) {
+        document.body.classList.add('is-android');
+      }
+      if (isIOS) {
+        document.body.classList.add('is-ios');
+      }
+      if (isPWA) {
+        document.body.classList.add('is-pwa');
+      }
+      // Show banner only on Android or PWA + add class for height adjustments
+      if (bottomBanner && (isAndroid || isPWA)) {
+        bottomBanner.style.display = 'block';
+        document.body.classList.add('banner-visible');  // ← new: for canvas height subtraction
+      }
+    </script>
+    
+    <!-- Link to non-critical JavaScript files -->
+    <script src="../assets/js/jquery.scrollex.min.js"></script>
+    <script src="../assets/js/jquery.scrolly.min.js"></script>
+    <script src="../assets/js/util.js"></script>
+    <script src="../assets/js/breakpoints.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+  </div>
 </body>
-
-</html>
