@@ -2,12 +2,14 @@
 body {
   padding: 0;
   margin: 0;
+  padding-bottom: env(safe-area-inset-bottom); /* prevents home bar overlap */
+  padding-top: env(safe-area-inset-top);       /* status bar */
 }
 
 /* UNITY CONTAINER BASE */
 #unity-container {
   position: absolute;
-  overflow: hidden; /* lock scroll inside container */
+  overflow: hidden;
 }
 
 /* DESKTOP CENTERING */
@@ -17,7 +19,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* MOBILE FULLSCREEN CONTAINER - Android/iOS optimized */
+/* MOBILE FULLSCREEN CONTAINER - optimized for iPhone 16 & tall Android */
 #unity-container.unity-mobile {
   position: fixed;
   top: 0;
@@ -37,11 +39,10 @@ body {
   background: #231F20;
 }
 
-/* MOBILE CANVAS - base fit */
+/* MOBILE CANVAS - base fit (no banner) */
 .unity-mobile #unity-canvas {
-  width: 100%;
-  height: calc(100dvh - 90px); /* perfect Android fit: reserve space for bottom banner */
-  max-height: calc(100dvh - 90px);
+  width: 100vw;
+  height: 100dvh;
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -49,21 +50,21 @@ body {
   z-index: 1;
 }
 
-/* BANNER-VISIBLE OVERRIDES - "perfect Android fit" applied to Android + iPhone web */
+/* BANNER-VISIBLE OVERRIDES - perfect fit for iPhone 16 & tall screens */
 .banner-visible #unity-container.unity-mobile #unity-canvas {
-  height: calc(100dvh - 90px);
-  max-height: calc(100dvh - 90px);
-  width: 100vw; /* full width, no overflow */
+  height: calc(100dvh - 90px - env(safe-area-inset-bottom, 0px)); /* reserve banner + safe area */
+  max-height: calc(100dvh - 90px - env(safe-area-inset-bottom, 0px));
+  width: 100vw;
   max-width: 100vw;
   margin-left: 0;
-  object-fit: contain; /* keeps aspect ratio perfect */
+  object-fit: contain;
 }
 
-/* TALL-SCREEN OVERRIDES (for very tall devices like Galaxy S24 Ultra, Pixel 9 Pro XL) */
-@media screen and (min-aspect-ratio: 10/19) {
+/* TALL-SCREEN OVERRIDES (iPhone 16 series ~19.5:9, Galaxy S25 similar) */
+@media screen and (min-aspect-ratio: 19.5/9) {
   .banner-visible #unity-container.unity-mobile #unity-canvas {
-    height: calc(100dvh - 100px); /* extra margin for tall screens */
-    max-height: calc(100dvh - 100px);
+    height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px)); /* extra margin for very tall */
+    max-height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px));
     width: 100vw;
     max-width: 100vw;
     margin-left: 0;
@@ -71,6 +72,7 @@ body {
   .banner-visible #unity-container.unity-mobile #bottom-banner {
     margin-top: 20px;
     margin-bottom: 20px;
+    padding-bottom: env(safe-area-inset-bottom, 0px); /* home bar space */
   }
 }
 
@@ -149,7 +151,7 @@ body {
 }
 
 /* ----------------------------- */
-/* CLICKABLE BOTTOM BANNER - Android perfect fit */
+/* CLICKABLE BOTTOM BANNER - perfect fit for iPhone 16 & Android tall screens */
 /* ----------------------------- */
 .unity-mobile #bottom-banner {
   height: 90px;
@@ -165,6 +167,7 @@ body {
   display: flex !important;
   align-items: center;
   justify-content: center;
+  padding-bottom: env(safe-area-inset-bottom, 0px); /* iOS home bar space */
 }
 
 /* CAROUSEL WRAPPER */
