@@ -23,7 +23,7 @@ body {
   padding-top: env(safe-area-inset-top);
 }
 
-/* Banner visible - reserve exact space */
+/* When banner is visible - reserve exactly the banner height + bottom inset */
 body.banner-visible #unity-container {
   height: calc(100dvh - 90px);
   padding-bottom: calc(90px + env(safe-area-inset-bottom));
@@ -39,28 +39,32 @@ body.banner-visible #unity-container {
   height: auto;
 }
 
-/* MOBILE CANVAS - default fill with crop */
+/* MOBILE CANVAS - default fill with crop in browser portrait */
 .unity-mobile #unity-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;                   /* crops sides in browser portrait */
+  object-fit: cover;                   /* crops sides in browser */
   background: #231F20;
 }
 
-/* PWA/standalone mode - full visibility, less crop, respect notch */
+/* Strong PWA/standalone mode - full visibility, no side push-off, respect notch */
 @media (display-mode: standalone) {
   .unity-mobile #unity-canvas {
-    object-fit: contain !important;    /* full frame, no heavy side crop */
+    object-fit: contain !important;    /* full frame visible, no heavy crop */
     background: #000;
-    padding-top: env(safe-area-inset-top); /* push down from top cutout/notch */
+    padding-top: env(safe-area-inset-top);    /* push down from top cutout/notch */
+    padding-bottom: env(safe-area-inset-bottom);
     box-sizing: border-box;
+    max-width: 100%;
+    max-height: 100%;
   }
 
   #unity-container {
     padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   body.banner-visible #unity-container {
@@ -69,10 +73,10 @@ body.banner-visible #unity-container {
   }
 }
 
-/* Very tall iPhone PWA fallback - avoid excessive letterbox */
+/* Very tall iPhone PWA fallback - reduce letterbox */
 @media (display-mode: standalone) and (min-aspect-ratio: 9/19) {
   .unity-mobile #unity-canvas {
-    object-fit: scale-down;            /* scales down to fit, no crop */
+    object-fit: scale-down;            /* scales down to fit without crop */
   }
 }
 
@@ -85,7 +89,7 @@ body.banner-visible #unity-container {
   .unity-mobile #unity-canvas {
     width: auto;
     height: 100%;
-    max-width: 100dvh * (960 / 600);   /* native 960x600 aspect */
+    max-width: 100dvh * (960 / 600);   /* native aspect ratio centering */
     margin: 0 auto;
     object-fit: contain;
   }
@@ -180,35 +184,24 @@ body.banner-visible #unity-container {
   bottom: 0;
   left: 0;
   background: #000;
-  transition: height 0.35s ease-out, opacity 0.35s ease-out;
-  overflow: hidden;
+  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+  will-change: transform, opacity;
   z-index: 9998;
-  height: auto;
-  max-height: calc(90px + env(safe-area-inset-bottom));
 }
 
-/* Collapsed: shrink to zero */
-#banner-drawer.closed {
-  height: 0;
-  max-height: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Drawer content fade */
+/* Drawer content */
 #banner-drawer-content {
-  transition: opacity 0.35s ease;
+  width: 100%;
+  background: #000;
+  transition: opacity 0.25s ease;
+  overflow: hidden;
 }
 
-#banner-drawer.closed #banner-drawer-content {
-  opacity: 0;
-}
-
-/* Banner wrapper */
+/* Banner wrapper - centered and tucked */
 #banner-drawer #bottom-banner {
   height: 90px;
   width: calc(100% - 20px);
-  margin: auto;
+  margin: 0 auto 8px; /* tucked nicely with small bottom margin */
   box-sizing: border-box;
   background: none;
   border: none;
@@ -221,24 +214,20 @@ body.banner-visible #unity-container {
   justify-content: center;
 }
 
-/* Tall portrait adjustment */
+/* Adjustment for very tall portrait screens */
 @media screen and (min-aspect-ratio: 10/19) {
   #banner-drawer #bottom-banner {
     height: 100px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  #banner-drawer {
-    max-height: calc(100px + env(safe-area-inset-bottom));
+    margin: 20px auto 20px;
   }
 }
 
 /* ============================================
-   DRAWER HANDLE
+   DRAWER HANDLE - original centered/tucked position
    ============================================ */
 #banner-drawer-handle {
   position: fixed;
-  bottom: calc(env(safe-area-inset-bottom) + 8px);
+  bottom: calc(env(safe-area-inset-bottom) + 0px); /* tucked just above banner */
   left: 50%;
   transform: translateX(-50%);
   width: 36px;
@@ -254,26 +243,43 @@ body.banner-visible #unity-container {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   z-index: 9999;
-  transition: opacity 0.35s ease;
 }
 
+/* Drawer closed state - fully disappear (no black rectangle/shortened area) */
+#banner-drawer.closed {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden; /* removes from layout flow */
+  height: 0 !important;
+}
+
+/* Handle on close - hide completely */
 #banner-drawer.closed #banner-drawer-handle {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
 }
 
-/* Remove pseudo arrows */
+/* Drawer content fade on close */
+#banner-drawer.closed #banner-drawer-content {
+  opacity: 0;
+}
+
+/* Remove pseudo arrows if any */
 #banner-drawer-handle::after {
   content: none !important;
 }
 
-/* Hide on Android + PWA */
+/* Hide handle on Android + PWA */
 body.is-android #banner-drawer-handle,
 body.is-pwa #banner-drawer-handle {
   display: none !important;
 }
 
-/* CAROUSEL (unchanged) */
+/* ============================================
+   CAROUSEL
+   ============================================ */
 .ad-banner-wrapper {
   width: 100%;
   overflow: hidden;
