@@ -37,7 +37,7 @@
   <!-- Meta Description (for SEO) -->
   <title>Giddy's Blinko | OFiDCrypt</title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="description"
     content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="keywords" content="cryptocurrency, kinnected wallet, vip, OFiDCrypt, crypto community">
@@ -138,106 +138,106 @@
     </div>
 
     <script>
-document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('DOMContentLoaded', () => {
 
-  // Run on iPhone Safari, Android, and PWAs — NOT desktop
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isPWA =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
+        // Run on iPhone Safari, Android, and PWAs — NOT desktop
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isPWA =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true;
 
-  if (!isMobile && !isPWA) {
-    return; // desktop only → no carousel
-  }
+        if (!isMobile && !isPWA) {
+          return; // desktop only → no carousel
+        }
 
-  const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
-  const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
-  const totalSlides = slides.length;
+        const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
+        const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
+        const totalSlides = slides.length;
 
-  if (!container || totalSlides === 0) {
-    console.warn('Carousel: No slides found.');
-    return;
-  }
+        if (!container || totalSlides === 0) {
+          console.warn('Carousel: No slides found.');
+          return;
+        }
 
-  let autoScrollInterval;
-  let currentIndex = 0;
+        let autoScrollInterval;
+        let currentIndex = 0;
 
-  // Clone first slide for looping
-  const firstClone = slides[0].cloneNode(true);
-  container.appendChild(firstClone);
+        // Clone first slide for looping
+        const firstClone = slides[0].cloneNode(true);
+        container.appendChild(firstClone);
 
-  function setInitialPosition() {
-    container.scrollTo({ left: 0, behavior: 'instant' });
-    currentIndex = 0;
-  }
+        function setInitialPosition() {
+          container.scrollTo({ left: 0, behavior: 'instant' });
+          currentIndex = 0;
+        }
 
-  function getBoxWidth() {
-    const slideWidth = slides[0].offsetWidth;
-    const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-    return slideWidth + slideMargin;
-  }
+        function getBoxWidth() {
+          const slideWidth = slides[0].offsetWidth;
+          const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+          return slideWidth + slideMargin;
+        }
 
-  function startAutoScroll() {
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = setInterval(() => {
-      currentIndex++;
-      if (currentIndex >= totalSlides + 1) {
-        container.scrollTo({ left: 0, behavior: 'instant' });
-        currentIndex = 1;
-      }
-      container.scrollTo({
-        left: currentIndex * getBoxWidth(),
-        behavior: 'smooth'
+        function startAutoScroll() {
+          clearInterval(autoScrollInterval);
+          autoScrollInterval = setInterval(() => {
+            currentIndex++;
+            if (currentIndex >= totalSlides + 1) {
+              container.scrollTo({ left: 0, behavior: 'instant' });
+              currentIndex = 1;
+            }
+            container.scrollTo({
+              left: currentIndex * getBoxWidth(),
+              behavior: 'smooth'
+            });
+          }, 8000);
+        }
+
+        // Disable ALL manual scrolling
+        container.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+        }, { passive: false });
+
+        container.addEventListener('wheel', (e) => {
+          e.preventDefault();
+        }, { passive: false });
+
+        // Tap detection
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchMoved = false;
+
+        container.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          touchMoved = false;
+        }, { passive: true });
+
+        container.addEventListener('touchend', (e) => {
+          if (!touchMoved) {
+            const target = e.target.closest('a');
+            if (target && target.href) {
+              window.location.href = target.href;
+            }
+          }
+        }, { passive: true });
+
+        // Resize handling
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            container.scrollTo({
+              left: currentIndex * getBoxWidth(),
+              behavior: 'instant'
+            });
+            startAutoScroll();
+          }, 100);
+        });
+
+        // Init
+        setInitialPosition();
+        startAutoScroll();
       });
-    }, 8000);
-  }
-
-  // Disable ALL manual scrolling
-  container.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-  }, { passive: false });
-
-  container.addEventListener('wheel', (e) => {
-    e.preventDefault();
-  }, { passive: false });
-
-  // Tap detection
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchMoved = false;
-
-  container.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchMoved = false;
-  }, { passive: true });
-
-  container.addEventListener('touchend', (e) => {
-    if (!touchMoved) {
-      const target = e.target.closest('a');
-      if (target && target.href) {
-        window.location.href = target.href;
-      }
-    }
-  }, { passive: true });
-
-  // Resize handling
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      container.scrollTo({
-        left: currentIndex * getBoxWidth(),
-        behavior: 'instant'
-      });
-      startAutoScroll();
-    }, 100);
-  });
-
-  // Init
-  setInitialPosition();
-  startAutoScroll();
-});
     </script>
 
     <script>
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('banner-visible');  // ← new: for canvas height subtraction
       }
     </script>
-    
+
     <!-- Link to non-critical JavaScript files -->
     <script src="../assets/js/jquery.scrollex.min.js"></script>
     <script src="../assets/js/jquery.scrolly.min.js"></script>
