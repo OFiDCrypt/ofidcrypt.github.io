@@ -326,40 +326,43 @@
   window.addEventListener('pageshow', function(event) {
     if (event.persisted) {  // Restored from bfcache (iOS PWA return or back button)
       requestAnimationFrame(() => {
-        // 1. Re-apply canvas size safely (keeps game scaled, fixes blank)
+        // 1. Re-apply canvas size safely (keeps game scaled, fixes cut-off top/empty space)
         const canvas = document.querySelector('#unity-canvas');
         if (canvas) {
           canvas.style.width = '100vw';
-          canvas.style.height = 'calc(100dvh - 90px)';  // reserve banner space
+          canvas.style.height = 'calc(100dvh - 90px)';  // reserve banner space, adjust if needed
         }
 
-        // 2. Force banner repaint & re-init carousel (fixes blank Kraken banner)
+        // 2. Force banner repaint & re-init carousel (fixes frozen Kraken banner on return)
         const bottomBanner = document.querySelector('#bottom-banner');
         if (bottomBanner) {
           bottomBanner.style.display = 'none';
           bottomBanner.offsetHeight; // trigger reflow
           bottomBanner.style.display = 'block';
           
-          // Re-init carousel (from your DOMContentLoaded logic)
-          const container = bottomBanner.querySelector('.ad-scroll-container-mobile');
-          if (container) {
-            setInitialPosition();  // your function to reset to first slide
-            startAutoScroll();     // your function to restart interval
-          }
+          // Re-init carousel (call your functions)
+          setInitialPosition();  // reset to first slide
+          startAutoScroll();     // restart interval
         }
 
-        // 3. Double resize dispatch for Unity & viewport sync
+        // 3. Double resize dispatch for Unity & viewport sync (fixes cut-off)
         window.dispatchEvent(new Event('resize'));
         setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
       });
     }
   });
 
-  // Bonus: Continuous visualViewport listener (catches iOS dynamic bar shifts)
+  // Continuous visualViewport listener (catches iOS dynamic bar shifts)
   if ('visualViewport' in window) {
     window.visualViewport.addEventListener('resize', () => {
       window.dispatchEvent(new Event('resize'));
     });
+  }
+
+  // iOS-specific safe-area handling (prevents UI element overlaps/blank space)
+  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    document.body.style.paddingBottom = 'env(safe-area-inset-bottom)';
+    document.body.style.paddingTop = 'env(safe-area-inset-top)';
   }
 </script>
 
