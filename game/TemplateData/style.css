@@ -1,104 +1,49 @@
-/* RESET - allow normal page scrolling with smooth iOS feel */
-html {
-  height: 100%;
-  overflow-y: auto;
-}
-
+/* RESET */
 body {
-  margin: 0;
   padding: 0;
-  min-height: 100vh;
-  background: #000;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: none;
+  margin: 0;
 }
-
 /* UNITY CONTAINER BASE */
 #unity-container {
-  position: relative;
-  width: 100%;
-  height: 100dvh;                      /* dynamic for browser UI changes */
-  background: #000;
-  overflow: hidden;
-  padding-top: env(safe-area-inset-top);
-}
-
-/* Banner visible - reserve exact space */
-body.banner-visible #unity-container {
-  height: calc(100dvh - 90px);
-  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  position: absolute;
 }
 
 /* DESKTOP CENTERING */
 #unity-container.unity-desktop {
-  position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: auto;
-  height: auto;
 }
-
-/* MOBILE CANVAS - default fill with crop in browser portrait */
-.unity-mobile #unity-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;                   /* crops sides in browser */
+/* MOBILE FULLSCREEN CONTAINER */
+#unity-container.unity-mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background: #000;
+  overflow: hidden;
+}
+/* CANVAS BASE */
+#unity-canvas {
   background: #231F20;
 }
-
-/* Strong PWA/standalone mode - full visibility, respect notch */
-@media (display-mode: standalone) {
-  .unity-mobile #unity-canvas {
-    object-fit: contain !important;    /* full frame, no heavy side crop */
-    background: #000;
-    padding-top: env(safe-area-inset-top);    /* push down from top cutout/notch */
-    padding-bottom: env(safe-area-inset-bottom);
-    box-sizing: border-box;
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  #unity-container {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-
-  body.banner-visible #unity-container {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: calc(90px + env(safe-area-inset-bottom));
-  }
+/* iPHONE/iOS FULLSCREEN FIX */
+.unity-mobile #unity-canvas {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
-
-/* Very tall iPhone PWA fallback - reduce letterbox */
-@media (display-mode: standalone) and (min-aspect-ratio: 9/19) {
-  .unity-mobile #unity-canvas {
-    object-fit: scale-down;            /* scales down to fit without crop */
-  }
-}
-
-/* Landscape - wide support */
-@media (orientation: landscape) {
-  #unity-container {
-    height: 100dvh;
-    padding: 0;
-  }
-  .unity-mobile #unity-canvas {
-    width: auto;
-    height: 100%;
-    max-width: 100dvh * (960 / 600);   /* native aspect ratio centering */
-    margin: 0 auto;
-    object-fit: contain;
-  }
-  body.banner-visible #unity-container {
-    height: 100dvh;
-  }
-}
-
-/* UNITY LOADING BAR - centered */
+/* LOADING BAR */
 #unity-loading-bar {
   position: absolute;
   left: 50%;
@@ -107,22 +52,22 @@ body.banner-visible #unity-container {
   display: none;
   z-index: 99999;
 }
-
 #unity-logo {
   width: 154px;
   height: 130px;
   background: url('unity-logo-dark.png') no-repeat center;
 }
-
+/* PROGRESS BAR */
 #unity-progress-bar-empty {
   width: 141px;
   height: 18px;
   margin-top: 10px;
+  margin-left: 6.5px;
   background: url('progress-bar-empty-dark.png') no-repeat left;
   position: relative;
   overflow: hidden;
+  box-sizing: content-box;
 }
-
 #unity-progress-bar-full {
   width: 0%;
   height: 18px;
@@ -130,24 +75,21 @@ body.banner-visible #unity-container {
   position: absolute;
   top: 0;
   left: 0;
+  box-sizing: content-box;
 }
-
-/* UNITY FOOTER - hide on mobile */
+/* FOOTER */
 #unity-footer {
   position: relative;
 }
-
 .unity-mobile #unity-footer {
   display: none;
 }
-
 #unity-webgl-logo {
   float: left;
   width: 204px;
   height: 38px;
   background: url('webgl-logo.png') no-repeat center;
 }
-
 #unity-build-title {
   float: right;
   margin-right: 10px;
@@ -156,7 +98,6 @@ body.banner-visible #unity-container {
   color: white;
   font-size: 18px;
 }
-
 #unity-fullscreen-button {
   cursor: pointer;
   float: right;
@@ -164,7 +105,6 @@ body.banner-visible #unity-container {
   height: 38px;
   background: url('fullscreen-button.png') no-repeat center;
 }
-
 #unity-warning {
   position: absolute;
   left: 50%;
@@ -174,35 +114,13 @@ body.banner-visible #unity-container {
   padding: 10px;
   display: none;
 }
-
-/* ============================================
-   BANNER DRAWER — FIXED TO BOTTOM
-   ============================================ */
-#banner-drawer {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background: #000;
-  transition: transform 0.25s ease-out, opacity 0.25s ease-out, height 0.25s ease-out;
-  will-change: transform, opacity, height;
-  z-index: 9998;
-  overflow: hidden;
-}
-
-/* Drawer content */
-#banner-drawer-content {
-  width: 100%;
-  background: #000;
-  transition: opacity 0.25s ease;
-  overflow: hidden;
-}
-
-/* Banner wrapper - centered and tucked */
-#banner-drawer #bottom-banner {
+/* ----------------------------- */
+/* CLICKABLE BOTTOM BANNER */
+/* ----------------------------- */
+.unity-mobile #bottom-banner {
   height: 90px;
   width: calc(100% - 20px);
-  margin: 0 auto 8px;  /* tucked nicely with small bottom margin */
+  margin: auto;
   box-sizing: border-box;
   background: none;
   border: none;
@@ -210,84 +128,40 @@ body.banner-visible #unity-container {
   z-index: 9999;
   pointer-events: auto;
   border-radius: 10px;
+  /* override inline display:block */
   display: flex !important;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* vertical centering */
+  justify-content: center; /* horizontal centering */
 }
-
-/* Adjustment for very tall portrait screens */
+/* BANNER-VISIBLE OVERRIDES (Android or PWA) */
+.banner-visible #unity-container.unity-mobile #unity-canvas {
+  height: calc(100dvh - 90px);
+  max-height: calc(100dvh - 90px);
+  width: 102vw;
+  max-width: 102vw;
+  margin-left: -1vw;
+}
+/* TALL-SCREEN OVERRIDES (for very tall devices) */
 @media screen and (min-aspect-ratio: 10/19) {
-  #banner-drawer #bottom-banner {
-    height: 100px;
-    margin: 20px auto 20px;
+  .banner-visible #unity-container.unity-mobile #unity-canvas {
+    height: calc(100dvh - 100px);
+    max-height: calc(100dvh - 100px);
+    width: 102vw;
+    max-width: 102vw;
+    margin-left: -1vw;
+  }
+  .banner-visible #unity-container.unity-mobile #bottom-banner {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
-
-/* ============================================
-   DRAWER HANDLE - centered/tucked (original position)
-   ============================================ */
-#banner-drawer-handle {
-  position: fixed;
-  bottom: calc(env(safe-area-inset-bottom) + 0px); /* tucked just above banner */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 36px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: white;
-  cursor: pointer;
-  background: rgba(0,0,0,0.35);
-  border-radius: 14px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 9999;
-  transition: opacity 0.25s ease;
-}
-
-#banner-drawer.closed #banner-drawer-handle {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-
-/* Drawer closed state - fully disappear (no black rectangle/shortened area) */
-#banner-drawer.closed {
-  transform: translateY(100%);
-  height: 0 !important;
-  max-height: 0 !important;
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden; /* removes from layout flow */
-}
-
-/* Drawer content fade on close */
-#banner-drawer.closed #banner-drawer-content {
-  opacity: 0;
-}
-
-/* Remove pseudo arrows if any */
-#banner-drawer-handle::after {
-  content: none !important;
-}
-
-/* Hide on Android + PWA */
-body.is-android #banner-drawer-handle,
-body.is-pwa #banner-drawer-handle {
-  display: none !important;
-}
-
-/* ============================================
-   CAROUSEL
-   ============================================ */
+/* CAROUSEL WRAPPER */
 .ad-banner-wrapper {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
-
+/* MOBILE SCROLL CONTAINER */
 .ad-scroll-container-mobile {
   display: flex;
   flex-direction: row;
@@ -299,11 +173,10 @@ body.is-pwa #banner-drawer-handle {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
 .ad-scroll-container-mobile::-webkit-scrollbar {
   display: none;
 }
-
+/* SLIDES */
 .ad-scroll-container-mobile .ad-slide {
   flex: 0 0 auto;
   width: 100%;
@@ -313,10 +186,34 @@ body.is-pwa #banner-drawer-handle {
   text-decoration: none !important;
   border: none !important;
 }
-
+/* LINK STATES */
+.ad-scroll-container-mobile .ad-slide:link,
+.ad-scroll-container-mobile .ad-slide:visited,
+.ad-scroll-container-mobile .ad-slide:hover,
+.ad-scroll-container-mobile .ad-slide:active,
+.ad-scroll-container-mobile .ad-slide:focus {
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* IMAGES */
 .ad-scroll-container-mobile .ad-slide img {
   width: 100%;
   height: auto;
   border-radius: 10px;
   display: block;
+}
+/* ENSURE INNER CONTAINER DOESN’T FIGHT CENTERING */
+.unity-mobile #bottom-banner .ad-scroll-container-mobile {
+  height: auto;
+  margin: 0;
+  padding: 0 10px;
+}
+/* iPhone browser only (not PWA) — extra fullscreen nudge */
+@supports (-webkit-touch-callout: none) {
+  body:not(.is-pwa) #unity-canvas {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
 }
