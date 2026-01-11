@@ -321,24 +321,31 @@
       }
     </script>
 
-<!-- Fix PWA back-forward cache + viewport shift + banner repaint on iPhone standalone return -->
+<!-- Fix PWA back-forward cache + viewport shift + banner repaint on iOS standalone return -->
 <script>
   window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {  // Restored from bfcache (back button in PWA)
+    if (event.persisted) {  // Restored from bfcache (iOS PWA return or back button)
       requestAnimationFrame(() => {
-        // 1. Re-apply canvas size safely (keeps game scaled)
+        // 1. Re-apply canvas size safely (keeps game scaled, fixes blank)
         const canvas = document.querySelector('#unity-canvas');
         if (canvas) {
           canvas.style.width = '100vw';
-          canvas.style.height = '100dvh';
+          canvas.style.height = 'calc(100dvh - 90px)';  // reserve banner space
         }
 
-        // 2. Force banner repaint (fixes blank area until loop resets)
+        // 2. Force banner repaint & re-init carousel (fixes blank Kraken banner)
         const bottomBanner = document.querySelector('#bottom-banner');
         if (bottomBanner) {
           bottomBanner.style.display = 'none';
-          bottomBanner.offsetHeight; // trigger reflow on banner only
+          bottomBanner.offsetHeight; // trigger reflow
           bottomBanner.style.display = 'block';
+          
+          // Re-init carousel (from your DOMContentLoaded logic)
+          const container = bottomBanner.querySelector('.ad-scroll-container-mobile');
+          if (container) {
+            setInitialPosition();  // your function to reset to first slide
+            startAutoScroll();     // your function to restart interval
+          }
         }
 
         // 3. Double resize dispatch for Unity & viewport sync
@@ -348,13 +355,14 @@
     }
   });
 
-  // Bonus: Continuous visualViewport listener (catches notch/bar shifts)
+  // Bonus: Continuous visualViewport listener (catches iOS dynamic bar shifts)
   if ('visualViewport' in window) {
     window.visualViewport.addEventListener('resize', () => {
       window.dispatchEvent(new Event('resize'));
     });
   }
 </script>
+
     <!-- Link to non-critical JavaScript files -->
     <script src="../assets/js/jquery.scrollex.min.js"></script>
     <script src="../assets/js/jquery.scrolly.min.js"></script>
