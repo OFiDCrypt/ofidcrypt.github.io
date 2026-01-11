@@ -137,74 +137,74 @@
       </div>
     </div>
 
-<script>document.addEventListener('DOMContentLoaded', () => {  // Run on iPhone Safari, Android, and PWAs — NOT desktop
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isPWA =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;  if (!isMobile && !isPWA) {
-    return; // desktop only → no carousel
-  }  const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
-  const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
-  const totalSlides = slides.length;  if (!container || totalSlides === 0) {
-    console.warn('Carousel: No slides found.');
-    return;
-  }  let autoScrollInterval;
-  let currentIndex = 0;  // Clone first slide for looping
-  const firstClone = slides[0].cloneNode(true);
-  container.appendChild(firstClone);  function setInitialPosition() {
-    container.scrollTo({ left: 0, behavior: 'instant' });
-    currentIndex = 0;
-  }  function getBoxWidth() {
-    const slideWidth = slides[0].offsetWidth;
-    const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-    return slideWidth + slideMargin;
-  }  function startAutoScroll() {
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = setInterval(() => {
-      currentIndex++;
-      if (currentIndex >= totalSlides + 1) {
-        container.scrollTo({ left: 0, behavior: 'instant' });
-        currentIndex = 1;
-      }
-      container.scrollTo({
-        left: currentIndex * getBoxWidth(),
-        behavior: 'smooth'
+    <script>document.addEventListener('DOMContentLoaded', () => {  // Run on iPhone Safari, Android, and PWAs — NOT desktop
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const isPWA =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true; if (!isMobile && !isPWA) {
+            return; // desktop only → no carousel
+          } const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
+        const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
+        const totalSlides = slides.length; if (!container || totalSlides === 0) {
+          console.warn('Carousel: No slides found.');
+          return;
+        } let autoScrollInterval;
+        let currentIndex = 0;  // Clone first slide for looping
+        const firstClone = slides[0].cloneNode(true);
+        container.appendChild(firstClone); function setInitialPosition() {
+          container.scrollTo({ left: 0, behavior: 'instant' });
+          currentIndex = 0;
+        } function getBoxWidth() {
+          const slideWidth = slides[0].offsetWidth;
+          const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+          return slideWidth + slideMargin;
+        } function startAutoScroll() {
+          clearInterval(autoScrollInterval);
+          autoScrollInterval = setInterval(() => {
+            currentIndex++;
+            if (currentIndex >= totalSlides + 1) {
+              container.scrollTo({ left: 0, behavior: 'instant' });
+              currentIndex = 1;
+            }
+            container.scrollTo({
+              left: currentIndex * getBoxWidth(),
+              behavior: 'smooth'
+            });
+          }, 8000);
+        }  // Disable ALL manual scrolling
+        container.addEventListener('touchmove', (e) => {
+          e.preventDefault();
+        }, { passive: false }); container.addEventListener('wheel', (e) => {
+          e.preventDefault();
+        }, { passive: false });  // Tap detection
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchMoved = false; container.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+          touchMoved = false;
+        }, { passive: true }); container.addEventListener('touchend', (e) => {
+          if (!touchMoved) {
+            const target = e.target.closest('a');
+            if (target && target.href) {
+              window.location.href = target.href;
+            }
+          }
+        }, { passive: true });  // Resize handling
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            container.scrollTo({
+              left: currentIndex * getBoxWidth(),
+              behavior: 'instant'
+            });
+            startAutoScroll();
+          }, 100);
+        });  // Init
+        setInitialPosition();
+        startAutoScroll();
       });
-    }, 8000);
-  }  // Disable ALL manual scrolling
-  container.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-  }, { passive: false });  container.addEventListener('wheel', (e) => {
-    e.preventDefault();
-  }, { passive: false });  // Tap detection
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchMoved = false;  container.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchMoved = false;
-  }, { passive: true });  container.addEventListener('touchend', (e) => {
-    if (!touchMoved) {
-      const target = e.target.closest('a');
-      if (target && target.href) {
-        window.location.href = target.href;
-      }
-    }
-  }, { passive: true });  // Resize handling
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      container.scrollTo({
-        left: currentIndex * getBoxWidth(),
-        behavior: 'instant'
-      });
-      startAutoScroll();
-    }, 100);
-  });  // Init
-  setInitialPosition();
-  startAutoScroll();
-});
     </script>
     <script>
       var container = document.querySelector("#unity-container");
@@ -263,7 +263,7 @@
       // existing user projects that might rely on the earlier manual
       // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
       // expected to change.
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ) {
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
         var meta = document.createElement('meta');
         meta.name = 'viewport';
@@ -299,26 +299,49 @@
 
     <script>
       // Detect platform
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isPWA =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
-  // Add classes for CSS targeting
-  if (isAndroid) {
-    document.body.classList.add('is-android');
-  }
-  if (isIOS) {
-    document.body.classList.add('is-ios');
-  }
-  if (isPWA) {
-    document.body.classList.add('is-pwa');
-  }
-  // Show banner only on Android or PWA + add class for height adjustments
-  if (bottomBanner && (isAndroid || isPWA)) {
-    bottomBanner.style.display = 'block';
-    document.body.classList.add('banner-visible');  // ← new: for canvas height subtraction
-  }
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isPWA =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+      // Add classes for CSS targeting
+      if (isAndroid) {
+        document.body.classList.add('is-android');
+      }
+      if (isIOS) {
+        document.body.classList.add('is-ios');
+      }
+      if (isPWA) {
+        document.body.classList.add('is-pwa');
+      }
+      // Show banner only on Android or PWA + add class for height adjustments
+      if (bottomBanner && (isAndroid || isPWA)) {
+        bottomBanner.style.display = 'block';
+        document.body.classList.add('banner-visible');  // ← new: for canvas height subtraction
+      }
+    </script>
+
+    <!-- Fix PWA back-forward cache + viewport shift on iPhone standalone return -->
+    <script>
+      window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {  // Page was restored from bfcache (common on back button in PWA)
+          // Force full re-layout and resize
+          document.body.style.display = 'none';
+          document.body.offsetHeight; // force reflow
+          document.body.style.display = '';
+
+          // Re-apply canvas size
+          const canvas = document.querySelector('#unity-canvas');
+          if (canvas) {
+            canvas.style.width = '100vw';
+            canvas.style.height = '100dvh';
+          }
+
+          // Re-dispatch resize event (helps Unity & viewport recalculate safe areas)
+          window.dispatchEvent(new Event('resize'));
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 100); // double-tap for reliability
+        }
+      });
     </script>
 
     <!-- Link to non-critical JavaScript files -->
