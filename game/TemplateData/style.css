@@ -37,7 +37,7 @@ body {
   background: #231F20;
 }
 
-/* iPHONE/iOS FULLSCREEN FIX */
+/* MOBILE CANVAS - base fit */
 .unity-mobile #unity-canvas {
   width: 100%;
   height: 100%;
@@ -47,6 +47,30 @@ body {
   margin: 0 auto;
   position: relative;
   z-index: 1;
+}
+
+/* BANNER-VISIBLE OVERRIDES - "perfect Android fit" applied to Android + iPhone web */
+.banner-visible #unity-container.unity-mobile #unity-canvas {
+  height: calc(100dvh - 90px);
+  max-height: calc(100dvh - 90px);
+  width: 102vw;
+  max-width: 102vw;
+  margin-left: -1vw;
+}
+
+/* TALL-SCREEN OVERRIDES (for very tall devices) */
+@media screen and (min-aspect-ratio: 10/19) {
+  .banner-visible #unity-container.unity-mobile #unity-canvas {
+    height: calc(100dvh - 100px);
+    max-height: calc(100dvh - 100px);
+    width: 102vw;
+    max-width: 102vw;
+    margin-left: -1vw;
+  }
+  .banner-visible #unity-container.unity-mobile #bottom-banner {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 /* LOADING BAR */
@@ -141,30 +165,6 @@ body {
   display: flex !important;
   align-items: center; /* vertical centering */
   justify-content: center; /* horizontal centering */
-}
-
-/* BANNER-VISIBLE OVERRIDES (Android or PWA or iPhone web - perfect Android fit applied to iPhone web) */
-.banner-visible #unity-container.unity-mobile #unity-canvas {
-  height: calc(100dvh - 90px);
-  max-height: calc(100dvh - 90px);
-  width: 102vw;
-  max-width: 102vw;
-  margin-left: -1vw;
-}
-
-/* TALL-SCREEN OVERRIDES (for very tall devices) */
-@media screen and (min-aspect-ratio: 10/19) {
-  .banner-visible #unity-container.unity-mobile #unity-canvas {
-    height: calc(100dvh - 100px);
-    max-height: calc(100dvh - 100px);
-    width: 102vw;
-    max-width: 102vw;
-    margin-left: -1vw;
-  }
-  .banner-visible #unity-container.unity-mobile #bottom-banner {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
 }
 
 /* CAROUSEL WRAPPER */
