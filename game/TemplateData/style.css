@@ -2,12 +2,17 @@
 body {
   padding: 0;
   margin: 0;
+  background: #000;
 }
 
 /* UNITY CONTAINER BASE */
 #unity-container {
   position: absolute;
-  overflow: hidden; /* lock scroll inside container */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* DESKTOP CENTERING */
@@ -17,13 +22,13 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* MOBILE FULLSCREEN CONTAINER - optimized for iPhone 16 & tall Android */
+/* MOBILE FULLSCREEN CONTAINER */
 #unity-container.unity-mobile {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100dvh;
+  height: 100lvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -37,40 +42,43 @@ body {
   background: #231F20;
 }
 
-/* MOBILE CANVAS - base fit (no banner) */
+/* MOBILE CANVAS - no banner */
 .unity-mobile #unity-canvas {
   width: 100vw;
-  height: 100dvh;
+  height: 100lvh;
   object-fit: contain;
   display: block;
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* BANNER-VISIBLE OVERRIDES - perfect fit for iPhone 16 & tall screens */
+/* BANNER-VISIBLE OVERRIDES */
 .banner-visible #unity-container.unity-mobile #unity-canvas {
-  height: calc(100dvh - 90px - env(safe-area-inset-bottom, 0px)); /* reserve banner + safe area */
-  max-height: calc(100dvh - 90px - env(safe-area-inset-bottom, 0px));
+  height: calc(100lvh - 90px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  max-height: calc(100lvh - 90px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   width: 100vw;
   max-width: 100vw;
-  margin-left: 0;
+  margin: 0;
   object-fit: contain;
 }
 
-/* TALL-SCREEN OVERRIDES (iPhone 16 series ~19.5:9, Galaxy S25 similar) */
-@media screen and (min-aspect-ratio: 19.5/9) {
+/* TALL-SCREEN OVERRIDES (iPhone 16 series, Galaxy S25 Ultra ~19.5:9+) */
+@media screen and (min-aspect-ratio: 19/9) {
   .banner-visible #unity-container.unity-mobile #unity-canvas {
-    height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px)); /* extra margin for very tall */
-    max-height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px));
+    height: calc(100lvh - 100px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    max-height: calc(100lvh - 100px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
     width: 100vw;
     max-width: 100vw;
-    margin-left: 0;
+    margin: 0;
   }
+
   .banner-visible #unity-container.unity-mobile #bottom-banner {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding-bottom: env(safe-area-inset-bottom, 0px); /* home bar space */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
 
@@ -83,13 +91,14 @@ body {
   display: none;
   z-index: 99999;
 }
+
 #unity-logo {
   width: 154px;
   height: 130px;
   background: url('unity-logo-dark.png') no-repeat center;
+  background-size: contain;
 }
 
-/* PROGRESS BAR */
 #unity-progress-bar-empty {
   width: 141px;
   height: 18px;
@@ -98,8 +107,8 @@ body {
   background: url('progress-bar-empty-dark.png') no-repeat left;
   position: relative;
   overflow: hidden;
-  box-sizing: content-box;
 }
+
 #unity-progress-bar-full {
   width: 0%;
   height: 18px;
@@ -107,22 +116,24 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  box-sizing: content-box;
 }
 
-/* FOOTER */
+/* FOOTER (hidden on mobile) */
 #unity-footer {
   position: relative;
 }
+
 .unity-mobile #unity-footer {
   display: none;
 }
+
 #unity-webgl-logo {
   float: left;
   width: 204px;
   height: 38px;
   background: url('webgl-logo.png') no-repeat center;
 }
+
 #unity-build-title {
   float: right;
   margin-right: 10px;
@@ -131,6 +142,7 @@ body {
   color: white;
   font-size: 18px;
 }
+
 #unity-fullscreen-button {
   cursor: pointer;
   float: right;
@@ -138,6 +150,7 @@ body {
   height: 38px;
   background: url('fullscreen-button.png') no-repeat center;
 }
+
 #unity-warning {
   position: absolute;
   left: 50%;
@@ -146,15 +159,14 @@ body {
   background: white;
   padding: 10px;
   display: none;
+  z-index: 10000;
 }
 
-/* ----------------------------- */
-/* CLICKABLE BOTTOM BANNER - perfect fit for iPhone 16 & Android tall screens */
-/* ----------------------------- */
+/* CLICKABLE BOTTOM BANNER */
 .unity-mobile #bottom-banner {
   height: 90px;
   width: calc(100% - 20px);
-  margin: auto;
+  margin: 0 auto;
   box-sizing: border-box;
   background: none;
   border: none;
@@ -165,7 +177,7 @@ body {
   display: flex !important;
   align-items: center;
   justify-content: center;
-  padding-bottom: env(safe-area-inset-bottom, 0px); /* iOS home bar space */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* CAROUSEL WRAPPER */
@@ -187,6 +199,7 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .ad-scroll-container-mobile::-webkit-scrollbar {
   display: none;
 }
@@ -202,7 +215,6 @@ body {
   border: none !important;
 }
 
-/* LINK STATES */
 .ad-scroll-container-mobile .ad-slide:link,
 .ad-scroll-container-mobile .ad-slide:visited,
 .ad-scroll-container-mobile .ad-slide:hover,
@@ -222,33 +234,27 @@ body {
   display: block;
 }
 
-/* ENSURE INNER CONTAINER DOESN’T FIGHT CENTERING */
-.unity-mobile #bottom-banner .ad-scroll-container-mobile {
-  height: auto;
-  margin: 0;
-  padding: 0 10px;
-}
-
-/* iPhone browser only (not PWA) — extra fullscreen nudge */
+/* iPhone-specific (not PWA) - aggressive fullscreen nudge */
 @supports (-webkit-touch-callout: none) {
   body:not(.is-pwa) #unity-canvas {
-    height: 100% !important;
-    max-height: 100% !important;
+    height: 100lvh !important;
+    max-height: 100lvh !important;
   }
 }
 
-/* Safe-area support block - ensures no partial bars/cut-offs on iPhone 16 & similar */
+/* Safe-area support block */
 @supports (padding-top: env(safe-area-inset-top)) {
   body {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
+
   .unity-mobile #unity-canvas {
-    height: calc(100dvh - 90px - env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
+
   #bottom-banner {
-    padding-bottom: env(safe-area-inset-bottom);
-    margin-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    margin-bottom: 0;
   }
 }
