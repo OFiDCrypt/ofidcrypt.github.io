@@ -234,7 +234,7 @@ body {
    ============================================ */
 #banner-drawer-handle {
   position: absolute;
-  top: 0px; /* default when drawer is open */
+  top: 0px; /* default when open */
   left: 50%;
   transform: translateX(-50%);
   width: 36px;
@@ -268,14 +268,14 @@ body {
 #banner-drawer-content {
   width: 100%;
   transition: opacity 0.25s ease;
-  overflow: hidden; /* ensures clean slide */
+  overflow: hidden;
 }
 
 /* ============================================
    BANNER DRAWER — CLOSED STATE
    ============================================ */
 #banner-drawer.closed {
-  transform: translateY(calc(100dvh)); /* fully offscreen */
+  transform: translateY(calc(100dvh));
 }
 
 #banner-drawer.closed #banner-drawer-content {
@@ -284,17 +284,16 @@ body {
 }
 
 /* ============================================
-   BANNER DRAWER — REMOVE PSEUDO ARROWS
-   (JS controls arrow text)
+   REMOVE PSEUDO ARROWS (JS controls arrow)
    ============================================ */
 #banner-drawer-handle::after {
   content: none !important;
 }
 
 /* ============================================
-   BANNER DRAWER — HIDE ON ANDROID + PWA
+   HIDE ONLY THE ARROW ON ANDROID + PWA
    ============================================ */
-body.is-android #banner-drawer,
-body.is-pwa #banner-drawer {
+body.is-android #banner-drawer-handle,
+body.is-pwa #banner-drawer-handle {
   display: none !important;
 }
