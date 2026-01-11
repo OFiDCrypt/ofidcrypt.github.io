@@ -11,7 +11,7 @@
     gtag('config', 'G-3KX9VK5CCH');
   </script>
 
-  <!-- JSON -->
+  <!-- JSON-LD Schema -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -32,74 +32,56 @@
         "https://www.instagram.com/OFiDCrypt"
       ]
     }
-    </script>
+  </script>
 
-  <!-- Meta Description (for SEO) -->
+  <!-- Meta & SEO -->
   <title>Giddy's Blinko | OFiDCrypt</title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <meta name="description"
-    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="keywords" content="cryptocurrency, kinnected wallet, vip, OFiDCrypt, crypto community">
   <meta name="author" content="Tokin ⬢">
 
-  <!-- Open Graph Meta Tags -->
+  <!-- Open Graph / Twitter Cards -->
   <meta property="og:title" content="Giddy's Blinko | OFiDCrypt">
-  <meta property="og:description"
-    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta property="og:description" content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta property="og:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddy-blinko.webp">
   <meta property="og:url" content="https://www.ofidcrypt.com/game/app-play">
   <meta property="og:type" content="website">
 
-  <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Giddy's Blinko | OFiDCrypt">
-  <meta name="twitter:description"
-    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta name="twitter:description" content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="twitter:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddy-blinko.webp">
-  <meta name="twitter:url" content="https://www.ofidcrypt.com/game/app-play">
 
-  <!-- Default ICO file -->
+  <!-- Icons & Apple/PWA Support -->
   <link rel="icon" type="image/x-icon" href="TemplateData/favicon.ico">
-
-  <!-- PNG favicon -->
   <link rel="icon" type="image/png" sizes="1280x1280" href="TemplateData/favicon.png">
-
-  <!-- Apple Touch Icon -->
   <link rel="apple-touch-icon" sizes="180x180" href="TemplateData/apple-touch-icon.png">
 
-  <!-- Apple Compatibility -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#000000">
 
-  <!-- Canonical Preferred URL -->
+  <!-- Canonical -->
   <link rel="canonical" href="https://www.ofidcrypt.com/game/app-play">
 
-  <!-- Stylesheets -->
+  <!-- Styles -->
   <link rel="stylesheet" href="../assets/css/main.css">
-  <noscript>
-    <link rel="stylesheet" href="../assets/css/noscript.css">
-  </noscript>
+  <noscript><link rel="stylesheet" href="../assets/css/noscript.css"></noscript>
+  <link rel="stylesheet" href="TemplateData/style.css">
 
-  <!-- Unity Template Styles (integrated to match your site) -->
-  <link rel="stylesheet" href="TemplateData/style.css"> <!-- Ensure TemplateData/ is uploaded -->
-
-  <!-- JavaScript Libraries -->
+  <!-- Scripts -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="../assets/js/jquery.min.js"></script>
   <script src="../assets/js/browser.min.js"></script>
-
-  <!-- Meta Language -->
-  <meta http-equiv='content-language' content='en-gb'>
 </head>
 
 <body>
-   <!-- ⭐ Unity Container (must contain ONLY Unity elements) -->
-<div id="unity-container">
-
-    <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
+  <!-- Unity Container -->
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
 
     <div id="unity-loading-bar">
       <div id="unity-logo"></div>
@@ -117,196 +99,159 @@
     </div>
   </div>
 
-
-  <!-- ⭐ iPhone Drawer Wrapper (MOVED OUTSIDE unity-container) -->
+  <!-- iPhone Drawer / Banner (outside unity-container) -->
   <div id="banner-drawer">
     <div id="banner-drawer-handle"></div>
 
     <div id="banner-drawer-content">
-
-      <div id="bottom-banner" class="ad-banner-wrapper" style="
-        display: none;
-        height: 90px;
-        flex-shrink: 0;
-        z-index: 10;
-      ">
+      <div id="bottom-banner" class="ad-banner-wrapper" style="display: none; height: 90px; flex-shrink: 0; z-index: 10;">
         <div class="ad-scroll-container-mobile">
-
-          <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
-            class="ad-slide">
-            <img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1">
+          <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index" class="ad-slide">
+            <img src="/assets/images/ledger-nano-s-plus.png" alt="Ledger Nano S Plus">
           </a>
-
           <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
-            <img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2">
+            <img src="/assets/images/kraken-banner-01.PNG" alt="Kraken">
           </a>
-
           <a href="https://freeproducer.ca/" class="ad-slide">
-            <img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3">
+            <img src="/assets/images/banner-free-producer.PNG" alt="Free Producer">
           </a>
-
           <a href="/bouncyball.html#buy-expb" class="ad-slide">
-            <img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4">
+            <img src="/assets/images/expb-banner-01.png" alt="EXPB">
           </a>
-
           <a href="https://t.co/gQBLmw20Qp" class="ad-slide">
-            <img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5">
+            <img src="/assets/images/dobby-banner-01.png" alt="Dobby">
           </a>
-
         </div>
       </div>
-
     </div>
+  </div>
 
-    </div>
+  <!-- Drawer + Carousel + Fullscreen Logic -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPod/i.test(navigator.userAgent); // iPhone only (exclude iPad)
+    const isMobile = isAndroid || isIOS;
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+    // Drawer (collapse-only) – iOS Safari only
+    if (isIOS && !isPWA) {
+      const drawer = document.getElementById('banner-drawer');
+      const handle = document.getElementById('banner-drawer-handle');
 
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isMobile = isAndroid || isIOS;
-  const isPWA =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
+      if (drawer && handle) {
+        let drawerOpen = true;
+        handle.textContent = "▾";
 
-  // -----------------------------
-  // ⭐ Drawer Logic (collapse-only)
-  // -----------------------------
-  if (isIOS && !isPWA) {
-    const drawer = document.getElementById('banner-drawer');
-    const handle = document.getElementById('banner-drawer-handle');
+        handle.addEventListener('click', () => {
+          if (!drawerOpen) return;
 
-    if (drawer && handle) {
-      let drawerOpen = true;
+          drawerOpen = false;
+          drawer.classList.add('closed');
+          handle.textContent = "▴";
 
-      handle.textContent = "▾";
+          setTimeout(() => {
+            handle.style.display = 'none';
+          }, 300);
 
-      handle.addEventListener('click', () => {
-        if (!drawerOpen) return; // no re-open
-
-        drawerOpen = false;
-        drawer.classList.add('closed');
-        handle.textContent = "▴";
-
-        // Hide handle after animation
-        setTimeout(() => {
-          handle.style.display = 'none';
-        }, 300);
-      });
-    }
-  }
-
-  // -----------------------------
-  // ⭐ Carousel Activation Logic
-  // -----------------------------
-  const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
-  const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
-  const totalSlides = slides.length;
-
-  if (container && totalSlides > 0 && (isMobile || isPWA)) {
-
-    let autoScrollInterval;
-    let currentIndex = 0;
-
-    // Clone first slide for seamless loop
-    const firstClone = slides[0].cloneNode(true);
-    container.appendChild(firstClone);
-
-    function setInitialPosition() {
-      container.scrollTo({ left: 0, behavior: 'instant' });
-      currentIndex = 0;
-    }
-
-    function getBoxWidth() {
-      const slideWidth = slides[0].offsetWidth;
-      const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-      return slideWidth + slideMargin;
-    }
-
-    function startAutoScroll() {
-      clearInterval(autoScrollInterval);
-      autoScrollInterval = setInterval(() => {
-        currentIndex++;
-        if (currentIndex >= totalSlides + 1) {
-          container.scrollTo({ left: 0, behavior: 'instant' });
-          currentIndex = 1;
-        }
-        container.scrollTo({
-          left: currentIndex * getBoxWidth(),
-          behavior: 'smooth'
+          // Trigger fullscreen on collapse – only if not very tall screen
+          const aspect = window.innerHeight / window.innerWidth;
+          if (aspect <= 2.0 && window.unityInstance) {
+            window.unityInstance.SetFullscreen(1);
+          }
         });
-      }, 8000);
+      }
     }
 
-    // -----------------------------
-    // ⭐ Freeze-Proof Touch Handling
-    // -----------------------------
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchMoved = false;
+    // Carousel logic (unchanged from your original)
+    const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
+    const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
+    const totalSlides = slides.length;
 
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      touchMoved = false;
-    }, { passive: true });
+    if (container && totalSlides > 0 && (isMobile || isPWA)) {
+      let autoScrollInterval;
+      let currentIndex = 0;
 
-    container.addEventListener('touchmove', (e) => {
-      const dx = Math.abs(e.touches[0].clientX - touchStartX);
-      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      const firstClone = slides[0].cloneNode(true);
+      container.appendChild(firstClone);
 
-      if (dx > dy) {
-        e.preventDefault();
-        touchMoved = true;
+      function setInitialPosition() {
+        container.scrollTo({ left: 0, behavior: 'instant' });
+        currentIndex = 0;
       }
-    }, { passive: false });
 
-    container.addEventListener('touchend', (e) => {
-      if (!touchMoved) {
-        const target = e.target.closest('a');
-        if (target && target.href) {
-          window.location.href = target.href;
+      function getBoxWidth() {
+        const slideWidth = slides[0].offsetWidth;
+        const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+        return slideWidth + slideMargin;
+      }
+
+      function startAutoScroll() {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = setInterval(() => {
+          currentIndex++;
+          if (currentIndex >= totalSlides + 1) {
+            container.scrollTo({ left: 0, behavior: 'instant' });
+            currentIndex = 1;
+          }
+          container.scrollTo({
+            left: currentIndex * getBoxWidth(),
+            behavior: 'smooth'
+          });
+        }, 8000);
+      }
+
+      // Touch handling to prevent conflict with game
+      let touchStartX = 0, touchStartY = 0, touchMoved = false;
+
+      container.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        touchMoved = false;
+      }, { passive: true });
+
+      container.addEventListener('touchmove', (e) => {
+        const dx = Math.abs(e.touches[0].clientX - touchStartX);
+        const dy = Math.abs(e.touches[0].clientY - touchStartY);
+        if (dx > dy) {
+          e.preventDefault();
+          touchMoved = true;
         }
-      }
-    }, { passive: true });
+      }, { passive: false });
 
-    // -----------------------------
-    // ⭐ Resize & PWA return handling
-    // -----------------------------
-    function realignCarousel() {
-      container.scrollTo({
-        left: currentIndex * getBoxWidth(),
-        behavior: 'instant'
-      });
-      startAutoScroll();
-    }
+      container.addEventListener('touchend', (e) => {
+        if (!touchMoved) {
+          const target = e.target.closest('a');
+          if (target && target.href) window.location.href = target.href;
+        }
+      }, { passive: true });
 
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(realignCarousel, 100);
-    });
-
-    // iOS PWA / Safari back-forward cache fix
-    window.addEventListener('pageshow', (event) => {
-      if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
-        setInitialPosition();
+      function realignCarousel() {
+        container.scrollTo({ left: currentIndex * getBoxWidth(), behavior: 'instant' });
         startAutoScroll();
       }
-    });
 
-    // Init
-    setInitialPosition();
-    startAutoScroll();
-  }
-});
-</script>
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(realignCarousel, 100);
+      });
 
-<script>
-  // -----------------------------
-  // ⭐ Unity Loader
-  // -----------------------------
+      window.addEventListener('pageshow', (event) => {
+        if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+          setInitialPosition();
+          startAutoScroll();
+        }
+      });
+
+      setInitialPosition();
+      startAutoScroll();
+    }
+  });
+  </script>
+
+  <!-- Unity Loader -->
+  <script>
   var container = document.querySelector("#unity-container");
   var canvas = document.querySelector("#unity-canvas");
   var loadingBar = document.querySelector("#unity-loading-bar");
@@ -346,11 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-    var meta = document.createElement('meta');
-    meta.name = 'viewport';
-    meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-    document.head.appendChild(meta);
-
     container.classList.add("unity-mobile");
     canvas.classList.add("unity-mobile");
   } else {
@@ -368,41 +308,37 @@ document.addEventListener('DOMContentLoaded', () => {
       progressBarFull.style.width = (100 * progress) + "%";
     }).then((unityInstance) => {
       loadingBar.style.display = "none";
+      window.unityInstance = unityInstance; // Make accessible for fullscreen trigger
       if (fullscreenButton) {
         fullscreenButton.onclick = () => unityInstance.SetFullscreen(1);
       }
     }).catch((message) => alert(message));
   };
   document.body.appendChild(script);
-</script>
+  </script>
 
-<script>
-  // -----------------------------
-  // ⭐ Platform Flags + Banner Visibility
-  // -----------------------------
+  <!-- Platform Flags + Banner Visibility -->
+  <script>
   const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isPWA =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
+  const isIOS = /iPhone|iPod/i.test(navigator.userAgent);
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
   if (isAndroid) document.body.classList.add('is-android');
   if (isIOS) document.body.classList.add('is-ios');
   if (isPWA) document.body.classList.add('is-pwa');
 
   const bottomBanner = document.querySelector('#bottom-banner');
-
   if (bottomBanner && (isAndroid || isPWA || (isIOS && !isPWA))) {
     bottomBanner.style.display = 'block';
     document.body.classList.add('banner-visible');
   }
-</script>
-    
-    <!-- Link to non-critical JavaScript files -->
-    <script src="../assets/js/jquery.scrollex.min.js"></script>
-    <script src="../assets/js/jquery.scrolly.min.js"></script>
-    <script src="../assets/js/util.js"></script>
-    <script src="../assets/js/breakpoints.min.js"></script>
-    <script src="../assets/js/main.js"></script>
-  </div>
+  </script>
+
+  <!-- Site scripts (non-critical) -->
+  <script src="../assets/js/jquery.scrollex.min.js"></script>
+  <script src="../assets/js/jquery.scrolly.min.js"></script>
+  <script src="../assets/js/util.js"></script>
+  <script src="../assets/js/breakpoints.min.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
+</html>

@@ -1,64 +1,56 @@
-/* RESET */
-body {
-  padding: 0;
-  margin: 0;
-  background: #000;
+/* RESET - allow normal page scrolling with smooth iOS feel */
+html {
+  height: 100%;
+  overflow-y: auto;
 }
 
-/* ============================================
-   UNITY CONTAINER BASE
-   ============================================ */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #000;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* UNITY CONTAINER BASE */
 #unity-container {
-  position: absolute;
+  position: relative;
   width: 100%;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* When banner is visible - reserve **exactly** the banner height + bottom inset */
+body.banner-visible #unity-container {
+  height: calc(100vh - 90px);
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
 }
 
 /* DESKTOP CENTERING */
 #unity-container.unity-desktop {
+  position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  width: auto;
+  height: auto;
 }
 
-/* ============================================
-   MOBILE FULLSCREEN CONTAINER
-   ============================================ */
-#unity-container.unity-mobile {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100dvh; /* true fullscreen */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  background: #000;
-  overflow: hidden;
-}
-
-/* ============================================
-   UNITY CANVAS — TRUE 10:16 PORTRAIT SCALING
-   ============================================ */
-#unity-canvas {
+/* MOBILE CANVAS - fill the container completely, crop sides in portrait */
+.unity-mobile #unity-canvas {
+  position: absolute;
+  inset: 0;                     /* top:0 right:0 bottom:0 left:0 */
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;            /* fills tightly → crops excess (mainly sides) */
   background: #231F20;
 }
 
-.unity-mobile #unity-canvas {
-  width: 100vw;          /* fill width */
-  height: auto;          /* scale by width */
-  aspect-ratio: 10 / 16; /* enforce portrait */
-  max-height: 100dvh;    /* prevent overflow */
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-/* ============================================
-   UNITY LOADING BAR (RESTORED)
-   ============================================ */
+/* UNITY LOADING BAR - centered */
 #unity-loading-bar {
   position: absolute;
   left: 50%;
@@ -72,17 +64,16 @@ body {
   width: 154px;
   height: 130px;
   background: url('unity-logo-dark.png') no-repeat center;
+  background-size: contain;
 }
 
 #unity-progress-bar-empty {
   width: 141px;
   height: 18px;
   margin-top: 10px;
-  margin-left: 6.5px;
   background: url('progress-bar-empty-dark.png') no-repeat left;
   position: relative;
   overflow: hidden;
-  box-sizing: content-box;
 }
 
 #unity-progress-bar-full {
@@ -92,12 +83,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  box-sizing: content-box;
 }
 
-/* ============================================
-   UNITY FOOTER (DESKTOP ONLY)
-   ============================================ */
+/* UNITY FOOTER - hide on mobile */
 #unity-footer {
   position: relative;
 }
@@ -179,7 +167,7 @@ body {
   justify-content: center;
 }
 
-/* Tall screens */
+/* Adjustment for very tall portrait screens */
 @media screen and (min-aspect-ratio: 10/19) {
   #banner-drawer #bottom-banner {
     height: 100px;
@@ -235,7 +223,7 @@ body {
    ============================================ */
 #banner-drawer-handle {
   position: fixed;
-  bottom: 0;
+  bottom: calc(env(safe-area-inset-bottom) + 8px);
   left: 50%;
   transform: translateX(-50%);
   width: 36px;
@@ -259,7 +247,7 @@ body {
 
 /* Drawer closed state */
 #banner-drawer.closed {
-  transform: translateY(calc(100dvh));
+  transform: translateY(100%);
 }
 
 #banner-drawer.closed #banner-drawer-content {
@@ -267,12 +255,12 @@ body {
   pointer-events: none;
 }
 
-/* Remove pseudo arrows */
+/* Remove pseudo arrows if any */
 #banner-drawer-handle::after {
   content: none !important;
 }
 
-/* Hide arrow on Android + PWA */
+/* Hide handle on Android + PWA */
 body.is-android #banner-drawer-handle,
 body.is-pwa #banner-drawer-handle {
   display: none !important;
