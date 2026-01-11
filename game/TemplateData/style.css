@@ -223,3 +223,25 @@ body {
     display: none !important;
   }
 }
+
+/* Android web only: slight zoom-in on canvas to reduce banner dead space */
+.is-android .banner-visible #unity-container.unity-mobile #unity-canvas {
+  transform: scale(1.05);               /* 5% zoom in - adjust to 1.03–1.08 if needed */
+  transform-origin: top center;         /* Zoom from top so banner stays anchored at bottom */
+}
+
+/* PWA (iOS standalone) only: slight zoom-out to increase banner border height */
+.is-pwa .banner-visible #unity-container.unity-mobile #unity-canvas {
+  transform: scale(0.95);               /* 5% zoom out - adjust to 0.93–0.97 if needed */
+  transform-origin: bottom center;      /* Zoom from bottom to give banner more space */
+}
+
+/* Optional: Apply to very tall screens too (consistent behavior) */
+@media screen and (min-aspect-ratio: 10/19) {
+  .is-android .banner-visible #unity-container.unity-mobile #unity-canvas {
+    transform: scale(1.05);
+  }
+  .is-pwa .banner-visible #unity-container.unity-mobile #unity-canvas {
+    transform: scale(0.95);
+  }
+}
