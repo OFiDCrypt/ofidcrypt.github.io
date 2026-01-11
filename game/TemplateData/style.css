@@ -17,7 +17,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-/* MOBILE FULLSCREEN CONTAINER */
+/* MOBILE FULLSCREEN CONTAINER - Android/iOS optimized */
 #unity-container.unity-mobile {
   position: fixed;
   top: 0;
@@ -40,8 +40,8 @@ body {
 /* MOBILE CANVAS - base fit */
 .unity-mobile #unity-canvas {
   width: 100%;
-  height: 100%;
-  max-height: 100%;
+  height: calc(100dvh - 90px); /* perfect Android fit: reserve space for bottom banner */
+  max-height: calc(100dvh - 90px);
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -53,19 +53,20 @@ body {
 .banner-visible #unity-container.unity-mobile #unity-canvas {
   height: calc(100dvh - 90px);
   max-height: calc(100dvh - 90px);
-  width: 102vw;
-  max-width: 102vw;
-  margin-left: -1vw;
+  width: 100vw; /* full width, no overflow */
+  max-width: 100vw;
+  margin-left: 0;
+  object-fit: contain; /* keeps aspect ratio perfect */
 }
 
-/* TALL-SCREEN OVERRIDES (for very tall devices) */
+/* TALL-SCREEN OVERRIDES (for very tall devices like Galaxy S24 Ultra, Pixel 9 Pro XL) */
 @media screen and (min-aspect-ratio: 10/19) {
   .banner-visible #unity-container.unity-mobile #unity-canvas {
-    height: calc(100dvh - 100px);
+    height: calc(100dvh - 100px); /* extra margin for tall screens */
     max-height: calc(100dvh - 100px);
-    width: 102vw;
-    max-width: 102vw;
-    margin-left: -1vw;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: 0;
   }
   .banner-visible #unity-container.unity-mobile #bottom-banner {
     margin-top: 20px;
@@ -148,7 +149,7 @@ body {
 }
 
 /* ----------------------------- */
-/* CLICKABLE BOTTOM BANNER */
+/* CLICKABLE BOTTOM BANNER - Android perfect fit */
 /* ----------------------------- */
 .unity-mobile #bottom-banner {
   height: 90px;
@@ -161,10 +162,9 @@ body {
   z-index: 9999;
   pointer-events: auto;
   border-radius: 10px;
-  /* override inline display:block */
   display: flex !important;
-  align-items: center; /* vertical centering */
-  justify-content: center; /* horizontal centering */
+  align-items: center;
+  justify-content: center;
 }
 
 /* CAROUSEL WRAPPER */
