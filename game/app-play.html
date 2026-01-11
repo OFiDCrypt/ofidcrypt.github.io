@@ -37,21 +37,25 @@
   <!-- Meta & SEO -->
   <title>Giddy's Blinko | OFiDCrypt</title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <meta name="description" content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description"
+    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="keywords" content="cryptocurrency, kinnected wallet, vip, OFiDCrypt, crypto community">
   <meta name="author" content="Tokin ⬢">
 
   <!-- Open Graph / Twitter Cards -->
   <meta property="og:title" content="Giddy's Blinko | OFiDCrypt">
-  <meta property="og:description" content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta property="og:description"
+    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta property="og:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddy-blinko.webp">
   <meta property="og:url" content="https://www.ofidcrypt.com/game/app-play">
   <meta property="og:type" content="website">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Giddy's Blinko | OFiDCrypt">
-  <meta name="twitter:description" content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
+  <meta name="twitter:description"
+    content="A retro collect-to-win game from the creators of Giddy's Universe — by DiscoCar Games. Play Blinko, collect Bouncy Balls, and reveal mystery Collectibles!">
   <meta name="twitter:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddy-blinko.webp">
 
   <!-- Icons & Apple/PWA Support -->
@@ -69,7 +73,9 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="../assets/css/main.css">
-  <noscript><link rel="stylesheet" href="../assets/css/noscript.css"></noscript>
+  <noscript>
+    <link rel="stylesheet" href="../assets/css/noscript.css">
+  </noscript>
   <link rel="stylesheet" href="TemplateData/style.css">
 
   <!-- Scripts -->
@@ -104,9 +110,11 @@
     <div id="banner-drawer-handle"></div>
 
     <div id="banner-drawer-content">
-      <div id="bottom-banner" class="ad-banner-wrapper" style="display: none; height: 90px; flex-shrink: 0; z-index: 10;">
+      <div id="bottom-banner" class="ad-banner-wrapper"
+        style="display: none; height: 90px; flex-shrink: 0; z-index: 10;">
         <div class="ad-scroll-container-mobile">
-          <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index" class="ad-slide">
+          <a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+            class="ad-slide">
             <img src="/assets/images/ledger-nano-s-plus.png" alt="Ledger Nano S Plus">
           </a>
           <a href="https://kraken.pxf.io/xLox1A" class="ad-slide">
@@ -128,130 +136,141 @@
 
   <!-- Drawer + Carousel + Fullscreen Logic -->
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    const isIOS = /iPhone|iPod/i.test(navigator.userAgent); // iPhone only (exclude iPad)
-    const isMobile = isAndroid || isIOS;
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+document.addEventListener('DOMContentLoaded', () => {
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPod/i.test(navigator.userAgent); // iPhone only
+  const isMobile = isAndroid || isIOS;
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-    // Drawer (collapse-only) – iOS Safari only
-    if (isIOS && !isPWA) {
-      const drawer = document.getElementById('banner-drawer');
-      const handle = document.getElementById('banner-drawer-handle');
+  // Drawer collapse logic – only for iOS Safari (non-PWA)
+  if (isIOS && !isPWA) {
+    const drawer = document.getElementById('banner-drawer');
+    const handle = document.getElementById('banner-drawer-handle');
 
-      if (drawer && handle) {
-        let drawerOpen = true;
-        handle.textContent = "▾";
+    if (drawer && handle) {
+      let drawerOpen = true;
+      handle.textContent = "▾";
 
-        handle.addEventListener('click', () => {
-          if (!drawerOpen) return;
+      handle.addEventListener('click', () => {
+        if (!drawerOpen) return;
 
-          drawerOpen = false;
-          drawer.classList.add('closed');
-          handle.textContent = "▴";
+        drawerOpen = false;
+        drawer.classList.add('closed');
+        handle.textContent = "▴";
 
+        setTimeout(() => {
+          handle.style.display = 'none';
+        }, 300);
+
+        // Trigger fullscreen + force resize
+        const aspect = window.innerHeight / window.innerWidth;
+        if (aspect <= 2.0 && window.unityInstance) {
+          window.unityInstance.SetFullscreen(1);
+
+          // Force canvas resize after delay (for iOS address bar collapse)
           setTimeout(() => {
-            handle.style.display = 'none';
-          }, 300);
+            const canvas = document.querySelector('#unity-canvas');
+            if (canvas) {
+              canvas.style.width = '100vw';
+              canvas.style.height = '100dvh';
+            }
+            // Trigger Unity resize event
+            window.dispatchEvent(new Event('resize'));
+          }, 400); // 400ms gives time for fullscreen/address bar to react
+        }
+      });
+    }
+  }
 
-          // Trigger fullscreen on collapse – only if not very tall screen
-          const aspect = window.innerHeight / window.innerWidth;
-          if (aspect <= 2.0 && window.unityInstance) {
-            window.unityInstance.SetFullscreen(1);
-          }
-        });
-      }
+  // Carousel logic (unchanged)
+  const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
+  const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
+  const totalSlides = slides.length;
+
+  if (container && totalSlides > 0 && (isMobile || isPWA)) {
+    let autoScrollInterval;
+    let currentIndex = 0;
+
+    const firstClone = slides[0].cloneNode(true);
+    container.appendChild(firstClone);
+
+    function setInitialPosition() {
+      container.scrollTo({ left: 0, behavior: 'instant' });
+      currentIndex = 0;
     }
 
-    // Carousel logic (unchanged from your original)
-    const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
-    const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
-    const totalSlides = slides.length;
+    function getBoxWidth() {
+      const slideWidth = slides[0].offsetWidth;
+      const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+      return slideWidth + slideMargin;
+    }
 
-    if (container && totalSlides > 0 && (isMobile || isPWA)) {
-      let autoScrollInterval;
-      let currentIndex = 0;
-
-      const firstClone = slides[0].cloneNode(true);
-      container.appendChild(firstClone);
-
-      function setInitialPosition() {
-        container.scrollTo({ left: 0, behavior: 'instant' });
-        currentIndex = 0;
-      }
-
-      function getBoxWidth() {
-        const slideWidth = slides[0].offsetWidth;
-        const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-        return slideWidth + slideMargin;
-      }
-
-      function startAutoScroll() {
-        clearInterval(autoScrollInterval);
-        autoScrollInterval = setInterval(() => {
-          currentIndex++;
-          if (currentIndex >= totalSlides + 1) {
-            container.scrollTo({ left: 0, behavior: 'instant' });
-            currentIndex = 1;
-          }
-          container.scrollTo({
-            left: currentIndex * getBoxWidth(),
-            behavior: 'smooth'
-          });
-        }, 8000);
-      }
-
-      // Touch handling to prevent conflict with game
-      let touchStartX = 0, touchStartY = 0, touchMoved = false;
-
-      container.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-        touchMoved = false;
-      }, { passive: true });
-
-      container.addEventListener('touchmove', (e) => {
-        const dx = Math.abs(e.touches[0].clientX - touchStartX);
-        const dy = Math.abs(e.touches[0].clientY - touchStartY);
-        if (dx > dy) {
-          e.preventDefault();
-          touchMoved = true;
+    function startAutoScroll() {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = setInterval(() => {
+        currentIndex++;
+        if (currentIndex >= totalSlides + 1) {
+          container.scrollTo({ left: 0, behavior: 'instant' });
+          currentIndex = 1;
         }
-      }, { passive: false });
+        container.scrollTo({
+          left: currentIndex * getBoxWidth(),
+          behavior: 'smooth'
+        });
+      }, 8000);
+    }
 
-      container.addEventListener('touchend', (e) => {
-        if (!touchMoved) {
-          const target = e.target.closest('a');
-          if (target && target.href) window.location.href = target.href;
-        }
-      }, { passive: true });
+    // Touch handling
+    let touchStartX = 0, touchStartY = 0, touchMoved = false;
 
-      function realignCarousel() {
-        container.scrollTo({ left: currentIndex * getBoxWidth(), behavior: 'instant' });
-        startAutoScroll();
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchMoved = false;
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (e) => {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx > dy) {
+        e.preventDefault();
+        touchMoved = true;
       }
+    }, { passive: false });
 
-      let resizeTimeout;
-      window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(realignCarousel, 100);
-      });
+    container.addEventListener('touchend', (e) => {
+      if (!touchMoved) {
+        const target = e.target.closest('a');
+        if (target && target.href) window.location.href = target.href;
+      }
+    }, { passive: true });
 
-      window.addEventListener('pageshow', (event) => {
-        if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
-          setInitialPosition();
-          startAutoScroll();
-        }
-      });
-
-      setInitialPosition();
+    function realignCarousel() {
+      container.scrollTo({ left: currentIndex * getBoxWidth(), behavior: 'instant' });
       startAutoScroll();
     }
-  });
-  </script>
 
-  <!-- Unity Loader -->
-  <script>
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(realignCarousel, 100);
+    });
+
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+        setInitialPosition();
+        startAutoScroll();
+      }
+    });
+
+    setInitialPosition();
+    startAutoScroll();
+  }
+});
+</script>
+
+<!-- Unity Loader (unchanged) -->
+<script>
   var container = document.querySelector("#unity-container");
   var canvas = document.querySelector("#unity-canvas");
   var loadingBar = document.querySelector("#unity-loading-bar");
@@ -308,30 +327,53 @@
       progressBarFull.style.width = (100 * progress) + "%";
     }).then((unityInstance) => {
       loadingBar.style.display = "none";
-      window.unityInstance = unityInstance; // Make accessible for fullscreen trigger
+      window.unityInstance = unityInstance;
       if (fullscreenButton) {
         fullscreenButton.onclick = () => unityInstance.SetFullscreen(1);
       }
     }).catch((message) => alert(message));
   };
   document.body.appendChild(script);
-  </script>
+</script>
+
+<!-- Global resize handler for dynamic changes (address bar collapse, rotation, fullscreen) -->
+<script>
+  // Runs continuously – catches address bar hide, rotation, fullscreen changes
+  window.addEventListener('resize', () => {
+    if (window.unityInstance) {
+      const canvas = document.querySelector('#unity-canvas');
+      if (canvas) {
+        canvas.style.width = '100vw';
+        canvas.style.height = '100dvh';
+        // Extra kick for Unity engine resize
+        window.unityInstance.SendMessage('GameController', 'OnResize'); // optional - if you have a method in Unity
+      }
+    }
+  });
+
+  // iOS-specific visualViewport for address bar collapse detection
+  if ('visualViewport' in window) {
+    window.visualViewport.addEventListener('resize', () => {
+      window.dispatchEvent(new Event('resize'));
+    });
+  }
+</script>
 
   <!-- Platform Flags + Banner Visibility -->
   <script>
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isIOS = /iPhone|iPod/i.test(navigator.userAgent);
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPod/i.test(navigator.userAgent);
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-  if (isAndroid) document.body.classList.add('is-android');
-  if (isIOS) document.body.classList.add('is-ios');
-  if (isPWA) document.body.classList.add('is-pwa');
+    if (isAndroid) document.body.classList.add('is-android');
+    if (isIOS) document.body.classList.add('is-ios');
+    if (isPWA) document.body.classList.add('is-pwa');
 
-  const bottomBanner = document.querySelector('#bottom-banner');
-  if (bottomBanner && (isAndroid || isPWA || (isIOS && !isPWA))) {
-    bottomBanner.style.display = 'block';
-    document.body.classList.add('banner-visible');
-  }
+    const bottomBanner = document.querySelector('#bottom-banner');
+    if (bottomBanner && (isAndroid || isPWA || (isIOS && !isPWA))) {
+      bottomBanner.style.display = 'block';
+      document.body.classList.add('banner-visible');
+    }
   </script>
 
   <!-- Site scripts (non-critical) -->
@@ -341,4 +383,5 @@
   <script src="../assets/js/breakpoints.min.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
+
 </html>

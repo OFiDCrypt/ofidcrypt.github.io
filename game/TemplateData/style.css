@@ -57,6 +57,29 @@ body.banner-visible #unity-container {
   }
 }
 
+/* PWA/standalone mode – prevent wide stretch, show full game */
+@media (display-mode: standalone) {
+  .unity-mobile #unity-canvas {
+    object-fit: contain;  /* ← key fix for iPhone PWA: fits without heavy side crop/stretch */
+    background: #000;     /* fallback if letterbox appears */
+  }
+}
+
+/* Landscape – wide support (optional but recommended) */
+@media (orientation: landscape) {
+  #unity-container {
+    height: 100dvh;
+    padding: 0;
+  }
+  .unity-mobile #unity-canvas {
+    width: auto;
+    height: 100%;
+    max-width: 100dvh * (960 / 600);  /* native aspect ratio centering */
+    margin: 0 auto;
+    object-fit: contain;
+  }
+}
+
 /* Landscape orientation - wide mode support */
 @media (orientation: landscape) {
   #unity-container {
