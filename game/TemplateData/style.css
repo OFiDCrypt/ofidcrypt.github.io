@@ -218,7 +218,9 @@ body {
   }
 }
 
-/* Drawer container */
+/* ============================================
+   BANNER DRAWER — CONTAINER
+   ============================================ */
 #banner-drawer {
   width: 100%;
   position: relative;
@@ -227,7 +229,9 @@ body {
   z-index: 9998;
 }
 
-/* Floating overlay arrow */
+/* ============================================
+   BANNER DRAWER — HANDLE (ARROW BUTTON)
+   ============================================ */
 #banner-drawer-handle {
   position: absolute;
   top: 0px;
@@ -253,13 +257,17 @@ body {
   z-index: 9999;
 }
 
-/* Drawer content */
+/* ============================================
+   BANNER DRAWER — CONTENT WRAPPER
+   ============================================ */
 #banner-drawer-content {
   width: 100%;
   transition: opacity 0.25s ease;
 }
 
-/* Drawer closed state */
+/* ============================================
+   BANNER DRAWER — CLOSED STATE
+   ============================================ */
 #banner-drawer.closed {
   transform: translateY(100%);
 }
@@ -269,7 +277,9 @@ body {
   pointer-events: none;
 }
 
-/* Arrow direction */
+/* ============================================
+   BANNER DRAWER — ARROW STATES
+   ============================================ */
 #banner-drawer-handle::after {
   content: "▾"; /* down arrow when open */
   transition: transform 0.25s ease;
