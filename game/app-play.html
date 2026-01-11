@@ -294,50 +294,30 @@
 
     <!-- Return-from-link / bfcache / toolbar fixes -->
     <script>
-      // On bfcache restore (common after external links)
-      window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-          requestAnimationFrame(() => {
-            // Force reflow
-            document.body.style.display = 'none';
-            document.body.offsetHeight;
-            document.body.style.display = '';
+  // Simplified bfcache/return handling - lighter to avoid forcing reloads
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+      // Gentle resize dispatch on bfcache restore
+      window.dispatchEvent(new Event('resize'));
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 300);
+    }
+  });
 
-            const canvas = document.querySelector('#unity-canvas');
-            if (canvas) {
-              canvas.style.width = '100vw';
-              canvas.style.height = 'calc(100dvh - 90px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px))'; // Changed: Use dvh for consistency with CSS
-            }
+  // Visibility change for background/return (most reliable for PWA resume)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      window.dispatchEvent(new Event('resize'));
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+    }
+  });
 
-            const bottomBanner = document.querySelector('#bottom-banner');
-            if (bottomBanner) {
-              bottomBanner.style.visibility = 'hidden';
-              bottomBanner.offsetHeight;
-              bottomBanner.style.visibility = 'visible';
-            }
-
-            // Multiple resize events (Safari needs this)
-            window.dispatchEvent(new Event('resize'));
-            setTimeout(() => window.dispatchEvent(new Event('resize')), 50);
-            setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
-            setTimeout(() => window.dispatchEvent(new Event('resize')), 300);
-          });
-        }
-      });
-
-      // Visual viewport changes (toolbar show/hide)
-      if ('visualViewport' in window) {
-        window.visualViewport.addEventListener('resize', () => window.dispatchEvent(new Event('resize')));
-        window.visualViewport.addEventListener('scroll', () => window.dispatchEvent(new Event('resize')));
-      }
-
-      // Try to go fullscreen in standalone/PWA mode
-      document.addEventListener('DOMContentLoaded', () => {
-        if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-          document.documentElement.requestFullscreen().catch(() => {});
-        }
-      });
-    </script>
+  // Visual viewport changes (toolbar show/hide) - kept as it's lightweight and helpful
+  if ('visualViewport' in window) {
+    window.visualViewport.addEventListener('resize', () => window.dispatchEvent(new Event('resize')));
+    window.visualViewport.addEventListener('scroll', () => window.dispatchEvent(new Event('resize')));
+  }
+</script>
 
     <!-- Other site scripts -->
     <script src="../assets/js/jquery.scrollex.min.js"></script>
