@@ -321,32 +321,34 @@
       }
     </script>
 
-<!-- Fix PWA back-forward cache + viewport shift on iPhone standalone return -->
+<!-- Fix PWA back-forward cache + viewport shift + banner repaint on iPhone standalone return -->
 <script>
   window.addEventListener('pageshow', function(event) {
     if (event.persisted) {  // Restored from bfcache (back button in PWA)
-      // Soft reflow + repaint
       requestAnimationFrame(() => {
-        // Re-apply canvas size safely
+        // 1. Re-apply canvas size safely (keeps game scaled)
         const canvas = document.querySelector('#unity-canvas');
         if (canvas) {
           canvas.style.width = '100vw';
           canvas.style.height = '100dvh';
         }
 
-        // Double resize dispatch for Unity & viewport sync
-        window.dispatchEvent(new Event('resize'));
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
-
-        // Extra iOS nudge: force safe-area recalc
-        if ('visualViewport' in window) {
-          window.visualViewport.offsetTop; // trigger read
+        // 2. Force banner repaint (fixes blank area until loop resets)
+        const bottomBanner = document.querySelector('#bottom-banner');
+        if (bottomBanner) {
+          bottomBanner.style.display = 'none';
+          bottomBanner.offsetHeight; // trigger reflow on banner only
+          bottomBanner.style.display = 'block';
         }
+
+        // 3. Double resize dispatch for Unity & viewport sync
+        window.dispatchEvent(new Event('resize'));
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
       });
     }
   });
 
-  // Bonus: Listen to visualViewport changes (address bar/notch shifts)
+  // Bonus: Continuous visualViewport listener (catches notch/bar shifts)
   if ('visualViewport' in window) {
     window.visualViewport.addEventListener('resize', () => {
       window.dispatchEvent(new Event('resize'));
