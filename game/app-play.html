@@ -180,20 +180,24 @@
     unityCanvas.style.height = `calc(100dvh - 90px)`;
 
     handle.addEventListener('click', () => {
-      drawerOpen = !drawerOpen;
+  drawerOpen = !drawerOpen;
 
-      if (drawerOpen) {
-        drawer.classList.remove('closed');
-        document.body.classList.add('banner-visible');
-        unityCanvas.style.height = `calc(100dvh - 90px)`;
-        handle.textContent = "▾";
-      } else {
-        drawer.classList.add('closed');
-        document.body.classList.remove('banner-visible');
-        unityCanvas.style.height = `100dvh`;
-        handle.textContent = "▴";
-      }
-    });
+  if (drawerOpen) {
+    drawer.classList.remove('closed');
+    drawer.offsetHeight; // force repaint
+    document.body.classList.add('banner-visible');
+    unityCanvas.style.height = `calc(100dvh - 90px)`;
+    unityCanvas.getBoundingClientRect();
+    handle.textContent = "▾";
+  } else {
+    drawer.classList.add('closed');
+    drawer.offsetHeight; // force repaint
+    document.body.classList.remove('banner-visible');
+    unityCanvas.style.height = `100dvh`;
+    unityCanvas.getBoundingClientRect();
+    handle.textContent = "▴";
+  }
+});
   }
 
   // -----------------------------
