@@ -59,7 +59,7 @@
   <link rel="icon" type="image/png" sizes="1280x1280" href="TemplateData/favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="TemplateData/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"> <!-- Changed: From black-translucent to black for better notch/dark mode handling in iOS 26 -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#000000">
 
@@ -251,6 +251,9 @@
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
+        // Changed: Dynamic initial sizing for mobile/PWA (matches CSS)
+        canvas.style.width = "100vw";
+        canvas.style.height = "100dvh";
       } else {
         canvas.style.width = "960px";
         canvas.style.height = "600px";
@@ -303,7 +306,7 @@
             const canvas = document.querySelector('#unity-canvas');
             if (canvas) {
               canvas.style.width = '100vw';
-              canvas.style.height = 'calc(100lvh - 90px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px))';
+              canvas.style.height = 'calc(100dvh - 90px - env(safe-area-inset-bottom, 0px) - env(safe-area-inset-top, 0px))'; // Changed: Use dvh for consistency with CSS
             }
 
             const bottomBanner = document.querySelector('#bottom-banner');
@@ -342,6 +345,15 @@
     <script src="../assets/js/util.js"></script>
     <script src="../assets/js/breakpoints.min.js"></script>
     <script src="../assets/js/main.js"></script>
+
+    <!-- Added: Touch prevention for immersion (prevents iOS zoom/scroll defaults in PWA) -->
+    <script>
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+          e.preventDefault(); // Block multi-touch zoom
+        }
+      }, { passive: false });
+    </script>
   </div>
 </body>
 </html>
