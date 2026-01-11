@@ -321,48 +321,52 @@
       }
     </script>
 
-<!-- Fix PWA back-forward cache + viewport shift + banner repaint on iOS standalone return -->
 <script>
   window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {  // Restored from bfcache (iOS PWA return or back button)
+    if (event.persisted) {  // bfcache restore - common on affiliate return
       requestAnimationFrame(() => {
-        // 1. Re-apply canvas size safely (keeps game scaled, fixes cut-off top/empty space)
+        // Force full repaint & reflow (fixes black dropdown/overlay)
+        document.body.style.display = 'none';
+        document.body.offsetHeight; // trigger reflow
+        document.body.style.display = '';
+
+        // Re-apply canvas size (fixes cut-off/empty)
         const canvas = document.querySelector('#unity-canvas');
         if (canvas) {
           canvas.style.width = '100vw';
-          canvas.style.height = 'calc(100dvh - 90px)';  // reserve banner space, adjust if needed
+          canvas.style.height = 'calc(100dvh - 90px - env(safe-area-inset-bottom, 0px))';
         }
 
-        // 2. Force banner repaint & re-init carousel (fixes frozen Kraken banner on return)
+        // Force banner/carousel repaint (Kraken freeze fix)
         const bottomBanner = document.querySelector('#bottom-banner');
         if (bottomBanner) {
-          bottomBanner.style.display = 'none';
-          bottomBanner.offsetHeight; // trigger reflow
-          bottomBanner.style.display = 'block';
-          
-          // Re-init carousel (call your functions)
-          setInitialPosition();  // reset to first slide
-          startAutoScroll();     // restart interval
+          bottomBanner.style.visibility = 'hidden';
+          bottomBanner.offsetHeight;
+          bottomBanner.style.visibility = 'visible';
+          // Re-init your carousel if needed (call your functions)
+          // setInitialPosition();
+          // startAutoScroll();
         }
 
-        // 3. Double resize dispatch for Unity & viewport sync (fixes cut-off)
+        // Triple resize dispatch (stronger sync for iOS viewport)
         window.dispatchEvent(new Event('resize'));
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 300);
       });
     }
   });
 
-  // Continuous visualViewport listener (catches iOS dynamic bar shifts)
+  // VisualViewport for dynamic bar changes (notch/home indicator)
   if ('visualViewport' in window) {
     window.visualViewport.addEventListener('resize', () => {
       window.dispatchEvent(new Event('resize'));
     });
   }
 
-  // iOS-specific safe-area handling (prevents UI element overlaps/blank space)
+  // Safe-area fallback for older iOS
   if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-    document.body.style.paddingBottom = 'env(safe-area-inset-bottom)';
-    document.body.style.paddingTop = 'env(safe-area-inset-top)';
+    document.documentElement.style.setProperty('--sat', 'env(safe-area-inset-top)');
+    document.documentElement.style.setProperty('--sab', 'env(safe-area-inset-bottom)');
   }
 </script>
 
