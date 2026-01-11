@@ -136,101 +136,110 @@
         </a>
       </div>
     </div>
+
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // Only run carousel if banner is visible (Android or PWA)
-        const isAndroid = /Android/i.test(navigator.userAgent);
-        const isPWA =
-          window.matchMedia('(display-mode: standalone)').matches ||
-          window.navigator.standalone === true;
-        if (!isAndroid && !isPWA) {
-          return; // iPhone or desktop → no carousel JS needed
-        }
-        const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
-        const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
-        const totalSlides = slides.length;
-        if (!container || totalSlides === 0) {
-          console.warn('Carousel: No slides found.');
-          return;
-        }
-        let autoScrollInterval;
-        let currentIndex = 0;
-        // Clone first slide for looping
-        const firstClone = slides[0].cloneNode(true);
-        container.appendChild(firstClone);
-        // Force start at first slide
-        function setInitialPosition() {
-          container.scrollTo({ left: 0, behavior: 'instant' });
-          currentIndex = 0;
-        }
-        // Calculate slide width
-        function getBoxWidth() {
-          const slideWidth = slides[0].offsetWidth;
-          const slideMargin = window.innerWidth <= 480 ? 10 : 40;
-          return slideWidth + slideMargin;
-        }
-        // Auto-scroll loop
-        function startAutoScroll() {
-          clearInterval(autoScrollInterval);
-          autoScrollInterval = setInterval(() => {
-            currentIndex++;
-            if (currentIndex >= totalSlides + 1) {
-              container.scrollTo({ left: 0, behavior: 'instant' });
-              currentIndex = 1;
-            }
-            container.scrollTo({
-              left: currentIndex * getBoxWidth(),
-              behavior: 'smooth'
-            });
-          }, 8000);
-        }
-        // Touch handling (tap vs swipe)
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchMoved = false;
-        container.addEventListener('touchstart', (e) => {
-          touchStartX = e.touches[0].clientX;
-          touchStartY = e.touches[0].clientY;
-          touchMoved = false;
-        }, { passive: true });
-        container.addEventListener('touchmove', (e) => {
-          const dx = Math.abs(e.touches[0].clientX - touchStartX);
-          const dy = Math.abs(e.touches[0].clientY - touchStartY);
-          if (dx > 10 && dy < 50) {
-            e.preventDefault();
-            touchMoved = true;
-          }
-          if (dy > 50) {
-            touchMoved = true;
-          }
-        }, { passive: false });
-        container.addEventListener('touchend', (e) => {
-          if (!touchMoved) {
-            const target = e.target.closest('a');
-            if (target && target.href) {
-              window.location.href = target.href;
-            }
-          }
-        }, { passive: true });
-        // Prevent wheel scroll inside banner
-        container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
-        // Resize handling
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(() => {
-            container.scrollTo({
-              left: currentIndex * getBoxWidth(),
-              behavior: 'instant'
-            });
-            startAutoScroll();
-          }, 100);
-        });
-        // Init
-        setInitialPosition();
-        startAutoScroll();
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Run on iPhone Safari, Android, and PWAs — NOT desktop
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isPWA =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+
+  if (!isMobile && !isPWA) {
+    return; // desktop only → no carousel
+  }
+
+  const container = document.querySelector('#bottom-banner .ad-scroll-container-mobile');
+  const slides = document.querySelectorAll('#bottom-banner .ad-scroll-container-mobile .ad-slide');
+  const totalSlides = slides.length;
+
+  if (!container || totalSlides === 0) {
+    console.warn('Carousel: No slides found.');
+    return;
+  }
+
+  let autoScrollInterval;
+  let currentIndex = 0;
+
+  // Clone first slide for looping
+  const firstClone = slides[0].cloneNode(true);
+  container.appendChild(firstClone);
+
+  function setInitialPosition() {
+    container.scrollTo({ left: 0, behavior: 'instant' });
+    currentIndex = 0;
+  }
+
+  function getBoxWidth() {
+    const slideWidth = slides[0].offsetWidth;
+    const slideMargin = window.innerWidth <= 480 ? 10 : 40;
+    return slideWidth + slideMargin;
+  }
+
+  function startAutoScroll() {
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = setInterval(() => {
+      currentIndex++;
+      if (currentIndex >= totalSlides + 1) {
+        container.scrollTo({ left: 0, behavior: 'instant' });
+        currentIndex = 1;
+      }
+      container.scrollTo({
+        left: currentIndex * getBoxWidth(),
+        behavior: 'smooth'
       });
+    }, 8000);
+  }
+
+  // Disable ALL manual scrolling
+  container.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  container.addEventListener('wheel', (e) => {
+    e.preventDefault();
+  }, { passive: false });
+
+  // Tap detection
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+
+  container.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    if (!touchMoved) {
+      const target = e.target.closest('a');
+      if (target && target.href) {
+        window.location.href = target.href;
+      }
+    }
+  }, { passive: true });
+
+  // Resize handling
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      container.scrollTo({
+        left: currentIndex * getBoxWidth(),
+        behavior: 'instant'
+      });
+      startAutoScroll();
+    }, 100);
+  });
+
+  // Init
+  setInitialPosition();
+  startAutoScroll();
+});
     </script>
+
     <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
@@ -321,6 +330,7 @@
       };
       document.body.appendChild(script);
     </script>
+
     <script>
       // Detect platform
       const isAndroid = /Android/i.test(navigator.userAgent);
@@ -344,6 +354,7 @@
         document.body.classList.add('banner-visible');  // ← new: for canvas height subtraction
       }
     </script>
+    
     <!-- Link to non-critical JavaScript files -->
     <script src="../assets/js/jquery.scrollex.min.js"></script>
     <script src="../assets/js/jquery.scrolly.min.js"></script>
