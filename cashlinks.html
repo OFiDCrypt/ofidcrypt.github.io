@@ -891,19 +891,17 @@
 				var response = grecaptcha.getResponse(grecaptchaForLinksWidgetId);
 				if (response.length === 0) {
 					alert("Please complete the reCAPTCHA below to claim cash links.");
-
 					// Smooth scroll to the reCAPTCHA for cash links
 					document.getElementById('recaptcha-links-section').scrollIntoView({
 						behavior: 'smooth',
 						block: 'center'
 					});
-
 					return false;
 				} else {
-					// Get the URL from the 'data-link' attribute
-					var anchor = button.querySelector('a');
-					if (anchor && anchor.getAttribute('data-link')) {
-						window.location.href = anchor.getAttribute('data-link');
+					// Get the URL directly from the button's 'data-link' attribute
+					var link = button.getAttribute('data-link');
+					if (link) {
+						window.location.href = link;
 					} else {
 						alert("Error: No link found.");
 					}
