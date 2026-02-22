@@ -852,77 +852,110 @@
 						<img class="video-poster-overlay" src="../assets/images/expb-dream-poster.png"
 							alt="OFiDCrypt Intro Video Poster">
 					</div>
+				</header>
 
-					<p style="text-align: center;">
-						GIDDY paves the way for organic growth through new ways to spend, building and exchanging
-						real-world value through products at
-						<a href="https://giddys.shop" target="_blank">Giddys Shop</a> — pay with BOUNCY BALL for lower
-						prices on store goods and receive cash back in digital gifts; offering savings to keep, grow or spend on your next purchase!
-						Every sale fuels growth, with thousands already trading BOUNCY BALL in support of our
-						mission — now
-						you can seamlessly swap between a dynamic token and <b>lock in</b> the profit with GIDDY.
-						You earn just by shopping — no cost, no catch! 🚀
-					</p>
+				<!-- JavaScript to control poster visibility -->
+				<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const video = document.getElementById('myVideo');
+						const container = video.parentElement; // .video-hosted-portrait
 
-					<!-- Bulletins & Social Links Buttons -->
-					<div class="round-button-container">
-						<button class="round-button"
-							onclick="window.open('https://www.linkedin.com/posts/ofidcrypt_microeconomies-activity-7382525484514869248-PEvj?utm_source=share&utm_medium=member_desktop&rcm=ACoAACFnCDYBwfKuDoF9-iqaUc5aGA7rri-IJRM', '_blank')">
-							Learn More
-						</button>
-					</div>
-					<!-- Header -->
-					<div>
-						<header class="major" id="swap-giddy">
-							<span class="date">Giddy's Shop Token</span>
-							<h1>Get GIDDY</h1>
+						// Hide poster when video starts playing
+						video.addEventListener('play', function () {
+							container.classList.add('playing');
+						});
 
-							<p>♻️ Switch to <a href="/bouncyball.html#buy-expb">BOUNCY</a> Dynamic Token 👀</p>
+						// Show poster again when video ends
+						video.addEventListener('ended', function () {
+							video.currentTime = 0; // Rewind to start (optional)
+							container.classList.remove('playing');
+						});
 
-						</header>
-					</div>
+						// Optional: If user pauses mid-video, keep video visible (don't show poster)
+						// Only show poster again if it actually ended
+						video.addEventListener('pause', function () {
+							if (!video.ended) {
+								// Still playing content visible if paused mid-video
+								container.classList.add('playing');
+							}
+						});
+					});
+				</script>
 
-					<!-- Info Tile -->
-					<section id="provider-tile" class="provider-tile">
-						<a href="https://t.me/c/2292263577/35699" target="_blank">
-							<img src="/assets/images/giddy-providers-2.png" alt="Providers">
-						</a>
+				<p style="text-align: center;">
+					GIDDY paves the way for organic growth through new ways to spend, building and exchanging
+					real-world value through products at
+					<a href="https://giddys.shop" target="_blank">Giddys Shop</a> — pay with BOUNCY BALL for lower
+					prices on store goods and receive cash back in digital gifts; offering savings to keep, grow or
+					spend on your next purchase!
+				</p>
+				
+				<p style="text-align: center;"></p>
+					Every sale fuels growth, with thousands already trading BOUNCY BALL in support of our
+					mission — now
+					you can seamlessly swap between a dynamic token and <b>lock in</b> the profit with GIDDY.
+					You earn just by shopping — no cost, no catch! 🚀
+				</p>
 
-						<!-- Token Buttons -->
-						<div class="token-button-container">
-							<button class="token-button-2"
-								onclick="window.open('https://solscan.io/token/8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z', '_blank')">Solscan</button>
+				<!-- Bulletins & Social Links Buttons -->
+				<div class="round-button-container">
+					<button class="round-button"
+						onclick="window.open('https://www.linkedin.com/posts/ofidcrypt_microeconomies-activity-7382525484514869248-PEvj?utm_source=share&utm_medium=member_desktop&rcm=ACoAACFnCDYBwfKuDoF9-iqaUc5aGA7rri-IJRM', '_blank')">
+						Learn More
+					</button>
+				</div>
+				<!-- Header -->
+				<div>
+					<header class="major" id="swap-giddy">
+						<span class="date">Giddy's Shop Token</span>
+						<h1>Get GIDDY</h1>
 
-							<button class="token-button-2"
-								onclick="window.open('https://phantom.com/tokens/solana/8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z?referralId=aniufb6dzjp', '_blank')">Phantom</button>
+						<p>♻️ Switch to <a href="/bouncyball.html#buy-expb">BOUNCY</a> Dynamic Token 👀</p>
 
-							<button class="token-button-2"
-								onclick="window.open('https://www.meteora.ag/dlmm/8pJonw6WVjQkDndb6HGuCMdxb4sXiDfeFumxconoKB5', '_blank')">Meteora</button>
-
-							<button class="token-button-2"
-								onclick="window.open('https://jup.ag/tokens/8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z', '_blank')">Jupiter</button>
-
-							<button class="token-button-2"
-								onclick="window.open('https://raydium.io/swap/?inputMint=sol&outputMint=8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z', '_blank')">Raydium</button>
-
-							<button class="token-button-2"
-								onclick="window.open('https://www.geckoterminal.com/solana/pools/8pJonw6WVjQkDndb6HGuCMdxb4sXiDfeFumxconoKB5', '_blank')">GeckoTerminal</button>
-
-							<footer class="token-button-help-text">
-								<p class="align-center">
-									<a href="#guide" target="_blank">💡 Why Buy?</a>
-								</p>
-							</footer>
-						</div>
-					</section>
-
-					<!-- Section Description -->
-					<header>
-						<p style="text-align: center;">
-							GIDDY StableToken (GIDDY) is a Solana SPL2022 Program Token designed to model stability,
-							trust, and commerce-backed redemption.
-						</p>
 					</header>
+				</div>
+
+				<!-- Info Tile -->
+				<section id="provider-tile" class="provider-tile">
+					<a href="https://t.me/c/2292263577/35699" target="_blank">
+						<img src="/assets/images/giddy-providers-2.png" alt="Providers">
+					</a>
+
+					<!-- Token Buttons -->
+					<div class="token-button-container">
+						<button class="token-button-2"
+							onclick="window.open('https://solscan.io/token/8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z', '_blank')">Solscan</button>
+
+						<button class="token-button-2"
+							onclick="window.open('https://phantom.com/tokens/solana/8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z?referralId=aniufb6dzjp', '_blank')">Phantom</button>
+
+						<button class="token-button-2"
+							onclick="window.open('https://www.meteora.ag/dlmm/8pJonw6WVjQkDndb6HGuCMdxb4sXiDfeFumxconoKB5', '_blank')">Meteora</button>
+
+						<button class="token-button-2"
+							onclick="window.open('https://jup.ag/tokens/8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z', '_blank')">Jupiter</button>
+
+						<button class="token-button-2"
+							onclick="window.open('https://raydium.io/swap/?inputMint=sol&outputMint=8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z', '_blank')">Raydium</button>
+
+						<button class="token-button-2"
+							onclick="window.open('https://www.geckoterminal.com/solana/pools/8pJonw6WVjQkDndb6HGuCMdxb4sXiDfeFumxconoKB5', '_blank')">GeckoTerminal</button>
+
+						<footer class="token-button-help-text">
+							<p class="align-center">
+								<a href="#guide" target="_blank">💡 Why Buy?</a>
+							</p>
+						</footer>
+					</div>
+				</section>
+
+				<!-- Section Description -->
+				<header>
+					<p style="text-align: center;">
+						GIDDY StableToken (GIDDY) is a Solana SPL2022 Program Token designed to model stability,
+						trust, and commerce-backed redemption.
+					</p>
+				</header>
 			</section>
 			</section>
 		</div>
