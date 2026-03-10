@@ -1,0 +1,54 @@
+{
+  "name": "GOLDEN GIDDY",
+  "symbol": "GGIDDY",
+  "description": "The original GOLDEN GIDDY – genesis one-of-one collectible NFT from OFiDCrypt. Canada’s commerce-backed stable concept, framed in golden prestige to anchor gifting, redemption, and #MicroEconomies. Whimsical eye of stability holding the singular '1'. Not legal tender. Proudly unique.",
+  "image": "https://ofidcrypt.com/golden-giddy.png",
+  "external_url": "https://ofidcrypt.github.io",
+  "seller_fee_basis_points": 500,
+  "attributes": [
+    {
+      "trait_type": "Edition",
+      "value": "1/1"
+    },
+    {
+      "trait_type": "Type",
+      "value": "Golden Stabletoken NFT"
+    },
+    {
+      "trait_type": "Backing",
+      "value": "CAD Commerce Vision"
+    },
+    {
+      "trait_type": "Purpose",
+      "value": "Gifting, Redemption, #MicroEconomies"
+    },
+    {
+      "trait_type": "Theme",
+      "value": "Golden Prestige & Stability"
+    },
+    {
+      "trait_type": "Legal Tender",
+      "value": "No"
+    }
+  ],
+  "collection": {
+    "name": "OFiDCrypt $GIDDY Stabletoken",
+    "family": "GIDDY'S Universe: Series & Shop"
+  },
+  "properties": {
+    "files": [
+      {
+        "uri": "https://ofidcrypt.com/golden-giddy.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc",
+        "verified": 1,
+        "share": 100
+      }
+    ]
+  }
+}
