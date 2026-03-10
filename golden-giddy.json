@@ -38,11 +38,11 @@
   "properties": {
     "files": [
       {
-        "uri": "https://ofidcrypt.com/golden-giddy.png",
+        "uri": "https://ofidcrypt.com/golden-giddy-logo.png",
         "type": "image/png"
       },
       {
-        "uri": "https://ofidcrypt.com/golden-giddy-logo.png",
+        "uri": "https://ofidcrypt.com/golden-giddy.png",
         "type": "image/png"
       }
     ],
