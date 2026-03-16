@@ -103,16 +103,21 @@
 			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 			gap: 2em;
 			margin-bottom: 2em;
+			justify-content: center;
+			/* Centers cards when fewer than full row */
 		}
 
 		.shop-card {
 			background: var(--card-bg, #fff);
-			/* Fallback to white, but dark mode will override */
 			border-radius: 1em;
 			overflow: hidden;
 			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
 			text-align: center;
 			padding: 1em;
+			max-width: 340px;
+			/* Prevents cards from stretching too wide */
+			width: 100%;
+			margin: 0 auto;
 		}
 
 		.shop-card img {
@@ -138,11 +143,10 @@
 		.shop-card .cart-btn {
 			background: transparent;
 			color: #000;
-			/* Adjust color for visibility */
 			border: 1px solid #ddd;
-			/* Optional border for visibility */
 			border-radius: 0.5em;
-			padding: 0.5em 1em;
+			padding: 0.5em 1.5em;
+			/* ← changed: more space left/right */
 			font-size: 0.9em;
 			cursor: pointer;
 			display: flex;
@@ -151,6 +155,157 @@
 			text-align: center;
 			margin: 0.5em auto 0.5em;
 			width: fit-content;
+			gap: 0.75em;
+			/* ← optional: more breathing room between icon & text */
+		}
+
+		body.dark-mode .shop-card .cart-btn {
+			color: #fff;
+			border-color: #334155;
+		}
+
+		.buy-now {
+			background: rgba(168, 85, 247, 0.8);
+			color: white;
+			border: none;
+			padding: 1em;
+			font-size: 1.2em;
+			border-radius: 0.5em;
+			width: 100%;
+			max-width: 300px;
+			margin: 1em auto;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+		}
+
+		.payment-summary {
+			background: var(--card-bg, #f9f9f9);
+			border-radius: 1em;
+			padding: 1.5em;
+			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+		}
+
+		.payment-summary h2 {
+			margin-bottom: 1em;
+		}
+
+		.payment-row {
+			display: flex;
+			justify-content: space-between;
+			margin: 0.5em 0;
+		}
+
+		select {
+			width: 100%;
+			padding: 0.75em;
+			border-radius: 0.5em;
+			border: 1px solid #ddd;
+			text-align: center;
+		}
+
+		select option {
+			text-align: center;
+		}
+
+		/* Dark mode overrides */
+		body.dark-mode .shop-card {
+			background: #1a1a2e;
+			color: #e2e8f0;
+		}
+
+		body.dark-mode .payment-summary {
+			background: #1a1a2e;
+			color: #e2e8f0;
+		}
+
+		body.dark-mode select {
+			background: #2d2d44;
+			color: white;
+			border-color: #334155;
+		}
+
+		body.dark-mode .buy-now {
+			background: rgba(168, 85, 247, 0.8);
+		}
+
+		/* Bottom Nav (app-like) */
+		.bottom-nav {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: #0f172a;
+			border-top: 1px solid #334155;
+			display: flex;
+			justify-content: space-around;
+			padding: 0.5em 0;
+			z-index: 100;
+		}
+
+		.nav-item {
+			color: #94a3b8;
+			font-size: 0.8em;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		.nav-item.active {
+			color: #a855f7;
+		}
+
+		.nav-item i {
+			display: block;
+			font-size: 1.5em;
+		}
+
+		/* Responsive grid fixes */
+		@media (max-width: 480px) {
+			.shop-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1em;
+			}
+		}
+
+		@media (min-width: 481px) and (max-width: 980px) {
+			.shop-grid {
+				grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+				gap: 1.5em;
+			}
+		}
+
+		@media (min-width: 981px) {
+			.shop-grid {
+				grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+				max-width: 1400px;
+				margin-left: auto;
+				margin-right: auto;
+				gap: 2em;
+			}
+
+			.shop-card {
+				max-width: 340px;
+			}
+		}
+
+		/* Ultra-wide desktop fix (>1680px) - exactly 4 columns, centered */
+		@media (min-width: 1681px) {
+			.shop-grid {
+				grid-template-columns: repeat(4, minmax(280px, 340px));
+				/* Exactly 4 wide, fixed size range */
+				max-width: 1500px;
+				/* Adjust this if you want more/less side margin (e.g. 1400px tighter, 1600px wider) */
+				margin-left: auto;
+				margin-right: auto;
+				gap: 2.5em;
+				justify-content: center;
+			}
+
+			.shop-card {
+				max-width: 340px;
+			}
 		}
 
 		body.dark-mode .shop-card .cart-btn {
@@ -225,43 +380,6 @@
 
 		body.dark-mode .buy-now {
 			background: rgba(168, 85, 247, 0.8);
-		}
-
-		/* Bottom Nav (app-like) */
-		.bottom-nav {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background: #0f172a;
-			border-top: 1px solid #334155;
-			display: flex;
-			justify-content: space-around;
-			padding: 0.5em 0;
-			z-index: 100;
-		}
-
-		.nav-item {
-			color: #94a3b8;
-			font-size: 0.8em;
-			text-align: center;
-			cursor: pointer;
-		}
-
-		.nav-item.active {
-			color: #a855f7;
-		}
-
-		.nav-item i {
-			display: block;
-			font-size: 1.5em;
-		}
-
-		@media (max-width: 480px) {
-			.shop-grid {
-				grid-template-columns: repeat(2, 1fr);
-				gap: 1em;
-			}
 		}
 	</style>
 </head>
@@ -479,8 +597,8 @@
 			<section class="post shop-section">
 				<header class="major">
 					<span class="date">Giddy's by OFiDCrypt</span>
-					<h1>Giddy's Shop - Buy</h1>
-					<p>Marketplace > <b>Collectibles</b></p>
+					<h1>Giddy's Shop</br> Kids Toys</h1>
+					<p><a href="/ofidtales.html">Giddy's Home</a> > <b>Giddy's Shop</b></p>
 					<p>Browse and buy kids toys and collectibles using your debit/credit card or community tokens.
 						Explore magical worlds and family-fun adventures!</p>
 				</header>
@@ -531,7 +649,7 @@
 						<option>SINU</option>
 					</select>
 					<div class="payment-row">
-						<span>Token Value</span>
+						<span>Token Qty</span>
 						<span>250,000 KIN</span> <!-- This will be updated dynamically via JS -->
 					</div>
 					<div class="payment-row">
@@ -576,10 +694,10 @@
 				function updateTokenDisplay() {
 					const selectedText = (select.options[select.selectedIndex]?.text || 'KIN').trim();
 
-					labelSpan.textContent = `${selectedText} Value`;
+					labelSpan.textContent = `${selectedText} Qty`;
 					amountSpan.textContent = `250,000 ${selectedText}`;   // ← this changes the token symbol
 
-					console.log(`Updated to: ${selectedText} Value | 250,000 ${selectedText}`);
+					console.log(`Updated to: ${selectedText} Qty | 250,000 ${selectedText}`);
 				}
 
 				// Apply immediately (important for default selection)
@@ -658,14 +776,14 @@
 			<div class="nav-item active" onclick="window.location.href='/kincommunity.html'">
 				<i class="fas fa-users"></i>ONE Kin
 			</div>
-			<div class="nav-item" onclick="window.location.href='/explore.html'">
-				<i class="fas fa-th-large"></i>Apps
+			<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
+				<i class="fas fa-gamepad"></i>Play Blinko!
 			</div>
 			<div class="nav-item" onclick="window.location.href='/bouncyball.html'">
 				<i class="fas fa-wallet"></i>Tokens
 			</div>
-			<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
+			<div class="nav-item" id="navPanelTrigger">
+				<i class="fas fa-bars"></i> Menu
 			</div>
 		</nav>
 

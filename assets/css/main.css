@@ -5082,6 +5082,52 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 	}
 }
 
+/* Bottom Nav (app-like) */
+		.bottom-nav {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: #0f172a;
+			border-top: 1px solid #334155;
+			display: flex;
+			justify-content: space-around;
+			padding: 0.5em 0;
+			z-index: 100;
+		}
+
+		.nav-item {
+			color: #94a3b8;
+			font-size: 0.8em;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		.nav-item.active {
+			color: #a855f7;
+		}
+
+		.nav-item i {
+			display: block;
+			font-size: 1.5em;
+		}
+
+		@media (max-width: 480px) {
+			.shop-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1em;
+			}
+		}
+		
+			/* Hide bottom nav "Menu" item on desktop (wider than 980px) */
+			@media (min-width: 981px) {
+
+				.bottom-nav .nav-item:has(a[href="#navPanel"]),
+				.bottom-nav .nav-item:has(i.fa-bars) {
+					display: none !important;
+				}
+			}
+
 /* Main */
 #main {
 	background-color: var(--main-bg-color);
