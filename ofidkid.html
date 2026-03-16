@@ -611,7 +611,7 @@
 			</section>
 		</div>
 
-				<!-- Bottom Nav -->
+		<!-- Bottom Nav -->
 		<nav class="bottom-nav">
 			<div class="nav-item" onclick="window.location.href='#'">
 				<i class="fas fa-comment-dots"></i>Ask Giddy
@@ -921,64 +921,123 @@
 		</script>
 
 		<script>
-			// Switch Visual Mode - Dark Mode Light Mode
-			document.addEventListener('DOMContentLoaded', (event) => {
-				console.log('DOM fully loaded and parsed');
-
-				const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
-				const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
+			// Dark Mode Setup - main.js (amended for reliable desktop toggle with correct selector)
+			document.addEventListener('DOMContentLoaded', () => {
+				console.log('Dark mode setup initialized');
 
 				function toggleDarkMode() {
 					document.body.classList.toggle('dark-mode');
-					darkModeToggle.classList.toggle('dark');
-					const isDarkMode = document.body.classList.contains('dark-mode');
-					localStorage.setItem('dark-mode', isDarkMode);
+					const isDark = document.body.classList.contains('dark-mode');
+					localStorage.setItem('dark-mode', isDark);
 
-					const icon = darkModeToggle.querySelector('i');
-					if (isDarkMode) {
-						icon.classList.remove('fa-sun');
-						icon.classList.add('fa-moon');
-						console.log('Switched to dark mode (moon icon)');
-					} else {
-						icon.classList.remove('fa-moon');
-						icon.classList.add('fa-sun');
-						console.log('Switched to light mode (sun icon)');
-					}
+					// Update ALL existing toggle icons (desktop + mobile sidebar) – skips if no <i> found
+					document.querySelectorAll('.dark-mode-toggle i, a[aria-label="Dark-Light Desktop Toggle Button"] i').forEach(icon => {
+						if (isDark) {
+							icon.classList.remove('fa-sun');
+							icon.classList.add('fa-moon');
+						} else {
+							icon.classList.remove('fa-moon');
+							icon.classList.add('fa-sun');
+						}
+					});
+
+					console.log(`Mode switched to: ${isDark ? 'dark' : 'light'}`);
 				}
 
-				// Check local storage for dark mode on page load
-				if (localStorage.getItem('dark-mode') === 'true') {
+				// Restore saved preference (do this early)
+				const savedDark = localStorage.getItem('dark-mode') === 'true';
+				if (savedDark) {
 					document.body.classList.add('dark-mode');
-					darkModeToggle.classList.add('dark');
-					const icon = darkModeToggle.querySelector('i');
-					icon.classList.add('fa-moon');
-					icon.classList.remove('fa-sun');
-					console.log('Dark mode restored from local storage');
 				}
 
-				// Event listener for original toggle button
-				if (darkModeToggle) {
-					darkModeToggle.addEventListener('click', function (event) {
-						event.preventDefault();
-						toggleDarkMode();
-					});
-				} else {
-					console.warn('Dark Mode Toggle button not found');
+				// Function to attach desktop listener + set initial icon (if applicable)
+				function attachDesktopToggle() {
+					const desktopToggle = document.querySelector('a[aria-label="Dark-Light Desktop Toggle Button"]');
+					if (desktopToggle) {
+						// Remove any old listener to avoid duplicates
+						const newToggle = desktopToggle.cloneNode(true);
+						desktopToggle.parentNode.replaceChild(newToggle, desktopToggle);
+
+						newToggle.addEventListener('click', (e) => {
+							e.preventDefault();
+							toggleDarkMode();
+						});
+
+						// Force initial icon state if <i> exists (skips for img-based button)
+						const isDarkNow = document.body.classList.contains('dark-mode');
+						const icon = newToggle.querySelector('i');
+						if (icon) {
+							icon.classList.toggle('fa-moon', isDarkNow);
+							icon.classList.toggle('fa-sun', !isDarkNow);
+						}
+
+						console.log('Desktop toggle attached successfully');
+						return true;
+					}
+					return false;
 				}
 
-				// Event listener for the new button
-				if (newDarkModeToggle) {
-					newDarkModeToggle.parentElement.addEventListener('click', function (event) {
-						event.preventDefault();
-						toggleDarkMode();
-					});
-					newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
-						event.preventDefault();
-						toggleDarkMode();
-					});
-				} else {
-					console.warn('New Dark Mode Toggle button not found');
+				// Try attaching immediately
+				let attached = attachDesktopToggle();
+
+				// If not found yet (e.g. injected later), retry a few times
+				if (!attached) {
+					const retryInterval = setInterval(() => {
+						if (attachDesktopToggle()) {
+							clearInterval(retryInterval);
+						}
+					}, 500); // Check every 0.5s, up to ~5s total
+
+					// Stop after 10 attempts (~5s)
+					setTimeout(() => clearInterval(retryInterval), 5000);
 				}
+
+				// Mobile sidebar toggle – add dynamically
+				setTimeout(() => {
+					const navPanelInner = document.querySelector('#navPanel nav');
+					if (!navPanelInner) {
+						console.warn('Mobile nav panel not found');
+						return;
+					}
+
+					// Prevent duplicate addition (important on resize/breakpoint change)
+					if (navPanelInner.querySelector('.dark-mode-toggle')) {
+						console.log('Mobile toggle already exists – skipping addition');
+						return;
+					}
+
+					const toggleLi = document.createElement('li');
+					toggleLi.className = 'dark-mode-item';
+
+					const toggleLink = document.createElement('a');
+					toggleLink.href = '#';
+					toggleLink.className = 'icon dark-mode-toggle';
+
+					const icon = document.createElement('i');
+					const isDark = document.body.classList.contains('dark-mode');
+					icon.className = isDark ? 'fa fa-moon' : 'fa fa-sun';
+					toggleLink.appendChild(icon);
+
+					// Optional: Add label if you want text (uncomment if needed)
+					// const span = document.createElement('span');
+					// span.textContent = 'Theme';
+					// toggleLink.appendChild(span);
+
+					toggleLi.appendChild(toggleLink);
+					navPanelInner.appendChild(toggleLi); // Bottom placement; use .prepend(toggleLi) for top
+
+					toggleLink.addEventListener('click', (e) => {
+						e.preventDefault();
+						toggleDarkMode();
+					});
+
+					toggleLink.addEventListener('touchstart', (e) => {
+						e.preventDefault();
+						toggleDarkMode();
+					});
+
+					console.log('Mobile dark mode toggle added to sidebar');
+				}, 600); // Slightly longer delay for skel.js panel init reliability
 			});
 		</script>
 
