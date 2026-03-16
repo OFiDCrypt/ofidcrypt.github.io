@@ -244,66 +244,6 @@ $(document).ready(function () {
 
         });
 
-        // Switch Visual Mode - Dark Mode Light Mode
-        document.addEventListener('DOMContentLoaded', (event) => {
-            console.log('DOM fully loaded and parsed');
-
-            const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
-            const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
-
-            function toggleDarkMode() {
-                document.body.classList.toggle('dark-mode');
-                darkModeToggle.classList.toggle('dark');
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                localStorage.setItem('dark-mode', isDarkMode);
-
-                const icon = darkModeToggle.querySelector('i');
-                if (isDarkMode) {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                    console.log('Switched to dark mode (moon icon)');
-                } else {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                    console.log('Switched to light mode (sun icon)');
-                }
-            }
-
-            // Check local storage for dark mode on page load
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.body.classList.add('dark-mode');
-                darkModeToggle.classList.add('dark');
-                const icon = darkModeToggle.querySelector('i');
-                icon.classList.add('fa-moon');
-                icon.classList.remove('fa-sun');
-                console.log('Dark mode restored from local storage');
-            }
-
-            // Event listener for original toggle button
-            if (darkModeToggle) {
-                darkModeToggle.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    toggleDarkMode();
-                });
-            } else {
-                console.warn('Dark Mode Toggle button not found');
-            }
-
-            // Event listener for the new button
-            if (newDarkModeToggle) {
-                newDarkModeToggle.parentElement.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    toggleDarkMode();
-                });
-                newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
-                    event.preventDefault();
-                    toggleDarkMode();
-                });
-            } else {
-                console.warn('New Dark Mode Toggle button not found');
-            }
-        });
-
         // Featured Dynamic Image
         /*
         document.addEventListener("DOMContentLoaded", function () {
