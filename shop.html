@@ -1,0 +1,901 @@
+<!DOCTYPE HTML>
+<html lang="en-GB">
+<!--Massively by HTML5 UP | html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)-->
+
+<head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-3KX9VK5CCH"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+		gtag('config', 'G-3KX9VK5CCH');
+	</script>
+
+	<!-- JSON -->
+	<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OFiDCrypt",
+      "url": "https://www.ofidcrypt.com",
+      "logo": [
+        "https://www.ofidcrypt.com/assets/images/ofid-logo-saturn01.png",
+        "https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp"
+      ],
+      "sameAs": [
+        "https://x.com/OFiDCrypt",
+        "https://x.com/Giddys_CA",
+        "https://youtube.com/@OFiDCrypt",
+        "https://www.tiktok.com/@Giddys_CA",
+        "https://www.facebook.com/OFiDCrypt",
+        "https://linkedin.com/company/OFiDCrypt",
+        "https://www.instagram.com/OFiDCrypt"
+      ]
+    }
+    </script>
+
+	<!-- Meta Description (for SEO) -->
+	<title>OFiDCrypt | Giddy's Shop</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="description"
+		content="Explore Giddy's Shop by OFiDCrypt: Buy kids toys, collectibles, and goods using KIN tokens or $GIDDY stablecoin. Discover magical worlds, stories, family-fun Web3 adventures, and digital gifts!">
+	<meta name="keywords"
+		content="cryptocurrency, Giddy's Shop, kids toys, collectibles, $GIDDY, $eXPB, blockchain, digital assets, OFiDCrypt, crypto community, Web3 spending, stablecoin">
+	<meta name="author" content="Tokin">
+
+	<!-- Open Graph Meta Tags -->
+	<meta property="og:title" content="OFiDCrypt | Giddy's Shop">
+	<meta property="og:description"
+		content="Explore Giddy's Shop by OFiDCrypt: Buy kids toys, collectibles, and goods using KIN tokens or $GIDDY stablecoin. Discover magical worlds, stories, family-fun Web3 adventures, and digital gifts!">
+	<meta property="og:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddys.webp">
+	<meta property="og:url" content="https://www.ofidcrypt.com/shop">
+	<meta property="og:type" content="website">
+
+	<!-- Twitter Card Meta Tags -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="OFiDCrypt | Giddy's Shop">
+	<meta name="twitter:description"
+		content="Explore Giddy's Shop by OFiDCrypt: Buy kids toys, collectibles, and goods using KIN tokens or $GIDDY stablecoin. Discover magical worlds, stories, family-fun Web3 adventures, and digital gifts!">
+	<meta name="twitter:image" content="https://www.ofidcrypt.com/assets/images/webp/bg-giddys.webp">
+	<meta name="twitter:url" content="https://www.ofidcrypt.com/shop">
+
+	<!-- Default ICO file with multiple sizes -->
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+	<!-- Specific PNG sizes for modern browsers -->
+	<link rel="icon" type="image/png" sizes="1280x1280" href="/favicon.png">
+
+	<!-- Default Apple-Touch-Icon sizes -->
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+	<!-- Canonical Preferred URL -->
+	<link rel="canonical" href="https://www.ofidcrypt.com/shop">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<noscript>
+		<link rel="stylesheet" href="/assets/css/noscript.css">
+	</noscript>
+
+	<!-- Font Awesome for icons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+	<!-- JavaScript Libraries -->
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script src="/assets/js/browser.min.js" defer></script>
+	<script src="/assets/js/main.js" defer></script>
+
+	<!-- Meta Language -->
+	<meta http-equiv='content-language' content='en-gb'>
+
+	<!-- Custom Shop Styles (integrated with existing CSS) -->
+	<style>
+		/* Adapt to Massively template */
+		.shop-section {
+			padding: 2em 0;
+		}
+
+		.shop-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 2em;
+			margin-bottom: 2em;
+		}
+
+		.shop-card {
+			background: var(--card-bg, #fff);
+			/* Fallback to white, but dark mode will override */
+			border-radius: 1em;
+			overflow: hidden;
+			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+			text-align: center;
+			padding: 1em;
+		}
+
+		.shop-card img {
+			width: 100%;
+			height: auto;
+			border-radius: 0.5em;
+		}
+
+		.shop-card h3 {
+			margin: 0.5em 0 0.25em;
+			font-size: 1.2em;
+		}
+
+		.shop-card .price {
+			font-size: 1em;
+			color: var(--accent, #a855f7);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5em;
+		}
+
+		.shop-card .cart-btn {
+			background: transparent;
+			color: #000;
+			/* Adjust color for visibility */
+			border: 1px solid #ddd;
+			/* Optional border for visibility */
+			border-radius: 0.5em;
+			padding: 0.5em 1em;
+			font-size: 0.9em;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			margin: 0.5em auto 0.5em;
+			width: fit-content;
+		}
+
+		body.dark-mode .shop-card .cart-btn {
+			color: #fff;
+			border-color: var(--quick-start-border-color);
+		}
+
+		.buy-now {
+			background: rgba(168, 85, 247, 0.8);
+			/* Semi-transparent purple */
+			color: white;
+			border: none;
+			padding: 1em;
+			font-size: 1.2em;
+			border-radius: 0.5em;
+			width: 100%;
+			max-width: 300px;
+			/* Limit width for centering */
+			margin: 1em auto;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+		}
+
+		.payment-summary {
+			background: var(--card-bg, #f9f9f9);
+			border-radius: 1em;
+			padding: 1.5em;
+			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+		}
+
+		.payment-summary h2 {
+			margin-bottom: 1em;
+		}
+
+		.payment-row {
+			display: flex;
+			justify-content: space-between;
+			margin: 0.5em 0;
+		}
+
+		select {
+			width: 100%;
+			padding: 0.75em;
+			border-radius: 0.5em;
+			border: 1px solid #ddd;
+			text-align: center;
+		}
+
+		select option {
+			text-align: center;
+		}
+
+		/* Dark mode overrides (assuming template has .dark-mode class) */
+		body.dark-mode .shop-card {
+			background: #1a1a2e;
+			color: #e2e8f0;
+		}
+
+		body.dark-mode .payment-summary {
+			background: #1a1a2e;
+			color: #e2e8f0;
+		}
+
+		body.dark-mode select {
+			background: #2d2d44;
+			color: white;
+			border-color: #334155;
+		}
+
+		body.dark-mode .buy-now {
+			background: rgba(168, 85, 247, 0.8);
+		}
+
+		/* Bottom Nav (app-like) */
+		.bottom-nav {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: #0f172a;
+			border-top: 1px solid #334155;
+			display: flex;
+			justify-content: space-around;
+			padding: 0.5em 0;
+			z-index: 100;
+		}
+
+		.nav-item {
+			color: #94a3b8;
+			font-size: 0.8em;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		.nav-item.active {
+			color: #a855f7;
+		}
+
+		.nav-item i {
+			display: block;
+			font-size: 1.5em;
+		}
+
+		@media (max-width: 480px) {
+			.shop-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1em;
+			}
+		}
+	</style>
+</head>
+
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper" class="fade-in">
+
+		<!-- Header Subpage-->
+		<header class="header-subpage">
+			<a href="/index.html">
+				<img src="/assets/images/giddys-tv-toys-logo.PNG" alt="Giddy Tales Logo" class="logo">
+			</a>
+		</header>
+
+		<!-- Your Dark Mode Toggle Button -->
+		<a href="#darkModePanel" id="darkModeToggle" class="alt">
+			<i class="fas fa-sun"></i>
+		</a>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul class="links">
+				<li><a href="index.html">Home</a></li>
+				<li class="active"><a href="shop.html">Giddy's Shop</a></li>
+				<li><a href="explore.html">Wallets & Apps</a></li>
+				<li><a href="bouncyball.html">Tokens</a></li>
+				<li><a href="cashlinks.html">Digital Gifts</a></li>
+			</ul>
+			<ul class="icons">
+				<li>
+					<a href="#" aria-label="Dark-Light Desktop Toggle Button">
+						<img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
+							class="custom-site-icon">
+					</a>
+				</li>
+				<li>
+					<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+						<img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
+					</a>
+				</li>
+				<li><a href="https://x.com/Giddys_CA" class="icon brands fa-x-twitter"><span class="label">X</span></a>
+				</li>
+				<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+							class="label">YouTube</span></a>
+				</li>
+				<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
+							class="label">TikTok</span></a></li>
+				<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+							class="label">Facebook</span></a></li>
+				<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+							class="label">LinkedIn</span></a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Scrolling Ad Banner -->
+			<div id="expb-ball" class="ad-banner-wrapper">
+				<div class="ad-scroll-container">
+					<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://kraken.pxf.io/xLox1A" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://freeproducer.ca/" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="/bouncyball.html#buy-expb" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5"
+							style="max-width: 100%; height: auto;">
+					</a>
+				</div>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', () => {
+					const container = document.querySelector('.ad-scroll-container');
+					const slides = document.querySelectorAll('.ad-slide');
+					const totalSlides = slides.length;
+					let autoScrollInterval;
+					let currentIndex = 0; // Track current index globally
+
+					// Exit if no slides
+					if (totalSlides === 0) {
+						console.warn('No slides found in .ad-scroll-container');
+						return;
+					}
+
+					// Clone first slide for continuous loop
+					const firstSlideClone = slides[0].cloneNode(true);
+					container.appendChild(firstSlideClone);
+					const allSlides = container.querySelectorAll('.ad-slide'); // Include clone
+
+					// Force start on first slide
+					function setInitialPosition() {
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						currentIndex = 0; // Reset index
+					}
+
+					// Calculate slide width
+					function getBoxWidth() {
+						const slideWidth = slides[0].offsetWidth; // Actual slide width
+						const slideMargin = window.innerWidth <= 480 ? 10 : 40; // 5px L+R mobile, 20px L+R desktop
+						const totalWidth = slideWidth + slideMargin;
+						console.log('Slide width:', slideWidth, 'Total width with margins:', totalWidth);
+						return totalWidth;
+					}
+
+					// Auto-scroll function
+					function startAutoScroll() {
+						function resetAutoScroll() {
+							if (autoScrollInterval) {
+								clearInterval(autoScrollInterval);
+							}
+							autoScrollInterval = setInterval(() => {
+								currentIndex++;
+								console.log('Scrolling to index:', currentIndex);
+								if (currentIndex >= totalSlides + 1) {
+									// Reached clone, reset to first slide instantly
+									container.scrollTo({ left: 0, behavior: 'instant' });
+									currentIndex = 1; // Start from second slide
+								}
+								container.scrollTo({
+									left: currentIndex * getBoxWidth(),
+									behavior: 'smooth'
+								});
+							}, 8000); // 8 seconds
+						}
+
+						// Start auto-scrolling
+						resetAutoScroll();
+					}
+
+					// Handle touch gestures to allow taps and vertical scrolling, block horizontal swipes
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchMoved = false;
+
+					container.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						touchMoved = false;
+					}, { passive: true });
+
+					container.addEventListener('touchmove', (e) => {
+						const touchX = e.touches[0].clientX;
+						const touchY = e.touches[0].clientY;
+						const deltaX = Math.abs(touchX - touchStartX);
+						const deltaY = Math.abs(touchY - touchStartY);
+
+						// Block horizontal swipe (deltaX > 10, deltaY < 50)
+						if (deltaX > 10 && deltaY < 50) {
+							e.preventDefault(); // Block swipe
+							touchMoved = true;
+						}
+						// Allow vertical scrolling (deltaY > 50)
+						if (deltaY > 50) {
+							touchMoved = true; // Mark as moved, but don't prevent default
+						}
+					}, { passive: false });
+
+					container.addEventListener('touchend', (e) => {
+						if (!touchMoved) {
+							// Treat as tap, allow link click
+							const touchEndX = e.changedTouches[0].clientX;
+							const touchEndY = e.changedTouches[0].clientY;
+							const deltaX = Math.abs(touchEndX - touchStartX);
+							const deltaY = Math.abs(touchEndY - touchStartY);
+
+							if (deltaX < 10 && deltaY < 10) {
+								const target = e.target.closest('a');
+								if (target && target.href) {
+									window.location.href = target.href; // Trigger link
+								}
+							}
+						}
+					}, { passive: true });
+
+					// Prevent wheel scrolling within carousel
+					container.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+
+					// Debounce resize handler, preserve current slide
+					let resizeTimeout;
+					window.addEventListener('resize', () => {
+						clearTimeout(resizeTimeout);
+						resizeTimeout = setTimeout(() => {
+							// Restore current slide position instead of resetting
+							container.scrollTo({
+								left: currentIndex * getBoxWidth(),
+								behavior: 'instant'
+							});
+							startAutoScroll();
+						}, 100); // 100ms debounce
+					});
+
+					// Initialize
+					setInitialPosition();
+					startAutoScroll();
+				});
+			</script>
+
+			<!-- Shop Section -->
+			<section class="post shop-section">
+				<header class="major">
+					<span class="date">Giddy's by OFiDCrypt</span>
+					<h1>Giddy's Shop - Buy</h1>
+					<p>Marketplace > <b>Collectibles</b></p>
+					<p>Browse and buy kids toys and collectibles using your debit/credit card or community tokens.
+						Explore magical worlds and family-fun adventures!</p>
+				</header>
+
+				<h2>Item Catalogue: Collectibles</h2>
+				<div class="shop-grid">
+					<div class="shop-card">
+						<img src="/assets/images/300x300-solana.png" alt="Solana Logo Tile">
+						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<h3>Item 1</h3>
+						<div class="price"><i class="fas fa-lightbulb"></i> 250,000 KIN</div>
+					</div>
+					<div class="shop-card">
+						<img src="/assets/images/300x300-solana.png" alt="Solana Logo Tile">
+						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<h3>Item 2</h3>
+						<div class="price"><i class="fas fa-lightbulb"></i> 300,000 KIN</div>
+					</div>
+					<div class="shop-card">
+						<img src="/assets/images/300x300-solana.png" alt="Solana Logo Tile">
+						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<h3>Item 3</h3>
+						<div class="price"><i class="fas fa-lightbulb"></i> 400,000 KIN</div>
+					</div>
+					<div class="shop-card">
+						<img src="/assets/images/300x300-solana.png" alt="Solana Logo Tile">
+						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<h3>Item 4</h3>
+						<div class="price"><i class="fas fa-lightbulb"></i> 350,000 KIN</div>
+					</div>
+					<!-- Add more products as needed -->
+				</div>
+
+				<button class="buy-now">BUY NOW</button>
+
+				<div class="payment-summary">
+					<h2>Payment Summary</h2>
+					<label for="token-select">Select Token</label>
+					<select id="token-select">
+						<option>eXPB</option>
+						<option>GIDDY</option>
+						<option>DOBBY</option>
+						<option>ONE</option>
+						<option>KIN</option>
+						<option>DUNO</option>
+						<option>CPT</option>
+						<option>MYLO</option>
+						<option>SINU</option>
+					</select>
+					<div class="payment-row">
+						<span>Token Value</span>
+						<span>250,000 KIN</span> <!-- This will be updated dynamically via JS -->
+					</div>
+					<div class="payment-row">
+						<span>CAD Price</span>
+						<span>$2.50</span>
+					</div>
+					<div class="payment-row">
+						<span>USD Price</span>
+						<span>$2.50</span>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const select = document.getElementById('token-select');
+
+				// Safer way: get all payment-rows, take the first one
+				const paymentRows = document.querySelectorAll('.payment-summary .payment-row');
+				if (paymentRows.length === 0) {
+					console.error("No .payment-row found in .payment-summary");
+					return;
+				}
+
+				const firstRow = paymentRows[0];
+				const labelSpan = firstRow.querySelector('span:nth-child(1)');  // left span
+				const amountSpan = firstRow.querySelector('span:nth-child(2)');  // right span
+
+				if (!select || !labelSpan || !amountSpan) {
+					console.error("Missing element(s)", {
+						select: !!select,
+						labelSpan: !!labelSpan,
+						amountSpan: !!amountSpan
+					});
+					console.log("First payment-row content:", firstRow?.outerHTML || "not found");
+					return;
+				}
+
+				console.log("All elements found successfully ✓");
+
+				function updateTokenDisplay() {
+					const selectedText = (select.options[select.selectedIndex]?.text || 'KIN').trim();
+
+					labelSpan.textContent = `${selectedText} Value`;
+					amountSpan.textContent = `250,000 ${selectedText}`;   // ← this changes the token symbol
+
+					console.log(`Updated to: ${selectedText} Value | 250,000 ${selectedText}`);
+				}
+
+				// Apply immediately (important for default selection)
+				updateTokenDisplay();
+
+				// Listen for changes
+				select.addEventListener('change', updateTokenDisplay);
+			});
+		</script>
+
+		<style>
+			/* Payment Summary & Token Select Improvements */
+			.payment-summary {
+				background: var(--card-bg, #f9f9f9);
+				border-radius: 1em;
+				padding: 1.5em;
+				box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+			}
+
+			.payment-summary h2 {
+				margin-bottom: 1em;
+			}
+
+			.payment-row {
+				display: flex;
+				justify-content: space-between;
+				margin: 0.5em 0;
+			}
+
+			/* Token Select - Improved centering & dark mode visibility */
+			#token-select {
+				width: 100%;
+				padding: 0.75em 2.5em 0.75em 0.75em;
+				/* bigger right padding for arrow */
+				border-radius: 0.5em;
+				border: 1px solid #ddd;
+				background: white;
+				color: black;
+				font-size: 1em;
+				text-align: center;
+				appearance: none;
+
+				/* Custom arrow - moved a bit more to the right */
+				background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3e%3cpolygon points='0,0 12,0 6,12' fill='%23333'/%3e%3c/svg%3e");
+				background-repeat: no-repeat;
+				background-position: right 1em center;
+				/* ← key change */
+				background-size: 12px;
+				cursor: pointer;
+
+				/* Most important fixes for vertical centering */
+				line-height: 1.4;
+				/* or 1.5 — play with this value */
+				height: 2.8em;
+				/* ← give it an explicit height */
+				display: flex;
+				align-items: center;
+				/* this is what usually saves the day */
+				justify-content: center;
+				/* horizontal centering backup */
+			}
+
+			/* Dark mode for select */
+			#token-select,
+			#token-select option {
+				background-color: var(--main-bg-color) !important;
+				color: var(--text-color) !important;
+			}
+		</style>
+
+		<!-- Bottom Nav -->
+		<nav class="bottom-nav">
+			<div class="nav-item" onclick="window.location.href='#'">
+				<i class="fas fa-comment-dots"></i>Ask Giddy
+			</div>
+			<div class="nav-item active" onclick="window.location.href='/kincommunity.html'">
+				<i class="fas fa-users"></i>ONE Kin
+			</div>
+			<div class="nav-item" onclick="window.location.href='/explore.html'">
+				<i class="fas fa-th-large"></i>Apps
+			</div>
+			<div class="nav-item" onclick="window.location.href='/bouncyball.html'">
+				<i class="fas fa-wallet"></i>Tokens
+			</div>
+			<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
+				<i class="fas fa-gamepad"></i>Play Blinko!
+			</div>
+		</nav>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<section>
+				<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
+					<h2 class="centered-heading">Contact Us</h2>
+					<div class="fields">
+						<div class="field">
+							<label for="name">Name</label>
+							<input type="text" name="name" id="name" required>
+						</div>
+						<div class="field">
+							<label for="email">Email</label>
+							<input type="email" name="email" id="email" required>
+						</div>
+						<div class="field">
+							<label for="message">Message</label>
+							<textarea name="message" id="message" rows="3" required></textarea>
+						</div>
+					</div>
+					<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+					<ul class="actions">
+						<li><input type="submit" value="Send Message"></li>
+					</ul>
+				</form>
+				<script>
+					function verifyRecaptcha() {
+						var response = grecaptcha.getResponse();
+						if (response.length == 0) {
+							alert("Please complete the reCAPTCHA.");
+							return false;
+						} else {
+							return true;
+						}
+					}
+				</script>
+			</section>
+
+			<!-- Footer Social Location, Links & Other Contact -->
+			<section class="split contact">
+				<section>
+					<h3>Location</h3>
+					<p>British Columbia, Canada</p>
+				</section>
+				<section>
+					<h3>Email</h3>
+					<p><a href="mailto:hello@giddys.ca">hello@giddys.ca</a></p>
+				</section>
+				<section>
+					<h3>Telegram</h3>
+					<p><a href="https://t.me/oneGIDDY">Giddy's by OFiDCrypt</a></p>
+				</section>
+				<!-- Hvr -->
+				<section>
+					<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+						<img src="/assets/images/hvr-logo02.svg" alt="Hvr Logo" id="contact-img"
+							class="custom-site-icon-contact">
+					</a>
+					<p><a href="https://www.ofidcrypt.ca">OFiDCrypt.ca</a></p>
+				</section>
+				<section>
+					<h3>Social</h3>
+					<ul class="icons alt">
+						<li><a href="https://x.com/Giddys_CA" class="icon brands fa-x-twitter"><span
+									class="label">X</span></a></li>
+						<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+									class="label">YouTube</span></a></li>
+						<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
+									class="label">TikTok</span></a></li>
+						<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+									class="label">Facebook</span></a></li>
+						<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+									class="label">LinkedIn</span></a></li>
+					</ul>
+				</section>
+			</section>
+		</footer>
+
+		<!-- Copyright -->
+		<div id="copyright">
+			<ul>
+				<li><a href="/docs/main.html">Docs</a></li>
+				<li><a href="/community.html">News & PR</a></li>
+				<li><a href="/pages/affiliate.html">Partners</a></li>
+				<li><a href="/pages/about.html">About</a></li>
+			</ul>
+			<ul>
+				<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2025</li>
+			</ul>
+			<ul>
+				<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</div>
+
+		<!-- Footer Extended Links Container -->
+		<div class="footer-extended-container">
+			<section class="footer-extended">
+				<h1 class="left-aligned">
+					<span class="smaller-heading">Partner Token Projects</span><br />
+				</h1>
+				<ul>
+					<li><a href="kincommunity.html#one-kin">$ONE</a></li>
+					<li><a href="kincommunity.html#one-kin">$KIN</a></li>
+					<li><a href="kincommunity.html#token-partners">$DOBBY</a></li>
+					<li><a href="kincommunity.html#token-partners">$DUNO</a></li>
+					<li><a href="kincommunity.html#token-partners">$MYLO</a></li>
+				</ul>
+			</section>
+
+			<section class="footer-extended">
+				<h1 class="left-aligned">
+					<span class="smaller-heading">Affiliate Partnerships</span><br />
+				</h1>
+				<ul>
+					<li><a href="pages/affiliate.html#kraken">Kraken</a></li>
+					<li><a href="pages/affiliate.html#ledger">Ledger</a></li>
+				</ul>
+			</section>
+
+			<section class="footer-extended">
+				<h1 class="left-aligned">
+					<span class="smaller-heading">Tech & Site Partners</span><br />
+				</h1>
+				<ul>
+					<li><a href="pages/affiliate.html#hvr">HVR Technologies</a></li>
+					<li><a href="https://x.com/GFDevSoft">GFDevSoft</a></li>
+				</ul>
+			</section>
+
+			<section class="footer-extended">
+				<h1 class="left-aligned">
+					<span class="smaller-heading">Collab Communities</span><br />
+				</h1>
+				<ul>
+					<li><a href="kincommunity.html">ONE Kin</a></li>
+					<li><a href="https://x.com/_WEB3M_">WEB3M</a></li>
+					<li><a href="https://x.com/theweb3family">The Web3 Family</a></li>
+				</ul>
+			</section>
+		</div>
+
+		<!-- Page Specific Scripts -->
+		<script>
+			// Switch Visual Mode - Dark Mode Light Mode
+			document.addEventListener('DOMContentLoaded', (event) => {
+				console.log('DOM fully loaded and parsed');
+
+				const darkModeToggle = document.querySelector('#darkModeToggle'); // Assuming this was your original toggle
+				const newDarkModeToggle = document.querySelector('ul.icons li a img.custom-site-icon'); // New button
+
+				function toggleDarkMode() {
+					document.body.classList.toggle('dark-mode');
+					darkModeToggle.classList.toggle('dark');
+					const isDarkMode = document.body.classList.contains('dark-mode');
+					localStorage.setItem('dark-mode', isDarkMode);
+
+					const icon = darkModeToggle.querySelector('i');
+					if (isDarkMode) {
+						icon.classList.remove('fa-sun');
+						icon.classList.add('fa-moon');
+						console.log('Switched to dark mode (moon icon)');
+					} else {
+						icon.classList.remove('fa-moon');
+						icon.classList.add('fa-sun');
+						console.log('Switched to light mode (sun icon)');
+					}
+				}
+
+				// Check local storage for dark mode on page load
+				if (localStorage.getItem('dark-mode') === 'true') {
+					document.body.classList.add('dark-mode');
+					darkModeToggle.classList.add('dark');
+					const icon = darkModeToggle.querySelector('i');
+					icon.classList.add('fa-moon');
+					icon.classList.remove('fa-sun');
+					console.log('Dark mode restored from local storage');
+				}
+
+				// Event listener for original toggle button
+				if (darkModeToggle) {
+					darkModeToggle.addEventListener('click', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('Dark Mode Toggle button not found');
+				}
+
+				// Event listener for the new button
+				if (newDarkModeToggle) {
+					newDarkModeToggle.parentElement.addEventListener('click', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+					newDarkModeToggle.parentElement.addEventListener('touchstart', function (event) {
+						event.preventDefault();
+						toggleDarkMode();
+					});
+				} else {
+					console.warn('New Dark Mode Toggle button not found');
+				}
+			});
+		</script>
+
+		<!-- Simple JS for Cart (Static Demo) -->
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				// Basic cart functionality (static, no backend)
+				const cartButtons = document.querySelectorAll('.cart-btn');
+				cartButtons.forEach(btn => {
+					btn.addEventListener('click', () => {
+						alert('Item added to cart!'); // Replace with actual cart logic
+					});
+				});
+
+				const buyNow = document.querySelector('.buy-now');
+				buyNow.addEventListener('click', () => {
+					alert('Proceeding to checkout with selected token.'); // Link to payment flow
+				});
+			});
+		</script>
+
+		<!-- Link to non-critical JavaScript files -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+</body>
+
+</html>
