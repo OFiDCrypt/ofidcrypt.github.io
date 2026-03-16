@@ -12,7 +12,7 @@
         $header = $('#header'),
         $nav = $('#nav'),
         $main = $('#main'),
-        $navPanelToggle, $navPanel, $navPanelInner;
+        $navPanel, $navPanelInner;
 
     // Breakpoints.
     breakpoints({
@@ -151,52 +151,14 @@
     $wrapper._parallax(0.925);
 
     // Nav Panel Toggle
-    $(document).ready(function () {
-        var $navPanelToggle = $(
-            '<a href="#navPanel" id="navPanelToggle">Menu</a>'
-        ).appendTo($wrapper);
-
-        // Flag to ensure the toggle happens only once during scrolling
-        var altClassApplied = false;
-
-        // Set toggleOffset to for alignment under (-) or above (+) the copyright element
-        var toggleOffset = 5;
-
-        // Custom scroll event listener to toggle 'alt' class based on scroll position relative to the copyright element
-        $(window).on('scroll', function () {
-            var scrollTop = $(this).scrollTop();
-            var windowHeight = $(window).height();
-            var $copyright = $('#copyright');
-            var copyrightTop = $copyright.offset().top;
-            var copyrightHeight = $copyright.outerHeight();
-
-            // Adjust the toggle point to be just under the copyright element
-            var togglePoint = copyrightTop + copyrightHeight + toggleOffset; // Adjusted for under the copyright
-
-            if (scrollTop + windowHeight < togglePoint && !altClassApplied) {
-                $navPanelToggle.addClass('alt');
-                altClassApplied = true;
-            } else if (scrollTop + windowHeight >= togglePoint && altClassApplied) {
-                $navPanelToggle.removeClass('alt');
-                altClassApplied = false;
-            }
-
-            // Optional: Log for debugging
-            console.log(`Scroll Position: ${scrollTop}, Toggle Point: ${togglePoint}, altClassApplied: ${altClassApplied}`);
-        });
-
-        // Check initial scroll position on page load
-        var initialScrollTop = $(window).scrollTop();
-        var initialCopyrightTop = $('#copyright').offset().top;
-        var initialTogglePoint = initialCopyrightTop + $('#copyright').outerHeight() + toggleOffset;
-        if (initialScrollTop + window.innerHeight < initialTogglePoint) {
-            $navPanelToggle.addClass('alt');
-            altClassApplied = true;
-        } else {
-            $navPanelToggle.removeClass('alt');
-            altClassApplied = false;
-        }
+$(document).ready(function () {
+    $('#navPanelTrigger').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();          // ← Add this
+        e.stopImmediatePropagation(); // ← Add this too (stronger)
+        $body.toggleClass('is-navPanel-visible');
     });
+});
 
     // Panel.
     $navPanel = $(
@@ -377,4 +339,4 @@
         });
         */
     }
-})(jQuery); 
+})(jQuery);
