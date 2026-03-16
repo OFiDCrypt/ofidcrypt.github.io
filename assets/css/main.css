@@ -7630,7 +7630,7 @@ article.community.featured {
 	/* Your updated padding */
 	max-width: 72rem;
 	/* Match #copyright max-width for consistency */
-	margin: 0 auto 2rem auto;
+	margin: 0 auto 6rem auto;
 	/* Center the container */
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
 	/* Match #copyright font */
