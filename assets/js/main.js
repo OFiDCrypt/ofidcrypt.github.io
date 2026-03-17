@@ -110,32 +110,32 @@
 
     };
 
-   document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-    // Smooth scroll for anchor tags
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+        // Smooth scroll for anchor tags
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
         });
-    });
 
-    // Smooth scroll for buttons with data-scroll
-    document.querySelectorAll('[data-scroll]').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            const selector = this.getAttribute('data-scroll');
-            const target = document.querySelector(selector);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+        // Smooth scroll for buttons with data-scroll
+        document.querySelectorAll('[data-scroll]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const selector = this.getAttribute('data-scroll');
+                const target = document.querySelector(selector);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
         });
-    });
 
-});
+    });
 
     // Play initial animations on page load.
     $window.on('load', function () {
@@ -151,20 +151,19 @@
     $wrapper._parallax(0.925);
 
     // Nav Panel Toggle
-$(document).ready(function () {
-    $('#navPanelTrigger').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();          // ← Add this
-        e.stopImmediatePropagation(); // ← Add this too (stronger)
-        $body.toggleClass('is-navPanel-visible');
+    $(document).ready(function () {
+        $('#navPanelTrigger').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();          // ← Add this
+            e.stopImmediatePropagation(); // ← Add this too (stronger)
+            $body.toggleClass('is-navPanel-visible');
+        });
     });
-});
 
-    // Panel.
+    // Panel creation
     $navPanel = $(
         '<div id="navPanel">' +
-        '<nav>' +
-        '</nav>' +
+        '<nav></nav>' +
         '<a href="#navPanel" class="close"></a>' +
         '</div>'
     )
@@ -180,31 +179,36 @@ $(document).ready(function () {
             visibleClass: 'is-navPanel-visible'
         });
 
-    // Get inner.
     $navPanelInner = $navPanel.children('nav');
 
-    // Move nav content on breakpoint change.
     var $navContent = $nav.children('ul');
 
     breakpoints.on('>medium', function () {
-        // NavPanel -> Nav.
         $navContent.appendTo($nav);
-
-        // Flip icon classes.
         $nav.find('.icons, .icon').removeClass('alt');
     });
 
     breakpoints.on('<=medium', function () {
-        // Nav -> NavPanel.
         $navContent.appendTo($navPanelInner);
-
-        // Flip icon classes.
         $navPanelInner.find('.icons, .icon').addClass('alt');
     });
 
-    // Hack: Disable transitions on WP.
-    if (browser.os == 'wp' && browser.osVersion < 10)
+    if (browser.os == 'wp' && browser.osVersion < 10) {
         $navPanel.css('transition', 'none');
+    }
+
+    // ───────────────────────────────────────────────
+    // Bottom Menu button handler (opens/closes panel)
+    // ───────────────────────────────────────────────
+    $(document).ready(function () {
+        $('#navPanelTrigger').on('click touchend', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            $body.toggleClass('is-navPanel-visible');
+            console.log('Bottom Menu triggered – panel visibility toggled');
+        });
+    });
 
     // Intro.
     var $intro = $('#intro');

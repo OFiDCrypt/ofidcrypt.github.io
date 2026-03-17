@@ -5082,51 +5082,355 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 	}
 }
 
-/* Bottom Nav (app-like) */
-		.bottom-nav {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background: #0f172a;
-			border-top: 1px solid #334155;
-			display: flex;
-			justify-content: space-around;
-			padding: 0.5em 0;
-			z-index: 100;
-		}
+/* Nav Panel Main */
+#navPanel {
+	transform: translateX(20rem);
+	transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
+	display: none;
+	-webkit-overflow-scrolling: touch;
+	background: var(--nav-panel-bg-color);
+	box-shadow: none;
+	color: var(--nav-panel-text-color);
+	height: 100%;
+	max-width: 80%;
+	overflow-y: auto;
+	padding: 3rem 2rem 0;
+	/* Top padding to make room for close button */
+	position: fixed;
+	right: 0;
+	top: 0;
+	visibility: hidden;
+	width: 20rem;
+	z-index: 10002;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	/* This pushes content to the bottom */
+}
 
-		.nav-item {
-			color: #94a3b8;
-			font-size: 0.8em;
-			text-align: center;
-			cursor: pointer;
-		}
+#navPanel .links {
+	list-style: none;
+	padding-left: 0;
+	margin-top: auto;
+	/* Ensure menu items stay at the bottom */
+	margin-bottom: 3rem;
+}
 
-		.nav-item.active {
-			color: #a855f7;
-		}
+#navPanel .links li {
+	border-top: solid 2px var(--nav-panel-link-border-color);
+}
 
-		.nav-item i {
-			display: block;
-			font-size: 1.5em;
-		}
+#navPanel .links li a {
+	border-bottom: 0;
+	display: block;
+	font-family: "Source Sans Pro", Helvetica, sans-serif;
+	font-size: 0.9rem;
+	font-weight: 900;
+	letter-spacing: 0.075em;
+	padding: 0.75rem 0;
+	text-transform: uppercase;
+	color: var(--nav-panel-link-color);
+}
 
-		@media (max-width: 480px) {
-			.shop-grid {
-				grid-template-columns: repeat(2, 1fr);
-				gap: 1em;
+#navPanel .links li:first-child {
+	border-top: 0;
+}
+
+#navPanel .close {
+	position: relative;
+	align-self: flex-end;
+	/* Align to the right of the flex container */
+	text-decoration: none;
+	transition: color 0.2s ease-in-out;
+	-webkit-tap-highlight-color: var(--nav-panel-close-tap-highlight-color);
+	border: 0;
+	color: var(--nav-panel-close-color);
+	cursor: pointer;
+	display: block;
+	height: auto;
+	line-height: normal;
+	padding: 0.5rem;
+	text-align: right;
+	width: auto;
+	margin-top: 0;
+	/* No gap between the top of the panel and the close button */
+	z-index: 1003;
+	/* Ensure it's above menu items */
+	margin-bottom: 0.5rem;
+	/* Added padding to raise it a bit from the bottom */
+	order: -1;
+	/* Ensure it stays at the top of the flex container */
+}
+
+#navPanel .close:before {
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	font-style: normal;
+	font-variant: normal;
+	text-rendering: auto;
+	line-height: 1;
+	text-transform: none !important;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	content: '\f00d';
+	font-size: 1.25rem;
+}
+
+#navPanel .close:hover {
+	color: var(--nav-panel-close-hover-color);
+}
+
+@media screen and (max-width: 736px) {
+	#navPanel {
+		padding: 2.5rem 1.75rem 0;
+		/* Adjust padding for mobile */
+	}
+
+	#navPanel .close {
+		padding: 0.5rem;
+		/* Adjust for touch-friendly interaction on mobile */
+	}
+}
+
+@media screen and (max-width: 980px) {
+	#navPanel {
+		display: flex;
+	}
+}
+
+@media screen and (max-width: 980px) {
+	body.is-navPanel-visible #wrapper {
+		opacity: 0.5;
+	}
+
+	body.is-navPanel-visible #navPanel {
+		transform: translateX(0);
+		box-shadow: 0 0 1.5rem 0 var(--nav-panel-box-shadow-color);
+		visibility: visible;
+	}
+}
+
+/* Nav Panel Toggle*/
+			#navPanel nav li.dark-mode-item {
+				margin-top: 1em;
+				/* Adjust spacing; set to 0 if placing at top */
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+				/* Optional separator */
+				padding-top: 0.5em;
 			}
-		}
-		
-			/* Hide bottom nav "Menu" item on desktop (wider than 980px) */
+
+			#navPanel nav a.dark-mode-toggle {
+				display: flex;
+				align-items: center;
+				color: inherit;
+				text-decoration: none;
+			}
+
+			#navPanel nav a.dark-mode-toggle i {
+				font-size: 1.4em;
+				margin-right: 0.5em;
+			}
+
+			body.dark-mode #navPanel nav a.dark-mode-toggle i {
+				color: #fff;
+				/* Visibility in dark mode */
+			}
+
+			/* Hide the old floating dark mode toggle completely on desktop */
 			@media (min-width: 981px) {
 
-				.bottom-nav .nav-item:has(a[href="#navPanel"]),
-				.bottom-nav .nav-item:has(i.fa-bars) {
+				#darkModeToggle,
+				.floating-dark-toggle,
+				/* common class names; add if yours matches */
+				[id*="darkModeToggle"],
+				.dark-mode-float,
+				.theme-toggle-float {
 					display: none !important;
 				}
 			}
+
+			/* Keep it hidden on mobile too (as before) */
+			@media (max-width: 980px) {
+
+				#darkModeToggle,
+				.floating-dark-toggle {
+					display: none !important;
+				}
+			}
+
+/* Dark Mode Adjustments */
+body.dark-mode #darkModeToggle.alt {
+	background-color: rgba(33, 41, 49, 0.875);
+	color: #ffffff;
+}
+
+body.dark-mode #darkModeToggle.alt:hover {
+	background-color: #ffffff;
+	color: #212931;
+}
+
+body.dark-mode #darkModeToggle.dark {
+	background-color: #ffffff;
+	color: #212931;
+}
+
+body.dark-mode #darkModeToggle.dark i::before {
+	content: '\f185';
+	/* Unicode for sun */
+}
+
+/* Bottom Nav (app-like) */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0f172a;
+    border-top: 1px solid #334155;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5em 0;
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4); /* subtle lift */
+}
+
+.nav-item {
+    color: #94a3b8;
+    font-size: 0.8em;
+    text-align: center;
+    cursor: pointer;
+    padding: 0.4em 0.8em;
+    border-radius: 0.6em;
+    transition: all 0.2s ease;
+    min-width: 60px; /* prevents squishing on small screens */
+}
+
+.nav-item:hover {
+    background: rgba(168, 85, 247, 0.12); /* light purple tint on hover */
+    color: #a855f7;
+}
+
+.nav-item.active {
+    background: rgba(168, 85, 247, 0.25); /* stronger purple background when active */
+    color: #a855f7;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3); /* subtle glow */
+}
+
+.nav-item i {
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+}
+
+/* Active + hover icon emphasis */
+.nav-item.active i,
+.nav-item:hover i {
+    transform: scale(1.15); /* slight grow effect */
+    transition: transform 0.2s ease;
+}
+
+/* Hide "Menu" on desktop (already good, just cleaned up selector) */
+@media (min-width: 981px) {
+    .bottom-nav .nav-item:has(i.fa-bars),
+    .bottom-nav #navPanelTrigger {
+        display: none !important;
+    }
+}
+
+/* Extra mobile spacing fix (if icons feel cramped) */
+@media (max-width: 480px) {
+    .nav-item {
+        min-width: 50px;
+        padding: 0.3em 0.5em;
+    }
+    
+    .nav-item i {
+        font-size: 1.4em;
+    }
+    
+    .nav-item span, .nav-item text {  /* if you add text labels later */
+        font-size: 0.7em;
+    }
+}
+
+/* Fix bullets, centering, and spacing in mobile nav panel (especially for added items like dark mode toggle) */
+
+/* Target the nav list container */
+#navPanel nav ul,
+#navPanel nav {
+    list-style: none !important;       /* kill bullets globally in panel */
+    padding: 0 !important;
+}
+
+/* Every list item in the panel */
+#navPanel nav li {
+    list-style: none !important;       /* no bullet even if template overrides */
+    margin: 0;
+    padding: 0;
+}
+
+/* Specifically target the dark mode toggle item */
+#navPanel .dark-mode-item {
+    list-style: none !important;
+    margin-top: auto;                  /* keeps it pushed to bottom */
+    padding: 1.2rem 0;                 /* more breathing room top/bottom */
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08); /* subtle separator line */
+}
+
+/* The link itself – force full-width centering */
+#navPanel .dark-mode-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.8rem 0;
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.8em;                  /* bigger icon for touch target */
+}
+
+/* Icon inside – ensure no extra space/margin + perfect centering */
+#navPanel .dark-mode-toggle i {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1;
+    width: 1em;
+    height: 1em;
+    font-size: 1em !important;          /* Matches width/height for icon scaling */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center;                    /* Fallback for older browsers */
+    box-sizing: border-box;                /* Prevents padding/margin bleed */
+}
+
+/* Hover/focus state for better UX */
+#navPanel .dark-mode-toggle:hover,
+#navPanel .dark-mode-toggle:focus {
+    background: rgba(168, 85, 247, 0.15);
+    color: #a855f7;
+    border-radius: 0.5em;
+}
+
+/* Social icons in panel (if any) – same centering fix */
+#navPanel .icons li a,
+#navPanel nav .icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.8rem 0;
+}
+
+/* Make sure the whole panel can scroll if content is long */
+#navPanel {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
 /* Main */
 #main {
@@ -7822,204 +8126,6 @@ article.community.featured {
 	.footer-extended ul li {
 		font-size: 1em;
 		/* Restore original mobile list item size (inherits 0.9rem) */
-	}
-}
-
-/* Nav Panel Toggle*/
-			#navPanel nav li.dark-mode-item {
-				margin-top: 1em;
-				/* Adjust spacing; set to 0 if placing at top */
-				border-top: 1px solid rgba(255, 255, 255, 0.1);
-				/* Optional separator */
-				padding-top: 0.5em;
-			}
-
-			#navPanel nav a.dark-mode-toggle {
-				display: flex;
-				align-items: center;
-				color: inherit;
-				text-decoration: none;
-			}
-
-			#navPanel nav a.dark-mode-toggle i {
-				font-size: 1.4em;
-				margin-right: 0.5em;
-			}
-
-			body.dark-mode #navPanel nav a.dark-mode-toggle i {
-				color: #fff;
-				/* Visibility in dark mode */
-			}
-
-			/* Hide the old floating dark mode toggle completely on desktop */
-			@media (min-width: 981px) {
-
-				#darkModeToggle,
-				.floating-dark-toggle,
-				/* common class names; add if yours matches */
-				[id*="darkModeToggle"],
-				.dark-mode-float,
-				.theme-toggle-float {
-					display: none !important;
-				}
-			}
-
-			/* Keep it hidden on mobile too (as before) */
-			@media (max-width: 980px) {
-
-				#darkModeToggle,
-				.floating-dark-toggle {
-					display: none !important;
-				}
-			}
-
-/* Dark Mode Adjustments */
-body.dark-mode #darkModeToggle.alt {
-	background-color: rgba(33, 41, 49, 0.875);
-	color: #ffffff;
-}
-
-body.dark-mode #darkModeToggle.alt:hover {
-	background-color: #ffffff;
-	color: #212931;
-}
-
-body.dark-mode #darkModeToggle.dark {
-	background-color: #ffffff;
-	color: #212931;
-}
-
-body.dark-mode #darkModeToggle.dark i::before {
-	content: '\f185';
-	/* Unicode for sun */
-}
-
-/* Nav Panel Main */
-#navPanel {
-	transform: translateX(20rem);
-	transition: transform 0.5s ease, box-shadow 0.5s ease, visibility 0.5s;
-	display: none;
-	-webkit-overflow-scrolling: touch;
-	background: var(--nav-panel-bg-color);
-	box-shadow: none;
-	color: var(--nav-panel-text-color);
-	height: 100%;
-	max-width: 80%;
-	overflow-y: auto;
-	padding: 3rem 2rem 0;
-	/* Top padding to make room for close button */
-	position: fixed;
-	right: 0;
-	top: 0;
-	visibility: hidden;
-	width: 20rem;
-	z-index: 10002;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	/* This pushes content to the bottom */
-}
-
-#navPanel .links {
-	list-style: none;
-	padding-left: 0;
-	margin-top: auto;
-	/* Ensure menu items stay at the bottom */
-	margin-bottom: 3rem;
-}
-
-#navPanel .links li {
-	border-top: solid 2px var(--nav-panel-link-border-color);
-}
-
-#navPanel .links li a {
-	border-bottom: 0;
-	display: block;
-	font-family: "Source Sans Pro", Helvetica, sans-serif;
-	font-size: 0.9rem;
-	font-weight: 900;
-	letter-spacing: 0.075em;
-	padding: 0.75rem 0;
-	text-transform: uppercase;
-	color: var(--nav-panel-link-color);
-}
-
-#navPanel .links li:first-child {
-	border-top: 0;
-}
-
-#navPanel .close {
-	position: relative;
-	align-self: flex-end;
-	/* Align to the right of the flex container */
-	text-decoration: none;
-	transition: color 0.2s ease-in-out;
-	-webkit-tap-highlight-color: var(--nav-panel-close-tap-highlight-color);
-	border: 0;
-	color: var(--nav-panel-close-color);
-	cursor: pointer;
-	display: block;
-	height: auto;
-	line-height: normal;
-	padding: 0.5rem;
-	text-align: right;
-	width: auto;
-	margin-top: 0;
-	/* No gap between the top of the panel and the close button */
-	z-index: 1003;
-	/* Ensure it's above menu items */
-	margin-bottom: 0.5rem;
-	/* Added padding to raise it a bit from the bottom */
-	order: -1;
-	/* Ensure it stays at the top of the flex container */
-}
-
-#navPanel .close:before {
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	display: inline-block;
-	font-style: normal;
-	font-variant: normal;
-	text-rendering: auto;
-	line-height: 1;
-	text-transform: none !important;
-	font-family: 'Font Awesome 5 Free';
-	font-weight: 900;
-	content: '\f00d';
-	font-size: 1.25rem;
-}
-
-#navPanel .close:hover {
-	color: var(--nav-panel-close-hover-color);
-}
-
-@media screen and (max-width: 736px) {
-	#navPanel {
-		padding: 2.5rem 1.75rem 0;
-		/* Adjust padding for mobile */
-	}
-
-	#navPanel .close {
-		padding: 0.5rem;
-		/* Adjust for touch-friendly interaction on mobile */
-	}
-}
-
-@media screen and (max-width: 980px) {
-	#navPanel {
-		display: flex;
-	}
-}
-
-@media screen and (max-width: 980px) {
-	body.is-navPanel-visible #wrapper {
-		opacity: 0.5;
-	}
-
-	body.is-navPanel-visible #navPanel {
-		transform: translateX(0);
-		box-shadow: 0 0 1.5rem 0 var(--nav-panel-box-shadow-color);
-		visibility: visible;
 	}
 }
 
