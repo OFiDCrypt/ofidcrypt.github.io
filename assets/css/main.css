@@ -7866,6 +7866,7 @@ article.community.featured {
 	flex-shrink: 1;
 	flex-grow: 1;
 	margin: 0;
+	padding-top: 0;
 }
 
 #footer>section.split.contact>section:first-child {
@@ -7969,7 +7970,7 @@ article.community.featured {
 	}
 
 	#footer>section.split.contact>section:last-child {
-		padding: 0rem;
+		padding: 2rem;
 		border-left: none;
 		/* Remove borders for mobile */
 	}
