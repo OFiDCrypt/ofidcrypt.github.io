@@ -5082,6 +5082,10 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 	}
 }
 
+.icons.top-icons {
+    margin: 0 0.75rem;
+}
+
 /* Nav Panel Main */
 #navPanel {
 	transform: translateX(20rem);
@@ -5212,52 +5216,100 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 }
 
 /* Nav Panel Toggle*/
-			#navPanel nav li.dark-mode-item {
-				margin-top: 1em;
-				/* Adjust spacing; set to 0 if placing at top */
-				border-top: 1px solid rgba(255, 255, 255, 0.1);
-				/* Optional separator */
-				padding-top: 0.5em;
-			}
+#navPanel nav li.dark-mode-item {
+	margin-top: 1em;
+	/* Adjust spacing; set to 0 if placing at top */
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	/* Optional separator */
+	padding-top: 0.5em;
+}
 
-			#navPanel nav a.dark-mode-toggle {
-				display: flex;
-				align-items: center;
-				color: inherit;
-				text-decoration: none;
-			}
+#navPanel nav a.dark-mode-toggle {
+	display: flex;
+	align-items: center;
+	color: inherit;
+	text-decoration: none;
+}
 
-			#navPanel nav a.dark-mode-toggle i {
-				font-size: 1.4em;
-				margin-right: 0.5em;
-			}
+#navPanel nav a.dark-mode-toggle i {
+	font-size: 1.4em;
+	margin-right: 0.5em;
+}
 
-			body.dark-mode #navPanel nav a.dark-mode-toggle i {
-				color: #fff;
-				/* Visibility in dark mode */
-			}
+body.dark-mode #navPanel nav a.dark-mode-toggle i {
+	color: #fff;
+	/* Visibility in dark mode */
+}
 
-			/* Hide the old floating dark mode toggle completely on desktop */
-			@media (min-width: 981px) {
+/* Hide the old floating dark mode toggle completely on desktop */
+@media (min-width: 981px) {
 
-				#darkModeToggle,
-				.floating-dark-toggle,
-				/* common class names; add if yours matches */
-				[id*="darkModeToggle"],
-				.dark-mode-float,
-				.theme-toggle-float {
-					display: none !important;
-				}
-			}
+	#darkModeToggle,
+	.floating-dark-toggle,
+	/* common class names; add if yours matches */
+	[id*="darkModeToggle"],
+	.dark-mode-float,
+	.theme-toggle-float {
+		display: none !important;
+	}
+}
 
-			/* Keep it hidden on mobile too (as before) */
-			@media (max-width: 980px) {
+/* Keep it hidden on mobile too (as before) */
+@media (max-width: 980px) {
 
-				#darkModeToggle,
-				.floating-dark-toggle {
-					display: none !important;
-				}
-			}
+	#darkModeToggle,
+	.floating-dark-toggle {
+		display: none !important;
+	}
+}
+
+/* Mobile nav panel social icons spacing */
+@media screen and (max-width: 980px) {
+
+	/* matches your <=medium breakpoint; adjust if needed */
+	#navPanel nav .icons,
+	#navPanelInner .icons,
+	#navPanel .icons.alt {
+		/* .alt is added by your JS on mobile */
+		display: flex;
+		/* force flex for reliable gap */
+		justify-content: center;
+		/* centered look – change to flex-start if you prefer left */
+		gap: 0.7rem;
+		/* small gap – try 0.8rem (tight), 1rem, 1.5rem, 20px */
+	}
+}
+
+@media screen and (max-width: 980px) {
+
+	#navPanel nav .icons,
+	#navPanelInner .icons,
+	#navPanel .icons.alt,
+	#navPanel .icons {
+		/* extra broad targeting */
+		display: flex;
+		justify-content: center;
+		gap: 0.7rem;
+
+		/* These three lines kill the left indent / purple offset */
+		padding: 0 !important;
+		padding-left: 0 !important;
+		padding-inline-start: 0 !important;
+		/* ← modern & most reliable */
+
+		margin: 1rem auto !important;
+		/* centers the whole ul if needed */
+		width: auto !important;
+		/* optional: shrink-wrap to content */
+	}
+
+	/* Make sure <li> don't fight back */
+	#navPanel .icons li,
+	#navPanel .icons.alt li {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+}
 
 /* Dark Mode Adjustments */
 body.dark-mode #darkModeToggle.alt {
@@ -5291,68 +5343,89 @@ body.dark-mode #darkModeToggle.dark i::before {
     display: flex;
     justify-content: space-around;
     padding: 0.5em 0;
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
     z-index: 100;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4); /* subtle lift */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item {
-    color: #94a3b8;
-    font-size: 0.8em;
-    text-align: center;
-    cursor: pointer;
-    padding: 0.4em 0.8em;
-    border-radius: 0.6em;
-    transition: all 0.2s ease;
-    min-width: 60px; /* prevents squishing on small screens */
+	color: #94a3b8;
+	font-size: 0.8em;
+	text-align: center;
+	cursor: pointer;
+	padding: 0.4em 0.8em;
+	border-radius: 0.6em;
+	transition: all 0.2s ease;
+	min-width: 60px;
+	/* prevents squishing on small screens */
 }
 
 .nav-item:hover {
-    background: rgba(168, 85, 247, 0.12); /* light purple tint on hover */
-    color: #a855f7;
+	background: rgba(168, 85, 247, 0.12);
+	/* light purple tint on hover */
+	color: #a855f7;
 }
 
 .nav-item.active {
-    background: rgba(168, 85, 247, 0.25); /* stronger purple background when active */
-    color: #a855f7;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3); /* subtle glow */
+	background: rgba(168, 85, 247, 0.25);
+	/* stronger purple background when active */
+	color: #a855f7;
+	font-weight: 600;
+	box-shadow: 0 2px 8px rgba(168, 85, 247, 0.3);
+	/* subtle glow */
 }
 
 .nav-item i {
-    display: block;
-    font-size: 1.5em;
-    margin-bottom: 0.2em;
+	display: block;
+	font-size: 1.5em;
+	margin-bottom: 0.2em;
 }
 
 /* Active + hover icon emphasis */
 .nav-item.active i,
 .nav-item:hover i {
-    transform: scale(1.15); /* slight grow effect */
-    transition: transform 0.2s ease;
+	transform: scale(1.15);
+	/* slight grow effect */
+	transition: transform 0.2s ease;
 }
 
 /* Hide "Menu" on desktop (already good, just cleaned up selector) */
 @media (min-width: 981px) {
-    .bottom-nav .nav-item:has(i.fa-bars),
-    .bottom-nav #navPanelTrigger {
-        display: none !important;
-    }
+
+	.bottom-nav .nav-item:has(i.fa-bars),
+	.bottom-nav #navPanelTrigger {
+		display: none !important;
+	}
 }
 
 /* Extra mobile spacing fix (if icons feel cramped) */
 @media (max-width: 480px) {
-    .nav-item {
-        min-width: 50px;
-        padding: 0.3em 0.5em;
-    }
-    
-    .nav-item i {
-        font-size: 1.4em;
-    }
-    
-    .nav-item span, .nav-item text {  /* if you add text labels later */
-        font-size: 0.7em;
-    }
+	.nav-item {
+		min-width: 50px;
+		padding: 0.3em 0.5em;
+	}
+
+	.nav-item i {
+		font-size: 1.4em;
+	}
+
+	.nav-item span,
+	.nav-item text {
+		/* if you add text labels later */
+		font-size: 0.7em;
+	}
+}
+
+@media screen and (max-width: 980px) {
+
+	/* Hide desktop-only icons */
+	.top-icons .top-toggle,
+	.top-icons .top-hvr {
+		display: none !important;
+		width: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
 }
 
 /* Fix bullets, centering, and spacing in mobile nav panel (especially for added items like dark mode toggle) */
@@ -5360,76 +5433,85 @@ body.dark-mode #darkModeToggle.dark i::before {
 /* Target the nav list container */
 #navPanel nav ul,
 #navPanel nav {
-    list-style: none !important;       /* kill bullets globally in panel */
-    padding: 0 !important;
+	list-style: none !important;
+	/* kill bullets globally in panel */
+	padding: 0 !important;
 }
 
 /* Every list item in the panel */
 #navPanel nav li {
-    list-style: none !important;       /* no bullet even if template overrides */
-    margin: 0;
-    padding: 0;
+	list-style: none !important;
+	/* no bullet even if template overrides */
+	margin: 0;
+	padding: 0;
 }
 
 /* Specifically target the dark mode toggle item */
 #navPanel .dark-mode-item {
-    list-style: none !important;
-    margin-top: auto;                  /* keeps it pushed to bottom */
-    padding: 1.2rem 0;                 /* more breathing room top/bottom */
-    text-align: center;
-    border-top: 1px solid rgba(255,255,255,0.08); /* subtle separator line */
+	list-style: none !important;
+	margin-top: auto;
+	/* keeps it pushed to bottom */
+	padding: 1.2rem 0;
+	/* more breathing room top/bottom */
+	text-align: center;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	/* subtle separator line */
 }
 
 /* The link itself – force full-width centering */
 #navPanel .dark-mode-toggle {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 0.8rem 0;
-    color: inherit;
-    text-decoration: none;
-    font-size: 1.8em;                  /* bigger icon for touch target */
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 0.8rem 0;
+	color: inherit;
+	text-decoration: none;
+	font-size: 1.5em;
+	/* bigger icon for touch target */
 }
 
 /* Icon inside – ensure no extra space/margin + perfect centering */
 #navPanel .dark-mode-toggle i {
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1;
-    width: 1em;
-    height: 1em;
-    font-size: 1em !important;          /* Matches width/height for icon scaling */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center;                    /* Fallback for older browsers */
-    box-sizing: border-box;                /* Prevents padding/margin bleed */
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 1;
+	width: 1em;
+	height: 1em;
+	font-size: 1em !important;
+	/* Matches width/height for icon scaling */
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	text-align: center;
+	/* Fallback for older browsers */
+	box-sizing: border-box;
+	/* Prevents padding/margin bleed */
 }
 
 /* Hover/focus state for better UX */
 #navPanel .dark-mode-toggle:hover,
 #navPanel .dark-mode-toggle:focus {
-    background: rgba(168, 85, 247, 0.15);
-    color: #a855f7;
-    border-radius: 0.5em;
+	background: rgba(168, 85, 247, 0.15);
+	color: #a855f7;
+	border-radius: 0.5em;
 }
 
 /* Social icons in panel (if any) – same centering fix */
 #navPanel .icons li a,
 #navPanel nav .icons a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 0.8rem 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 0.8rem 0;
 }
 
 /* Make sure the whole panel can scroll if content is long */
 #navPanel {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 /* Main */
@@ -5966,34 +6048,36 @@ section.youtube-iframe {
 
 /* Mobile: up to 410px — stacked, no gap */
 .button-container {
-    margin: 10px 0;
+	margin: 10px 0;
 }
 
 .button-container .button {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.75rem;
-    text-align: center;
+	display: block;
+	width: 100%;
+	margin-bottom: 0.75rem;
+	text-align: center;
 }
 
 .button-container .button:last-child {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 /* From 410px and up — side by side, equal widths */
 @media (min-width: 410px) {
-    .button-container {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        width: 100%;
-    }
+	.button-container {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		width: 100%;
+	}
 
-    .button-container .button {
-        flex: 1;            /* equal widths */
-        margin-bottom: 0;
-        text-align: center; /* ensures text stays centered */
-    }
+	.button-container .button {
+		flex: 1;
+		/* equal widths */
+		margin-bottom: 0;
+		text-align: center;
+		/* ensures text stays centered */
+	}
 }
 
 /* Mobile responsive design */
@@ -6477,130 +6561,142 @@ section.youtube-iframe {
 /* Cash Links Section */
 
 .cashlinks-title {
-    margin-top: 1.5rem;
+	margin-top: 1.5rem;
 }
 
 #main .cashlinks-section {
-    margin-bottom: 0rem;
+	margin-bottom: 0rem;
 }
 
 #main .cashlinks-section .button {
-    margin-top: auto;
+	margin-top: auto;
 }
 
 /* Each row container (.cashlinks-items) */
 #main .cashlinks-section .cashlinks-items {
-    display: flex;
-    flex-direction: column;     /* Stacked on mobile */
-    gap: 1.5rem;                /* Vertical gap between individual items inside a row */
+	display: flex;
+	flex-direction: column;
+	/* Stacked on mobile */
+	gap: 1.5rem;
+	/* Vertical gap between individual items inside a row */
 }
 
 /* Add 1.5rem gap BELOW each full row (between the three rows) */
-#main .cashlinks-section .cashlinks-items + .cashlinks-items {
-    margin-top: 1.5rem;
+#main .cashlinks-section .cashlinks-items+.cashlinks-items {
+	margin-top: 1.5rem;
 }
 
 #main .cashlinks-section .cashlinks-item {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    border: 1px solid var(--cashlinks-border-color, var(--quick-start-border-color));
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    background-color: var(--cashlinks-bg-color, var(--quick-start-bg-color));
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	border: 1px solid var(--cashlinks-border-color, var(--quick-start-border-color));
+	padding: 30px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	background-color: var(--cashlinks-bg-color, var(--quick-start-bg-color));
 }
 
 #main .cashlinks-section .image.left {
-    margin-right: 15px;
-    flex-shrink: 0;             /* Prevent image from shrinking too much */
+	margin-right: 15px;
+	flex-shrink: 0;
+	/* Prevent image from shrinking too much */
 }
 
 #main .cashlinks-section .cashlinks-content {
-    flex: 1;
+	flex: 1;
 }
 
 /* Featured item styles (kept for completeness, even if not used) */
 #main .cashlinks-section .cashlinks-featured {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    border: 1px solid var(--cashlinks-border-color, var(--quick-start-border-color));
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    max-width: 100%;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+	border: 1px solid var(--cashlinks-border-color, var(--quick-start-border-color));
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+	max-width: 100%;
 }
 
 #main .cashlinks-section .cashlinks-featured .image.left {
-    max-width: 60%;
+	max-width: 60%;
 }
 
 #main .cashlinks-section .cashlinks-featured .cashlinks-content {
-    text-align: center;
+	text-align: center;
 }
 
 /* Desktop layout only (>= 980px) */
 @media (min-width: 980px) {
-    #main .cashlinks-section .cashlinks-items {
-        flex-direction: row;            /* Horizontal layout: 3 items side by side */
-        gap: 1.5rem;
-    }
+	#main .cashlinks-section .cashlinks-items {
+		flex-direction: row;
+		/* Horizontal layout: 3 items side by side */
+		gap: 1.5rem;
+	}
 
-    #main .cashlinks-section .cashlinks-item {
-        flex-direction: column;
-        align-items: center;
-        width: calc(33.33% - 1rem);
-    }
+	#main .cashlinks-section .cashlinks-item {
+		flex-direction: column;
+		align-items: center;
+		width: calc(33.33% - 1rem);
+	}
 
-    #main .cashlinks-section .image.left {
-        margin: 5px 0;
-        width: 100%;
-        max-width: none;
-    }
+	#main .cashlinks-section .image.left {
+		margin: 5px 0;
+		width: 100%;
+		max-width: none;
+	}
 }
 
 /* Mobile: Force individual cards to stack vertically (image above content) */
 @media (max-width: 979px) {
-    #main .cashlinks-section .cashlinks-item {
-        flex-direction: column;      /* Stack image above content */
-        align-items: flex-start;     /* Left-align content for better readability */
-        text-align: center;          /* Optional: center text/button if preferred */
-    }
+	#main .cashlinks-section .cashlinks-item {
+		flex-direction: column;
+		/* Stack image above content */
+		align-items: flex-start;
+		/* Left-align content for better readability */
+		text-align: center;
+		/* Optional: center text/button if preferred */
+	}
 
-    #main .cashlinks-section .image.left {
-        margin-right: 0;
-        margin-bottom: 1rem;         /* Space between image and content */
-        width: 100%;
-        max-width: 300px;            /* Optional: limit image width on mobile */
-        flex-shrink: 0;
-    }
+	#main .cashlinks-section .image.left {
+		margin-right: 0;
+		margin-bottom: 1rem;
+		/* Space between image and content */
+		width: 100%;
+		max-width: 300px;
+		/* Optional: limit image width on mobile */
+		flex-shrink: 0;
+	}
 
-    #main .cashlinks-section .cashlinks-content {
-        width: 100%;
-        text-align: center;          /* Center the title and button */
-    }
+	#main .cashlinks-section .cashlinks-content {
+		width: 100%;
+		text-align: center;
+		/* Center the title and button */
+	}
 
-    /* Ensure button stretches nicely or stays centered */
-    #main .cashlinks-section .button {
-        width: 100%;
-        max-width: 250px;            /* Optional: prevent button from being too wide */
-        margin: 0 auto;
-    }
+	/* Ensure button stretches nicely or stays centered */
+	#main .cashlinks-section .button {
+		width: 100%;
+		max-width: 250px;
+		/* Optional: prevent button from being too wide */
+		margin: 0 auto;
+	}
 }
 
 /* Ensures consistent gap before the reCAPTCHA widget if it's placed after the content */
 .g-recaptcha,
 #rc-imageselect,
-.cashlinks-section ~ .g-recaptcha {  /* adjust selector based on your actual placement */
-    margin-top: 1.5rem;
+.cashlinks-section~.g-recaptcha {
+	/* adjust selector based on your actual placement */
+	margin-top: 1.5rem;
 }
 
 /* Or more generally, if reCAPTCHA is inside or immediately after the section: */
-#main .cashlinks-section > .g-recaptcha,
-#main .cashlinks-section + .g-recaptcha {
-    margin-top: 1.5rem;
+#main .cashlinks-section>.g-recaptcha,
+#main .cashlinks-section+.g-recaptcha {
+	margin-top: 1.5rem;
 }
 
 #main .partner-section .product-content .image.left {
@@ -7866,9 +7962,14 @@ article.community.featured {
 	#footer>section.split>section:first-child,
 	#footer>section.split>section:last-child,
 	#footer>section.split.contact>section,
-	#footer>section.split.contact>section:first-child,
-	#footer>section.split.contact>section:last-child {
+	#footer>section.split.contact>section:first-child {
 		padding: 2rem;
+		border-left: none;
+		/* Remove borders for mobile */
+	}
+
+	#footer>section.split.contact>section:last-child {
+		padding: 0rem;
 		border-left: none;
 		/* Remove borders for mobile */
 	}
@@ -7879,6 +7980,11 @@ article.community.featured {
 		width: 100%;
 	}
 }
+
+.split.contact section ul:first-child {
+	width: auto !important;
+}
+
 
 /* Copyright */
 #copyright {
@@ -7973,21 +8079,21 @@ article.community.featured {
 .footer-extended-container {
 	display: flex;
 	justify-content: center;
-	/* Center the columns horizontally */
+	/* keeps the 4 columns nicely grouped & centered inside */
 	gap: 2em;
-	/* Space between columns */
-	padding: 0rem 2rem;
-	/* Your updated padding */
+	padding: 0 0;
+	/* inner side padding — adjust if needed */
+
 	max-width: 72rem;
-	/* Match #copyright max-width for consistency */
-	margin: 0 auto 6rem auto;
-	/* Center the container */
+	/* ← keep this to match the element above */
+	width: 100%;
+	/* makes it grow up to max-width */
+	margin: 1rem auto 6rem auto;
+	/* ← this is what centers the whole block */
+
 	font-family: "Source Sans Pro", Helvetica, sans-serif;
-	/* Match #copyright font */
 	font-size: 0.75rem;
-	/* Reduced for tidier appearance on desktop */
 	color: var(--copyright-text-color);
-	/* Match #copyright text color (black in light, white in dark) */
 }
 
 .footer-extended {
@@ -8042,13 +8148,28 @@ article.community.featured {
 
 .footer-extended h1.left-aligned {
 	font-size: 0.95em;
-	/* Reduced to match smaller desktop font */
 	font-weight: 900;
 	letter-spacing: 0.075em;
 	text-transform: uppercase;
-	margin-bottom: 1em;
-	text-align: left;
-	/* Align headings to the left on desktop */
+	margin: 1.2em 0 1.4em 0;
+	/* slightly more bottom space for breathing */
+	padding: 0.6em 1em;
+	/* gentle inner padding */
+
+	/* Very faint → almost invisible but still gives structure */
+	background-color: rgba(255, 255, 255, 0.06);
+	/* ~6% white → soft glow on dark bg */
+
+	color: #e2e8f0;
+	/* light grayish-white – good contrast */
+	border-radius: 6px;
+}
+
+/* Optional: even fainter hover/focus state for interactivity */
+.footer-extended h1.left-aligned:hover,
+.footer-extended h1.left-aligned:focus {
+	background-color: rgba(255, 255, 255, 0.10);
+	/* rises to ~10% on hover */
 }
 
 .footer-extended h1.left-aligned .smaller-heading {
@@ -8094,6 +8215,7 @@ article.community.featured {
 		font-size: 0.9rem;
 		/* Restore original mobile font size */
 		/* Removed min-height to allow shrinking to content */
+		margin-top: 0;
 	}
 
 	.footer-extended {
@@ -8279,53 +8401,58 @@ article.community.featured {
 }
 
 .video-main {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 @media (min-width: 768px) {
-  .video-main {
-    max-width: 320px;  /* Your smaller desktop preview size */
-  }
+	.video-main {
+		max-width: 320px;
+		/* Your smaller desktop preview size */
+	}
 }
 
 .video-hosted-portrait {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  overflow: hidden;
-  background: #000;  /* Black bars where needed */
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	position: relative;
+	width: 100%;
+	aspect-ratio: 9 / 16;
+	overflow: hidden;
+	background: #000;
+	/* Black bars where needed */
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .video-hosted-portrait video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;  /* Key change: Shows full video with letterboxing (black side bars if wider) */
-  background: #000;     /* Ensures clean black bars */
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	/* Key change: Shows full video with letterboxing (black side bars if wider) */
+	background: #000;
+	/* Ensures clean black bars */
 }
 
 /* Rest remains the same */
 .video-poster-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;    /* Poster can still cover fully for thumbnail appeal */
-  border-radius: 12px;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 2;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	/* Poster can still cover fully for thumbnail appeal */
+	border-radius: 12px;
+	pointer-events: none;
+	transition: opacity 0.4s ease;
+	z-index: 2;
 }
 
 .video-hosted-portrait.playing .video-poster-overlay {
-  opacity: 0;
+	opacity: 0;
 }
 
 /* Unique styling for specific video(s) */
