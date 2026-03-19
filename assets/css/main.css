@@ -3869,6 +3869,10 @@ ul.icons li a.icon:hover:before {
 	color: var(--icon-hover-text-color);
 }
 
+ul.icons.alt {
+	margin-top: 1rem;
+}
+
 ul.icons.alt li .icon:before {
 	box-shadow: inset 0 0 0 2px var(--icon-border-color);
 }
@@ -5103,13 +5107,13 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     #navPanel .footer-info-link {
         display: block !important;
         text-align: center;
-        margin-top: 2rem;
+        margin-top: 0rem;
         margin-bottom: 0rem;
     }
 
 	    /* Style the <a> */
     #navPanel .footer-info-link a {
-        font-size: 0.75rem;          
+        font-size: 0.80rem;          
         text-decoration: none !important;   /* kill underline */
         color: grey;
         opacity: 0.85;
@@ -5329,6 +5333,7 @@ body.dark-mode #navPanel nav a.dark-mode-toggle i {
 		/* extra broad targeting */
 		display: flex;
 		justify-content: center;
+		margin-bottom: 0;
 		gap: 0.7rem;
 
 		/* These three lines kill the left indent / purple offset */
@@ -5337,8 +5342,6 @@ body.dark-mode #navPanel nav a.dark-mode-toggle i {
 		padding-inline-start: 0 !important;
 		/* ← modern & most reliable */
 
-		margin: 0 auto 1 auto !important;
-		/* centers the whole ul if needed */
 		width: auto !important;
 		/* optional: shrink-wrap to content */
 	}
@@ -5476,6 +5479,7 @@ body.dark-mode #darkModeToggle.dark i::before {
 	list-style: none !important;
 	/* kill bullets globally in panel */
 	padding: 0 !important;
+	margin-bottom: 0.5rem;
 }
 
 /* Every list item in the panel */
@@ -7893,7 +7897,7 @@ article.community.featured {
 
 #footer>section.split.contact>section>* {
 	margin-bottom: 0;
-	padding-top: 10px;
+	padding-top: 0px;
 }
 
 #footer>section.split.contact>section> :first-child {
@@ -7905,7 +7909,7 @@ article.community.featured {
 #footer>section.split.contact>section> :last-child {
 	flex-shrink: 1;
 	flex-grow: 1;
-	margin: 0;
+	margin-top: 10px;
 	padding-top: 0;
 }
 
@@ -7915,7 +7919,7 @@ article.community.featured {
 }
 
 #footer>section.split.contact>section:last-child {
-	padding: 3rem 4rem 4rem 4rem;
+	padding: 4rem 4rem 4rem 4rem;
 }
 
 #footer>section.split.contact>section.alt {
@@ -7924,6 +7928,13 @@ article.community.featured {
 
 #footer>section.split.contact>section.alt> :last-child {
 	margin-top: -0.325rem;
+}
+
+@media screen and (max-width: 736px) {
+    #footer > section.split.contact > section > * {
+        margin-bottom: 0;
+        padding-top: 10px;
+    }
 }
 
 /* Center text in split contact sections */
@@ -8025,7 +8036,6 @@ article.community.featured {
 .split.contact section ul:first-child {
 	width: auto !important;
 }
-
 
 /* Copyright */
 #copyright {
