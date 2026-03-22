@@ -5402,9 +5402,6 @@ body.dark-mode #darkModeToggle.dark i::before {
     .bottom-nav {
         /* This is the magic that fixes Chrome iOS */
         bottom: env(safe-area-inset-bottom);
-
-        /* Add breathing room, but not positioning */
-        padding-bottom: env(safe-area-inset-bottom);
     }
 }
 
