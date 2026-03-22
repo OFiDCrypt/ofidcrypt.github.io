@@ -5375,33 +5375,43 @@ body.dark-mode #darkModeToggle.dark i::before {
 	/* Unicode for sun */
 }
 
-/* Bottom Nav (app-like) */
+/* Base nav — desktop + Android + fallback */
 .bottom-nav {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0; /* default for Android + desktop */
+    bottom: 0;
     background: #0f172a;
     border-top: 1px solid #334155;
     display: flex;
     justify-content: space-around;
     padding: 0.5em 0;
     z-index: 9999;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
-
-    /* Prevent Chrome iOS from lifting the bar */
-    height: auto;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.4);
     min-height: 60px;
-
-    /* Reset padding-bottom so Chrome iOS doesn't double-apply it */
-    padding-bottom: 0;
 }
 
-/* iOS-only safe-area fix */
+/* iOS safe-area support (Safari + Chrome) */
 @supports (bottom: env(safe-area-inset-bottom)) {
     .bottom-nav {
-        /* This is the magic that fixes Chrome iOS */
         bottom: env(safe-area-inset-bottom);
+        bottom: constant(safe-area-inset-bottom); /* iOS 11–12 fallback */
+    }
+}
+
+/* Safari-only correction (Chrome iOS excluded) */
+/* Safari matches -webkit-touch-callout, Chrome iOS does NOT */
+@supports (-webkit-touch-callout: none) {
+    .bottom-nav {
+        bottom: calc(env(safe-area-inset-bottom) - 12px);
+    }
+}
+
+/* Chrome iOS-only correction */
+/* Chrome iOS matches -webkit-overflow-scrolling but NOT -webkit-touch-callout */
+@supports (-webkit-overflow-scrolling: touch) and (not (-webkit-touch-callout: none)) {
+    .bottom-nav {
+        bottom: calc(env(safe-area-inset-bottom) + 8px);
     }
 }
 
