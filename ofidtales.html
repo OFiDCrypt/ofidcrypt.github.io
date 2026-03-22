@@ -331,7 +331,6 @@
 						</div>
 					</section>
 
-					<!-- Revert video placeholder to poster image after video ends -->
 					<script>
 						// Load YouTube IFrame Player API asynchronously
 						var tag = document.createElement('script');
@@ -342,12 +341,27 @@
 						// Global variable for the YouTube player
 						var player;
 
+						// Reusable END handler
+						function onPlayerStateChange(event) {
+							if (event.data === YT.PlayerState.ENDED) {
+
+								// Remove iframe completely
+								const playerEl = document.getElementById('player');
+								playerEl.innerHTML = "";
+								playerEl.style.display = 'none';
+
+								// Show poster
+								const poster = document.getElementById('poster-image');
+								poster.style.display = 'block';
+							}
+						}
+
 						// Called when YouTube API is loaded
 						function onYouTubeIframeAPIReady() {
 							player = new YT.Player('player', {
 								height: '315',
 								width: '560',
-								videoId: 'jPERhPYWC7Q', // Replace with your YouTube video ID
+								videoId: 'jPERhPYWC7Q',
 								playerVars: {
 									'playsinline': 1,
 									'rel': 0,
@@ -356,16 +370,9 @@
 								},
 								events: {
 									'onReady': function (event) {
-										// Sync poster image size with player on load
 										syncPosterSize();
 									},
-									'onStateChange': function (event) {
-										if (event.data === YT.PlayerState.ENDED) {
-											// Video ended, hide player and show poster image
-											document.getElementById('player').style.display = 'none';
-											document.getElementById('poster-image').style.display = 'block';
-										}
-									}
+									'onStateChange': onPlayerStateChange
 								}
 							});
 						}
@@ -379,7 +386,7 @@
 								const playerHeight = playerElement.offsetHeight;
 								posterImage.style.width = playerWidth + 'px';
 								posterImage.style.height = playerHeight + 'px';
-								posterImage.style.maxWidth = '100%'; // Ensure it doesn't overflow container
+								posterImage.style.maxWidth = '100%';
 							}
 						}
 
@@ -394,6 +401,21 @@
 
 						// Update poster size on window resize
 						window.addEventListener('resize', syncPosterSize);
+
+						// Replay handler — rebuilds the player cleanly
+						document.getElementById('poster-image').addEventListener('click', function () {
+							this.style.display = 'none';
+
+							player = new YT.Player('player', {
+								height: '315',
+								width: '560',
+								videoId: 'jPERhPYWC7Q',
+								playerVars: { playsinline: 1, rel: 0, showinfo: 0, ecver: 2 },
+								events: { 'onStateChange': onPlayerStateChange }
+							});
+
+							document.getElementById('player').style.display = 'block';
+						});
 					</script>
 
 					<p>Explore short videos and our Giddy Tales Series; real world adventures
@@ -499,12 +521,14 @@
 						<h2>Intro: King Laine & Big Bahbreh</h2>
 						<p>As our universe expands, we're bringing you more exciting adventures and stories! Meet our
 							antagonists King Laine and Big Bahbreh in this animated short!</p>
+
 						<!-- Video container with poster overlay -->
 						<div class="video-main video-hosted-portrait">
 							<video id="myVideo" controls playsinline preload="metadata">
 								<source src="../assets/videos/ofid-tales-king-laine-teaser.MP4" type="video/mp4">
 								Your browser does not support the video tag.
 							</video>
+
 							<!-- Poster overlay (visible before play and after video ends) -->
 							<img class="video-poster-overlay" src="../assets/images/ofid-poster.PNG"
 								alt="OFiDCrypt Intro Video Poster">
