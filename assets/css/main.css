@@ -6605,7 +6605,7 @@ section.youtube-iframe {
 /* Giddy's Quick Grid – now using divs instead of <a> */
 
 .giddys-quick-section {
-    padding: 0em 0em 2em 0em;
+    padding: 1em 0em 2em 0em;
 }
 
 .giddys-quick-grid {
