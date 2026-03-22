@@ -331,32 +331,6 @@
 						</div>
 					</section>
 
-					<style>
-						#poster-image {
-							will-change: transform;
-							transform: translateZ(0);
-							position: relative;
-							z-index: 10;
-							/* always above the player container */
-						}
-
-						/* Promote the player container to its own GPU layer */
-						#player {
-							will-change: transform;
-							transform: translateZ(0);
-							position: relative;
-							z-index: 1;
-						}
-
-						/* Promote the outer wrapper too */
-						.stream.video.main {
-							will-change: transform;
-							transform: translateZ(0);
-							position: relative;
-							z-index: 1;
-						}
-					</style>
-
 					<script>
 						// Load YouTube IFrame Player API asynchronously
 						var tag = document.createElement('script');
