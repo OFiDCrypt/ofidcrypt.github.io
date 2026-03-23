@@ -316,54 +316,216 @@
 			<section class="post" id="one-kin">
 				<header class="major">
 					<span class="date">Connecting Communities</span>
-					<h1>ONE Kin <br />
-						Community</h1>
+					<h1>ONE Kin <br /> Community</h1>
+					<p>
+						Meet the team behind the vision for a better future of money, spending, teamwork,
+						collaboration, and growth — where innovation meets community, and every contribution
+						gives back to the audience. We’re building the keystone of a new economy, and you can
+						connect with us right here — and in
+						<a href="/pages/kinnected.html">Kinnected</a>.
+					</p>
 				</header>
 
-				<!-- Community Links Table -->
-				<section class="community-links">
-					<table>
-						<!-- Ad Banner -->
-						<section id="kin-money" class="ad-table">
-							<div class="ad-content">
+				<!-- SHARED CONTAINER: Square Twitter Post + Square Community Links -->
+				<!-- Side-by-side on desktop • Stacked on mobile -->
+				<div class="post-onekin">
+
+					<!-- Square Twitter Post (left on desktop) -->
+					<div class="post-container square-post">
+						<div class="post-content">
+							<blockquote class="twitter-tweet" data-media-max-width="560" data-theme="dark">
+								<p lang="en" dir="ltr">True collaboration is when independent entities come
+									together.<br><br>🔮 THE VISION<br><br>📲 Kinnected! Wallet — Messenger, Games and
+									Cash Links<br><br>An app by <a
+										href="https://twitter.com/GFDevSoft?ref_src=twsrc%5Etfw">@GFDevSoft</a> Coming
+									Soon!<br><br>Unlocking the future of money, digital gifing and loyalty.<br><br>We
+									Are ONE<a
+										href="https://twitter.com/OneKinCommunity?ref_src=twsrc%5Etfw">@OneKinCommunity</a>
+									<a href="https://t.co/FhVWBcN4GJ">https://t.co/FhVWBcN4GJ</a> <a
+										href="https://t.co/a1K79nwSp9">pic.twitter.com/a1K79nwSp9</a>
+								</p>
+								— Tokin 🍁 | Gifting Commerce (@OFiDCrypt) <a
+									href="https://twitter.com/OFiDCrypt/status/2003687622435356782?ref_src=twsrc%5Etfw">December
+									24, 2025</a>
+							</blockquote>
+							<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+						</div>
+					</div>
+
+					<!-- Square Community Links (right on desktop) -->
+					<div class="community-links square-post">
+						<div class="links-content">
+
+							<!-- Heading Banner — Moved OUT of the table (now sits cleanly at the top) -->
+							<div class="community-banner">
 								<a href="https://ofidcrypt.ca/rebuilding-together-the-rebirth-of-kin-in-one-kin-community"
 									style="border-bottom: none;">
-									<img src="/assets/images/one-kin-banner.PNG" alt="Ad Banner">
+									<img src="/assets/images/one-kin-banner.PNG" alt="ONE Kin Banner">
 								</a>
 							</div>
-						</section>
 
-				</section>
-				<tbody>
-					<tr>
-						<td style="text-align: center; vertical-align: middle;">
-							<a href="https://x.com/OneKinCommunity
-							">
-								<img src="/assets/images/social-logo/IMG_1844.png" alt="X Logo"
-									style="max-width: 35%; height: auto; display: block; margin: auto;">
-							</a>
-						</td>
-						<td style="text-align: center; vertical-align: middle;">
-							<a href="https://x.com/OneKinCommunity">@OneKinCommunity
-							</a>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align: center; vertical-align: middle;">
-							<a href="https://t.me/ONEKinCommunity
-							">
-								<img src="/assets/images/social-logo/IMG_1876.png" alt="Telegram Logo"
-									style="max-width: 35%; height: auto; display: block; margin: auto;">
-							</a>
-						</td>
-						<td style="text-align: center; vertical-align: middle;">
-							<a href="https://t.me/ONEKinCommunity">@OneKinCommunity
-							</a>
-						</td>
-					</tr>
-				</tbody>
-				</table>
-			</section>
+							<!-- Clean Social Links Table (only X + Telegram rows) -->
+							<table>
+								<tr>
+									<td style="text-align: center; vertical-align: middle; width: 90px;">
+										<a href="https://x.com/OneKinCommunity">
+											<img src="/assets/images/social-logo/IMG_1844.png" alt="X Logo"
+												style="max-width: 42px; height: auto; display: block; margin: auto;">
+										</a>
+									</td>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://x.com/OneKinCommunity">@OneKinCommunity</a>
+									</td>
+								</tr>
+
+								<tr>
+									<td style="text-align: center; vertical-align: middle; width: 90px;">
+										<a href="https://t.me/ONEKinCommunity">
+											<img src="/assets/images/social-logo/IMG_1876.png" alt="Telegram Logo"
+												style="max-width: 42px; height: auto; display: block; margin: auto;">
+										</a>
+									</td>
+									<td style="text-align: center; vertical-align: middle;">
+										<a href="https://t.me/ONEKinCommunity">@OneKinCommunity</a>
+									</td>
+								</tr>
+							</table>
+
+						</div>
+					</div>
+
+				</div>
+			</section> <!-- Closes #one-kin -->
+
+			<style>
+				/* === SHARED CONTAINER: post-onekin === */
+				#one-kin .post-onekin {
+					display: flex;
+					gap: 2.5rem;
+					align-items: stretch;
+					max-width: 960px;
+					margin: 0 auto 0 auto;
+					/* no bottom margin at all */
+					padding: 0 1rem;
+				}
+
+				/* === BASE SQUARE CARD STYLING === */
+				#one-kin .square-post,
+				#one-kin .community-links.square-post {
+					flex: 1;
+					min-width: 280px;
+					max-width: 420px;
+					aspect-ratio: 1 / 1;
+					position: relative;
+					overflow: hidden;
+					border-radius: 12px;
+					background: #0f172a;
+					box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+				}
+
+				#one-kin .post-content {
+					position: absolute;
+					inset: 0;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 1.2em;
+					overflow: hidden;
+				}
+
+				#one-kin .links-content {
+					position: absolute;
+					inset: 0;
+					padding: 1.6em 1.4em;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					overflow-y: auto;
+				}
+
+				#one-kin .community-links {
+					margin: 0;
+					width: 100%;
+					height: 100%;
+				}
+
+				#one-kin .community-links table {
+					width: 100%;
+					height: 100%;
+					border-collapse: collapse;
+				}
+
+				#one-kin .community-links td {
+					padding: 0.8em 1em;
+					text-align: center;
+					vertical-align: middle;
+				}
+
+				/* Mobile adjustments — still no bottom margin */
+				@media (max-width: 900px) {
+					#one-kin .post-onekin {
+						flex-direction: column;
+						gap: 2rem;
+						max-width: 100%;
+						margin: 0 auto 0 auto;
+					}
+
+					#one-kin .square-post,
+					#one-kin .community-links.square-post {
+						max-width: 100%;
+						aspect-ratio: auto;
+						min-height: 380px;
+					}
+
+					#one-kin .links-content {
+						position: static;
+						padding: 1.5em;
+					}
+
+					#one-kin .community-links td {
+						padding: 1em;
+					}
+				}
+
+				/* Hover effect */
+				#one-kin .square-post:hover,
+				#one-kin .community-links.square-post:hover {
+					transform: translateY(-4px);
+					box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+					transition: all 0.25s ease;
+				}
+
+				/* Banner inside the square */
+				#one-kin .community-banner {
+					width: 100%;
+					text-align: center;
+					margin-bottom: 1.6rem;
+				}
+
+				#one-kin .community-banner img {
+					max-width: 100%;
+					height: auto;
+					border-radius: 8px;
+					box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+				}
+
+				/* Extra override to fight any lingering parent/section padding on #one-kin */
+				#one-kin.post,
+				#one-kin.section.post {
+					padding-bottom: 0;
+					margin-bottom: 0;
+				}
+
+				@media (max-width: 900px) {
+
+					#one-kin.post,
+					#one-kin.section.post {
+						padding-bottom: 0;
+						margin-bottom: 0;
+					}
+				}
+			</style>
 
 			<!-- Community Connections Section -->
 			<section class="partner-section" id="bulletins">
@@ -385,7 +547,8 @@
 								</span>
 							</a>
 							<h3>Bouncy Ball</h3>
-							<p>Bouncy Ball powers OFiDCrypt’s tokenized e-commerce; an accepted currency for marketing
+							<p>Bouncy Ball powers OFiDCrypt’s tokenized e-commerce; an accepted currency for
+								marketing
 								services and
 								Giddy’s entertainment
 								products. It cuts costs and boosts portfolio growth—benefiting both businesses and
@@ -411,9 +574,12 @@
 								</span>
 							</a>
 							<h3>Giddy Stablecoin</h3>
-							<p>Giddy Stablecoin is a decentralized digital currency designed to provide stability and
-								reliability for users within the OFiDCrypt ecosystem. It serves as a medium of exchange
-								for various services and products, ensuring consistent value and minimizing volatility.
+							<p>Giddy Stablecoin is a decentralized digital currency designed to provide stability
+								and
+								reliability for users within the OFiDCrypt ecosystem. It serves as a medium of
+								exchange
+								for various services and products, ensuring consistent value and minimizing
+								volatility.
 							</p>
 
 							<div class="round-button-container">
@@ -436,7 +602,8 @@
 								</span>
 							</a>
 							<h3>ONE</h3>
-							<p>$ONE represents our commitment to building a decentralized future, where value is created
+							<p>$ONE represents our commitment to building a decentralized future, where value is
+								created
 								and shared across the community.</p>
 
 							<div class="round-button-container">
@@ -482,7 +649,8 @@
 								</span>
 							</a>
 							<h3>DOBBY</h3>
-							<p>Sockless Transactions: No fees, just smooth spells 🪄💸. Mischief Mode: Monthly lotteries
+							<p>Sockless Transactions: No fees, just smooth spells 🪄💸. Mischief Mode: Monthly
+								lotteries
 								🎟️ for
 								magical
 								goodies 🎁. Magic Wallet: A wizard-worthy 🧙‍♀️, easy-to-use wallet 💼🔮.</p>
@@ -507,7 +675,8 @@
 								</span>
 							</a>
 							<h3>MYLO Cat</h3>
-							<p>Cutest Cat on Solana + Strong Community + Real Utility + Jupiter Swap + Coming up MYLO
+							<p>Cutest Cat on Solana + Strong Community + Real Utility + Jupiter Swap + Coming up
+								MYLO
 								TRADING BOT!
 							</p>
 
@@ -575,7 +744,8 @@
 								</span>
 							</a>
 							<h3>SOCK INU</h3>
-							<p>$SINU is the most determined and desirable pup on Solana, offering socks and cozy dreams
+							<p>$SINU is the most determined and desirable pup on Solana, offering socks and cozy
+								dreams
 								for all!</p>
 
 							<div class="round-button-container">
@@ -711,8 +881,7 @@
 
 			<!-- X Post Embed: Row HEADING -->
 			<header>
-				<a href="https://www.ofidcrypt.com/pages/livestream.html#EXP-003">
-					<h2>ONE Kin Updates</h2>
+				<h2>ONE Kin Updates</h2>
 				</a>
 			</header>
 
@@ -720,28 +889,27 @@
 			<div class="x-post-container">
 				<div class="x-post video main">
 					<blockquote class="twitter-tweet">
-						<p lang="en" dir="ltr">We’re making a difference. No money has been made, only spent. We built
-							ONE to
-							support all communities as ONE Kin. Shoutout to our partners who helped make this
-							spectacular movement
-							happen. <a href="https://twitter.com/OFiDCrypt?ref_src=twsrc%5Etfw">@OFiDCrypt</a> <a
-								href="https://twitter.com/Dobby_Coin?ref_src=twsrc%5Etfw">@Dobby_Coin</a> <a
-								href="https://twitter.com/MYLOCAT_?ref_src=twsrc%5Etfw">@MYLOCAT_</a> <a
-								href="https://twitter.com/dunoglobal?ref_src=twsrc%5Etfw">@dunoglobal</a> <a
-								href="https://t.co/sjpn1YyFb1">https://t.co/sjpn1YyFb1</a> <a
-								href="https://t.co/DMiXbj26PU">pic.twitter.com/DMiXbj26PU</a></p>&mdash; OneKinCommunity
+						<p lang="en" dir="ltr">ONE Kin is proud to partner with our first choice of stable coins
+							being
+							Giddy. Liquidity is our strength and will continue to be our goal moving forward.<a
+								href="https://twitter.com/OFiDCrypt?ref_src=twsrc%5Etfw">@OFiDCrypt</a> <a
+								href="https://twitter.com/Giddys_CA?ref_src=twsrc%5Etfw">@Giddys_CA</a><a
+								href="https://t.co/reTB7ZFkTz">https://t.co/reTB7ZFkTz</a><a
+								href="https://t.co/JEBZmNNmH5">https://t.co/JEBZmNNmH5</a></p>&mdash;
+						OneKinCommunity
 						(@OneKinCommunity) <a
-							href="https://twitter.com/OneKinCommunity/status/1963655085428511093?ref_src=twsrc%5Etfw">September
-							4,
-							2025</a>
+							href="https://twitter.com/OneKinCommunity/status/2015855546960843090?ref_src=twsrc%5Etfw">January
+							26, 2026</a>
 					</blockquote>
+					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 				</div>
 
 				<!-- X Post Embed: Row Slot 2 -->
 				<div class="x-post video main">
 					<blockquote class="twitter-tweet">
 						<p lang="cy" dir="ltr">9Fdne837tZp97nDZTUqxv9t8Gwp2BwRf8EF7PGAAfoNe <a
-								href="https://t.co/n5mgK5JjT3">pic.twitter.com/n5mgK5JjT3</a></p>&mdash; OneKinCommunity
+								href="https://t.co/n5mgK5JjT3">pic.twitter.com/n5mgK5JjT3</a></p>&mdash;
+						OneKinCommunity
 						(@OneKinCommunity) <a
 							href="https://twitter.com/OneKinCommunity/status/1944409551232720929?ref_src=twsrc%5Etfw">July
 							13,
@@ -750,8 +918,6 @@
 					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 				</div>
 			</div>
-			</section>
-			</section>
 
 			<!-- Main -->
 			<div id="main">

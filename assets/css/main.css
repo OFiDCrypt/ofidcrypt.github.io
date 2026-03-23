@@ -6162,14 +6162,22 @@ section.youtube-iframe {
 
 /* Container for the X layout Post Embed */
 .x-post-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-	justify-content: center;
-	max-width: 1200px;
-	margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;           /* Centers items horizontally within the container */
+    max-width: 1200px;                  /* Maximum width on wide screens */
+    margin: 0 auto 4rem auto;           /* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
+    padding: 0 1rem;                    /* Small side padding on narrow screens */
 }
 
+/* Mobile: remove bottom margin to avoid extra empty space at the bottom */
+@media (max-width: 768px) {
+    .x-post-container {
+        margin: 0 auto 0 auto;          /* Bottom margin removed (0) on mobile */
+        padding: 0 0.8rem;              /* Slightly tighter side padding if desired */
+    }
+}
 
 /* Individual post styling */
 .x-post.video.main {
