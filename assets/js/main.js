@@ -110,34 +110,6 @@
 
     };
 
-if (window.visualViewport) {
-    const nav = document.querySelector('#nav'); // Confirm this is your fixed bottom nav selector
-    function syncNav() {
-        if (nav) {
-            // Reset first to trigger reflow
-            nav.style.bottom = '0px';
-            void nav.offsetHeight; // Critical: forces layout recalc
-
-            // Then set to current visual offset (handles toolbar reappear drift)
-            const offset = window.visualViewport.offsetTop || 0;
-            nav.style.bottom = `${offset}px`; // This pushes it down by the toolbar height when visible
-        }
-    }
-
-    // Add debounce if too jittery (optional, but helps on fast scrolls)
-    let timeout;
-    function debouncedSync() {
-        clearTimeout(timeout);
-        timeout = setTimeout(syncNav, 16); // ~60fps
-    }
-
-    visualViewport.addEventListener('resize', debouncedSync);
-    visualViewport.addEventListener('scroll', debouncedSync);
-    window.addEventListener('scroll', debouncedSync);
-    window.addEventListener('touchend', debouncedSync); // Extra for gesture end
-    syncNav(); // Initial call
-}
-
     document.addEventListener('DOMContentLoaded', function () {
 
         // Smooth scroll for anchor tags
@@ -176,7 +148,7 @@ if (window.visualViewport) {
     $('.scrolly').scrolly();
 
     // Background.
-    // $wrapper._parallax(0.925);
+    $wrapper._parallax(0.925);
 
     // Nav Panel Toggle
     $(document).ready(function () {

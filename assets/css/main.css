@@ -5170,7 +5170,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 }
 
 #navPanel .links li {
-	border-top: solid 2px var(--nav-panel-link-border-color);
+	border-top: solid 1px var(--nav-panel-link-border-color);
 }
 
 #navPanel .links li a {
@@ -5268,7 +5268,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 #navPanel nav li.dark-mode-item {
 	margin-top: 1em;
 	/* Adjust spacing; set to 0 if placing at top */
-	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	border-top: solid 1px var(--nav-panel-link-border-color);
 	/* Optional separator */
 	padding-top: 0.5em;
 }
@@ -5380,39 +5380,20 @@ body.dark-mode #darkModeToggle.dark i::before {
 	/* Unicode for sun */
 }
 
+/* Bottom Nav (app-like) */
 .bottom-nav {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	/* Let content set height */
-	background: #0f172a;
-	border-top: 1px solid #334155;
-	display: flex;
-	justify-content: space-around;
-	padding: 0.5em 0;
-	padding-bottom: env(safe-area-inset-bottom, 0px);
-	/* Good — keep this */
-	box-sizing: border-box;
-	/* Ensures padding doesn't add height */
-	z-index: 100;
-	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
-
-	/* iOS stability fixes */
-	transform: translate3d(0, 0, 0);
-	/* Forces GPU layer, reduces repaint glitches */
-	will-change: transform;
-	/* Hints to browser for smoother updates */
-	transition: none;
-	/* Remove any implicit transitions during test */
-}
-
-/* Fallback + extra push when toolbar is visible */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-	.bottom-nav {
-		bottom: 0;
-		/* Reset if env fails */
-	}
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0f172a;
+    border-top: 1px solid #334155;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5em 0;
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item {
