@@ -201,6 +201,7 @@ textarea {
 	--quick-start-bg-color: #f9f9f9;
 	/* Light background */
 	--bg-light-color: #212931;
+	--card-bg-color: #ffffff;
 	--header-text-color: #ffffff;
 	--header-input-color: #ffffff;
 	--header-strong-color: #ffffff;
@@ -295,6 +296,7 @@ body.dark-mode {
 	--form-label-color: #ffffff;
 	--form-border-color: #a1a1a1;
 	--form-focus-border-color: #663399;
+	--card-bg-color: #0f172a;
 	--checkbox-radio-color: #ffffff;
 	--checkbox-radio-bg-border-color: #a1a1a1;
 	--icon-border-color: #eeeeee;
@@ -3491,6 +3493,46 @@ input[type="radio"]:focus+label:before {
 	margin-right: 1.5rem;
 }
 
+    /* Make the header and paragraph match the section's padding exactly */
+    #bulletins.partner-section {
+        padding: 0rem 4rem 0rem 4rem !important;
+        box-sizing: border-box;
+    }
+
+    #bulletins.partner-section header {
+        padding: 0 0 2rem 0;           /* only adds vertical space between header and scroll */
+        margin: 0 auto;
+        max-width: 960px;                /* keeps it aligned with your other content */
+        width: 100%;
+    }
+
+    #bulletins.partner-section p {
+        padding: 0 4rem;                 /* ← this is the key: matches the section's side padding */
+        margin: 1.2rem 0 0 0;
+        box-sizing: border-box;
+    }
+
+    /* Mobile – tighter padding to match your other sections */
+    @media (max-width: 900px) {
+        #bulletins.partner-section {
+            padding: 2rem 1.8rem 3.5rem 1.8rem !important;
+        }
+
+        #bulletins.partner-section p {
+            padding: 0 1.8rem;           /* matches mobile section padding */
+        }
+    }
+
+    @media (max-width: 600px) {
+        #bulletins.partner-section {
+            padding: 1rem 1.25rem 1rem 1.25rem !important;
+        }
+
+        #bulletins.partner-section p {
+            padding: 0 1.25rem;
+        }
+    }
+
 .product-content {
 	overflow: hidden;
 }
@@ -4621,7 +4663,7 @@ body.is-preload #wrapper.fade-in:before {
 	/* Adjust weight if needed */
 	position: relative;
 	/* Relative positioning */
-	top: -20px;
+	top: 0;
 	/* Move up by 10 pixels */
 	display: inline-block;
 	/* Ensure it remains inline */
@@ -5382,18 +5424,18 @@ body.dark-mode #darkModeToggle.dark i::before {
 
 /* Bottom Nav (app-like) */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #0f172a;
-    border-top: 1px solid #334155;
-    display: flex;
-    justify-content: space-around;
-    padding: 0.5em 0;
-    padding-bottom: max(env(safe-area-inset-bottom), 0px);
-    z-index: 100;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: #0f172a;
+	border-top: 1px solid #334155;
+	display: flex;
+	justify-content: space-around;
+	padding: 0.5em 0;
+	padding-bottom: max(env(safe-area-inset-bottom), 0px);
+	z-index: 100;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item {
@@ -6162,21 +6204,26 @@ section.youtube-iframe {
 
 /* Container for the X layout Post Embed */
 .x-post-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;           /* Centers items horizontally within the container */
-    max-width: 1200px;                  /* Maximum width on wide screens */
-    margin: 0 auto 4rem auto;           /* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
-    padding: 0 1rem;                    /* Small side padding on narrow screens */
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	/* Centers items horizontally within the container */
+	max-width: 1200px;
+	/* Maximum width on wide screens */
+	margin: 0 auto 0 auto;
+	/* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
+	padding: 0rem 4rem 4rem 4rem;
 }
 
 /* Mobile: remove bottom margin to avoid extra empty space at the bottom */
 @media (max-width: 768px) {
-    .x-post-container {
-        margin: 0 auto 0 auto;          /* Bottom margin removed (0) on mobile */
-        padding: 0 0.8rem;              /* Slightly tighter side padding if desired */
-    }
+	.x-post-container {
+		margin: 0 auto 0 auto;
+		/* Bottom margin removed (0) on mobile */
+		padding: 0 0.8rem;
+		/* Slightly tighter side padding if desired */
+	}
 }
 
 /* Individual post styling */
