@@ -318,9 +318,7 @@
 					<span class="date">Connecting Communities</span>
 					<h1>ONE Kin <br /> Community</h1>
 					<p>
-						Meet the team behind the vision for a better future of money, spending, teamwork,
-						collaboration, and growth — where innovation meets community, and every contribution
-						gives back to the audience. We’re building the keystone of a new economy, and you can
+						We’re building the keystone of a new economy, and you can
 						connect with us right here — and in
 						<a href="/pages/kinnected.html">Kinnected!</a>
 					</p>
@@ -405,11 +403,13 @@
 					align-items: stretch;
 					max-width: 960px;
 					margin: 0 auto 0 auto;
-					/* no bottom margin at all */
 					padding: 0 1rem;
+
+					/* Space for the softer shadow to prevent bottom cutoff */
+					padding-bottom: 20px;
 				}
 
-				/* === BASE SQUARE CARD STYLING === */
+				/* === BASE SQUARE CARD STYLING – now using Giddy's shadows === */
 				#one-kin .square-post,
 				#one-kin .community-links.square-post {
 					flex: 1;
@@ -419,8 +419,36 @@
 					position: relative;
 					overflow: hidden;
 					border-radius: 12px;
-					background: #0f172a;
-					box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+					background: var(--card-bg-color, #ffffff) !important;
+					box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+					/* ← Giddy's normal shadow */
+					color: var(--text-color, #111827);
+					transition: transform 0.15s ease, box-shadow 0.15s ease;
+				}
+
+				/* Hover – exact same as Giddy's */
+				#one-kin .square-post:hover,
+				#one-kin .community-links.square-post:hover {
+					transform: translateY(-4px);
+					box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.15);
+					/* ← Giddy's hover shadow */
+				}
+
+				/* Active (press feedback) – exact same as Giddy's */
+				#one-kin .square-post:active,
+				#one-kin .community-links.square-post:active {
+					transform: translateY(-2px);
+					box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.12);
+				}
+
+				/* Inner content – keep transparent so card background shows */
+				#one-kin .post-content,
+				#one-kin .links-content,
+				#one-kin .community-links,
+				#one-kin .community-links table,
+				#one-kin .community-links td {
+					background: transparent !important;
 				}
 
 				#one-kin .post-content {
@@ -444,31 +472,21 @@
 					overflow-y: auto;
 				}
 
-				#one-kin .community-links {
-					margin: 0;
-					width: 100%;
-					height: 100%;
-				}
-
-				#one-kin .community-links table {
-					width: 100%;
-					height: 100%;
-					border-collapse: collapse;
-				}
-
 				#one-kin .community-links td {
 					padding: 0.8em 1em;
 					text-align: center;
 					vertical-align: middle;
 				}
 
-				/* Mobile adjustments — still no bottom margin */
+				/* Mobile adjustments */
 				@media (max-width: 900px) {
 					#one-kin .post-onekin {
 						flex-direction: column;
 						gap: 2rem;
 						max-width: 100%;
 						margin: 0 auto 0 auto;
+						padding-bottom: 16px;
+						/* slightly less on mobile */
 					}
 
 					#one-kin .square-post,
@@ -488,14 +506,6 @@
 					}
 				}
 
-				/* Hover effect */
-				#one-kin .square-post:hover,
-				#one-kin .community-links.square-post:hover {
-					transform: translateY(-4px);
-					box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-					transition: all 0.25s ease;
-				}
-
 				/* Banner inside the square */
 				#one-kin .community-banner {
 					width: 100%;
@@ -510,7 +520,7 @@
 					box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
 				}
 
-				/* Extra override to fight any lingering parent/section padding on #one-kin */
+				/* Padding overrides */
 				#one-kin.post,
 				#one-kin.section.post {
 					padding-bottom: 0;
@@ -531,6 +541,11 @@
 			<section class="partner-section" id="bulletins">
 				<header>
 					<h2>Member Token Projects</h2>
+					<p>
+						Meet the team behind the vision for a better future of money, spending, teamwork,
+						collaboration, and growth — where innovation meets community, and every contribution
+						gives back to the audience.
+					</p>
 				</header>
 
 				<!-- Horizontal Scroll Container -->
