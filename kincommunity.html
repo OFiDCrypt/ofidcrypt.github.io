@@ -331,7 +331,8 @@
 					<!-- Square Twitter Post (left on desktop) -->
 					<div class="post-container square-post">
 						<div class="post-content">
-							<blockquote class="twitter-tweet" data-media-max-width="560" data-theme="dark">
+							<blockquote class="twitter-tweet tw-align-center" data-media-max-width="560"
+								data-theme="dark">
 								<p lang="en" dir="ltr">True collaboration is when independent entities come
 									together.<br><br>🔮 THE VISION<br><br>📲 Kinnected! Wallet — Messenger, Games and
 									Cash Links<br><br>An app by <a
@@ -402,14 +403,12 @@
 					gap: 2.5rem;
 					align-items: stretch;
 					max-width: 960px;
-					margin: 0 auto 0 auto;
+					margin: 0 auto;
 					padding: 0 1rem;
-
-					/* Space for the softer shadow to prevent bottom cutoff */
 					padding-bottom: 20px;
 				}
 
-				/* === BASE SQUARE CARD STYLING – now using Giddy's shadows === */
+				/* === BASE SQUARE CARD STYLING === */
 				#one-kin .square-post,
 				#one-kin .community-links.square-post {
 					flex: 1;
@@ -422,35 +421,29 @@
 
 					background: var(--card-bg-color, #ffffff) !important;
 					box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-					/* ← Giddy's normal shadow */
 					color: var(--text-color, #111827);
 					transition: transform 0.15s ease, box-shadow 0.15s ease;
 				}
 
-				/* Hover – exact same as Giddy's */
 				#one-kin .square-post:hover,
 				#one-kin .community-links.square-post:hover {
 					transform: translateY(-4px);
 					box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.15);
-					/* ← Giddy's hover shadow */
 				}
 
-				/* Active (press feedback) – exact same as Giddy's */
 				#one-kin .square-post:active,
 				#one-kin .community-links.square-post:active {
 					transform: translateY(-2px);
 					box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.12);
 				}
 
-				/* Inner content – keep transparent so card background shows */
+				/* Inner content */
 				#one-kin .post-content,
-				#one-kin .links-content,
-				#one-kin .community-links,
-				#one-kin .community-links table,
-				#one-kin .community-links td {
+				#one-kin .links-content {
 					background: transparent !important;
 				}
 
+				/* Twitter Post Card - No scrollbar, clean square */
 				#one-kin .post-content {
 					position: absolute;
 					inset: 0;
@@ -459,8 +452,10 @@
 					justify-content: center;
 					padding: 1.2em;
 					overflow: hidden;
+					/* No scroll on Twitter card */
 				}
 
+				/* Community Links Card - Scroll only if needed */
 				#one-kin .links-content {
 					position: absolute;
 					inset: 0;
@@ -472,41 +467,67 @@
 					overflow-y: auto;
 				}
 
+				/* Hide scrollbar on links card (clean look) */
+				#one-kin .links-content {
+					scrollbar-width: none;
+					-ms-overflow-style: none;
+				}
+
+				#one-kin .links-content::-webkit-scrollbar {
+					display: none;
+				}
+
+				/* Table styling */
 				#one-kin .community-links td {
 					padding: 0.8em 1em;
 					text-align: center;
 					vertical-align: middle;
 				}
 
-				/* Mobile adjustments */
+				/* Twitter centering */
+				#one-kin .twitter-tweet {
+					margin: 0 auto !important;
+					max-width: 100% !important;
+				}
+
+				/* === MOBILE: Keep both cards perfectly square === */
 				@media (max-width: 900px) {
 					#one-kin .post-onekin {
 						flex-direction: column;
-						gap: 2rem;
+						gap: 2.25rem;
 						max-width: 100%;
-						margin: 0 auto 0 auto;
-						padding-bottom: 16px;
-						/* slightly less on mobile */
+						padding-bottom: 20px;
 					}
 
 					#one-kin .square-post,
 					#one-kin .community-links.square-post {
-						max-width: 100%;
-						aspect-ratio: auto;
-						min-height: 380px;
+						max-width: min(420px, 92vw);
+						width: 100%;
+						margin: 0 auto;
+						aspect-ratio: 1 / 1;
+						min-height: unset;
+					}
+
+					#one-kin .post-content {
+						padding: 1.1rem;
 					}
 
 					#one-kin .links-content {
-						position: static;
-						padding: 1.5em;
+						padding: 1.5rem 1.3rem;
 					}
 
-					#one-kin .community-links td {
-						padding: 1em;
+					#one-kin .community-banner {
+						margin-bottom: 1.3rem;
+					}
+
+					#one-kin .community-banner img {
+						max-height: 105px;
+						width: auto;
+						object-fit: contain;
 					}
 				}
 
-				/* Banner inside the square */
+				/* Banner styling */
 				#one-kin .community-banner {
 					width: 100%;
 					text-align: center;
@@ -777,123 +798,92 @@
 			<script>
 				document.addEventListener('DOMContentLoaded', () => {
 					const container = document.querySelector('#token-partners');
-					if (!container) return;
+					if (!container) {
+						console.warn('Scroll container #token-partners not found');
+						return;
+					}
+
 					const slides = document.querySelectorAll('#token-partners .scroll-box');
 					const totalSlides = slides.length;
-					let isTouchScrolling = false;
 
-					// Initialize scroll position to first box
+					if (totalSlides === 0) {
+						console.warn('No scroll-boxes found in #token-partners');
+						return;
+					}
+
+					// Force start on first box
 					function setInitialPosition() {
-						if (container && container.scrollTo) {
-							container.scrollTo({ left: 0, behavior: 'instant' });
-							requestAnimationFrame(updateArrowStates);
+						container.scrollTo({ left: 0, behavior: 'instant' });
+						updateArrowStates();
+					}
+
+					// Get box width based on screen size (same logic as your working page)
+					function getBoxWidth() {
+						if (window.innerWidth > 768) {
+							return slides[0].offsetWidth + 10; // Desktop: width + gap
+						} else if (window.innerWidth <= 480) {
+							return 260 + 20; // Mobile: fixed width + gap
+						} else {
+							return slides[0].offsetWidth; // Tablet / mid-size
 						}
 					}
 
-					// Calculate box width including padding and margins
-					function getBoxWidth() {
-						const firstSlide = slides[0];
-						if (!firstSlide) return 0;
-						const style = window.getComputedStyle(firstSlide);
-						const width = parseFloat(style.width);
-						const paddingLeft = parseFloat(style.paddingLeft) || 0;
-						const paddingRight = parseFloat(style.paddingRight) || 0;
-						const marginLeft = parseFloat(style.marginLeft) || 0;
-						const marginRight = parseFloat(style.marginRight) || 0;
-						return width + paddingLeft + paddingRight + marginLeft + marginRight;
-					}
-
-					// Update arrow states based on scroll position
+					// Update arrow visibility (disable left on first, right on last)
 					function updateArrowStates() {
 						const scrollLeft = container.scrollLeft;
+						const maxScroll = container.scrollWidth - container.clientWidth;
 						const boxWidth = getBoxWidth();
 						const currentSlideIndex = Math.round(scrollLeft / boxWidth);
 
 						slides.forEach((slide) => {
 							const leftArrow = slide.querySelector('.scroll-arrow.left');
 							const rightArrow = slide.querySelector('.scroll-arrow.right');
-							leftArrow.disabled = currentSlideIndex === 0;
-							rightArrow.disabled = currentSlideIndex === totalSlides - 1;
+
+							if (leftArrow) leftArrow.disabled = currentSlideIndex === 0;
+							if (rightArrow) rightArrow.disabled = currentSlideIndex === totalSlides - 1;
 						});
 					}
 
-					// Handle arrow clicks
-					slides.forEach((slide) => {
+					// Add click handlers to arrows
+					slides.forEach(slide => {
 						const leftArrow = slide.querySelector('.scroll-arrow.left');
 						const rightArrow = slide.querySelector('.scroll-arrow.right');
 
-						leftArrow.addEventListener('click', () => {
-							const boxWidth = getBoxWidth();
-							const currentScroll = container.scrollLeft;
-							const currentSlideIndex = Math.round(currentScroll / boxWidth);
-							const targetScroll = currentSlideIndex === 0 ? 0 : (currentSlideIndex - 1) * boxWidth;
-
-							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-							requestAnimationFrame(updateArrowStates);
-						});
-
-						rightArrow.addEventListener('click', () => {
-							const boxWidth = getBoxWidth();
-							const currentScroll = container.scrollLeft;
-							const currentSlideIndex = Math.round(currentScroll / boxWidth);
-							const targetScroll = currentSlideIndex === totalSlides - 1 ? currentScroll : (currentSlideIndex + 1) * boxWidth;
-
-							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-							requestAnimationFrame(updateArrowStates);
-						});
-					});
-
-					// Handle touch swipe for mobile
-					let touchStartX = 0;
-					let touchEndX = 0;
-
-					container.addEventListener('touchstart', (e) => {
-						if (isTouchScrolling) return;
-						touchStartX = e.changedTouches[0].screenX;
-					});
-
-					container.addEventListener('touchend', (e) => {
-						if (isTouchScrolling) return;
-						isTouchScrolling = true;
-						touchEndX = e.changedTouches[0].screenX;
-						const swipeDistance = touchEndX - touchStartX;
-						const boxWidth = getBoxWidth();
-
-						if (Math.abs(swipeDistance) > 100) {
-							const currentScroll = container.scrollLeft;
-							const currentSlideIndex = Math.round(currentScroll / boxWidth);
-							let targetScroll;
-
-							if (swipeDistance > 0) {
-								targetScroll = currentSlideIndex === 0 ? 0 : (currentSlideIndex - 1) * boxWidth;
-							} else {
-								targetScroll = currentSlideIndex === totalSlides - 1 ? currentScroll : (currentSlideIndex + 1) * boxWidth;
-							}
-
-							container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-							requestAnimationFrame(updateArrowStates);
+						if (leftArrow) {
+							leftArrow.addEventListener('click', () => {
+								container.scrollBy({ left: -getBoxWidth(), behavior: 'smooth' });
+								setTimeout(updateArrowStates, 350);
+							});
 						}
 
-						setTimeout(() => { isTouchScrolling = false; }, 300);
+						if (rightArrow) {
+							rightArrow.addEventListener('click', () => {
+								container.scrollBy({ left: getBoxWidth(), behavior: 'smooth' });
+								setTimeout(updateArrowStates, 350);
+							});
+						}
 					});
 
-					// Update arrows on scroll
+					// Update arrows while scrolling
 					container.addEventListener('scroll', updateArrowStates);
 
-					// Handle resize with debounce
-					let resizeTimeout;
-					window.addEventListener('resize', () => {
-						clearTimeout(resizeTimeout);
-						resizeTimeout = setTimeout(() => {
-							setInitialPosition();
-						}, 100);
+					// Extra safety for arrow clicks
+					container.addEventListener('click', (e) => {
+						if (e.target.closest('.scroll-arrow')) {
+							setTimeout(updateArrowStates, 350);
+						}
 					});
 
-					// Set initial position
+					// Initialize
 					setInitialPosition();
+
+					// Reset position on window load and resize
+					window.addEventListener('load', setInitialPosition);
+					window.addEventListener('resize', () => {
+						setInitialPosition();
+					});
 				});
 			</script>
-
 			<!-- X Post Embed: Row HEADING -->
 			<header>
 				<h2>ONE Kin Updates</h2>

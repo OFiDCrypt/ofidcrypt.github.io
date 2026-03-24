@@ -4642,31 +4642,32 @@ body.is-preload #wrapper.fade-in:before {
 }
 
 .smaller-heading {
-	font-size: 0.5em;
-	/* Smaller font size */
-	color: #3498DB;
-	/* Different color */
-	font-weight: normal;
-	/* Adjust weight if needed */
-	position: relative;
-	/* Relative positioning */
-	display: inline-block;
-	/* Ensure it remains inline */
+    font-size: 0.4em;
+    color: rgba(135, 82, 235, 0.75);     /* Same subtle blue */
+    font-weight: normal;
+    position: relative;
+    display: inline-block;
+
+    /* Very transparent background with rounded corners */
+    background: rgba(135, 82, 235, 0.15);      /* Super subtle purple tint */
+    padding: 4px 12px;                         /* Nice breathing room */
+    border-radius: 20px;                       /* Soft pill shape */
+    border: 1px solid rgba(135, 82, 235, 0.15); /* Very light border */
 }
 
 .smaller-heading-bottom {
-	font-size: 0.5em;
-	/* Smaller font size */
-	color: #3498DB;
-	/* Different color */
-	font-weight: normal;
-	/* Adjust weight if needed */
-	position: relative;
-	/* Relative positioning */
-	top: 0;
-	/* Move up by 10 pixels */
-	display: inline-block;
-	/* Ensure it remains inline */
+    font-size: 0.5em;
+    color: rgba(135, 82, 235, 0.85);           /* Slightly stronger text */
+    font-weight: normal;
+    position: relative;
+    top: 5px;
+    display: inline-block;
+
+    /* Very transparent background with rounded corners */
+    background: rgba(135, 82, 235, 0.15);      /* Super subtle purple tint */
+    padding: 4px 12px;                         /* Nice breathing room */
+    border-radius: 20px;                       /* Soft pill shape */
+    border: 1px solid rgba(135, 82, 235, 0.15); /* Very light border */
 }
 
 .images-with-plus {
