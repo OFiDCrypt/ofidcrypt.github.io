@@ -276,7 +276,6 @@
     <!-- JavaScript Libraries -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/browser.min.js"></script>
 
     <!-- Meta Language -->
     <meta http-equiv='content-language' content='en-gb'>
@@ -509,7 +508,32 @@
             <!-- Post -->
             <section class="post">
                 <header class="major">
-                    <span class="date">DiscoCar Games</span>
+
+                    <!-- Smaller Sub-Heading B-W -->
+                    <h1 class="center-aligned header-tight classy-font">
+                        <span class="smaller-heading-bw">DiscoCar Games</span>
+                    </h1>
+
+                    <!-- Status Message -->
+                    <div id="statusMessage" class="status-message hidden">
+                        <button id="statusClose" class="status-close">×</button>
+
+                        <div class="status-inner">
+                            <p class="status-text">
+                                Welcome to our page! We're testing some new features. Take some time to look around.
+                                We encourage you to check out our
+                                <a href="https://ofidcrypt.ca/ep-learn-what-is-solana" class="status-link">Solana
+                                    Article</a>
+                                before you begin!
+                            </p>
+
+                            <label class="status-optout">
+                                <input type="checkbox" id="statusOptOut">
+                                <span>Do not show again</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <h1 class="align-center">Play Giddy's Blinko</h1>
                     <p class="align-center">Click, drop and collect bouncy balls! Coming Soon — Connect your Solana
                         wallet for digital gifts!</p>
@@ -677,20 +701,20 @@
         <!-- Copyright -->
         <div id="copyright">
             <ul>
-				<li><a href="../docs/main.html">Docs</a></li>
-				<li><a href="../community.html">News & PR</a></li>
-				<li><a href="../pages/affiliate.html">Partners</a></li>
-				<li><a href="../pages/about.html">About</a></li>
-			</ul>
-			<ul>
-				<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
-			</ul>
-			<ul>
-				<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-			</ul>
-			<ul>
-				<li><a href="../docs/privacy-policy.html">Privacy</a></li>
-			</ul>
+                <li><a href="../docs/main.html">Docs</a></li>
+                <li><a href="../community.html">News & PR</a></li>
+                <li><a href="../pages/affiliate.html">Partners</a></li>
+                <li><a href="../pages/about.html">About</a></li>
+            </ul>
+            <ul>
+                <li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
+            </ul>
+            <ul>
+                <li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+            </ul>
+            <ul>
+                <li><a href="../docs/privacy-policy.html">Privacy</a></li>
+            </ul>
         </div>
 
         <!-- Footer Extended Links Container -->
@@ -699,35 +723,35 @@
                 <h1 class="left-aligned">
                     <span class="smaller-heading">Partner Token Projects</span><br />
                 </h1>
-               <ul>
-					<li><a href="../kincommunity.html#one-kin">$ONE</a></li>
-					<li><a href="../kincommunity.html#one-kin">$KIN</a></li>
-					<li><a href="../kincommunity.html#token-partners">$DOBBY</a></li>
-					<li><a href="../kincommunity.html#token-partners">$DUNO</a></li>
-					<li><a href="../kincommunity.html#token-partners">$MYLO</a></li>
-					<li><a href="../kincommunity.html#token-partners">$CPT</a></li>
-					<li><a href="../kincommunity.html#token-partners">$SINU</a></li>
-				</ul>
-			</section>
+                <ul>
+                    <li><a href="../kincommunity.html#one-kin">$ONE</a></li>
+                    <li><a href="../kincommunity.html#one-kin">$KIN</a></li>
+                    <li><a href="../kincommunity.html#token-partners">$DOBBY</a></li>
+                    <li><a href="../kincommunity.html#token-partners">$DUNO</a></li>
+                    <li><a href="../kincommunity.html#token-partners">$MYLO</a></li>
+                    <li><a href="../kincommunity.html#token-partners">$CPT</a></li>
+                    <li><a href="../kincommunity.html#token-partners">$SINU</a></li>
+                </ul>
+            </section>
 
-			<section class="footer-extended">
-				<h1 class="left-aligned">
-					<span class="smaller-heading">Affiliate Partnerships</span><br />
-				</h1>
-				<ul>
-					<li><a href="../pages/affiliate.html#kraken">Kraken</a></li>
-					<li><a href="../pages/affiliate.html#ledger">Ledger</a></li>
-				</ul>
-			</section>
+            <section class="footer-extended">
+                <h1 class="left-aligned">
+                    <span class="smaller-heading">Affiliate Partnerships</span><br />
+                </h1>
+                <ul>
+                    <li><a href="../pages/affiliate.html#kraken">Kraken</a></li>
+                    <li><a href="../pages/affiliate.html#ledger">Ledger</a></li>
+                </ul>
+            </section>
 
-			<section class="footer-extended">
-				<h1 class="left-aligned">
-					<span class="smaller-heading">Tech Collab & Site Partners</span><br />
-				</h1>
-				<ul>
-					<li><a href="../pages/kinnected.html">GFDevSoft's Kinnected!</a></li>
-					<li><a href="../pages/affiliate.html#hvr">HVR Technologies</a></li>
-				</ul>
+            <section class="footer-extended">
+                <h1 class="left-aligned">
+                    <span class="smaller-heading">Tech Collab & Site Partners</span><br />
+                </h1>
+                <ul>
+                    <li><a href="../pages/kinnected.html">GFDevSoft's Kinnected!</a></li>
+                    <li><a href="../pages/affiliate.html#hvr">HVR Technologies</a></li>
+                </ul>
             </section>
 
             <section class="footer-extended">
@@ -947,12 +971,15 @@
             document.body.appendChild(script);
         </script>
 
-        <!-- Link to non-critical JavaScript files -->
-        <script src="../assets/js/jquery.scrollex.min.js"></script>
-        <script src="../assets/js/jquery.scrolly.min.js"></script>
-        <script src="../assets/js/util.js"></script>
-        <script src="../assets/js/breakpoints.min.js"></script>
-        <script src="../assets/js/main.js"></script>
+		<!-- Link to non-critical JavaScript files -->
+		<script src="../assets/js/browser.min.js"></script>
+		<script src="../assets/js/jquery.scrollex.min.js"></script>
+		<script src="../assets/js/jquery.scrolly.min.js"></script>
+		<script src="../assets/js/util.js"></script>
+		<script src="../assets/js/breakpoints.min.js"></script>
+		<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/ofid-main.js"></script>
+		
 </body>
 
 </html>

@@ -85,8 +85,6 @@
 
 	<!-- JavaScript Libraries -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<script src="/assets/js/browser.min.js" defer></script>
-	<script src="assets/js/main.js" defer></script>
 
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
@@ -319,7 +317,32 @@
 			<!-- Welcome & Intro  -->
 			<article class="post">
 				<header class="major">
-					<span class="date">OFiDCrypt Services</span>
+
+					<!-- Smaller Sub-Heading B-W -->
+					<h1 class="center-aligned header-tight classy-font">
+						<span class="smaller-heading-bw">OFiDCrypt Services</span>
+					</h1>
+
+					<!-- Status Message -->
+					<div id="statusMessage" class="status-message hidden">
+						<button id="statusClose" class="status-close">×</button>
+
+						<div class="status-inner">
+							<p class="status-text">
+								Welcome to our page! We're testing some new features. Take some time to look around.
+								We encourage you to check out our
+								<a href="https://ofidcrypt.ca/ep-learn-what-is-solana" class="status-link">Solana
+									Article</a>
+								before you begin!
+							</p>
+
+							<label class="status-optout">
+								<input type="checkbox" id="statusOptOut">
+								<span>Do not show again</span>
+							</label>
+						</div>
+					</div>
+
 					<h1>Explore <br /> Wallets & Apps</h1>
 					<p>Check out the newest and most popular web3 wallets and apps, connecting you to the future of
 						decentralized finance through people and money.</p>
@@ -916,11 +939,19 @@
 		</script>
 
 		<!-- Link to non-critical JavaScript files -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/jquery.scrollex.min.js"></script>
+		<script src="/assets/js/jquery.scrolly.min.js"></script>
+
+		<!-- REQUIRED for HTML5UP main.js -->
+		<script src="/assets/js/browser.min.js"></script>
+		<script src="/assets/js/breakpoints.min.js"></script>
+		<script src="/assets/js/util.js"></script>
+
+		<!-- Your custom logic must be LAST -->
+		<script src="/assets/js/main.js"></script>
+		<script src="/assets/js/ofid-main.js"></script>
+	
 </body>
 
 </html>
