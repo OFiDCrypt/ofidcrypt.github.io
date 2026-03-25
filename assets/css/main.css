@@ -6006,10 +6006,10 @@ section.youtube-iframe {
 
 /* Image itself */
 .box-content .image img {
-	max-width: 100%;
+	max-width: 150px;
 	/* Responsive width */
 	height: auto;
-	max-height: 150px;
+	max-height: 150x;
 	/* Limit image height */
 	display: block;
 	/* Remove inline spacing */
@@ -6313,19 +6313,6 @@ section.youtube-iframe {
 	/* No top margin, 10px bottom */
 	width: 100%;
 	/* Full width for centering */
-}
-
-.box-content .image img {
-	max-width: 100%;
-	/* Responsive width */
-	height: auto;
-	max-height: 150px;
-	/* Limit image height */
-	display: block;
-	/* Remove inline spacing */
-	margin: 0 auto;
-	/* Explicit centering */
-	border-radius: 8px;
 }
 
 /* Heading styling */
