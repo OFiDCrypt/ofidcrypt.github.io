@@ -83,7 +83,6 @@
 
 	<!-- Essential JS libraries if used by other scripts -->
 	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/browser.min.js"></script>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 	<!-- Meta Language -->
@@ -171,25 +170,53 @@
 			<!-- Section Title -->
 			<section id="contents" class="post">
 				<header class="major">
-					<span class="date">PDF</span>
+
+					<!-- Smaller Sub-Heading B-W -->
+					<h1 class="center-aligned header-tight classy-font">
+						<span class="smaller-heading-bw">Download / View PDF Below</span>
+					</h1>
+
+					<!-- Status Message -->
+					<div id="statusMessage" class="status-message hidden">
+						<button id="statusClose" class="status-close">×</button>
+
+						<div class="status-inner">
+							<p class="status-text">
+								Welcome to our page! We're testing some new features. Take some time to look around.
+								We encourage you to check out our
+								<a href="https://ofidcrypt.ca/ep-learn-what-is-solana" class="status-link">Solana
+									Article</a>
+								before you begin!
+							</p>
+
+							<label class="status-optout">
+								<input type="checkbox" id="statusOptOut">
+								<span>Do not show again</span>
+							</label>
+						</div>
+					</div>
+
 					<h1>Kin<br />
 						Proposal</h1>
-						<p><a href="../index.html">Home</a> > <a href="main.html#contents">Documents</a> > <b>The Original Kin Proposal</b></p>
+					<p><a href="../index.html">Home</a> > <a href="main.html#contents">Documents</a> > <b>The Original
+							Kin Proposal</b></p>
 				</header>
 
 				<!-- iframe PDF -->
 				<div class="pdf-container">
-					<iframe src="files/Kin-Proposal_Supporting-Kin-with-OFiDCrypt-and-OFiD-Token.pdf" type="application/pdf"
-						style="width: 100%; height: 600px; border: none;"></iframe>
+					<iframe src="files/Kin-Proposal_Supporting-Kin-with-OFiDCrypt-and-OFiD-Token.pdf"
+						type="application/pdf" style="width: 100%; height: 600px; border: none;"></iframe>
 					<div class="mobile-download">
-						<a href="files/Kin-Proposal_Supporting-Kin-with-OFiDCrypt-and-OFiD-Token.pdf" download="OFiDCrypt_Kin_Proposal.pdf">Download PDF</a>
+						<a href="files/Kin-Proposal_Supporting-Kin-with-OFiDCrypt-and-OFiD-Token.pdf"
+							download="OFiDCrypt_Kin_Proposal.pdf">Download PDF</a>
 					</div>
 				</div>
 
 				<!-- Docs Banner -->
 				<section id="expb-ball" class="ad-banner">
 					<div style="text-align: center;">
-						<a href="files/Kin-Proposal_Supporting-Kin-with-OFiDCrypt-and-OFiD-Token.pdf" style="border-bottom: none;">
+						<a href="files/Kin-Proposal_Supporting-Kin-with-OFiDCrypt-and-OFiD-Token.pdf"
+							style="border-bottom: none;">
 							<img src="/assets/images/banner-docs.png" alt="Docs Banner"
 								style="max-width: 100%; height: auto;">
 						</a>
@@ -444,6 +471,7 @@
 			});
 		</script>
 
+		
 		<!-- Link to non-critical JavaScript files -->
 		<script src="../assets/js/browser.min.js"></script>
 		<script src="../assets/js/jquery.scrollex.min.js"></script>
@@ -451,6 +479,8 @@
 		<script src="../assets/js/util.js"></script>
 		<script src="../assets/js/breakpoints.min.js"></script>
 		<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/ofid-main.js"></script>
+		
 </body>
 
 </html>
