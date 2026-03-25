@@ -84,7 +84,6 @@
 	<!-- JavaScript Libraries -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="../assets/js/jquery.min.js"></script>
-	<script src="../assets/js/browser.min.js"></script>
 
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
@@ -317,7 +316,32 @@
 			<!-- Post -->
 			<section class="post">
 				<header class="major">
-					<span class="date">DiscoCar Games</span>
+
+					<!-- Smaller Sub-Heading B-W -->
+					<h1 class="center-aligned header-tight classy-font">
+						<span class="smaller-heading-bw">DiscoCar Games</span>
+					</h1>
+
+					<!-- Status Message -->
+					<div id="statusMessage" class="status-message hidden">
+						<button id="statusClose" class="status-close">×</button>
+
+						<div class="status-inner">
+							<p class="status-text">
+								Welcome to our page! We're testing some new features. Take some time to look around.
+								We encourage you to check out our
+								<a href="https://ofidcrypt.ca/ep-learn-what-is-solana" class="status-link">Solana
+									Article</a>
+								before you begin!
+							</p>
+
+							<label class="status-optout">
+								<input type="checkbox" id="statusOptOut">
+								<span>Do not show again</span>
+							</label>
+						</div>
+					</div>
+
 					<h1>Blinko Game</h1>
 					<p>As part of our quest to align web3 worlds with real spending, we are excited to introduce
 						Giddy's Blinko — a retro collect-to-win game where players can drop and catch Bouncy Balls for
@@ -719,6 +743,8 @@
 		<script src="../assets/js/util.js"></script>
 		<script src="../assets/js/breakpoints.min.js"></script>
 		<script src="../assets/js/main.js"></script>
+		<script src="../assets/js/ofid-main.js"></script>
+		
 </body>
 
 </html>

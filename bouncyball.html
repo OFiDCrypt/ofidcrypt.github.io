@@ -78,8 +78,6 @@
 
 	<!-- JavaScript Libraries -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<script src="/assets/js/browser.min.js" defer></script>
-	<script src="/assets/js/main.js" defer></script>
 
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
@@ -398,41 +396,72 @@
 			</style>
 
 			<script>
-				function updateGeckoWidgetTheme() {
-					const widget = document.querySelector('gecko-coin-ticker-widget');
-					if (!widget) return;
+				(() => {
 
-					// Your site uses 'dark-mode' class on <body>
-					const isDark = document.body.classList.contains('dark-mode');
+					function updateGeckoWidgetTheme() {
+						const widget = document.querySelector('gecko-coin-ticker-widget');
+						if (!widget) return;
 
-					if (isDark) {
-						widget.setAttribute('dark-mode', 'true');
-					} else {
-						widget.removeAttribute('dark-mode');
-					}
-				}
+						const isDark = document.body.classList.contains('dark-mode');
 
-				// Initial update (after page load)
-				document.addEventListener('DOMContentLoaded', updateGeckoWidgetTheme);
-
-				// Update whenever the class changes (your toggle adds/removes 'dark-mode' on body)
-				const observer = new MutationObserver((mutations) => {
-					mutations.forEach((mutation) => {
-						if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-							updateGeckoWidgetTheme();
+						if (isDark) {
+							widget.setAttribute('dark-mode', 'true');
+						} else {
+							widget.removeAttribute('dark-mode');
 						}
-					});
-				});
-				observer.observe(document.body, { attributes: true });
+					}
 
-				// Also catch system theme changes (in case the widget listens to it)
-				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateGeckoWidgetTheme);
+					// Initial update
+					document.addEventListener('DOMContentLoaded', updateGeckoWidgetTheme);
+
+					// ⭐ Renamed observer to avoid collision
+					const geckoObserver = new MutationObserver((mutations) => {
+						mutations.forEach((mutation) => {
+							if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+								updateGeckoWidgetTheme();
+							}
+						});
+					});
+
+					geckoObserver.observe(document.body, { attributes: true });
+
+					// System theme changes
+					window.matchMedia('(prefers-color-scheme: dark)')
+						.addEventListener('change', updateGeckoWidgetTheme);
+
+				})();
 			</script>
 
 			</section>
+
 			<section class="post">
 				<header class="major" id="bouncy">
-					<span class="date">OFiDCrypt & Giddy's</span>
+
+					<!-- Smaller Sub-Heading B-W -->
+					<h1 class="center-aligned header-tight classy-font">
+						<span class="smaller-heading-bw">Our Token Pair</span>
+					</h1>
+
+					<!-- Status Message -->
+					<div id="statusMessage" class="status-message hidden">
+						<button id="statusClose" class="status-close">×</button>
+
+						<div class="status-inner">
+							<p class="status-text">
+								Welcome to our page! We're testing some new features. Take some time to look around.
+								We encourage you to check out our
+								<a href="https://ofidcrypt.ca/ep-learn-what-is-solana" class="status-link">Solana
+									Article</a>
+								before you begin!
+							</p>
+
+							<label class="status-optout">
+								<input type="checkbox" id="statusOptOut">
+								<span>Do not show again</span>
+							</label>
+						</div>
+					</div>
+
 					<h1>BOUNCY BALL</h1>
 					<p><a href="/onegiddy.html#giddy">Tokens</a> > <b>Bouncy Ball</b></p>
 					<p>You can grow value as we grow — with Bouncy Ball! Tap or click below to copy the <b>Contract
@@ -1342,11 +1371,19 @@
 		</script>
 
 		<!-- Link to non-critical JavaScript files -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="/assets/js/jquery.min.js"></script>
+		<script src="/assets/js/jquery.scrollex.min.js"></script>
+		<script src="/assets/js/jquery.scrolly.min.js"></script>
+
+		<!-- REQUIRED for HTML5UP main.js -->
+		<script src="/assets/js/browser.min.js"></script>
+		<script src="/assets/js/breakpoints.min.js"></script>
+		<script src="/assets/js/util.js"></script>
+
+		<!-- Your custom logic must be LAST -->
+		<script src="/assets/js/main.js"></script>
+		<script src="/assets/js/ofid-main.js"></script>
+
 </body>
 
 </html>
