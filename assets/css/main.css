@@ -4656,22 +4656,18 @@ body.is-preload #wrapper.fade-in:before {
 }
 
 .smaller-heading {
-	font-size: 0.4em;
-	color: rgba(135, 82, 235, 0.75);
-	/* Same subtle blue */
-	font-weight: normal;
-	position: relative;
-	display: inline-block;
+    font-size: 0.4em;
+    color: rgba(135, 82, 235, 0.75);
+    font-weight: normal;
 
-	/* Very transparent background with rounded corners */
-	background: rgba(135, 82, 235, 0.15);
-	/* Super subtle purple tint */
-	padding: 4px 12px;
-	/* Nice breathing room */
-	border-radius: 20px;
-	/* Soft pill shape */
-	border: 1px solid rgba(135, 82, 235, 0.15);
-	/* Very light border */
+    display: flex;              /* enables centering */
+    align-items: center;        /* vertical center */
+    width: 100%;
+
+    background: rgba(135, 82, 235, 0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(135, 82, 235, 0.15);
 }
 
 .smaller-heading-bottom {
@@ -4692,6 +4688,32 @@ body.is-preload #wrapper.fade-in:before {
 	/* Soft pill shape */
 	border: 1px solid rgba(135, 82, 235, 0.15);
 	/* Very light border */
+}
+
+.footer-small-heading {
+    display: flex;
+    align-items: center;       /* vertical center */
+    width: 100%;
+    text-align: center;
+
+    /* inherits your pill look */
+    font-size: 0.4em;
+    color: rgba(135, 82, 235, 0.75);
+    font-weight: normal;
+    background: rgba(135, 82, 235, 0.15);
+    padding: 4px 12px;
+    border-radius: 5px;
+    border: 1px solid rgba(135, 82, 235, 0.15);
+}
+
+@media screen and (max-width: 900px) {
+    .footer-small-heading {
+        display: flex;
+        justify-content: center;   /* horizontal center */
+        align-items: center;       /* vertical center */
+        text-align: center;
+        width: 100%;
+    }
 }
 
 .images-with-plus {
@@ -7483,7 +7505,7 @@ footer {
 #expb-ball {
 	width: 100%;
 	/* Full width */
-	padding-top: 20px;
+	padding-top: 40px;
 	/* Original top padding */
 	margin: 0 auto;
 	/* Original margin */
@@ -8515,6 +8537,27 @@ article.community.featured {
 	padding-left: 0;
 }
 
+.footer-left-aligned {
+    text-align: left;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 20px 0;
+    color: #2C3E50;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;  /* vertical centering */
+}
+
+@media screen and (max-width: 900px) {
+    .footer-extended .smaller-heading {
+        justify-content: center;   /* ensure pill text is centered */
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+}
+
 /* Footer Extended Links Container */
 .footer-extended-container {
 	display: flex;
@@ -8586,23 +8629,25 @@ article.community.featured {
 	/* Match #copyright hover color */
 }
 
-.footer-extended h1.left-aligned {
-	font-size: 0.95em;
-	font-weight: 900;
+.footer-extended h1.left-aligned .smaller-heading {
+	font-size: 0.3em;
+	color: rgba(135, 82, 235, 0.75);
+	font-weight: normal;
+
+	display: block;
+	/* makes background stretch full width */
+	width: 100%;
+	/* ensures it spans the entire column */
+
+	background-color: rgba(135, 82, 235, 0.15);
+	border: 1px solid rgba(135, 82, 235, 0.15);
+	border-radius: 20px;
+
+	padding: 0.6em 1em;
+	margin: 0 0;
+
 	letter-spacing: 0.075em;
 	text-transform: uppercase;
-	margin: 1.2em 0 1.4em 0;
-	/* slightly more bottom space for breathing */
-	padding: 0.6em 1em;
-	/* gentle inner padding */
-
-	/* Very faint → almost invisible but still gives structure */
-	background-color: rgba(255, 255, 255, 0.06);
-	/* ~6% white → soft glow on dark bg */
-
-	color: #e2e8f0;
-	/* light grayish-white – good contrast */
-	border-radius: 6px;
 }
 
 /* Optional: even fainter hover/focus state for interactivity */
@@ -8613,7 +8658,7 @@ article.community.featured {
 }
 
 .footer-extended h1.left-aligned .smaller-heading {
-	font-size: 0.8em;
+	font-size: 0.4em;
 	/* Reduced to maintain hierarchy (~0.6rem) on desktop */
 	/* Color controlled by external stylesheet (e.g., blue) */
 }
