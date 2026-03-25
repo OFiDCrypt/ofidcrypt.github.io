@@ -307,7 +307,7 @@
 				});
 			</script>
 
-					<section class="post">
+			<section class="post">
 				<header class="major">
 
 					<!-- Smaller Sub-Heading B-W -->
@@ -335,12 +335,41 @@
 						</div>
 					</div>
 
-			<div class="image-custom">
-				<a href="/index.html">
-					<img src="../assets/images/404-3.jpg" alt="404: Page Not Found Art">
-				</a>
-			</div>
+					<div class="image-custom">
+						<a href="/index.html">
+							<img id="errorImage" src="/assets/images/404-light.PNG" alt="404: Page Not Found Art">
+						</a>
+					</div>
 		</div>
+
+		<style>
+			/* Glassy effect for 404 image - Dark mode only */
+			#errorImage {
+				transition: box-shadow 0.4s ease, border 0.3s ease;
+				border-radius: 16px;
+			}
+
+			.dark-mode #errorImage {
+				border: 2px solid rgba(255, 255, 255, 0.12);
+				/* subtle glassy border */
+				box-shadow:
+					0 8px 32px rgba(0, 0, 0, 0.6),
+					/* strong dark shadow */
+					inset 0 2px 8px rgba(255, 255, 255, 0.08),
+					/* inner highlight */
+					0 0 0 1px rgba(255, 255, 255, 0.06);
+				/* very faint outer glow */
+				background: rgba(255, 255, 255, 0.03);
+				/* slight glassy fill */
+			}
+
+			/* Optional: Light hover effect in dark mode */
+			.dark-mode #errorImage:hover {
+				box-shadow:
+					0 12px 40px rgba(0, 0, 0, 0.7),
+					inset 0 2px 12px rgba(255, 255, 255, 0.12);
+			}
+		</style>
 
 		<!-- Bottom Nav -->
 		<nav class="bottom-nav">
@@ -463,7 +492,7 @@
 				<h1 class="footer-left-aligned">
 					<span class="footer-small-heading">Partner Token Projects</span><br />
 				</h1>
-<ul>
+				<ul>
 					<li><a href="kincommunity.html#one-kin">$ONE</a></li>
 					<li><a href="kincommunity.html#one-kin">$KIN</a></li>
 					<li><a href="kincommunity.html#token-partners">$DOBBY</a></li>
@@ -506,29 +535,38 @@
 			</section>
 		</div>
 
-		<!-- Page Specific Scripts – Dark Mode (keep this on each page) -->
+		<!-- Page Specific Scripts – Dark Mode + 404 Image -->
 		<script>
 			document.addEventListener('DOMContentLoaded', () => {
 				console.log('Page-specific dark mode initialized');
 
-				// Core toggle function
+				const errorImage = document.getElementById('errorImage');
+
+				// Function to update the 404 image
+				function update404Image(isDark) {
+					if (!errorImage) return;
+					errorImage.src = isDark
+						? '/assets/images/404-dark.PNG'
+						: '/assets/images/404-light.PNG';
+				}
+
+				// Core toggle function (enhanced)
 				function toggleDarkMode() {
 					const isDark = !document.body.classList.contains('dark-mode');
 					document.body.classList.toggle('dark-mode', isDark);
 					localStorage.setItem('dark-mode', isDark);
 					updateAllIcons(isDark);
+					update404Image(isDark);          // ← NEW: updates 404 image
 					console.log(`Mode switched to: ${isDark ? 'dark' : 'light'}`);
 				}
 
-				// Sync icons (desktop img class + mobile sidebar fa icons)
+				// Sync icons (unchanged)
 				function updateAllIcons(isDark) {
-					// Desktop img toggle
 					const desktopImg = document.querySelector('ul.icons li a img.custom-site-icon');
 					if (desktopImg) {
 						desktopImg.parentElement.classList.toggle('dark', isDark);
 					}
 
-					// Mobile sidebar icons (will update when added)
 					document.querySelectorAll('#navPanel .dark-mode-toggle i').forEach(i => {
 						i.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
 					});
@@ -538,6 +576,7 @@
 				const savedDark = localStorage.getItem('dark-mode') === 'true';
 				if (savedDark) document.body.classList.add('dark-mode');
 				updateAllIcons(savedDark);
+				update404Image(savedDark);           // ← NEW: sets correct image on load
 
 				// Desktop toggle listener
 				const desktopLink = document.querySelector('ul.icons li a[href="#"]');
@@ -548,7 +587,7 @@
 					});
 				}
 
-				// Mobile toggle – add to sidebar bottom when panel appears
+				// Mobile toggle (added to sidebar)
 				const panelObserver = new MutationObserver(() => {
 					const navPanelInner = document.querySelector('#navPanel nav');
 					if (navPanelInner && !navPanelInner.querySelector('.dark-mode-toggle')) {
@@ -564,7 +603,7 @@
 						toggleLink.appendChild(icon);
 
 						toggleLi.appendChild(toggleLink);
-						navPanelInner.prepend(toggleLi); // ← Top of list
+						navPanelInner.prepend(toggleLi);
 
 						toggleLink.addEventListener('click', e => {
 							e.preventDefault();
@@ -576,7 +615,7 @@
 							toggleDarkMode();
 						});
 
-						console.log('Page-specific: Mobile dark mode toggle added to TOP of sidebar');
+						console.log('Page-specific: Mobile dark mode toggle added');
 						panelObserver.disconnect();
 					}
 				});
@@ -601,7 +640,7 @@
 		<!-- Your custom logic must be LAST -->
 		<script src="/assets/js/main.js"></script>
 		<script src="/assets/js/ofid-main.js"></script>
-	
+
 </body>
 
 </html>
