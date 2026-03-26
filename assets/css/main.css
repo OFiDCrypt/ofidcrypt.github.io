@@ -4770,6 +4770,24 @@ body.is-preload #wrapper.fade-in:before {
 	margin: 0 5%;
 }
 
+.top-no-style-link {
+    text-decoration: none;
+    color: inherit;
+    border: none;
+}
+
+.top-no-style-link img {
+    width: 50%;
+    margin: 0 5%;
+}
+
+/* Desktop breakpoint override */
+@media screen and (max-width: 600px) {
+    .top-no-style-link img {
+        width: 25%;
+        margin: 0; /* optional: remove side spacing if you want full bleed */
+    }
+}
 
 #intro p {
 	font-size: 1.25rem;
