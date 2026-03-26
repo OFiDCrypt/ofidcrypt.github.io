@@ -2900,6 +2900,7 @@ button,
 	background-color: transparent;
 	box-shadow: inset 0 0 0 2px var(--button-border-color);
 	color: var(--button-text-color) !important;
+	border-radius: 20px;
 }
 
 input[type="submit"]:hover,
@@ -4656,18 +4657,20 @@ body.is-preload #wrapper.fade-in:before {
 }
 
 .smaller-heading {
-    font-size: 0.4em;
-    color: rgba(135, 82, 235, 0.75);
-    font-weight: normal;
+	font-size: 0.4em;
+	color: rgba(135, 82, 235, 0.75);
+	font-weight: normal;
 
-    display: flex;              /* enables centering */
-    align-items: center;        /* vertical center */
-    width: 100%;
+	display: flex;
+	/* enables centering */
+	align-items: center;
+	/* vertical center */
+	width: 100%;
 
-    background: rgba(135, 82, 235, 0.15);
-    padding: 4px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(135, 82, 235, 0.15);
+	background: rgba(135, 82, 235, 0.15);
+	padding: 4px 12px;
+	border-radius: 20px;
+	border: 1px solid rgba(135, 82, 235, 0.15);
 }
 
 .smaller-heading-bottom {
@@ -4691,29 +4694,32 @@ body.is-preload #wrapper.fade-in:before {
 }
 
 .footer-small-heading {
-    display: flex;
-    align-items: center;       /* vertical center */
-    width: 100%;
-    text-align: center;
+	display: flex;
+	align-items: center;
+	/* vertical center */
+	width: 100%;
+	text-align: center;
 
-    /* inherits your pill look */
-    font-size: 0.4em;
-    color: rgba(135, 82, 235, 0.75);
-    font-weight: normal;
-    background: rgba(135, 82, 235, 0.15);
-    padding: 4px 12px;
-    border-radius: 5px;
-    border: 1px solid rgba(135, 82, 235, 0.15);
+	/* inherits your pill look */
+	font-size: 0.4em;
+	color: rgba(135, 82, 235, 0.75);
+	font-weight: normal;
+	background: rgba(135, 82, 235, 0.15);
+	padding: 4px 12px;
+	border-radius: 5px;
+	border: 1px solid rgba(135, 82, 235, 0.15);
 }
 
 @media screen and (max-width: 900px) {
-    .footer-small-heading {
-        display: flex;
-        justify-content: center;   /* horizontal center */
-        align-items: center;       /* vertical center */
-        text-align: center;
-        width: 100%;
-    }
+	.footer-small-heading {
+		display: flex;
+		justify-content: center;
+		/* horizontal center */
+		align-items: center;
+		/* vertical center */
+		text-align: center;
+		width: 100%;
+	}
 }
 
 .images-with-plus {
@@ -4771,22 +4777,23 @@ body.is-preload #wrapper.fade-in:before {
 }
 
 .top-no-style-link {
-    text-decoration: none;
-    color: inherit;
-    border: none;
+	text-decoration: none;
+	color: inherit;
+	border: none;
 }
 
 .top-no-style-link img {
-    width: 50%;
-    margin: 0 5%;
+	width: 50%;
+	margin: 0 5%;
 }
 
 /* Desktop breakpoint override */
 @media screen and (max-width: 600px) {
-    .top-no-style-link img {
-        width: 25%;
-        margin: 0; /* optional: remove side spacing if you want full bleed */
-    }
+	.top-no-style-link img {
+		width: 25%;
+		margin: 0;
+		/* optional: remove side spacing if you want full bleed */
+	}
 }
 
 #intro p {
@@ -5049,8 +5056,30 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 	font-weight: 500;
 }
 
-.smaller-heading-bw {
+/* Card Style - Small Card Sub-Header/Context */
+.card-smaller-heading-bw {
+	font-size: 0.8em;
+	color: var(--text-color);
+	background: var(--pill-bg);
+	border: 1px solid var(--pill-border);
+	font-weight: normal;
+	position: relative;
+	display: inline-block;
+	padding: 4px 24px;
+	margin: 0 auto 1rem;
+	border-radius: 20px;
+	text-align: center;
 	text-transform: none;
+
+	/* ✨ Subtle flair */
+	backdrop-filter: blur(4px);
+	/* soft glassy feel */
+	-webkit-backdrop-filter: blur(4px);
+
+	/* ✨ Theme-aware shadow */
+	box-shadow:
+		0 2px 6px color-mix(in srgb, var(--text-color) 12%, transparent),
+		0 1px 2px color-mix(in srgb, var(--text-color) 20%, transparent);
 }
 
 /* Header */
@@ -8543,24 +8572,26 @@ article.community.featured {
 }
 
 .footer-left-aligned {
-    text-align: left;
-    font-size: 2em;
-    font-weight: bold;
-    margin: 20px 0;
-    color: #2C3E50;
-    width: 100%;
+	text-align: left;
+	font-size: 2em;
+	font-weight: bold;
+	margin: 20px 0;
+	color: #2C3E50;
+	width: 100%;
 
-    display: flex;
-    justify-content: center;  /* vertical centering */
+	display: flex;
+	justify-content: center;
+	/* vertical centering */
 }
 
 @media screen and (max-width: 900px) {
-    .footer-extended .smaller-heading {
-        justify-content: center;   /* ensure pill text is centered */
-        align-items: center;
-        text-align: center;
-        width: 100%;
-    }
+	.footer-extended .smaller-heading {
+		justify-content: center;
+		/* ensure pill text is centered */
+		align-items: center;
+		text-align: center;
+		width: 100%;
+	}
 }
 
 /* Footer Extended Links Container */
