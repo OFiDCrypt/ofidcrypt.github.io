@@ -3530,7 +3530,7 @@ input[type="radio"]:focus+label:before {
 /* Mobile – tighter padding to match your other sections */
 @media (max-width: 900px) {
 	#bulletins.partner-section {
-		padding: 2rem 1.8rem 3.5rem 1.8rem !important;
+		padding: 0rem 1.8rem 1.8rem 1.8rem !important;
 	}
 
 	#bulletins.partner-section p {
@@ -3541,7 +3541,7 @@ input[type="radio"]:focus+label:before {
 
 @media (max-width: 600px) {
 	#bulletins.partner-section {
-		padding: 1rem 1.25rem 0rem 1.25rem !important;
+		padding: 0rem 1.25rem 2rem 1.25rem !important;
 	}
 
 	#bulletins.partner-section p {
@@ -6447,17 +6447,26 @@ section.youtube-iframe {
 	/* Centers items horizontally within the container */
 	max-width: 1200px;
 	/* Maximum width on wide screens */
-	margin: 0 auto 0 auto;
+	margin: 0rem auto 0 auto;
 	/* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
-	padding: 0rem 4rem 2rem 4rem;
+	padding: 0rem 4rem 4rem 4rem;
 }
 
 /* Mobile: remove bottom margin to avoid extra empty space at the bottom */
 @media (max-width: 768px) {
 	.x-post-container {
-		margin: 0 auto 2rem auto;
+		margin: 2rem auto 0 auto;
 		/* Bottom margin removed (0) on mobile */
-		padding: 0 0.8rem 0.8rem 0.8rem;
+		padding: 0 0.8rem 4rem 0.8rem;
+		/* Slightly tighter side padding if desired */
+	}
+}
+	
+	@media (max-width: 900px) {
+	.x-post-container {
+		margin: 2rem auto 0 auto;
+		/* Bottom margin removed (0) on mobile */
+		padding: 0 2rem 4rem 2rem;
 		/* Slightly tighter side padding if desired */
 	}
 }
@@ -7777,12 +7786,6 @@ article.community.featured {
 }
 
 /* Responsive Adjustments */
-@media screen and (max-width: 980px) {
-	#main>* {
-		padding: 2rem 2rem 0.1rem 2rem;
-	}
-}
-
 @media screen and (max-width: 480px) {
 	#main {
 		width: 100%;
