@@ -2899,7 +2899,7 @@ button,
 .button {
 	background-color: transparent;
 	box-shadow: inset 0 0 0 2px var(--button-border-color);
-	color: var(--button-text-color) !important;
+	color: var(--button-text-color);
 	border-radius: 20px;
 }
 
@@ -2909,7 +2909,7 @@ input[type="button"]:hover,
 button:hover,
 .button:hover {
 	box-shadow: inset 0 0 0 2px var(--button-hover-border-color);
-	color: var(--button-hover-text-color) !important;
+	color: var(--button-hover-text-color);
 }
 
 input[type="submit"].primary,
@@ -6527,7 +6527,7 @@ section.youtube-iframe {
 	flex: 1;
 	min-width: 340px;
 	/* Ensure width ≥ 300px */
-	max-width: 340px;
+	max-width: 780px;
 	/* Matches iframe width */
 	height: auto;
 	/* Adjust to content */
