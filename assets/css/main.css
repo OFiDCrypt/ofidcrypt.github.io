@@ -3353,12 +3353,13 @@ input[type="radio"]:focus+label:before {
 
 .image.fit {
 	display: block;
-	margin: 2.5rem 0;
+	margin: 0 0;
 	width: 100%;
 }
 
 .image.fit:first-child {
 	margin-top: 0;
+	margin-bottom: 2rem;
 }
 
 .image.fit img {
@@ -3540,7 +3541,7 @@ input[type="radio"]:focus+label:before {
 
 @media (max-width: 600px) {
 	#bulletins.partner-section {
-		padding: 1rem 1.25rem 1rem 1.25rem !important;
+		padding: 1rem 1.25rem 0rem 1.25rem !important;
 	}
 
 	#bulletins.partner-section p {
@@ -4256,7 +4257,7 @@ table.alt tbody tr td {
 	user-select: none;
 	cursor: default;
 	list-style: none;
-	margin: 0 0 2rem 0;
+	margin: 2rem 0 2rem 0;
 	padding: 0;
 }
 
@@ -4343,11 +4344,8 @@ table.alt tbody tr td {
 
 @media screen and (max-width: 980px) {
 	.pagination {
-		display: flex;
 		justify-content: center;
 		flex-wrap: nowrap;
-		/* Keep in a single line */
-		margin: 0 0 0 0;
 	}
 
 	.pagination .next,
@@ -6191,7 +6189,7 @@ section.youtube-iframe {
 		/* Full width */
 		max-width: 1200px;
 		/* Centered layout */
-		margin: 0 auto 2rem auto;
+		margin: 0 auto 0 auto;
 		/* Center on mobile */
 		height: auto;
 		/* Reset height */
@@ -6451,15 +6449,15 @@ section.youtube-iframe {
 	/* Maximum width on wide screens */
 	margin: 0 auto 0 auto;
 	/* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
-	padding: 0rem 4rem 4rem 4rem;
+	padding: 0rem 4rem 2rem 4rem;
 }
 
 /* Mobile: remove bottom margin to avoid extra empty space at the bottom */
 @media (max-width: 768px) {
 	.x-post-container {
-		margin: 0 auto 0 auto;
+		margin: 0 auto 2rem auto;
 		/* Bottom margin removed (0) on mobile */
-		padding: 0 0.8rem;
+		padding: 0 0.8rem 0.8rem 0.8rem;
 		/* Slightly tighter side padding if desired */
 	}
 }
@@ -6535,6 +6533,7 @@ section.youtube-iframe {
 	/* Adjust to content */
 	max-height: 380px;
 	/* Desktop height, sum > 700px */
+	margin-bottom: 3rem;
 	border: 2px solid #a200ff;
 	/* Purple border */
 	border-radius: 5px;
@@ -7609,9 +7608,9 @@ footer {
 }
 
 /* Mobile adjustments (≤480px) */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 736px) {
 	#expb-ball {
-		padding: 0;
+		padding: 20px 20px 0 20px;
 		/* Remove padding for max width */
 	}
 
@@ -7777,6 +7776,19 @@ article.community.featured {
 	}
 }
 
+/* Responsive Adjustments */
+@media screen and (max-width: 980px) {
+	#main>* {
+		padding: 2rem 2rem 0.1rem 2rem;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	#main {
+		width: 100%;
+	}
+}
+
 /* Price Chart - #dexscreener{*/
 #dexscreener-embed {
 	position: relative;
@@ -7797,189 +7809,6 @@ article.community.featured {
 	top: 0;
 	left: 0;
 	border: 0;
-}
-
-/* Posts Container */
-#main>#posts-container #index-posts>.posts>article header h2 {
-	font-size: 1.75rem;
-	line-height: 1.2;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100px;
-	margin: auto;
-}
-
-#main>#posts-container .posts {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: stretch;
-	text-align: center;
-	width: 100%;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-#main>#posts-container .posts>article {
-	flex: 0 0 calc(50% - 2rem);
-	margin: 1rem;
-	margin-bottom: 1rem;
-	margin-top: 1rem;
-	padding: 2rem;
-	border: 1px solid var(--posts-border-color);
-	border-radius: 5px;
-	box-sizing: border-box;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#main>#posts-container .posts>article>ul.actions.special {
-	margin-top: auto;
-	/* This will push the ul to the bottom */
-	padding-top: 1rem;
-	/* Optional padding */
-	margin-bottom: 0;
-	/* To ensure no extra space at the bottom */
-}
-
-/* Responsive Adjustments */
-@media screen and (max-width: 980px) {
-	#main>#posts-container .posts>article {
-		flex: 0 0 calc(50% - 2rem);
-		margin: 1rem;
-		padding: 2.5rem;
-	}
-}
-
-@media screen and (max-width: 736px) {
-	#main>#posts-container .posts>article {
-		flex: 0 0 calc(100% - 2rem);
-		margin: 1rem 0;
-		padding: 2rem;
-	}
-
-	#main>#posts-container .posts>article .image {
-		max-width: 25rem;
-		margin-left: auto;
-		margin-right: auto;
-	}
-}
-
-@media screen and (max-width: 980px) {
-	#main>* {
-		padding: 2rem 2rem 0.1rem 2rem;
-	}
-}
-
-@media screen and (max-width: 480px) {
-	#main {
-		width: 100%;
-	}
-}
-
-/* Posts Container explore.html */
-#posts-container #explore-posts .posts article header h2 {
-	font-size: 1.75rem;
-	line-height: 1.2;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100px;
-	margin: auto;
-}
-
-/* Monthly Container community.html */
-#main>#monthly-container .monthly-posts {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: stretch;
-	text-align: center;
-	width: 100%;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-#main>#monthly-container .monthly-posts>article {
-	flex: 0 0 calc(50% - 2rem);
-	margin: 1rem;
-	margin-bottom: 1rem;
-	margin-top: 1rem;
-	padding: 2rem;
-	border: 1px solid var(--monthly-posts-border-color);
-	border-radius: 5px;
-	box-sizing: border-box;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#main>#monthly-container .monthly-posts>article header h2 {
-	font-size: 1.75rem;
-	/* Set the font size to 1.75rem */
-	line-height: 1.2;
-	/* Adjust line height for readability */
-	text-align: center;
-	/* Center the text within the h2 */
-	display: flex;
-	/* Use flex for vertical alignment */
-	flex-direction: column;
-	/* Stack any line breaks vertically */
-	justify-content: center;
-	/* Center lines vertically */
-	height: 100px;
-	/* Set a height for vertical centering; adjust as needed */
-	margin: auto;
-	/* Center the h2 horizontally within its container */
-}
-
-#main>#monthly-container .monthly-posts>article>ul.actions.special {
-	margin-top: auto;
-	/* This will push the ul to the bottom */
-	padding-top: 1rem;
-	/* Optional padding */
-	margin-bottom: 0;
-	/* To ensure no extra space at the bottom */
-}
-
-.monthly-posts p {
-	text-align: justify;
-	/* justify-align text */
-}
-
-/* Responsive Adjustments */
-@media screen and (max-width: 980px) {
-	#main>#monthly-container .monthly-posts>article {
-		flex: 0 0 calc(50% - 2rem);
-		margin: 1rem;
-		padding: 2.5rem;
-	}
-}
-
-@media screen and (max-width: 736px) {
-	#main>#monthly-container .monthly-posts>article {
-		flex: 0 0 calc(100% - 2rem);
-		margin: 1rem 0;
-		padding: 2rem;
-	}
-
-	#main>#monthly-container .monthly-posts>article .image {
-		max-width: 25rem;
-		margin-left: auto;
-		margin-right: auto;
-	}
-}
-
-@media screen and (max-width: 480px) {
-	#main {
-		width: 100%;
-	}
 }
 
 /* Custom styling for the event post article */
@@ -8799,7 +8628,7 @@ article.community.featured {
 		/* Reset height to allow padding to define the aspect ratio */
 		padding-bottom: 56%;
 		/* Your specific aspect ratio */
-		margin: 0rem auto 1rem auto;
+		margin: 0rem auto 0rem auto;
 		position: relative;
 		overflow: hidden;
 		/* Ensure content doesn't spill outside */
