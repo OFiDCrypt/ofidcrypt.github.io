@@ -5064,7 +5064,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 	position: relative;
 	display: inline-block;
 	padding: 4px 24px;
-	margin: 0 auto 1rem;
+	margin: 1rem auto 1rem;
 	border-radius: 20px;
 	text-align: center;
 	text-transform: none;
@@ -6438,103 +6438,68 @@ section.youtube-iframe {
 	}
 }
 
-/* Container for the X layout Post Embed */
+/* ====================== X POST CONTAINER ====================== */
 .x-post-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-	justify-content: center;
-	/* Centers items horizontally within the container */
-	max-width: 1200px;
-	/* Maximum width on wide screens */
-	margin: 0rem auto 0 auto;
-	/* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
-	padding: 0rem 4rem 2rem 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto 2rem auto;     /* Decent bottom margin on desktop */
+    padding: 0 4rem 1.5rem 4rem;
+    box-sizing: border-box;
 }
 
-/* Mobile: remove bottom margin to avoid extra empty space at the bottom */
+/* Mobile adjustments for .x-post-container */
+@media (max-width: 900px) {
+    .x-post-container {
+        padding: 2rem 2rem 2rem 2rem;
+    }
+}
+
 @media (max-width: 768px) {
-	.x-post-container {
-		margin: 2rem auto 0 auto;
-		/* Bottom margin removed (0) on mobile */
-		padding: 0 0.8rem 4rem 0.8rem;
-		/* Slightly tighter side padding if desired */
-	}
-}
-	
-	@media (max-width: 900px) {
-	.x-post-container {
-		margin: 0rem auto 0 auto;
-		/* Bottom margin removed (0) on mobile */
-		padding: 2rem 2rem 2rem 2rem;
-		/* Slightly tighter side padding if desired */
-	}
+    .x-post-container {
+        margin: 2rem auto 0 auto;
+        padding: 0 0.8rem 0rem 0.8rem;
+    }
 }
 
-/* Individual post styling */
+/* Individual X post styling */
 .x-post.video.main {
-	flex: 1;
-	min-width: 300px;
-	max-width: 550px;
-	/* Typical Twitter embed width */
-	height: auto;
-	/* Shrink to content */
-	max-height: 600px;
-	/* Cap with scroll */
-	border: 2px solid #a200ff;
-	/* Purple border */
-	border-radius: 5px;
-	overflow-y: auto;
-	/* Enable scrolling */
-	display: flex;
-	/* Fit content snugly */
-	flex-direction: column;
-}
-
-/* Style the Twitter embed inside */
-.x-post.video.main .twitter-tweet {
-	width: 100%;
-	margin: 0;
-	padding: 10px;
-	box-sizing: border-box;
-	min-height: 0;
-	/* Prevent excess space */
-}
-
-	.x-post.video.main {
-		flex: none;
-		width: 100%;
-		max-width: 90%;
-		height: auto;
-		/* Shrink to content */
-		max-height: 600px;
-		/* Match desktop cap, adjust if needed */
-		overflow-y: auto;
-		display: flex;
-		/* Fit content snugly */
-		flex-direction: column;
-	}
-
-/* Extra small screens */
-@media (max-width: 480px) {
-	.x-post.video.main {
-		max-width: 100%;
-		max-height: 600px;
-		/* Consistent cap */
-	}
-}
-
-/* Individual post styling for PR container */
-.PR-post.video.main {
-    flex: 1;
-    min-width: 340px;           /* Keep for desktop */
-    max-width: 780px;           /* Matches iframe width */
+    flex: 1;                    /* Allows side-by-side on desktop */
+    min-width: 300px;           /* Good minimum for side-by-side */
+    max-width: 550px;           /* Typical X embed width */
     height: auto;
-    max-height: 380px;
-    margin-bottom: 4rem;
+    max-height: 600px;
     border: 2px solid #a200ff;
     border-radius: 5px;
-    overflow-y: auto;
+    overflow: auto;             /* Clean scrolling - prevents double scrollbar */
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* Style the Twitter/X embed inside */
+.x-post.video.main .twitter-tweet {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    min-height: 0;
+}
+
+/* ====================== PR / IFRAME POST ====================== */
+.PR-post.video.main {
+    flex: 1;
+    min-width: 340px;           /* Good for desktop side-by-side if needed */
+    max-width: 780px;
+    height: auto;
+    max-height: 380px;
+    margin-bottom: 3.5rem;
+    border: 2px solid #a200ff;
+    border-radius: 5px;
+    overflow: hidden;             /* Cleaner than separate overflow-y + overflow-x */
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     display: flex;
@@ -6548,19 +6513,19 @@ section.youtube-iframe {
     width: 100%;
     height: 380px;
     background-color: #fff !important;
-    overflow-y: auto;
+    overflow: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: 10px;                    /* Moved padding here */
+    padding: 10px;
     box-sizing: border-box;
 }
 
-/* Style the iframe embed inside */
+/* Iframe embed */
 .iframe-wrapper iframe {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;                       /* Removed padding from iframe */
+    padding: 0;
     box-sizing: border-box;
     background-color: #fff !important;
     border: none;
@@ -6571,25 +6536,33 @@ section.youtube-iframe {
 @media (max-width: 768px) {
     .PR-container {
         flex-direction: column;
+        margin-bottom: 3.5rem;
     }
 
+    /* X posts on mobile */
+    .x-post.video.main {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        max-height: 680px;
+    }
+
+    /* PR posts on mobile */
     .PR-post.video.main {
         flex: none;
         width: 100%;
-        max-width: 100%;              /* Full width on mobile */
-        min-width: 0;                 /* Critical fix - allows shrinking */
-        height: auto;
-        max-height: 760px;
-        margin-bottom: 3rem;          /* Slightly reduced for mobile */
-        box-sizing: border-box;
+        max-width: 100%;
+        min-width: 0;
+        max-height: 680px;
+        margin-bottom: 3rem;
     }
 
     .iframe-wrapper {
         width: 100%;
-        min-width: 0;                 /* Critical fix */
-        height: 760px;
+        min-width: 0;
+        height: 680px;
         padding: 10px;
-        box-sizing: border-box;
     }
 
     .iframe-wrapper iframe {
@@ -6600,28 +6573,22 @@ section.youtube-iframe {
 
 /* Extra small screens */
 @media (max-width: 480px) {
+    .x-post.video.main,
     .PR-post.video.main {
-        width: 100%;
         max-width: 100%;
         min-width: 0;
-        max-height: 760px;
+        max-height: 680px;
     }
 
     .iframe-wrapper {
-        width: 100%;
         min-width: 0;
-        height: 760px;
-        padding: 10px;
-    }
-
-    .iframe-wrapper iframe {
-        width: 100%;
-        height: 100%;
+        height: 680px;
     }
 }
 
-/* Dark mode support */
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
+    .x-post.video.main,
     .PR-post.video.main,
     .iframe-wrapper,
     .iframe-wrapper iframe {
