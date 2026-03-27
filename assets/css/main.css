@@ -5932,7 +5932,7 @@ section.youtube-iframe {
 /* Responsive Adjustments */
 @media screen and (max-width: 1280px) {
 	#main>.post {
-		padding: 2rem 4rem 4rem 4rem;
+		padding: 2rem 4rem 2rem 4rem;
 	}
 }
 
@@ -6449,7 +6449,7 @@ section.youtube-iframe {
 	/* Maximum width on wide screens */
 	margin: 0rem auto 0 auto;
 	/* Top: 0 • Sides: auto (centers) • Bottom: 4rem on desktop */
-	padding: 0rem 4rem 4rem 4rem;
+	padding: 0rem 4rem 2rem 4rem;
 }
 
 /* Mobile: remove bottom margin to avoid extra empty space at the bottom */
@@ -6464,9 +6464,9 @@ section.youtube-iframe {
 	
 	@media (max-width: 900px) {
 	.x-post-container {
-		margin: 2rem auto 0 auto;
+		margin: 0rem auto 0 auto;
 		/* Bottom margin removed (0) on mobile */
-		padding: 0 2rem 4rem 2rem;
+		padding: 2rem 2rem 2rem 2rem;
 		/* Slightly tighter side padding if desired */
 	}
 }
@@ -6542,7 +6542,7 @@ section.youtube-iframe {
 	/* Adjust to content */
 	max-height: 380px;
 	/* Desktop height, sum > 700px */
-	margin-bottom: 3rem;
+	margin-bottom: 4rem;
 	border: 2px solid #a200ff;
 	/* Purple border */
 	border-radius: 5px;
