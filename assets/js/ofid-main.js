@@ -1,4 +1,3 @@
-// GLOBAL: Status Message Logic (Clean + Anchor-Safe + Mobile-Safe)
 const observer = new MutationObserver(() => {
     const statusMessage = document.getElementById("statusMessage");
     const closeBtn = document.getElementById("statusClose");
@@ -8,19 +7,20 @@ const observer = new MutationObserver(() => {
 
     observer.disconnect();
 
-    console.log("Status elements found — initializing…");
-
-    // If user opted out, keep hidden (CSS default hidden state)
+    // If user opted out, skip
     if (localStorage.getItem("hideStatusMessage") === "true") {
-        console.log("User opted out — keeping hidden");
         return;
     }
 
-    // Show after delay (Massively-safe)
-    setTimeout(() => {
-        console.log("Applying SHOW class now…");
+    // FIX: If page loaded with an anchor, show banner immediately
+    if (window.location.hash) {
         statusMessage.classList.add("show");
-    }, 800);
+    } else {
+        // Normal behavior: delayed reveal
+        setTimeout(() => {
+            statusMessage.classList.add("show");
+        }, 800);
+    }
 
     // Close button
     closeBtn.addEventListener("click", () => {
@@ -31,7 +31,7 @@ const observer = new MutationObserver(() => {
         }
     });
 
-    // Opt-out checkbox persistence
+    // Opt-out checkbox
     optOutCheckbox.addEventListener("change", (e) => {
         if (e.target.checked) {
             localStorage.setItem("hideStatusMessage", "true");
