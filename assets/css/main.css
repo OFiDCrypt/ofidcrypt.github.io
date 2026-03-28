@@ -4905,22 +4905,22 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 .status-message {
     position: relative;
     width: 100%;
-    padding: 0 24px 0 18px;           /* zero vertical when hidden */
+    padding: 0 24px 0 18px;
     border-radius: 12px;
     background: var(--status-bg, rgba(255, 215, 0, 0.12));
     border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
     color: var(--status-text, #b8860b);
 
-    /* Hidden state - minimal layout impact */
+    /* Hidden state */
     opacity: 0;
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
 
-    /* Transition only safe properties */
+    /* FIXED transitions */
     transition: 
-        opacity 0.4s ease,
-        max-height 0.4s ease,
+        opacity 0.4s ease 0.05s,      /* smooth fade-in */
+        max-height 0.4s ease 0.15s,   /* delayed collapse for smooth fade-out */
         margin-top 0.3s ease;
 }
 
@@ -4933,6 +4933,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     padding: 5px 24px 5px 18px;
     visibility: visible;
 }
+
 
 /* === Mobile-specific override to reduce reflow === */
 @media (max-width: 768px) {
