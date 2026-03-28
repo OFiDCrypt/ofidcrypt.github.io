@@ -1,57 +1,37 @@
-// GLOBAL: Status Message Logic (Massively-safe + Mobile Jump Fix)
+// GLOBAL: Status Message Logic (Clean + Anchor-Safe + Mobile-Safe)
 const observer = new MutationObserver(() => {
     const statusMessage = document.getElementById("statusMessage");
     const closeBtn = document.getElementById("statusClose");
     const optOutCheckbox = document.getElementById("statusOptOut");
 
-    // Wait until all elements exist
     if (!statusMessage || !closeBtn || !optOutCheckbox) return;
 
-    // Stop observing once found
     observer.disconnect();
 
     console.log("Status elements found — initializing…");
 
-    // If user opted out, keep hidden
+    // If user opted out, keep hidden (CSS default hidden state)
     if (localStorage.getItem("hideStatusMessage") === "true") {
         console.log("User opted out — keeping hidden");
-        statusMessage.classList.add("hidden");
         return;
     }
 
-    // MASSIVELY FIX + Mobile stability:
-    // Longer delay to survive Scrollex + header animations + DOM rewrites
+    // Show after delay (Massively-safe)
     setTimeout(() => {
         console.log("Applying SHOW class now…");
-
-        statusMessage.classList.remove("hidden");
         statusMessage.classList.add("show");
+    }, 800);
 
-        console.log("Final classList:", statusMessage.className);
-    }, 800); // Increased from 600ms → better for mobile stability
-
-    // Smooth hide with better mobile cleanup
+    // Close button
     closeBtn.addEventListener("click", () => {
         statusMessage.classList.remove("show");
-
-        const onTransitionEnd = () => {
-            statusMessage.classList.add("hidden");
-            
-            // Extra mobile cleanup to force collapse and prevent residual layout shift
-            if (window.innerWidth <= 768) {
-                statusMessage.style.display = 'none';
-            }
-            
-            statusMessage.removeEventListener("transitionend", onTransitionEnd);
-        };
-
-        statusMessage.addEventListener("transitionend", onTransitionEnd);
 
         if (optOutCheckbox.checked) {
             localStorage.setItem("hideStatusMessage", "true");
         }
     });
 
+    // Opt-out checkbox persistence
     optOutCheckbox.addEventListener("change", (e) => {
         if (e.target.checked) {
             localStorage.setItem("hideStatusMessage", "true");
@@ -61,7 +41,6 @@ const observer = new MutationObserver(() => {
     });
 });
 
-// Start observing the whole document for Massively's late DOM inserts
 observer.observe(document.documentElement, {
     childList: true,
     subtree: true
