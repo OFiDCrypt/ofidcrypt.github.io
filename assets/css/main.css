@@ -6536,7 +6536,6 @@ section.youtube-iframe {
 @media (max-width: 768px) {
     .PR-container {
         flex-direction: column;
-        margin-bottom: 3.5rem;
     }
 
     /* X posts on mobile */
