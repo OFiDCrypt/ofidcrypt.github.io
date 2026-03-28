@@ -4901,117 +4901,120 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 }
 
-/* Show/Hide Page Status Message */
+/* Show/Hide Page Status Message - Smooth fade + no jumplink offset */
 .status-message {
-	position: relative;
-	width: 100%;
-	margin-bottom: 35px;
-	padding: 5px 24px 5px 18px;
-	border-radius: 12px;
-	background: var(--status-bg, rgba(255, 215, 0, 0.12));
-	border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
-	color: var(--status-text, #b8860b);
+    position: relative;
+    width: 100%;
+    /* margin-bottom moved to .show only */
+    padding: 0 24px 0 18px;           /* zero vertical padding when hidden */
+    border-radius: 12px;
+    background: var(--status-bg, rgba(255, 215, 0, 0.12));
+    border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
+    color: var(--status-text, #b8860b);
 
-	opacity: 0;
-	max-height: 0;
-	overflow: hidden;
-	transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.3s ease;
+    /* Hidden state */
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+
+    transition: 
+        opacity 0.4s ease,
+        max-height 0.4s ease,
+        padding 0.4s ease,          /* smooth padding change */
+        margin-top 0.3s ease,
+        visibility 0.4s ease;
 }
 
+/* Visible state */
 .status-message.show {
-	opacity: 1;
-	max-height: 320px;
-	margin-top: 14px;
+    opacity: 1;
+    max-height: 320px;
+    margin-top: 14px;
+    margin-bottom: 35px;            /* ← only here, as requested */
+    padding: 5px 24px 5px 18px;     /* original padding when visible */
+    visibility: visible;
 }
 
-/* Close button - top right, own space, no border */
+/* Close button */
 .status-close {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	height: auto;
-	background: transparent;
-	text-align: center;
-	border: none;
-	outline: none;
-	font-size: 1em;
-	line-height: 1;
-	color: var(--status-text);
-	cursor: pointer;
-	padding: 4px 10px;
-	border-radius: 4px;
-	box-shadow: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: auto;
+    background: transparent;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    line-height: 1;
+    color: var(--status-text);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: none;
 }
 
 .status-close:hover {
-	background: rgba(0, 0, 0, 0.07);
+    background: rgba(0, 0, 0, 0.07);
 }
 
 /* Inner content */
 .status-inner {
-	padding: 0 10px 0 10px;
-	text-align: center;
-	/* centers the message and checkbox */
+    padding: 0 10px 0 10px;
+    text-align: center;
 }
 
 .status-text {
-	margin: 20px 0 20px 0;
-	font-size: 0.94em;
-	line-height: 1.55;
-	text-align: center;
-	/* explicit center for the welcome text */
-}
-
-.status-message.hidden {
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
+    margin: 20px 0 20px 0;
+    font-size: 0.94em;
+    line-height: 1.55;
+    text-align: center;
 }
 
 /* Checkbox row */
 .status-optout {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 9px;
-	font-size: 0.83em;
-	color: var(--status-text);
-	opacity: 0.82;
-	cursor: pointer;
-	user-select: none;
-	margin: 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 0.83em;
+    color: var(--status-text);
+    opacity: 0.82;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 auto;
 }
 
 /* Nice visible checkbox */
 .status-optout input[type="checkbox"] {
-	appearance: none;
-	-webkit-appearance: none;
-	width: 19px;
-	height: 19px;
-	border: 2px solid var(--status-text);
-	border-radius: 4px;
-	background: transparent;
-	cursor: pointer;
-	flex-shrink: 0;
-	margin: 0;
-	position: relative;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 19px;
+    height: 19px;
+    border: 2px solid var(--status-text);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: 0;
+    position: relative;
 }
 
 .status-optout input[type="checkbox"]:checked {
-	background: var(--status-text);
-	border-color: var(--status-text);
+    background: var(--status-text);
+    border-color: var(--status-text);
 }
 
 .status-optout input[type="checkbox"]:checked::after {
-	content: "✓";
-	position: absolute;
-	color: #ffffff;
-	font-size: 13.5px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -52%);
-	line-height: 1;
+    content: "✓";
+    position: absolute;
+    color: #ffffff;
+    font-size: 13.5px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+    line-height: 1;
 }
 
 /* Small Page Sub-Header/Context */
