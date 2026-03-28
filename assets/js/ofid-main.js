@@ -1,4 +1,4 @@
-// GLOBAL: Status Message Logic (Massively‑safe)
+// GLOBAL: Status Message Logic (Massively-safe + Mobile Jump Fix)
 const observer = new MutationObserver(() => {
     const statusMessage = document.getElementById("statusMessage");
     const closeBtn = document.getElementById("statusClose");
@@ -19,8 +19,8 @@ const observer = new MutationObserver(() => {
         return;
     }
 
-    // MASSIVELY FIX:
-    // Delay long enough for Scrollex + header animations + DOM rewrites to finish
+    // MASSIVELY FIX + Mobile stability:
+    // Longer delay to survive Scrollex + header animations + DOM rewrites
     setTimeout(() => {
         console.log("Applying SHOW class now…");
 
@@ -28,14 +28,20 @@ const observer = new MutationObserver(() => {
         statusMessage.classList.add("show");
 
         console.log("Final classList:", statusMessage.className);
-    }, 600); // 600ms survives Massively's DOM rewrite timing
+    }, 800); // Increased from 600ms → better for mobile stability
 
-    // Smooth hide
+    // Smooth hide with better mobile cleanup
     closeBtn.addEventListener("click", () => {
         statusMessage.classList.remove("show");
 
         const onTransitionEnd = () => {
             statusMessage.classList.add("hidden");
+            
+            // Extra mobile cleanup to force collapse and prevent residual layout shift
+            if (window.innerWidth <= 768) {
+                statusMessage.style.display = 'none';
+            }
+            
             statusMessage.removeEventListener("transitionend", onTransitionEnd);
         };
 

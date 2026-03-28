@@ -4901,29 +4901,27 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 }
 
-/* Show/Hide Page Status Message - Smooth fade + no jumplink offset */
+/* Show/Hide Page Status Message - Fixed for mobile jumplink offset */
 .status-message {
     position: relative;
     width: 100%;
-    /* margin-bottom moved to .show only */
-    padding: 0 24px 0 18px;           /* zero vertical padding when hidden */
+    padding: 0 24px 0 18px;           /* zero vertical when hidden */
     border-radius: 12px;
     background: var(--status-bg, rgba(255, 215, 0, 0.12));
     border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
     color: var(--status-text, #b8860b);
 
-    /* Hidden state */
+    /* Hidden state - minimal layout impact */
     opacity: 0;
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
 
+    /* Transition only safe properties */
     transition: 
         opacity 0.4s ease,
         max-height 0.4s ease,
-        padding 0.4s ease,          /* smooth padding change */
-        margin-top 0.3s ease,
-        visibility 0.4s ease;
+        margin-top 0.3s ease;
 }
 
 /* Visible state */
@@ -4931,9 +4929,22 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     opacity: 1;
     max-height: 320px;
     margin-top: 14px;
-    margin-bottom: 35px;            /* ← only here, as requested */
-    padding: 5px 24px 5px 18px;     /* original padding when visible */
+    margin-bottom: 35px;
+    padding: 5px 24px 5px 18px;
     visibility: visible;
+}
+
+/* === Mobile-specific override to reduce reflow === */
+@media (max-width: 768px) {
+    .status-message {
+        transition: 
+            opacity 0.4s ease,
+            max-height 0.35s ease;   /* slightly faster + remove margin-top transition on mobile */
+    }
+    
+    .status-message.show {
+        margin-top: 10px;           /* smaller margin on mobile if needed */
+    }
 }
 
 /* Close button */
@@ -4959,7 +4970,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     background: rgba(0, 0, 0, 0.07);
 }
 
-/* Inner content */
+/* Inner content & text (unchanged) */
 .status-inner {
     padding: 0 10px 0 10px;
     text-align: center;
@@ -4972,7 +4983,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     text-align: center;
 }
 
-/* Checkbox row */
+/* Checkbox (unchanged) */
 .status-optout {
     display: inline-flex;
     align-items: center;
@@ -4986,7 +4997,6 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     margin: 0 auto;
 }
 
-/* Nice visible checkbox */
 .status-optout input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
