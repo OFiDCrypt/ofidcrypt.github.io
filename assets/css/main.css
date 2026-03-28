@@ -3422,7 +3422,7 @@ input[type="radio"]:focus+label:before {
 
 	.image.left {
 		float: left;
-		margin: 15px 25px 15px 0;
+		margin: 4px 30px 8px 0;
 		/* Remove left margin (0), keep right (25px) for text spacing */
 	}
 
@@ -3464,7 +3464,7 @@ input[type="radio"]:focus+label:before {
 	}
 
 	.product-content p {
-		margin: 1.5em 0;
+		margin: 0em 0;
 		/* Standardize paragraph spacing */
 		line-height: 1.6;
 		/* Improve readability */
@@ -6014,7 +6014,7 @@ section.youtube-iframe {
 	/* Center each box in viewport */
 	flex-direction: column;
 	/* Stack content vertically */
-	margin: 15px 15px 1rem 15px;
+	margin: 2rem 15px 2rem 15px;
 	/* Margin for scrollbar compensation */
 	box-sizing: border-box;
 	/* Include padding/border in width */
@@ -6189,7 +6189,7 @@ section.youtube-iframe {
 		/* Full width */
 		max-width: 1200px;
 		/* Centered layout */
-		margin: 0 auto 0 auto;
+		margin: 3rem auto 3rem auto;
 		/* Center on mobile */
 		height: auto;
 		/* Reset height */
@@ -7058,8 +7058,6 @@ body.dark-mode .giddys-quick-card {
 	#main .cashlinks-section .cashlinks-item {
 		flex-direction: column;
 		/* Stack image above content */
-		align-items: flex-start;
-		/* Left-align content for better readability */
 		text-align: center;
 		/* Optional: center text/button if preferred */
 	}
