@@ -1,3 +1,4 @@
+// GLOBAL: Status Message Logic (Massively-safe + Anchor Link Fix)
 const observer = new MutationObserver(() => {
     const statusMessage = document.getElementById("statusMessage");
     const closeBtn = document.getElementById("statusClose");
@@ -7,31 +8,52 @@ const observer = new MutationObserver(() => {
 
     observer.disconnect();
 
-    // If user opted out, skip
+    console.log("Status elements found — initializing…");
+
+    // If user opted out, keep hidden
     if (localStorage.getItem("hideStatusMessage") === "true") {
+        console.log("User opted out — keeping hidden");
+        statusMessage.classList.add("hidden");
         return;
     }
 
-    // FIX: If page loaded with an anchor, show banner immediately
-    if (window.location.hash) {
+    // === Smart Show Logic ===
+    const showStatus = () => {
+        statusMessage.classList.remove("hidden");
         statusMessage.classList.add("show");
-    } else {
-        // Normal behavior: delayed reveal
+        console.log("Status message shown");
+    };
+
+    // If page was loaded via anchor link (#something), show immediately
+    if (window.location.hash) {
+        console.log("Anchor link detected — showing status immediately");
+        showStatus();
+    } 
+    // Normal page load — delayed show
+    else {
         setTimeout(() => {
-            statusMessage.classList.add("show");
-        }, 800);
+            console.log("Normal delayed show");
+            showStatus();
+        }, 750);   // 750ms is a good compromise
     }
 
-    // Close button
+    // Smooth hide on close
     closeBtn.addEventListener("click", () => {
         statusMessage.classList.remove("show");
+
+        const onTransitionEnd = () => {
+            statusMessage.classList.add("hidden");
+            statusMessage.removeEventListener("transitionend", onTransitionEnd);
+        };
+
+        statusMessage.addEventListener("transitionend", onTransitionEnd);
 
         if (optOutCheckbox.checked) {
             localStorage.setItem("hideStatusMessage", "true");
         }
     });
 
-    // Opt-out checkbox
+    // Checkbox handler
     optOutCheckbox.addEventListener("change", (e) => {
         if (e.target.checked) {
             localStorage.setItem("hideStatusMessage", "true");
@@ -41,6 +63,7 @@ const observer = new MutationObserver(() => {
     });
 });
 
+// Start observing for Massively's late DOM changes
 observer.observe(document.documentElement, {
     childList: true,
     subtree: true
