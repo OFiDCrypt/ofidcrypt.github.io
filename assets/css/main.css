@@ -4901,131 +4901,117 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 }
 
-/* Show/Hide Page Status Message - Fixed for mobile jumplink offset */
+/* Show/Hide Page Status Message */
 .status-message {
-    position: relative;
-    width: 100%;
-    padding: 0 24px 0 18px;
-    border-radius: 12px;
-    background: var(--status-bg, rgba(255, 215, 0, 0.12));
-    border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
-    color: var(--status-text, #b8860b);
+	position: relative;
+	width: 100%;
+	margin-bottom: 35px;
+	padding: 5px 24px 5px 18px;
+	border-radius: 12px;
+	background: var(--status-bg, rgba(255, 215, 0, 0.12));
+	border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
+	color: var(--status-text, #b8860b);
 
-    /* Hidden state */
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    visibility: hidden;
-
-    /* FIXED transitions */
-    transition: 
-        opacity 0.4s ease 0.05s,      /* smooth fade-in */
-        max-height 0.4s ease 0.15s,   /* delayed collapse for smooth fade-out */
-        margin-top 0.3s ease;
+	opacity: 0;
+	max-height: 0;
+	overflow: hidden;
+	transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.3s ease;
 }
 
-/* Visible state */
 .status-message.show {
-    opacity: 1;
-    max-height: 320px;
-    margin-top: 14px;
-    margin-bottom: 35px;
-    padding: 5px 24px 5px 18px;
-    visibility: visible;
+	opacity: 1;
+	max-height: 320px;
+	margin-top: 14px;
 }
 
-
-/* === Mobile-specific override to reduce reflow === */
-@media (max-width: 768px) {
-    .status-message {
-        transition: 
-            opacity 0.4s ease,
-            max-height 0.35s ease;   /* slightly faster + remove margin-top transition on mobile */
-    }
-    
-    .status-message.show {
-        margin-top: 10px;           /* smaller margin on mobile if needed */
-    }
-}
-
-/* Close button */
+/* Close button - top right, own space, no border */
 .status-close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    height: auto;
-    background: transparent;
-    text-align: center;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    line-height: 1;
-    color: var(--status-text);
-    cursor: pointer;
-    padding: 4px 10px;
-    border-radius: 4px;
-    box-shadow: none;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	height: auto;
+	background: transparent;
+	text-align: center;
+	border: none;
+	outline: none;
+	font-size: 1em;
+	line-height: 1;
+	color: var(--status-text);
+	cursor: pointer;
+	padding: 4px 10px;
+	border-radius: 4px;
+	box-shadow: none;
 }
 
 .status-close:hover {
-    background: rgba(0, 0, 0, 0.07);
+	background: rgba(0, 0, 0, 0.07);
 }
 
-/* Inner content & text (unchanged) */
+/* Inner content */
 .status-inner {
-    padding: 0 10px 0 10px;
-    text-align: center;
+	padding: 0 10px 0 10px;
+	text-align: center;
+	/* centers the message and checkbox */
 }
 
 .status-text {
-    margin: 20px 0 20px 0;
-    font-size: 0.94em;
-    line-height: 1.55;
-    text-align: center;
+	margin: 20px 0 20px 0;
+	font-size: 0.94em;
+	line-height: 1.55;
+	text-align: center;
+	/* explicit center for the welcome text */
 }
 
-/* Checkbox (unchanged) */
+.status-message.hidden {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+/* Checkbox row */
 .status-optout {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    font-size: 0.83em;
-    color: var(--status-text);
-    opacity: 0.82;
-    cursor: pointer;
-    user-select: none;
-    margin: 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 9px;
+	font-size: 0.83em;
+	color: var(--status-text);
+	opacity: 0.82;
+	cursor: pointer;
+	user-select: none;
+	margin: 0 auto;
 }
 
+/* Nice visible checkbox */
 .status-optout input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 19px;
-    height: 19px;
-    border: 2px solid var(--status-text);
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-    flex-shrink: 0;
-    margin: 0;
-    position: relative;
+	appearance: none;
+	-webkit-appearance: none;
+	width: 19px;
+	height: 19px;
+	border: 2px solid var(--status-text);
+	border-radius: 4px;
+	background: transparent;
+	cursor: pointer;
+	flex-shrink: 0;
+	margin: 0;
+	position: relative;
 }
 
 .status-optout input[type="checkbox"]:checked {
-    background: var(--status-text);
-    border-color: var(--status-text);
+	background: var(--status-text);
+	border-color: var(--status-text);
 }
 
 .status-optout input[type="checkbox"]:checked::after {
-    content: "✓";
-    position: absolute;
-    color: #ffffff;
-    font-size: 13.5px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -52%);
-    line-height: 1;
+	content: "✓";
+	position: absolute;
+	color: #ffffff;
+	font-size: 13.5px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -52%);
+	line-height: 1;
 }
 
 /* Small Page Sub-Header/Context */
@@ -5054,6 +5040,37 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 		0 1px 2px color-mix(in srgb, var(--text-color) 20%, transparent);
 }
 
+/* Small Page Sub-Header/Context ANCHOR/JUMP STYLE*/
+.link-smaller-heading-bw {
+	color: var(--text-color);
+	background: var(--pill-bg);
+	border: 1px solid var(--pill-border);
+	font-weight: normal;
+	position: relative;
+	display: block;
+	width: 100%;
+	padding: 4px 12px;
+	border-radius: 20px;
+	text-align: center;
+	text-transform: none;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	box-shadow:
+		0 2px 6px color-mix(in srgb, var(--text-color) 12%, transparent),
+		0 1px 2px color-mix(in srgb, var(--text-color) 20%, transparent);
+}
+
+/* Make the <a> behave like plain text inside the pill */
+.link-smaller-heading-bw .jump-link {
+	font-size: 0.3em;
+	text-decoration: none;
+	color: inherit;
+	display: block;
+	/* ensures full‑pill clickability */
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
 
 .header-tight {
 	margin-top: 0em;
@@ -6427,194 +6444,205 @@ section.youtube-iframe {
 
 /* ====================== X POST CONTAINER ====================== */
 .x-post-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    max-width: 1200px;
-    margin: 1rem auto 0 auto;     /* Decent bottom margin on desktop */
-    padding: 0rem 2rem 4rem 2rem;
-    box-sizing: border-box;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	max-width: 1200px;
+	margin: 1rem auto 0 auto;
+	/* Decent bottom margin on desktop */
+	padding: 0rem 2rem 4rem 2rem;
+	box-sizing: border-box;
 }
 
 /* Mobile adjustments for .x-post-container */
 @media (max-width: 980px) {
-    .x-post-container {
-        padding: 2rem 0.5rem 2rem 0.5rem;
-    }
+	.x-post-container {
+		padding: 2rem 0.5rem 2rem 0.5rem;
+	}
 }
 
 @media (max-width: 768px) {
-    .x-post-container {
-        margin: 0rem 1rem 0 1rem;
-        padding: 2rem 0.5rem 4rem 0.5rem;
-    }
+	.x-post-container {
+		margin: 0rem 1rem 0 1rem;
+		padding: 2rem 0.5rem 4rem 0.5rem;
+	}
 }
 
 /* Individual X post styling */
 .x-post.video.main {
-    flex: 1;                    /* Allows side-by-side on desktop */
-    min-width: 300px;           /* Good minimum for side-by-side */
-    max-width: 550px;           /* Typical X embed width */
-    height: auto;
-    max-height: 600px;
-    border: 2px solid #a200ff;
-    border-radius: 5px;
-    overflow: auto;             /* Clean scrolling - prevents double scrollbar */
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    box-sizing: border-box;
+	flex: 1;
+	/* Allows side-by-side on desktop */
+	min-width: 300px;
+	/* Good minimum for side-by-side */
+	max-width: 550px;
+	/* Typical X embed width */
+	height: auto;
+	max-height: 600px;
+	border: 2px solid #a200ff;
+	border-radius: 5px;
+	overflow: auto;
+	/* Clean scrolling - prevents double scrollbar */
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	box-sizing: border-box;
 }
 
 /* Style the Twitter/X embed inside */
 .x-post.video.main .twitter-tweet {
-    width: 100%;
-    margin: 0;
-    padding: 10px;
-    box-sizing: border-box;
-    min-height: 0;
+	width: 100%;
+	margin: 0;
+	padding: 10px;
+	box-sizing: border-box;
+	min-height: 0;
 }
 
 /* ====================== X POST DISCOVER CONTAINER ====================== */
 .x-post-discover-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    max-width: 1200px;
-margin-bottom: 3rem;
-    box-sizing: border-box;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+	max-width: 1200px;
+	margin-bottom: 3rem;
+	box-sizing: border-box;
 }
 
 /* Mobile adjustments */
 @media (max-width: 980px) {
-    .x-post-discover-container {
-        padding: 2rem 0.5rem 2rem 0.5rem;
-    }
+	.x-post-discover-container {
+		padding: 2rem 0.5rem 2rem 0.5rem;
+	}
 }
 
 @media (max-width: 768px) {
-    .x-post-discover-container {
-        padding: 2rem 0.5rem 1rem 0.5rem;
-    }
+	.x-post-discover-container {
+		padding: 2rem 0.5rem 1rem 0.5rem;
+	}
 }
 
 /* Individual X post styling */
 .x-post-discover.video.main {
-    flex: 1;
-    min-width: 300px;
-    max-width: 550px;
-    height: auto;
-    max-height: 600px;
-    border: 2px solid #a200ff;
-    border-radius: 5px;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    box-sizing: border-box;
+	flex: 1;
+	min-width: 300px;
+	max-width: 550px;
+	height: auto;
+	max-height: 600px;
+	border: 2px solid #a200ff;
+	border-radius: 5px;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	box-sizing: border-box;
 }
 
 /* Style the Twitter/X embed inside */
 .x-post-discover.video.main .twitter-tweet {
-    width: 100%;
-    margin: 0;
-    padding: 10px;
-    box-sizing: border-box;
-    min-height: 0;
+	width: 100%;
+	margin: 0;
+	padding: 10px;
+	box-sizing: border-box;
+	min-height: 0;
 }
 
 /* ====================== PR / IFRAME POST ====================== */
 .PR-post.video.main {
-    flex: 1;
-    min-width: 340px;           /* Meets Twitter min-width requirement */
-    max-width: 780px;
-    height: 380px;              /* Desktop height */
+	flex: 1;
+	min-width: 340px;
+	/* Meets Twitter min-width requirement */
+	max-width: 780px;
+	height: 380px;
+	/* Desktop height */
 	margin-bottom: 3rem;
-    border: 2px solid #a200ff;
-    border-radius: 5px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background-color: #fff !important;
-    box-sizing: border-box;
+	border: 2px solid #a200ff;
+	border-radius: 5px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff !important;
+	box-sizing: border-box;
 }
 
 /* Wrapper for iframe */
 .iframe-wrapper {
-    width: 100%;
-    min-width: 300px;
-    height: 700px; /* must be > 700 - satisfies PRLog's fallback */
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    padding: 10px;
-    box-sizing: border-box;
-    background-color: #fff !important;
+	width: 100%;
+	min-width: 300px;
+	height: 700px;
+	/* must be > 700 - satisfies PRLog's fallback */
+	overflow-y: auto;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+	padding: 10px;
+	box-sizing: border-box;
+	background-color: #fff !important;
 }
 
 /* Iframe embed */
 .iframe-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    border: none;
-    box-sizing: border-box;
-    background-color: #fff !important;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-sizing: border-box;
+	background-color: #fff !important;
 }
 
 /* ====================== MOBILE RESPONSIVENESS ====================== */
 @media (max-width: 768px) {
 
-    .PR-container {
-        flex-direction: column;
-    }
+	.PR-container {
+		flex-direction: column;
+	}
 
-    /* PR posts on mobile */
-    .PR-post.video.main {
-        flex: none;
-        width: 100%;
+	/* PR posts on mobile */
+	.PR-post.video.main {
+		flex: none;
+		width: 100%;
 		margin-bottom: 4rem;
-        max-width: 100%;
-        min-width: 0;
-        /* Height must ensure width + height > 700 */
-        height: 720px;          /* Safe for 320px wide screens */
-    }
+		max-width: 100%;
+		min-width: 0;
+		/* Height must ensure width + height > 700 */
+		height: 720px;
+		/* Safe for 320px wide screens */
+	}
 
-    .iframe-wrapper {
-        width: 100%;
-        height: 100%;
-        padding: 10px;
-    }
+	.iframe-wrapper {
+		width: 100%;
+		height: 100%;
+		padding: 10px;
+	}
 
-    .iframe-wrapper iframe {
-        width: 100%;
-        height: 100%;
-    }
+	.iframe-wrapper iframe {
+		width: 100%;
+		height: 100%;
+	}
 }
 
 /* Extra small screens */
 @media (max-width: 480px) {
 
-    .PR-post.video.main {
-        height: 740px;          /* Extra safety for ultra-small devices */
-    }
+	.PR-post.video.main {
+		height: 740px;
+		/* Extra safety for ultra-small devices */
+	}
 
-    .iframe-wrapper {
-        height: 100%;
-    }
+	.iframe-wrapper {
+		height: 100%;
+	}
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-    .PR-post.video.main,
-    .iframe-wrapper,
-    .iframe-wrapper iframe {
-        background-color: #fff !important;
-        color: #000 !important;
-    }
+
+	.PR-post.video.main,
+	.iframe-wrapper,
+	.iframe-wrapper iframe {
+		background-color: #fff !important;
+		color: #000 !important;
+	}
 }
 
 /* Container for TikTok embed */

@@ -82,7 +82,6 @@
 
 	<!-- JavaScript Libraries -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
@@ -196,9 +195,9 @@
 
 					<!-- Status Message -->
 					<div id="statusMessage" class="status-message">
-						<button id="statusClose" class="status-close">×</button>
-
 						<div class="status-inner">
+							<button id="statusClose" class="status-close">×</button>
+
 							<p class="status-text">
 								Welcome to our page! We're testing some new features. Take some time to look around.
 								We encourage you to check out our
@@ -1068,6 +1067,9 @@
 		<!-- Your custom logic must be LAST -->
 		<script src="/assets/js/main.js"></script>
 		<script src="/assets/js/ofid-main.js"></script>
+
+		<!-- Third-party scripts at the very end with proper loading -->
+		<script async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 </body>
 
