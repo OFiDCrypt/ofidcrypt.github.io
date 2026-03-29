@@ -383,7 +383,7 @@ body.dark-mode {
 	--nav-toggle-text-color: #212931;
 	--nav-toggle-hover-text-color: #663399;
 	--nav-toggle-alt-hover-bg-color: #212931;
-	--nav-panel-bg-color: #212931;
+	--nav-panel-bg-color: #0f172a;
 	--nav-panel-text-color: #ffffff;
 	--nav-panel-link-color: #ffffff;
 	--nav-panel-link-border-color: rgba(255, 255, 255, 0.2);
@@ -5691,7 +5691,7 @@ body.dark-mode #darkModeToggle.dark i::before {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background: #0f172a;
+	background: var(--nav-panel-bg-color);
 	border-top: 1px solid #334155;
 	display: flex;
 	justify-content: space-around;
@@ -5702,7 +5702,7 @@ body.dark-mode #darkModeToggle.dark i::before {
 }
 
 .nav-item {
-	color: #94a3b8;
+	color: var(--nav-panel-link-color);
 	font-size: 0.8em;
 	text-align: center;
 	cursor: pointer;

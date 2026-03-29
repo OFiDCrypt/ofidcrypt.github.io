@@ -12,13 +12,22 @@ const observer = new MutationObserver(() => {
         return;
     }
 
-    // FIX: If page loaded with an anchor, show banner immediately
+    // Helper to safely animate after first paint
+    const safeShow = () => {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                statusMessage.classList.add("show");
+            });
+        });
+    };
+
+    // If page loaded with an anchor, show immediately (but still safely)
     if (window.location.hash) {
-        statusMessage.classList.add("show");
+        safeShow();
     } else {
         // Normal behavior: delayed reveal
         setTimeout(() => {
-            statusMessage.classList.add("show");
+            safeShow();
         }, 800);
     }
 
