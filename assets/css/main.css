@@ -4639,7 +4639,7 @@ body.is-preload #wrapper.fade-in:before {
 	/* Adjust as needed */
 	color: #ffffff;
 	/* Customize color as needed */
-	margin: 20px 0;
+	margin: 0 0;
 	/* Adjust margins as needed */
 }
 
@@ -4648,7 +4648,7 @@ body.is-preload #wrapper.fade-in:before {
 	font-size: 2em;
 	/* Adjust the size as needed */
 	font-weight: bold;
-	margin: 20px 0;
+	margin: 0 0;
 	/* Adjust margins as needed */
 	color: #2C3E50;
 	/* Customize color as needed */
@@ -4781,14 +4781,14 @@ body.is-preload #wrapper.fade-in:before {
 }
 
 .top-no-style-link img {
-	width: 50%;
+	width: 75%;
 	margin: 0 5%;
 }
 
 /* Desktop breakpoint override */
 @media screen and (max-width: 600px) {
 	.top-no-style-link img {
-		width: 25%;
+		width: 100%;
 		margin: 0;
 		/* optional: remove side spacing if you want full bleed */
 	}
