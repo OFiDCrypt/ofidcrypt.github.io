@@ -4484,7 +4484,7 @@ body {
 #wrapper>.bg.fixed {
 	position: fixed;
 	width: 100vw;
-	height: 100vh;
+	height: 100dvh;
 }
 
 #wrapper.fade-in:before {
@@ -4547,7 +4547,7 @@ body.is-preload #wrapper.fade-in:before {
 	cursor: default;
 	text-align: center;
 	z-index: 1;
-	min-height: 100vh;
+	min-height: 100dvh;
 }
 
 #intro input,
@@ -4857,7 +4857,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 	#intro {
 		padding: 4rem 4rem 2rem 4rem;
-		min-height: 90vh;
+		min-height: 90dvh;
 	}
 
 	#intro p br {
@@ -4874,7 +4874,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 	#intro {
 		padding: 3rem 2rem 1rem 2rem;
-		min-height: 80vh;
+		min-height: 80dvh;
 	}
 
 	#intro h1 {
@@ -8840,7 +8840,6 @@ footer {
 	padding: 10px;
 	/* Add padding for a central fit */
 }
-
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {

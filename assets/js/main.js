@@ -147,15 +147,19 @@
     // Scrolly.
     $('.scrolly').scrolly();
 
-    // Background.
-    $wrapper._parallax(0.925);
+    // Background (disable parallax on mobile to fix iOS bottom-nav jump)
+    if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        $wrapper._parallax(0.925);
+    } else {
+        $wrapper._parallax(0); // disables transforms entirely on mobile
+    }
 
     // Nav Panel Toggle
     $(document).ready(function () {
         $('#navPanelTrigger').on('click', function (e) {
             e.preventDefault();
-            e.stopPropagation();          // ← Add this
-            e.stopImmediatePropagation(); // ← Add this too (stronger)
+            e.stopPropagation();
+            e.stopImmediatePropagation();
             $body.toggleClass('is-navPanel-visible');
         });
     });
@@ -167,6 +171,7 @@
         '<a href="#navPanel" class="close"></a>' +
         '</div>'
     )
+
         .appendTo($body)
         .panel({
             delay: 500,
