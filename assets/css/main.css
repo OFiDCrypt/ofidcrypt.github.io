@@ -4457,153 +4457,118 @@ body {
 /* Wrapper */
 
 #wrapper {
-    -moz-transition: opacity 0.5s ease;
-    -webkit-transition: opacity 0.5s ease;
-    -ms-transition: opacity 0.5s ease;
-    transition: opacity 0.5s ease;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
+	-moz-transition: opacity 0.5s ease;
+	-webkit-transition: opacity 0.5s ease;
+	-ms-transition: opacity 0.5s ease;
+	transition: opacity 0.5s ease;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
 }
 
-/* FIXED FULL‑SCREEN WALLPAPER (covers entire page) */
-#wrapper > .bg {
-    position: fixed;          /* FIX: stays behind entire page */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    background-color: var(--bg-light-color);
-    background-image: url("../images/overlay.png"),
-                      linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-                      url("../images/bg.jpg");
-    background-size: cover;       /* FIX: no zooming */
-    background-position: center;  /* FIX: centered wallpaper */
-    background-repeat: repeat, no-repeat, no-repeat;
-    background-attachment: scroll, scroll, scroll;
-    z-index: -1;
+#wrapper>.bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--bg-light-color);
+	background-image: url("../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../images/bg.jpg");
+	background-size: auto, auto, 100% auto;
+	background-position: center, center, top center;
+	background-repeat: repeat, no-repeat, no-repeat;
+	background-attachment: scroll, scroll, scroll;
+	z-index: -1;
 }
 
-/* Desktop parallax version (unchanged) */
-#wrapper > .bg.fixed {
-    position: fixed;
-    width: 100vw;
-    height: 100dvh;
+#wrapper>.bg.fixed {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
 }
 
 #wrapper.fade-in:before {
-    pointer-events: none;
-    -moz-transition: opacity 1s ease-in-out;
-    -webkit-transition: opacity 1s ease-in-out;
-    -ms-transition: opacity 1s ease-in-out;
-    transition: opacity 1s ease-in-out;
-    -moz-transition-delay: 0.75s;
-    -webkit-transition-delay: 0.75s;
-    -ms-transition-delay: 0.75s;
-    transition-delay: 0.75s;
-    background: #1e252d;
-    content: '';
-    display: block;
-    height: 100%;
-    left: 0;
-    opacity: 0;
-    position: fixed;
-    top: 0;
-    width: 100%;
+	pointer-events: none;
+	-moz-transition: opacity 1s ease-in-out;
+	-webkit-transition: opacity 1s ease-in-out;
+	-ms-transition: opacity 1s ease-in-out;
+	transition: opacity 1s ease-in-out;
+	-moz-transition-delay: 0.75s;
+	-webkit-transition-delay: 0.75s;
+	-ms-transition-delay: 0.75s;
+	transition-delay: 0.75s;
+	background: #1e252d;
+	content: '';
+	display: block;
+	height: 100%;
+	left: 0;
+	opacity: 0;
+	position: fixed;
+	top: 0;
+	width: 100%;
 }
 
 body.is-preload #wrapper.fade-in:before {
-    opacity: 1;
+	opacity: 1;
 }
 
-/* -----------------------------------------------------------
-   iOS WebKit + Chrome iOS Viewport Stability Patch
------------------------------------------------------------ */
-@supports (-webkit-touch-callout: none) {
-
-    html, body {
-        overflow-y: auto !important;
-        height: auto !important;
-    }
-
-    #wrapper {
-        overflow: visible !important;
-        height: auto !important;
-    }
-
-    /* iOS override for fixed background */
-    #wrapper > .bg.fixed {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100dvh !important;
-        background-size: cover !important;
-        background-position: center !important;
-    }
-
-    :root {
-        --ios-vh: 1dvh;
-    }
-
-    @media screen and (max-width: 980px) {
-        #intro {
-            min-height: calc(var(--ios-vh) * 100) !important;
-        }
-    }
+@media screen and (orientation: portrait) {
+	#wrapper>.bg {
+		background-size: auto 175%;
+	}
 }
 
 /* Intro */
 
 #intro {
-    color: #ffffff;
-    padding: 8rem 4rem 6rem 4rem;
-    -moz-align-items: center;
-    -webkit-align-items: center;
-    -ms-align-items: center;
-    align-items: center;
-    display: -moz-flex;
-    display: -webkit-flex;
-    display: -ms-flex;
-    display: flex;
-    -moz-flex-direction: column;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -moz-justify-content: -moz-flex-end;
-    -webkit-justify-content: -webkit-flex-end;
-    -ms-justify-content: -ms-flex-end;
-    justify-content: flex-end;
-    -moz-transition: opacity 1s ease, -moz-transform 1s ease;
-    -webkit-transition: opacity 1s ease, -webkit-transform 1s ease;
-    -ms-transition: opacity 1s ease, -ms-transform 1s ease;
-    transition: opacity 1s ease, transform 1s ease;
-    position: relative;
-    cursor: default;
-    text-align: center;
-    z-index: 1;
-    min-height: 100dvh;
+	color: #ffffff;
+	padding: 8rem 4rem 6rem 4rem;
+	-moz-align-items: center;
+	-webkit-align-items: center;
+	-ms-align-items: center;
+	align-items: center;
+	display: -moz-flex;
+	display: -webkit-flex;
+	display: -ms-flex;
+	display: flex;
+	-moz-flex-direction: column;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-moz-justify-content: -moz-flex-end;
+	-webkit-justify-content: -webkit-flex-end;
+	-ms-justify-content: -ms-flex-end;
+	justify-content: flex-end;
+	-moz-transition: opacity 1s ease, -moz-transform 1s ease;
+	-webkit-transition: opacity 1s ease, -webkit-transform 1s ease;
+	-ms-transition: opacity 1s ease, -ms-transform 1s ease;
+	transition: opacity 1s ease, transform 1s ease;
+	position: relative;
+	cursor: default;
+	text-align: center;
+	z-index: 1;
+	min-height: 100vh;
 }
 
 #intro input,
 #intro select,
 #intro textarea {
-    color: #ffffff;
+	color: #ffffff;
 }
 
 #intro a {
-    color: #ffffff;
-    border-bottom-color: rgba(255, 255, 255, 0.5);
+	color: #ffffff;
+	border-bottom-color: rgba(255, 255, 255, 0.5);
 }
 
 #intro a:hover {
-    border-bottom-color: transparent;
-    color: var(--intro-link-hover-color) !important;
+	border-bottom-color: transparent;
+	color: var(--intro-link-hover-color) !important;
 }
 
 #intro strong,
 #intro b {
-    color: var(--intro-strong-color);
+	color: var(--intro-strong-color);
 }
 
 #intro h1,
@@ -4612,20 +4577,21 @@ body.is-preload #wrapper.fade-in:before {
 #intro h4,
 #intro h5,
 #intro h6 {
-    color: #ffffff;
+	color: #ffffff;
+	/* Assuming you want white headers in both modes */
 }
 
 #intro blockquote {
-    border-left-color: var(--intro-blockquote-border-color);
+	border-left-color: var(--intro-blockquote-border-color);
 }
 
 #intro code {
-    background: var(--intro-code-bg-color);
-    border-color: var(--intro-code-border-color);
+	background: var(--intro-code-bg-color);
+	border-color: var(--intro-code-border-color);
 }
 
 #intro hr {
-    border-bottom-color: var(--intro-hr-color);
+	border-bottom-color: var(--intro-hr-color);
 }
 
 #intro input[type="submit"],
@@ -4633,9 +4599,10 @@ body.is-preload #wrapper.fade-in:before {
 #intro input[type="button"],
 #intro button,
 #intro .button {
-    background-color: transparent;
-    box-shadow: inset 0 0 0 2px var(--intro-button-border-color);
-    color: #ffffff !important;
+	background-color: transparent;
+	box-shadow: inset 0 0 0 2px var(--intro-button-border-color);
+	color: #ffffff !important;
+	/* color stays the same in both themes */
 }
 
 #intro input[type="submit"]:hover,
@@ -4643,8 +4610,8 @@ body.is-preload #wrapper.fade-in:before {
 #intro input[type="button"]:hover,
 #intro button:hover,
 #intro .button:hover {
-    box-shadow: inset 0 0 0 2px var(--intro-button-hover-border-color);
-    color: var(--intro-button-hover-text-color) !important;
+	box-shadow: inset 0 0 0 2px var(--intro-button-hover-border-color);
+	color: var(--intro-button-hover-text-color) !important;
 }
 
 #intro input[type="submit"].primary,
@@ -4652,9 +4619,9 @@ body.is-preload #wrapper.fade-in:before {
 #intro input[type="button"].primary,
 #intro button.primary,
 #intro .button.primary {
-    background-color: var(--intro-button-primary-bg-color);
-    box-shadow: none;
-    color: var(--intro-button-primary-text-color) !important;
+	background-color: var(--intro-button-primary-bg-color);
+	box-shadow: none;
+	color: var(--intro-button-primary-text-color) !important;
 }
 
 #intro input[type="submit"].primary:hover,
@@ -4662,7 +4629,7 @@ body.is-preload #wrapper.fade-in:before {
 #intro input[type="button"].primary:hover,
 #intro button.primary:hover,
 #intro .button.primary:hover {
-    background-color: var(--intro-button-primary-hover-bg-color);
+	background-color: var(--intro-button-primary-hover-bg-color);
 }
 
 /* General heading styles */
@@ -4890,7 +4857,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 	#intro {
 		padding: 4rem 4rem 2rem 4rem;
-		min-height: 90dvh;
+		min-height: 90vh;
 	}
 
 	#intro p br {
@@ -4907,7 +4874,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 	#intro {
 		padding: 3rem 2rem 1rem 2rem;
-		min-height: 80dvh;
+		min-height: 80vh;
 	}
 
 	#intro h1 {
@@ -5737,25 +5704,18 @@ body.dark-mode #darkModeToggle.dark i::before {
 
 /* Bottom Nav (app-like) */
 .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--nav-panel-bg-color);
-    border-top: 1px solid #334155;
-    display: flex;
-    justify-content: space-around;
-    padding: 0.5em 0;
-    padding-bottom: 0; /* FIXED — removed env() */
-    z-index: 100;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
-}
-
-/* iOS-only safe-area padding */
-@supports (-webkit-touch-callout: none) {
-    .bottom-nav {
-        padding-bottom: env(safe-area-inset-bottom);
-    }
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: var(--nav-panel-bg-color);
+	border-top: 1px solid #334155;
+	display: flex;
+	justify-content: space-around;
+	padding: 0.5em 0;
+	padding-bottom: max(env(safe-area-inset-bottom), 0px);
+	z-index: 100;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .nav-item {
@@ -8880,6 +8840,7 @@ footer {
 	padding: 10px;
 	/* Add padding for a central fit */
 }
+
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
