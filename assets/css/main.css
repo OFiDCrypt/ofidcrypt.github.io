@@ -4466,18 +4466,19 @@ body {
     overflow: hidden;
 }
 
+/* FIXED FULL‑SCREEN WALLPAPER (covers entire page) */
 #wrapper > .bg {
-    position: absolute;
+    position: fixed;          /* FIX: stays behind entire page */
     top: 0;
     left: 0;
-    width: 100vw;          /* viewport width */
-    height: 100dvh;        /* viewport height */
+    width: 100vw;
+    height: 100dvh;
     background-color: var(--bg-light-color);
     background-image: url("../images/overlay.png"),
                       linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
                       url("../images/bg.jpg");
-    background-size: cover;            /* FIX: no zooming */
-    background-position: center;       /* FIX: centered wallpaper */
+    background-size: cover;       /* FIX: no zooming */
+    background-position: center;  /* FIX: centered wallpaper */
     background-repeat: repeat, no-repeat, no-repeat;
     background-attachment: scroll, scroll, scroll;
     z-index: -1;
