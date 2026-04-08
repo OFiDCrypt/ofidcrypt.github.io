@@ -69,7 +69,6 @@ observer.observe(document.documentElement, {
     subtree: true
 });
 
-
 // GLOBAL: Ad-Scroll Container Carousel with Touch Gesture Handling
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.ad-scroll-container');
@@ -194,25 +193,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     setInitialPosition();
     startAutoScroll();
-});
-
-// === iOS Chrome/Safari Visual Viewport Fix for Bottom Nav ===
-document.addEventListener("DOMContentLoaded", () => {
-    const nav = document.querySelector(".bottom-nav");
-    if (!nav || !window.visualViewport) return;
-
-    function updateNavPosition() {
-        // Difference between layout viewport and visual viewport
-        const offset = window.innerHeight - window.visualViewport.height;
-
-        // Prevent negative values (iOS bounce)
-        const safeOffset = Math.max(0, offset);
-
-        nav.style.bottom = `${safeOffset}px`;
-    }
-
-    window.visualViewport.addEventListener("resize", updateNavPosition);
-    window.visualViewport.addEventListener("scroll", updateNavPosition);
-
-    updateNavPosition();
 });
