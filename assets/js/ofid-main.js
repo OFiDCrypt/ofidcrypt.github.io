@@ -69,6 +69,7 @@ observer.observe(document.documentElement, {
     subtree: true
 });
 
+
 // GLOBAL: Ad-Scroll Container Carousel with Touch Gesture Handling
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.ad-scroll-container');
@@ -193,4 +194,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     setInitialPosition();
     startAutoScroll();
+});
+
+
+// === Chrome iOS Forced Visual Viewport Sync for Bottom Nav ===
+document.addEventListener("DOMContentLoaded", () => {
+    const nav = document.querySelector(".bottom-nav");
+
+    // Only run on Chrome iOS
+    if (!nav || !navigator.userAgent.includes("CriOS") || !window.visualViewport) return;
+
+    function sync() {
+        const offset = window.innerHeight - window.visualViewport.height;
+        nav.style.bottom = Math.max(0, offset) + "px";
+    }
+
+    // Chrome iOS often switches viewport modes AFTER first paint
+    setTimeout(sync, 50);
+    setTimeout(sync, 250);
+    setTimeout(sync, 500);
+
+    window.visualViewport.addEventListener("resize", sync);
+    window.visualViewport.addEventListener("scroll", sync);
+    window.addEventListener("scroll", sync);
+    window.addEventListener("orientationchange", () => setTimeout(sync, 300));
+
+    sync();
 });
