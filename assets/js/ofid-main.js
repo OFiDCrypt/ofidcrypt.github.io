@@ -28,7 +28,7 @@ const observer = new MutationObserver(() => {
     if (window.location.hash) {
         console.log("Anchor link detected — showing status immediately");
         showStatus();
-    } 
+    }
     // Normal page load — delayed show
     else {
         setTimeout(() => {
@@ -69,6 +69,97 @@ observer.observe(document.documentElement, {
     subtree: true
 });
 
+// GLOBAL: Dark Mode Toggle (Desktop + Mobile) with Centralized Logic and Custom Event
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Central dark mode initialized');
+
+    // Core toggle function (shared)
+    function toggleDarkMode() {
+        const isDark = !document.body.classList.contains('dark-mode');
+        document.body.classList.toggle('dark-mode', isDark);
+        localStorage.setItem('dark-mode', isDark);
+
+        updateAllIcons(isDark);
+
+        // Trigger a custom event so page-specific code can react
+        document.dispatchEvent(new CustomEvent('darkModeToggled', {
+            detail: { isDark }
+        }));
+
+        console.log(`Mode switched to: ${isDark ? 'dark' : 'light'}`);
+    }
+
+    // Shared icon updater
+    function updateAllIcons(isDark) {
+        // Desktop custom site icon
+        const desktopImg = document.querySelector('ul.icons li a img.custom-site-icon');
+        if (desktopImg) {
+            desktopImg.parentElement.classList.toggle('dark', isDark);
+        }
+
+        // Mobile sidebar toggles
+        document.querySelectorAll('#navPanel .dark-mode-toggle i').forEach(i => {
+            i.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+        });
+    }
+
+    // Initial state
+    const savedDark = localStorage.getItem('dark-mode') === 'true';
+    if (savedDark) {
+        document.body.classList.add('dark-mode');
+    }
+    updateAllIcons(savedDark);
+
+    // Desktop toggle (top right icon)
+    const desktopLink = document.querySelector('ul.icons li a[href="#"]');
+    if (desktopLink) {
+        desktopLink.addEventListener('click', e => {
+            e.preventDefault();
+            toggleDarkMode();
+        });
+    }
+
+    // Mobile toggle – dynamically add to sidebar when navPanel appears
+    const panelObserver = new MutationObserver(() => {
+        const navPanelInner = document.querySelector('#navPanel nav');
+        if (navPanelInner && !navPanelInner.querySelector('.dark-mode-toggle')) {
+            const toggleLi = document.createElement('li');
+            toggleLi.className = 'dark-mode-item';
+
+            const toggleLink = document.createElement('a');
+            toggleLink.href = '#';
+            toggleLink.className = 'icon dark-mode-toggle';
+
+            const icon = document.createElement('i');
+            icon.className = savedDark ? 'fas fa-moon' : 'fas fa-sun';
+            toggleLink.appendChild(icon);
+
+            toggleLi.appendChild(toggleLink);
+            navPanelInner.prepend(toggleLi);
+
+            toggleLink.addEventListener('click', e => {
+                e.preventDefault();
+                toggleDarkMode();
+            });
+
+            toggleLink.addEventListener('touchstart', e => {
+                e.preventDefault();
+                toggleDarkMode();
+            });
+
+            console.log('Mobile dark mode toggle added to sidebar');
+            panelObserver.disconnect();
+        }
+    });
+
+    panelObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+
+    // Expose toggle function globally so 404.html can call it if needed
+    window.toggleDarkMode = toggleDarkMode;
+});
 
 // GLOBAL: Ad-Scroll Container Carousel with Touch Gesture Handling
 document.addEventListener('DOMContentLoaded', () => {
@@ -194,30 +285,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize
     setInitialPosition();
     startAutoScroll();
-});
-
-
-// === Chrome iOS Forced Visual Viewport Sync for Bottom Nav ===
-document.addEventListener("DOMContentLoaded", () => {
-    const nav = document.querySelector(".bottom-nav");
-
-    // Only run on Chrome iOS
-    if (!nav || !navigator.userAgent.includes("CriOS") || !window.visualViewport) return;
-
-    function sync() {
-        const offset = window.innerHeight - window.visualViewport.height;
-        nav.style.bottom = Math.max(0, offset) + "px";
-    }
-
-    // Chrome iOS often switches viewport modes AFTER first paint
-    setTimeout(sync, 50);
-    setTimeout(sync, 250);
-    setTimeout(sync, 500);
-
-    window.visualViewport.addEventListener("resize", sync);
-    window.visualViewport.addEventListener("scroll", sync);
-    window.addEventListener("scroll", sync);
-    window.addEventListener("orientationchange", () => setTimeout(sync, 300));
-
-    sync();
 });
