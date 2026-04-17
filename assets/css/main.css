@@ -4969,6 +4969,74 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 	margin-bottom: 0 !important;
 }
 
+/* Show/Hide Page Status Message — GREEN VERSION */
+.status-message-green {
+    position: relative;
+    width: 100%;
+    margin-bottom: 35px;
+    padding: 5px 24px 5px 18px;
+    border-radius: 12px;
+
+    /* Green theme */
+    background: var(--status-bg-green, rgba(0, 128, 0, 0.12));
+    border: 1px solid var(--status-border-green, rgba(0, 128, 0, 0.35));
+    color: var(--status-text-green, #0f6d0f);
+
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.3s ease;
+}
+
+.status-message-green.show {
+    opacity: 1;
+    max-height: 320px;
+    margin-top: 14px;
+}
+
+/* Close button - top right, own space, no border */
+.status-message-green .status-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: auto;
+    background: transparent;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    line-height: 1;
+    color: var(--status-text-green);
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.status-message-green .status-close:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+/* Inner content */
+.status-message-green .status-inner {
+    padding: 0 10px 0 10px;
+    text-align: center;
+}
+
+.status-message-green .status-text {
+    margin: 20px 0 20px 0;
+    font-size: 0.94em;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.status-message-green.hidden {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
 /* Checkbox row */
 .status-optout {
 	display: inline-flex;

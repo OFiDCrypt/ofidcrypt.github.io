@@ -1,64 +1,69 @@
-// GLOBAL: Status Message Logic (Massively-safe + Anchor Link Fix)
+// GLOBAL: Status Message Logic (multi-message safe)
 const observer = new MutationObserver(() => {
-    const statusMessage = document.getElementById("statusMessage");
-    const closeBtn = document.getElementById("statusClose");
-    const optOutCheckbox = document.getElementById("statusOptOut");
+    const statusMessages = document.querySelectorAll(".status-message, .status-message-green");
 
-    if (!statusMessage || !closeBtn || !optOutCheckbox) return;
+    if (!statusMessages.length) return;
 
     observer.disconnect();
 
-    console.log("Status elements found — initializing…");
+    console.log("Status messages found — initializing…");
 
-    // If user opted out, keep hidden
-    if (localStorage.getItem("hideStatusMessage") === "true") {
-        console.log("User opted out — keeping hidden");
-        statusMessage.classList.add("hidden");
-        return;
-    }
+    statusMessages.forEach((msg) => {
+        const closeBtn = msg.querySelector(".status-close");
+        const optOutCheckbox = msg.querySelector("input[type='checkbox']");
 
-    // === Smart Show Logic ===
-    const showStatus = () => {
-        statusMessage.classList.remove("hidden");
-        statusMessage.classList.add("show");
-        console.log("Status message shown");
-    };
+        // Only require close button — checkbox is optional
+        if (!closeBtn) return;
 
-    // If page was loaded via anchor link (#something), show immediately
-    if (window.location.hash) {
-        console.log("Anchor link detected — showing status immediately");
-        showStatus();
-    }
-    // Normal page load — delayed show
-    else {
-        setTimeout(() => {
-            console.log("Normal delayed show");
-            showStatus();
-        }, 750);   // 750ms is a good compromise
-    }
+        const hasCheckbox = !!optOutCheckbox;
 
-    // Smooth hide on close
-    closeBtn.addEventListener("click", () => {
-        statusMessage.classList.remove("show");
+        // Unique key per message (so each can be opted out independently)
+        const storageKey = "hideStatusMessage_" + msg.classList[0];
 
-        const onTransitionEnd = () => {
-            statusMessage.classList.add("hidden");
-            statusMessage.removeEventListener("transitionend", onTransitionEnd);
+        // If user opted out, keep hidden
+        if (localStorage.getItem(storageKey) === "true") {
+            msg.classList.add("hidden");
+            return;
+        }
+
+        // === Smart Show Logic ===
+        const showStatus = () => {
+            msg.classList.remove("hidden");
+            msg.classList.add("show");
         };
 
-        statusMessage.addEventListener("transitionend", onTransitionEnd);
-
-        if (optOutCheckbox.checked) {
-            localStorage.setItem("hideStatusMessage", "true");
-        }
-    });
-
-    // Checkbox handler
-    optOutCheckbox.addEventListener("change", (e) => {
-        if (e.target.checked) {
-            localStorage.setItem("hideStatusMessage", "true");
+        if (window.location.hash) {
+            showStatus();
         } else {
-            localStorage.removeItem("hideStatusMessage");
+            setTimeout(showStatus, 750);
+        }
+
+        // Smooth hide on close
+        closeBtn.addEventListener("click", () => {
+            msg.classList.remove("show");
+
+            const onTransitionEnd = () => {
+                msg.classList.add("hidden");
+                msg.removeEventListener("transitionend", onTransitionEnd);
+            };
+
+            msg.addEventListener("transitionend", onTransitionEnd);
+
+            // Only store opt-out if checkbox exists
+            if (hasCheckbox && optOutCheckbox.checked) {
+                localStorage.setItem(storageKey, "true");
+            }
+        });
+
+        // Checkbox handler (only if checkbox exists)
+        if (hasCheckbox) {
+            optOutCheckbox.addEventListener("change", (e) => {
+                if (e.target.checked) {
+                    localStorage.setItem(storageKey, "true");
+                } else {
+                    localStorage.removeItem(storageKey);
+                }
+            });
         }
     });
 });
