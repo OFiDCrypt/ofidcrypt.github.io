@@ -189,25 +189,26 @@
                     </h1>
 
                     <!-- Status Message -->
-					<div id="statusMessage" class="status-message">
-						<div class="status-inner">
-							<button id="statusClose" class="status-close">×</button>
+                    <div id="statusMessage" class="status-message">
+                        <div class="status-inner">
+                            <button id="statusClose" class="status-close">×</button>
 
-							<p class="status-text">
-								Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
-								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
-								We encourage you to read our
-								<a href="/discover.html#article-featured" class="status-link">Solana
-									article</a>
-								for a sneak peek at the future of money — thanks for your patience!
-							</p>
+                            <p class="status-text">
+                                Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
+                                <a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet
+                                Giddy!
+                                We encourage you to read our
+                                <a href="/discover.html#article-featured" class="status-link">Solana
+                                    article</a>
+                                for a sneak peek at the future of money — thanks for your patience!
+                            </p>
 
-							<label class="status-optout">
-								<input type="checkbox" id="statusOptOut">
-								<span>Do not show again</span>
-							</label>
-						</div>
-					</div>
+                            <label class="status-optout">
+                                <input type="checkbox" id="statusOptOut">
+                                <span>Do not show again</span>
+                            </label>
+                        </div>
+                    </div>
 
                     <div class="image-custom">
                         <a href="/index.html">
@@ -409,95 +410,37 @@
             </section>
         </div>
 
-        <!-- Page Specific Scripts – Dark Mode + 404 Image -->
+        <!-- 404 Page Specific – Dark Mode Image Handler -->
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('Page-specific dark mode initialized');
+                console.log('404-specific dark mode image handler initialized');
 
                 const errorImage = document.getElementById('errorImage');
+                if (!errorImage) return;
 
-                // Function to update the 404 image
                 function update404Image(isDark) {
-                    if (!errorImage) return;
                     errorImage.src = isDark
                         ? '/assets/images/404-dark.PNG'
                         : '/assets/images/404-light.PNG';
                 }
 
-                // Core toggle function (enhanced)
-                function toggleDarkMode() {
-                    const isDark = !document.body.classList.contains('dark-mode');
-                    document.body.classList.toggle('dark-mode', isDark);
-                    localStorage.setItem('dark-mode', isDark);
-                    updateAllIcons(isDark);
-                    update404Image(isDark);          // ← NEW: updates 404 image
-                    console.log(`Mode switched to: ${isDark ? 'dark' : 'light'}`);
-                }
-
-                // Sync icons (unchanged)
-                function updateAllIcons(isDark) {
-                    const desktopImg = document.querySelector('ul.icons li a img.custom-site-icon');
-                    if (desktopImg) {
-                        desktopImg.parentElement.classList.toggle('dark', isDark);
-                    }
-
-                    document.querySelectorAll('#navPanel .dark-mode-toggle i').forEach(i => {
-                        i.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
-                    });
-                }
-
-                // Initial state
+                // Initial load
                 const savedDark = localStorage.getItem('dark-mode') === 'true';
-                if (savedDark) document.body.classList.add('dark-mode');
-                updateAllIcons(savedDark);
-                update404Image(savedDark);           // ← NEW: sets correct image on load
+                update404Image(savedDark);
 
-                // Desktop toggle listener
-                const desktopLink = document.querySelector('ul.icons li a[href="#"]');
-                if (desktopLink) {
-                    desktopLink.addEventListener('click', e => {
-                        e.preventDefault();
-                        toggleDarkMode();
-                    });
+                // Listen for dark mode changes from the central script
+                document.addEventListener('darkModeToggled', (e) => {
+                    update404Image(e.detail.isDark);
+                });
+
+                // Also support direct calls (in case someone calls window.toggleDarkMode)
+                if (typeof window.toggleDarkMode === 'function') {
+                    const originalToggle = window.toggleDarkMode;
+                    window.toggleDarkMode = function () {
+                        originalToggle();
+                        // The custom event will handle the image update
+                    };
                 }
-
-                // Mobile toggle (added to sidebar)
-                const panelObserver = new MutationObserver(() => {
-                    const navPanelInner = document.querySelector('#navPanel nav');
-                    if (navPanelInner && !navPanelInner.querySelector('.dark-mode-toggle')) {
-                        const toggleLi = document.createElement('li');
-                        toggleLi.className = 'dark-mode-item';
-
-                        const toggleLink = document.createElement('a');
-                        toggleLink.href = '#';
-                        toggleLink.className = 'icon dark-mode-toggle';
-
-                        const icon = document.createElement('i');
-                        icon.className = savedDark ? 'fas fa-moon' : 'fas fa-sun';
-                        toggleLink.appendChild(icon);
-
-                        toggleLi.appendChild(toggleLink);
-                        navPanelInner.prepend(toggleLi);
-
-                        toggleLink.addEventListener('click', e => {
-                            e.preventDefault();
-                            toggleDarkMode();
-                        });
-
-                        toggleLink.addEventListener('touchstart', e => {
-                            e.preventDefault();
-                            toggleDarkMode();
-                        });
-
-                        console.log('Page-specific: Mobile dark mode toggle added');
-                        panelObserver.disconnect();
-                    }
-                });
-
-                panelObserver.observe(document.body, {
-                    attributes: true,
-                    attributeFilter: ['class']
-                });
             });
         </script>
 
