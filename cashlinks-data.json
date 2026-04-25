@@ -1,0 +1,83 @@
+[
+  {
+    "id": "expb",
+    "ticker": "eXPB",
+    "title": "BOUNCY BALL",
+    "imageSrc": "/assets/images/dgcl-expb.JPG",
+    "imageHref": "/bouncyball.html#buy-expb",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348",
+    "extraClass": ""
+  },
+  {
+    "id": "giddy",
+    "ticker": "GIDDY",
+    "title": "GIDDY STABLECOIN",
+    "imageSrc": "/assets/images/dgcl-giddy.jpg",
+    "imageHref": "/onegiddy.html#swap-giddy",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1777151285457",
+    "extraClass": ""
+  },
+  {
+    "id": "one",
+    "ticker": "ONE",
+    "title": "ONE",
+    "imageSrc": "/assets/images/dgcl-one.JPG",
+    "imageHref": "https://x.com/OneKinCommunity?s=20",
+    "cashLink": "https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html",
+    "extraClass": ""
+  },
+  {
+    "id": "kin",
+    "ticker": "KIN",
+    "title": "KIN",
+    "imageSrc": "/assets/images/dgcl-kin.JPG",
+    "imageHref": "https://x.com/OneKinCommunity?s=20",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504",
+    "extraClass": ""
+  },
+  {
+    "id": "dobby",
+    "ticker": "DOBBY",
+    "title": "DOBBY",
+    "imageSrc": "/assets/images/dgcl-dobby.JPG",
+    "imageHref": "https://x.com/Dobby_Coin?s=20",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692",
+    "extraClass": "dobby-gift"
+  },
+  {
+    "id": "mylo",
+    "ticker": "MYLO",
+    "title": "MYLOCAT",
+    "imageSrc": "/assets/images/dgcl-mylo.JPG",
+    "imageHref": "https://x.com/MYLOCAT_?s=20",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923",
+    "extraClass": ""
+  },
+  {
+    "id": "duno",
+    "ticker": "DUNO",
+    "title": "DUNO",
+    "imageSrc": "/assets/images/dgcl-duno.JPG",
+    "imageHref": "https://x.com/dunoglobal?s=20",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415",
+    "extraClass": ""
+  },
+  {
+    "id": "cpt",
+    "ticker": "CPT",
+    "title": "CAPTAIN TRENCH",
+    "imageSrc": "/assets/images/dgcl-cpt.JPG",
+    "imageHref": "https://x.com/CaptTrench?s=20",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291",
+    "extraClass": ""
+  },
+  {
+    "id": "sinu",
+    "ticker": "SINU",
+    "title": "SOCK INU",
+    "imageSrc": "/assets/images/dgcl-sinu.JPG",
+    "imageHref": "https://x.com/Sock_Inu?s=20",
+    "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380",
+    "extraClass": ""
+  }
+]
