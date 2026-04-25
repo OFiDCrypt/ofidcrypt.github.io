@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /cashlinks-updater
 Disallow: /explore/app-featured-hvr
 Disallow: /pages/vipwithcode
 Disallow: /404

@@ -1,202 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cash Links Updater • OFiDCrypt</title>
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
-    
-    :root {
-        --bg: #0f0f12;
-        --card: #1a1a22;
-        --text: #e0e0ff;
-        --accent: #a000ff;
-        --border: #3a3a44;
-    }
-    
-    body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.6; }
-    
-    header {
-        background: linear-gradient(90deg, #1a1a22, #2a0033);
-        padding: 2rem 5%;
-        text-align: center;
-        border-bottom: 4px solid var(--accent);
-    }
-    
-    h1 {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 2.2rem;
-        margin: 0;
-        background: linear-gradient(90deg, #fff, #a000ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .container { max-width:1200px; margin:2rem auto; padding:0 5%; }
-    
-    .card {
-        background:var(--card);
-        border-radius:16px;
-        padding:2rem;
-        margin-bottom:2rem;
-        box-shadow:0 10px 30px rgba(160,0,255,0.1);
-        overflow:hidden;
-    }
-    
-    .section-header {
-        font-size:1.4rem;
-        margin-bottom:1.5rem;
-        color:#a000ff;
-        display:flex;
-        align-items:center;
-        gap:12px;
-        flex-wrap:wrap;
-    }
-    
-    @media (max-width:680px) {
-        .section-header { justify-content:center; text-align:center; }
-        .section-header > div { margin-left:0 !important; }
-        h1 { font-size:1.9rem; }
-        .card { padding:1.5rem 1.25rem; }
-    }
-    
-    .token-grid {
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-        gap:1.25rem;
-    }
-    
-    .token-card {
-        background:#25252e;
-        border-radius:12px;
-        padding:1.75rem;
-        border:1px solid var(--border);
-        position:relative;
-    }
-    
-    /* Improved Delete Button */
-    .delete-btn {
-        position:absolute;
-        top:14px;
-        right:14px;
-        background:#ff0066;
-        color:white;
-        border:none;
-        width:32px;
-        height:32px;
-        border-radius:8px;           /* Square with nice radius */
-        font-size:1.3rem;
-        font-weight:bold;
-        cursor:pointer;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        box-shadow:0 4px 8px rgba(255,0,102,0.4);
-        transition:all 0.2s;
-        z-index:10;
-    }
-    
-    .delete-btn:hover {
-        background:#ff3366;
-        transform:scale(1.1);
-        box-shadow:0 6px 12px rgba(255,0,102,0.5);
-    }
-    
-    .form-row {
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:1rem;
-    }
-    
-    label {
-        display:block;
-        margin:14px 0 6px;
-        font-weight:500;
-        font-size:0.95rem;
-        color:#ccc;
-    }
-    
-    input {
-        width:100%;
-        border:2px solid var(--border);
-        border-radius:8px;
-        background:#1f1f28;
-        color:#e0e0ff;
-        font-size:1rem;
-    }
-    
-    input:focus {
-        border-color:#a000ff;
-        box-shadow:0 0 0 4px rgba(160,0,255,0.2);
-    }
-    
-    .github-grid {
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-        gap:1rem;
-    }
-    
-    button {
-        background:#a000ff;
-        color:white;
-        border:none;
-        padding:12px 20px;
-        border-radius:9999px;
-        font-weight:600;
-        cursor:pointer;
-        transition:all 0.3s;
-        white-space:nowrap;
-    }
-    
-    button:hover {
-        transform:translateY(-2px);
-        box-shadow:0 10px 20px rgba(160,0,255,0.4);
-    }
-    
-    .btn-secondary { background:#3a3a44; }
-    
-    .quick-actions {
-        display:flex;
-        flex-wrap:wrap;
-        gap:12px;
-        justify-content:center;
-    }
-    
-    .push-button {
-        width:100%;
-        margin-top:2rem;
-        padding:18px 24px;
-        font-size:1.25rem;
-        font-weight:700;
-        line-height:1.3;
-        white-space:normal;
-        text-align:center;
-    }
-    
-    @media (max-width:680px) {
-        .push-button { font-size:1.1rem; padding:16px 20px; }
-        .form-row, .github-grid { grid-template-columns:1fr; }
-    }
-    
-    .status {
-        padding:1rem;
-        border-radius:12px;
-        margin-top:1rem;
-        font-weight:500;
-    }
-</style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+
+        :root {
+            --bg: #0f0f12;
+            --card: #1a1a22;
+            --text: #e0e0ff;
+            --accent: #a000ff;
+            --border: #3a3a44;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(90deg, #1a1a22, #2a0033);
+            padding: 2rem 5%;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, #a000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(160, 0, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: #a000ff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width:680px) {
+            .section-header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            .section-header>div {
+                margin-left: 0 !important;
+            }
+
+            h1 {
+                font-size: 1.9rem;
+            }
+
+            .card {
+                padding: 1.5rem 1.25rem;
+            }
+        }
+
+        .token-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .token-card {
+            background: #25252e;
+            border-radius: 12px;
+            padding: 1.75rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #ff0066;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(255, 0, 102, 0.4);
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .delete-btn:hover {
+            background: #ff3366;
+            transform: scale(1.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+
+        input {
+            width: 100%;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: #1f1f28;
+            color: #e0e0ff;
+            padding: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: #a000ff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(160, 0, 255, 0.2);
+        }
+
+        .github-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        button {
+            background: #a000ff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(160, 0, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: #3a3a44;
+        }
+
+        .status {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success {
+            background: rgba(0, 255, 100, 0.1);
+            color: #00ff66;
+            border: 1px solid #00ff66;
+        }
+
+        .error {
+            background: rgba(255, 0, 100, 0.1);
+            color: #ff0066;
+            border: 1px solid #ff0066;
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <h1>Cash Links Updater</h1>
-        <p style="margin:10px 0 0; opacity:0.9;">Update ALL your token gift links in one place → push straight to GitHub.<br>
-        <strong>No more manual HTML edits ever again.</strong></p>
+        <p style="margin:10px 0 0; opacity:0.9;">Secure Portal for OFiDCrypt.com</p>
     </header>
 
     <div class="container">
-
-        <!-- TOKEN MANAGEMENT -->
         <div class="card">
             <div class="section-header">
                 <span>📋</span> Manage Tokens
@@ -205,220 +220,218 @@
                     <button onclick="addNewToken()">+ Add Token</button>
                 </div>
             </div>
-
             <div id="tokens-container" class="token-grid"></div>
-
-            <div style="margin-top:2rem; text-align:center; opacity:0.7; font-size:0.9rem;">
-                Changes are saved live in memory. Use the buttons below to download or push.
-            </div>
         </div>
 
-        <!-- QUICK ACTIONS -->
-        <div class="card">
-            <div class="section-header"><span>💾</span> Quick Export</div>
-            <div class="quick-actions">
-                <button onclick="downloadJSON()">📥 Download cashlinks-data.json</button>
-                <button onclick="copyJSONToClipboard()" class="btn-secondary">📋 Copy JSON to Clipboard</button>
-            </div>
-        </div>
-
-        <!-- GITHUB PUSH -->
         <div class="card">
             <div class="section-header"><span>🚀</span> Push to GitHub</div>
-            
+
             <div class="github-grid">
-                <div><label>GitHub Owner / Org</label><input id="owner" type="text" value="OFiDCrypt"></div>
-                <div><label>Repository Name</label><input id="repo" type="text" value="ofidcrypt.com"></div>
+                <div><label>Owner</label><input id="owner" type="text" value="OFiDCrypt"></div>
+                <div><label>Repo</label><input id="repo" type="text" value="ofidcrypt.github.io"></div>
                 <div><label>Branch</label><input id="branch" type="text" value="main"></div>
-                <div><label>File Path</label><input id="path" type="text" value="cashlinks-data.json"></div>
+                <div><label>Path</label><input id="path" type="text" value="cashlinks-data.json"></div>
+
                 <div style="grid-column:1/-1;">
-                    <label>GitHub Personal Access Token <small style="color:#ff6688;">(repo scope)</small></label>
-                    <input id="pat" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" style="font-size:0.95rem;">
+                    <label>GitHub Personal Access Token</label>
+                    <input id="pat" type="password" placeholder="github_pat_...">
+                    <div style="margin-top: 10px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="save-pat" style="width: auto;">
+                        <span>Remember token on this device (LocalStorage)</span>
+                    </div>
                 </div>
             </div>
 
-            <button onclick="pushToGitHub()" class="push-button">🚀 PUSH UPDATES TO GITHUB</button>
-            
-            <div id="push-status" class="status" style="display:none;"></div>
-            
-            <p style="margin-top:1.5rem; font-size:0.9rem; opacity:0.7; text-align:center;">
-                GitHub Pages usually updates in &lt; 60 seconds.
-            </p>
+            <button onclick="pushToGitHub()"
+                style="width:100%; margin-top:2rem; padding:18px; font-size:1.2rem;">SUBMIT</button>
+            <button onclick="testConnection()" class="btn-secondary" style="width:100%; margin-top:1rem;">🔍 Test
+                Connection</button>
+            <div id="push-status" class="status"></div>
         </div>
     </div>
 
     <script>
-    let tokensData = [
-        { "id": "expb", "ticker": "eXPB", "title": "BOUNCY BALL", "imageSrc": "/assets/images/dgcl-expb.JPG", "imageHref": "/bouncyball.html#buy-expb", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348", "extraClass": "" },
-        { "id": "giddy", "ticker": "GIDDY", "title": "GIDDY STABLECOIN", "imageSrc": "/assets/images/dgcl-giddy.jpg", "imageHref": "/onegiddy.html#swap-giddy", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1777151285457", "extraClass": "" },
-        { "id": "one", "ticker": "ONE", "title": "ONE", "imageSrc": "/assets/images/dgcl-one.JPG", "imageHref": "https://x.com/OneKinCommunity?s=20", "cashLink": "https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html", "extraClass": "" },
-        { "id": "kin", "ticker": "KIN", "title": "KIN", "imageSrc": "/assets/images/dgcl-kin.JPG", "imageHref": "https://x.com/OneKinCommunity?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504", "extraClass": "" },
-        { "id": "dobby", "ticker": "DOBBY", "title": "DOBBY", "imageSrc": "/assets/images/dgcl-dobby.JPG", "imageHref": "https://x.com/Dobby_Coin?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692", "extraClass": "dobby-gift" },
-        { "id": "mylo", "ticker": "MYLO", "title": "MYLOCAT", "imageSrc": "/assets/images/dgcl-mylo.JPG", "imageHref": "https://x.com/MYLOCAT_?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923", "extraClass": "" },
-        { "id": "duno", "ticker": "DUNO", "title": "DUNO", "imageSrc": "/assets/images/dgcl-duno.JPG", "imageHref": "https://x.com/dunoglobal?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415", "extraClass": "" },
-        { "id": "cpt", "ticker": "CPT", "title": "CAPTAIN TRENCH", "imageSrc": "/assets/images/dgcl-cpt.JPG", "imageHref": "https://x.com/CaptTrench?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291", "extraClass": "" },
-        { "id": "sinu", "ticker": "SINU", "title": "SOCK INU", "imageSrc": "/assets/images/dgcl-sinu.JPG", "imageHref": "https://x.com/Sock_Inu?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380", "extraClass": "" }
-    ];
+        // 1. SECURITY CONFIGURATION
+        // Password: Cashlinks-updater2026@
+        const GATE_KEY = "Q2FzaGxpbmtzLXVwZGF0ZXIyMDI2QUA=";
+        const STORAGE_KEY = 'ofid_updater_config';
 
-    function renderTokens() {
-        const container = document.getElementById('tokens-container');
-        container.innerHTML = '';
+        // 2. THE PASSWORD GATE (Runs immediately on load)
+        try {
+            const userInput = prompt("Enter Access Password:");
+            if (!userInput || btoa(userInput) !== GATE_KEY) {
+                document.body.innerHTML = `
+                <div style="color:white; text-align:center; margin-top:100px; font-family:sans-serif;">
+                    <h1>🚫 Access Denied</h1>
+                    <p>Incorrect password. Refresh to try again.</p>
+                </div>`;
+                throw new Error("Auth Failed");
+            }
+        } catch (e) {
+            // This stops the rest of the script from executing
+            window.stop();
+            throw e;
+        }
 
-        tokensData.forEach((token, index) => {
-            const div = document.createElement('div');
-            div.className = 'token-card';
-            div.innerHTML = `
-                <div class="token-header">
-                    <strong style="color:#a000ff;">${token.ticker}</strong>
-                </div>
+        let tokensData = [];
+
+        // 3. RENDER LOGIC
+        function renderTokens() {
+            const container = document.getElementById('tokens-container');
+            container.innerHTML = tokensData.length === 0 ? '<p style="text-align:center; width:100%; opacity:0.5;">No data loaded. Click "Load Live" or "+ Add Token".</p>' : '';
+
+            tokensData.forEach((token, index) => {
+                const div = document.createElement('div');
+                div.className = 'token-card';
+                div.innerHTML = `
+                <strong style="color:#a000ff;">${token.ticker || 'NEW'}</strong>
                 <button onclick="deleteToken(${index})" class="delete-btn">×</button>
-                
                 <div class="form-row">
                     <div><label>ID</label><input value="${token.id}" onchange="updateField(${index}, 'id', this.value)"></div>
                     <div><label>Ticker</label><input value="${token.ticker}" onchange="updateField(${index}, 'ticker', this.value)"></div>
                 </div>
-                
-                <label>Title</label>
-                <input value="${token.title}" onchange="updateField(${index}, 'title', this.value)">
-                
-                <label>Image Path</label>
-                <input value="${token.imageSrc}" onchange="updateField(${index}, 'imageSrc', this.value)">
-                
-                <label>Image Link (href)</label>
-                <input value="${token.imageHref}" onchange="updateField(${index}, 'imageHref', this.value)">
-                
-                <label>Cash Link (full URL)</label>
-                <input value="${token.cashLink}" onchange="updateField(${index}, 'cashLink', this.value)">
-                
-                <label>Extra CSS Class (optional)</label>
-                <input value="${token.extraClass || ''}" onchange="updateField(${index}, 'extraClass', this.value)">
+                <label>Title</label><input value="${token.title}" onchange="updateField(${index}, 'title', this.value)">
+                <label>Image Path</label><input value="${token.imageSrc}" onchange="updateField(${index}, 'imageSrc', this.value)">
+                <label>Link Href</label><input value="${token.imageHref}" onchange="updateField(${index}, 'imageHref', this.value)">
+                <label>Cash Link</label><input value="${token.cashLink}" onchange="updateField(${index}, 'cashLink', this.value)">
             `;
-            container.appendChild(div);
-        });
-    }
-
-    function updateField(index, field, value) {
-        tokensData[index][field] = value;
-    }
-
-    function addNewToken() {
-        const newToken = { id:"newtoken", ticker:"NEWT", title:"New Token Name", imageSrc:"/assets/images/dgcl-new.JPG", imageHref:"https://x.com/YourToken", cashLink:"https://kinnected-links.com/.../pay.html?id=NEWID", extraClass:"" };
-        tokensData.push(newToken);
-        renderTokens();
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-
-    function deleteToken(index) {
-        if (confirm('Delete this token permanently?')) {
-            tokensData.splice(index, 1);
-            renderTokens();
-        }
-    }
-
-    // ====================== LOAD LIVE ======================
-    async function loadLiveData() {
-        try {
-            const res = await fetch('https://www.ofidcrypt.com/cashlinks-data.json', { cache: 'no-store' });
-            if (!res.ok) throw new Error('File not found');
-            tokensData = await res.json();
-            renderTokens();
-            showStatus('✅ Loaded latest data from your live site!', 'success');
-        } catch (e) {
-            showStatus('❌ Could not load live data.<br>Make sure cashlinks-data.json is in the root of your repo.', 'error');
-        }
-    }
-
-    // ====================== QUICK EXPORT ======================
-    function downloadJSON() {
-        const jsonStr = JSON.stringify(tokensData, null, 2);
-        const blob = new Blob([jsonStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'cashlinks-data.json';
-        a.click();
-        showStatus('✅ JSON downloaded!', 'success');
-    }
-
-    function copyJSONToClipboard() {
-        const jsonStr = JSON.stringify(tokensData, null, 2);
-        navigator.clipboard.writeText(jsonStr).then(() => {
-            showStatus('✅ JSON copied to clipboard!', 'success');
-        });
-    }
-
-    // ====================== PUSH TO GITHUB ======================
-    async function pushToGitHub() {
-        const owner = document.getElementById('owner').value.trim();
-        const repo = document.getElementById('repo').value.trim();
-        const branch = document.getElementById('branch').value.trim();
-        const path = document.getElementById('path').value.trim();
-        const pat = document.getElementById('pat').value.trim();
-
-        if (!owner || !repo || !pat) {
-            showStatus('❌ Please fill in Owner, Repo, and PAT', 'error');
-            return;
-        }
-
-        const statusEl = document.getElementById('push-status');
-        statusEl.style.display = 'block';
-        statusEl.innerHTML = '⏳ Pushing to GitHub...';
-        statusEl.className = 'status';
-
-        try {
-            const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
-                headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' }
+                container.appendChild(div);
             });
+        }
 
-            let sha = null;
-            if (getRes.ok) {
-                const fileData = await getRes.json();
-                sha = fileData.sha;
-            }
+        function updateField(i, f, v) { tokensData[i][f] = v; }
+        function deleteToken(i) { if (confirm('Delete?')) { tokensData.splice(i, 1); renderTokens(); } }
+        function addNewToken() {
+            tokensData.push({ id: "new", ticker: "NEW", title: "", imageSrc: "", imageHref: "", cashLink: "" });
+            renderTokens();
+        }
 
-            const jsonContent = JSON.stringify(tokensData, null, 2);
-            const contentBase64 = btoa(unescape(encodeURIComponent(jsonContent)));
-
-            const bodyData = {
-                message: `Update cashlinks-data.json - ${new Date().toISOString().slice(0,19)}`,
-                content: contentBase64,
-                branch: branch,
-                ...(sha && { sha: sha })
+        // 4. STORAGE LOGIC
+        function saveConfig() {
+            const config = {
+                owner: document.getElementById('owner').value,
+                repo: document.getElementById('repo').value,
+                branch: document.getElementById('branch').value,
+                path: document.getElementById('path').value,
+                pat: document.getElementById('save-pat').checked ? document.getElementById('pat').value : ''
             };
-
-            const updateRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${pat}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(bodyData)
-            });
-
-            if (updateRes.ok) {
-                showStatus(`✅ SUCCESS! cashlinks-data.json pushed.<br>Your live page will update in &lt;60 seconds.`, 'success');
-            } else {
-                throw new Error('Push failed');
-            }
-        } catch (err) {
-            showStatus(`❌ Push failed: ${err.message}`, 'error');
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
         }
-    }
 
-    function showStatus(msg, type) {
-        const el = document.getElementById('push-status');
-        el.innerHTML = msg;
-        el.className = `status ${type}`;
-        el.style.display = 'block';
-        setTimeout(() => { el.style.display = 'none'; }, 8000);
-    }
+        function loadConfig() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const config = JSON.parse(saved);
+                document.getElementById('owner').value = config.owner || "OFiDCrypt";
+                document.getElementById('repo').value = config.repo || "ofidcrypt.github.io";
+                document.getElementById('branch').value = config.branch || "main";
+                document.getElementById('path').value = config.path || "cashlinks-data.json";
+                if (config.pat) {
+                    document.getElementById('pat').value = config.pat;
+                    document.getElementById('save-pat').checked = true;
+                }
+            }
+        }
 
-    // ====================== INIT ======================
-    window.onload = () => {
-        renderTokens();
-        console.log('%c✅ Cash Links Updater ready!', 'color:#a000ff; font-weight:bold');
-    };
-</script>
+        // 5. GITHUB SYNC
+        async function loadLiveData() {
+            const owner = document.getElementById('owner').value;
+            const repo = document.getElementById('repo').value;
+            const path = document.getElementById('path').value;
+            try {
+                const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/${path}?t=${Date.now()}`);
+                if (!res.ok) throw new Error();
+                tokensData = await res.json();
+                renderTokens();
+                showStatus('✅ Latest data pulled from GitHub', 'success');
+            } catch (e) { showStatus('❌ Error loading live file', 'error'); }
+        }
+
+        // 5. TEST CONNECTION FUNCTION
+        async function testConnection() {
+            const owner = document.getElementById('owner').value;
+            const repo = document.getElementById('repo').value;
+            const pat = document.getElementById('pat').value;
+
+            if (!pat) return showStatus('❌ Enter a PAT first to test.', 'error');
+
+            showStatus('🔍 Testing connection...', '');
+
+            try {
+                // We try to fetch the repository metadata
+                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+                    headers: { 'Authorization': `token ${pat}` }
+                });
+
+                if (res.status === 200) {
+                    const data = await res.json();
+                    const permissions = data.permissions;
+
+                    if (permissions.push) {
+                        showStatus(`✅ Connection Successful! You have Write access to ${repo}.`, 'success');
+                    } else {
+                        showStatus(`⚠️ Connected, but your PAT doesn't have "Write" permission.`, 'error');
+                    }
+                } else if (res.status === 401) {
+                    showStatus('❌ Invalid PAT. Check for typos or expired token.', 'error');
+                } else if (res.status === 404) {
+                    showStatus('❌ Repository not found. Check Owner/Repo names.', 'error');
+                } else {
+                    showStatus(`❌ Error: ${res.statusText}`, 'error');
+                }
+            } catch (e) {
+                showStatus('❌ Network error. Check your internet.', 'error');
+            }
+        }
+
+        async function pushToGitHub() {
+            saveConfig();
+            const owner = document.getElementById('owner').value;
+            const repo = document.getElementById('repo').value;
+            const branch = document.getElementById('branch').value;
+            const path = document.getElementById('path').value;
+            const pat = document.getElementById('pat').value;
+
+            if (!pat) return showStatus('❌ Token required', 'error');
+
+            showStatus('⏳ Communicating with GitHub...', '');
+
+            try {
+                const getUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+                const getRes = await fetch(getUrl, { headers: { 'Authorization': `token ${pat}` } });
+
+                let sha = null;
+                if (getRes.ok) {
+                    const data = await getRes.json();
+                    sha = data.sha;
+                }
+
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(tokensData, null, 2))));
+                const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${pat}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: "Update via CashLinks Manager",
+                        content: content,
+                        branch: branch,
+                        sha: sha
+                    })
+                });
+
+                if (putRes.ok) showStatus('✅ SUCCESS! Content pushed to GitHub.', 'success');
+                else throw new Error();
+            } catch (e) { showStatus('❌ Push failed. Check your token permissions.', 'error'); }
+        }
+
+        function showStatus(msg, type) {
+            const el = document.getElementById('push-status');
+            el.innerHTML = msg;
+            el.className = 'status ' + (type || '');
+            el.style.display = 'block';
+        }
+
+        window.onload = () => { loadConfig(); renderTokens(); };
+    </script>
 </body>
+
 </html>
