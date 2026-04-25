@@ -182,7 +182,7 @@
 							style="max-width: 100%; height: auto;">
 					</a>
 				</div>
-			</div>	
+			</div>
 
 			<!-- Cash Links Header -->
 			<article id="cashlinks-header" class="post">
@@ -200,7 +200,8 @@
 
 							<p class="status-text">
 								Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
-								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
+								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet
+								Giddy!
 								We encourage you to read our
 								<a href="/discover.html#article-featured" class="status-link">Solana
 									article</a>
@@ -218,158 +219,130 @@
 					<section id="cashlinks" class="cashlinks-section">
 						<header class="major">
 							<h2>Digital Gifts</h2>
-							<p><a href="../explore.html">Wallets & Apps</a> > <a
-									href="../pages/kinnected.html">Get Kinnected!</a> > <b>Cash Links</b></p>
+							<p><a href="../explore.html">Wallets & Apps</a> > <a href="../pages/kinnected.html">Get
+									Kinnected!</a> > <b>Cash Links</b></p>
 							<p>Never miss an opportunity to claim your digital gifts, redeemable in Kinnected!</p>
 						</header>
 
-						<!-- Row 1 -->
-						<div class="cashlinks-items">
+						<!-- === DYNAMIC CASH LINKS (3 rows of 3) - Keeps your exact CSS 100% intact === -->
+						<div id="cashlinks-container"></div>
 
-							<article class="cashlinks-item" id="expb">
-								<a href="/bouncyball.html#buy-expb" class="image left">
-									<img src="/assets/images/dgcl-expb.JPG" alt="dgcl-expb">
-								</a>
-								<div class="cashlinks-content">
-									<h3>BOUNCY BALL</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
+						<script>
+							// ==================== CASH LINKS DATA ====================
+							// (You can keep this here for now — later we can load from JSON)
+							const cashLinksData = [
+								{
+									id: "expb",
+									title: "BOUNCY BALL",
+									imageSrc: "/assets/images/dgcl-expb.JPG",
+									imageHref: "/bouncyball.html#buy-expb",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348",
+									extraClass: ""
+								},
+								{
+									id: "giddy",
+									title: "GIDDY STABLECOIN",
+									imageSrc: "/assets/images/dgcl-giddy.jpg",
+									imageHref: "/onegiddy.html#swap-giddy",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1777151285457",
+									extraClass: ""
+								},
+								{
+									id: "one",
+									title: "ONE",
+									imageSrc: "/assets/images/dgcl-one.JPG",
+									imageHref: "https://x.com/OneKinCommunity?s=20",
+									cashLink: "https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html",
+									extraClass: ""
+								},
+								{
+									id: "kin",
+									title: "KIN",
+									imageSrc: "/assets/images/dgcl-kin.JPG",
+									imageHref: "https://x.com/OneKinCommunity?s=20",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504",
+									extraClass: ""
+								},
+								{
+									id: "dobby",
+									title: "DOBBY",
+									imageSrc: "/assets/images/dgcl-dobby.JPG",
+									imageHref: "https://x.com/Dobby_Coin?s=20",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692",
+									extraClass: "dobby-gift"
+								},
+								{
+									id: "mylo",
+									title: "MYLOCAT",
+									imageSrc: "/assets/images/dgcl-mylo.JPG",
+									imageHref: "https://x.com/MYLOCAT_?s=20",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923",
+									extraClass: ""
+								},
+								{
+									id: "duno",
+									title: "DUNO",
+									imageSrc: "/assets/images/dgcl-duno.JPG",
+									imageHref: "https://x.com/dunoglobal?s=20",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415",
+									extraClass: ""
+								},
+								{
+									id: "cpt",
+									title: "CAPTAIN TRENCH",
+									imageSrc: "/assets/images/dgcl-cpt.JPG",
+									imageHref: "https://x.com/CaptTrench?s=20",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291",
+									extraClass: ""
+								},
+								{
+									id: "sinu",
+									title: "SOCK INU",
+									imageSrc: "/assets/images/dgcl-sinu.JPG",
+									imageHref: "https://x.com/Sock_Inu?s=20",
+									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380",
+									extraClass: ""
+								}
+							];
 
-							<article class="cashlinks-item" id="giddy">
-								<a href="/onegiddy.html#swap-giddy" class="image left">
-									<img src="/assets/images/dgcl-giddy.jpg" alt="dgcl-giddy">
-								</a>
-								<div class="cashlinks-content">
-									<h3>GIDDY STABLECOIN</h3>
-									<button class="button round-button"
-										data-link="https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
+							function renderCashLinks() {
+								const container = document.getElementById('cashlinks-container');
+								container.innerHTML = '';
 
-							<article class="cashlinks-item" id="one">
-								<a href="https://x.com/OneKinCommunity?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-one.JPG" alt="one-gift">
-								</a>
-								<div class="cashlinks-content">
-									<h3>ONE</h3>
-									<button class="button round-button"
-										data-link="https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
+								// Create 3 rows of 3 items each (exactly what your CSS expects)
+								for (let i = 0; i < cashLinksData.length; i += 3) {
+									const rowDiv = document.createElement('div');
+									rowDiv.className = 'cashlinks-items';
 
-						</div>
+									const rowItems = cashLinksData.slice(i, i + 3);
 
-						<!-- Row 2 -->
-						<div class="cashlinks-items">
+									rowItems.forEach(token => {
+										const itemHTML = `
+                <article class="cashlinks-item ${token.extraClass || ''}" id="${token.id}">
+                    <a href="${token.imageHref}" class="image left" 
+                       ${token.imageHref.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                        <img src="${token.imageSrc}" alt="${token.title.toLowerCase()}-gift">
+                    </a>
+                    <div class="cashlinks-content">
+                        <h3>${token.title}</h3>
+                        <button class="button round-button"
+                            data-link="${token.cashLink}"
+                            onclick="return verifyRecaptchaForLinks(this);">
+                            Claim Cash
+                        </button>
+                    </div>
+                </article>
+            `;
+										rowDiv.innerHTML += itemHTML;
+									});
 
-							<article class="cashlinks-item" id="kin">
-								<a href="https://x.com/OneKinCommunity?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-kin.JPG" alt="kin-gift">
-								</a>
-								<div class="cashlinks-content">
-									<h3>KIN</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
+									container.appendChild(rowDiv);
+								}
+							}
 
-							<article class="cashlinks-item" id="dobby">
-								<a href="https://x.com/Dobby_Coin?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-dobby.JPG" alt="dgcl-dobby">
-								</a>
-								<div class="cashlinks-content dobby-gift">
-									<h3>DOBBY</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
-
-							<article class="cashlinks-item" id="mylo">
-								<a href="https://x.com/MYLOCAT_?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-mylo.JPG" alt="mylo-gift">
-								</a>
-								<div class="cashlinks-content">
-									<h3>MYLOCAT</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
-
-						</div>
-
-						<!-- Row 3 -->
-						<div class="cashlinks-items">
-
-							<article class="cashlinks-item" id="duno">
-								<a href="https://x.com/dunoglobal?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-duno.JPG" alt="duno-gift">
-								</a>
-								<div class="cashlinks-content">
-									<h3>DUNO</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
-
-							<article class="cashlinks-item" id="cpt">
-								<a href="https://x.com/CaptTrench?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-cpt.JPG" alt="cpt-gift">
-								</a>
-								<div class="cashlinks-content">
-									<h3>CAPTAIN TRENCH</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
-
-							<article class="cashlinks-item" id="sinu">
-								<a href="https://x.com/Sock_Inu?s=20" class="image left" target="_blank"
-									rel="noopener noreferrer">
-									<img src="/assets/images/dgcl-sinu.JPG" alt="sinu-gift">
-								</a>
-								<div class="cashlinks-content">
-									<h3>SOCK INU</h3>
-									<button class="button round-button"
-										data-link="https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380"
-										onclick="return verifyRecaptchaForLinks(this);">
-										Claim Cash
-									</button>
-								</div>
-							</article>
-
-						</div>
+							// Render when page loads
+							document.addEventListener('DOMContentLoaded', renderCashLinks);
+						</script>
 
 						<!-- reCAPTCHA + Return to Top Link (opens modal) -->
 						<div id="recaptcha-links-section">
@@ -823,7 +796,7 @@
 		<!-- Your custom logic must be LAST -->
 		<script src="/assets/js/main.js"></script>
 		<script src="/assets/js/ofid-main.js"></script>
-	
+
 </body>
 
 </html>
