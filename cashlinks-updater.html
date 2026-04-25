@@ -248,79 +248,177 @@
     </div>
 
     <script>
-        let tokensData = [
-            { "id": "expb", "ticker": "eXPB", "title": "BOUNCY BALL", "imageSrc": "/assets/images/dgcl-expb.JPG", "imageHref": "/bouncyball.html#buy-expb", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348", "extraClass": "" },
-            { "id": "giddy", "ticker": "GIDDY", "title": "GIDDY STABLECOIN", "imageSrc": "/assets/images/dgcl-giddy.jpg", "imageHref": "/onegiddy.html#swap-giddy", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1777151285457", "extraClass": "" },
-            { "id": "one", "ticker": "ONE", "title": "ONE", "imageSrc": "/assets/images/dgcl-one.JPG", "imageHref": "https://x.com/OneKinCommunity?s=20", "cashLink": "https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html", "extraClass": "" },
-            { "id": "kin", "ticker": "KIN", "title": "KIN", "imageSrc": "/assets/images/dgcl-kin.JPG", "imageHref": "https://x.com/OneKinCommunity?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504", "extraClass": "" },
-            { "id": "dobby", "ticker": "DOBBY", "title": "DOBBY", "imageSrc": "/assets/images/dgcl-dobby.JPG", "imageHref": "https://x.com/Dobby_Coin?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692", "extraClass": "dobby-gift" },
-            { "id": "mylo", "ticker": "MYLO", "title": "MYLOCAT", "imageSrc": "/assets/images/dgcl-mylo.JPG", "imageHref": "https://x.com/MYLOCAT_?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923", "extraClass": "" },
-            { "id": "duno", "ticker": "DUNO", "title": "DUNO", "imageSrc": "/assets/images/dgcl-duno.JPG", "imageHref": "https://x.com/dunoglobal?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415", "extraClass": "" },
-            { "id": "cpt", "ticker": "CPT", "title": "CAPTAIN TRENCH", "imageSrc": "/assets/images/dgcl-cpt.JPG", "imageHref": "https://x.com/CaptTrench?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291", "extraClass": "" },
-            { "id": "sinu", "ticker": "SINU", "title": "SOCK INU", "imageSrc": "/assets/images/dgcl-sinu.JPG", "imageHref": "https://x.com/Sock_Inu?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380", "extraClass": "" }
-        ];
+    let tokensData = [
+        { "id": "expb", "ticker": "eXPB", "title": "BOUNCY BALL", "imageSrc": "/assets/images/dgcl-expb.JPG", "imageHref": "/bouncyball.html#buy-expb", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348", "extraClass": "" },
+        { "id": "giddy", "ticker": "GIDDY", "title": "GIDDY STABLECOIN", "imageSrc": "/assets/images/dgcl-giddy.jpg", "imageHref": "/onegiddy.html#swap-giddy", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1777151285457", "extraClass": "" },
+        { "id": "one", "ticker": "ONE", "title": "ONE", "imageSrc": "/assets/images/dgcl-one.JPG", "imageHref": "https://x.com/OneKinCommunity?s=20", "cashLink": "https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html", "extraClass": "" },
+        { "id": "kin", "ticker": "KIN", "title": "KIN", "imageSrc": "/assets/images/dgcl-kin.JPG", "imageHref": "https://x.com/OneKinCommunity?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504", "extraClass": "" },
+        { "id": "dobby", "ticker": "DOBBY", "title": "DOBBY", "imageSrc": "/assets/images/dgcl-dobby.JPG", "imageHref": "https://x.com/Dobby_Coin?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692", "extraClass": "dobby-gift" },
+        { "id": "mylo", "ticker": "MYLO", "title": "MYLOCAT", "imageSrc": "/assets/images/dgcl-mylo.JPG", "imageHref": "https://x.com/MYLOCAT_?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923", "extraClass": "" },
+        { "id": "duno", "ticker": "DUNO", "title": "DUNO", "imageSrc": "/assets/images/dgcl-duno.JPG", "imageHref": "https://x.com/dunoglobal?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415", "extraClass": "" },
+        { "id": "cpt", "ticker": "CPT", "title": "CAPTAIN TRENCH", "imageSrc": "/assets/images/dgcl-cpt.JPG", "imageHref": "https://x.com/CaptTrench?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291", "extraClass": "" },
+        { "id": "sinu", "ticker": "SINU", "title": "SOCK INU", "imageSrc": "/assets/images/dgcl-sinu.JPG", "imageHref": "https://x.com/Sock_Inu?s=20", "cashLink": "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380", "extraClass": "" }
+    ];
 
-        function renderTokens() {
-            const container = document.getElementById('tokens-container');
-            container.innerHTML = '';
+    function renderTokens() {
+        const container = document.getElementById('tokens-container');
+        container.innerHTML = '';
 
-            tokensData.forEach((token, index) => {
-                const div = document.createElement('div');
-                div.className = 'token-card';
-                div.innerHTML = `
-                    <div class="token-header">
-                        <strong style="color:#a000ff;">${token.ticker}</strong>
-                    </div>
-                    <button onclick="deleteToken(${index})" class="delete-btn">×</button>
-                    
-                    <div class="form-row">
-                        <div><label>ID</label><input value="${token.id}" onchange="updateField(${index}, 'id', this.value)"></div>
-                        <div><label>Ticker</label><input value="${token.ticker}" onchange="updateField(${index}, 'ticker', this.value)"></div>
-                    </div>
-                    
-                    <label>Title</label>
-                    <input value="${token.title}" onchange="updateField(${index}, 'title', this.value)">
-                    
-                    <label>Image Path</label>
-                    <input value="${token.imageSrc}" onchange="updateField(${index}, 'imageSrc', this.value)">
-                    
-                    <label>Image Link (href)</label>
-                    <input value="${token.imageHref}" onchange="updateField(${index}, 'imageHref', this.value)">
-                    
-                    <label>Cash Link (full URL)</label>
-                    <input value="${token.cashLink}" onchange="updateField(${index}, 'cashLink', this.value)">
-                    
-                    <label>Extra CSS Class (optional)</label>
-                    <input value="${token.extraClass || ''}" onchange="updateField(${index}, 'extraClass', this.value)">
-                `;
-                container.appendChild(div);
-            });
-        }
+        tokensData.forEach((token, index) => {
+            const div = document.createElement('div');
+            div.className = 'token-card';
+            div.innerHTML = `
+                <div class="token-header">
+                    <strong style="color:#a000ff;">${token.ticker}</strong>
+                </div>
+                <button onclick="deleteToken(${index})" class="delete-btn">×</button>
+                
+                <div class="form-row">
+                    <div><label>ID</label><input value="${token.id}" onchange="updateField(${index}, 'id', this.value)"></div>
+                    <div><label>Ticker</label><input value="${token.ticker}" onchange="updateField(${index}, 'ticker', this.value)"></div>
+                </div>
+                
+                <label>Title</label>
+                <input value="${token.title}" onchange="updateField(${index}, 'title', this.value)">
+                
+                <label>Image Path</label>
+                <input value="${token.imageSrc}" onchange="updateField(${index}, 'imageSrc', this.value)">
+                
+                <label>Image Link (href)</label>
+                <input value="${token.imageHref}" onchange="updateField(${index}, 'imageHref', this.value)">
+                
+                <label>Cash Link (full URL)</label>
+                <input value="${token.cashLink}" onchange="updateField(${index}, 'cashLink', this.value)">
+                
+                <label>Extra CSS Class (optional)</label>
+                <input value="${token.extraClass || ''}" onchange="updateField(${index}, 'extraClass', this.value)">
+            `;
+            container.appendChild(div);
+        });
+    }
 
-        function updateField(index, field, value) { tokensData[index][field] = value; }
-        
-        function addNewToken() {
-            const newToken = { id:"newtoken", ticker:"NEWT", title:"New Token Name", imageSrc:"/assets/images/dgcl-new.JPG", imageHref:"https://x.com/YourToken", cashLink:"https://kinnected-links.com/.../pay.html?id=NEWID", extraClass:"" };
-            tokensData.push(newToken);
+    function updateField(index, field, value) {
+        tokensData[index][field] = value;
+    }
+
+    function addNewToken() {
+        const newToken = { id:"newtoken", ticker:"NEWT", title:"New Token Name", imageSrc:"/assets/images/dgcl-new.JPG", imageHref:"https://x.com/YourToken", cashLink:"https://kinnected-links.com/.../pay.html?id=NEWID", extraClass:"" };
+        tokensData.push(newToken);
+        renderTokens();
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function deleteToken(index) {
+        if (confirm('Delete this token permanently?')) {
+            tokensData.splice(index, 1);
             renderTokens();
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
-        
-        function deleteToken(index) {
-            if (confirm('Delete this token permanently?')) {
-                tokensData.splice(index, 1);
-                renderTokens();
+    }
+
+    // ====================== LOAD LIVE ======================
+    async function loadLiveData() {
+        try {
+            const res = await fetch('https://www.ofidcrypt.com/cashlinks-data.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('File not found');
+            tokensData = await res.json();
+            renderTokens();
+            showStatus('✅ Loaded latest data from your live site!', 'success');
+        } catch (e) {
+            showStatus('❌ Could not load live data.<br>Make sure cashlinks-data.json is in the root of your repo.', 'error');
+        }
+    }
+
+    // ====================== QUICK EXPORT ======================
+    function downloadJSON() {
+        const jsonStr = JSON.stringify(tokensData, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'cashlinks-data.json';
+        a.click();
+        showStatus('✅ JSON downloaded!', 'success');
+    }
+
+    function copyJSONToClipboard() {
+        const jsonStr = JSON.stringify(tokensData, null, 2);
+        navigator.clipboard.writeText(jsonStr).then(() => {
+            showStatus('✅ JSON copied to clipboard!', 'success');
+        });
+    }
+
+    // ====================== PUSH TO GITHUB ======================
+    async function pushToGitHub() {
+        const owner = document.getElementById('owner').value.trim();
+        const repo = document.getElementById('repo').value.trim();
+        const branch = document.getElementById('branch').value.trim();
+        const path = document.getElementById('path').value.trim();
+        const pat = document.getElementById('pat').value.trim();
+
+        if (!owner || !repo || !pat) {
+            showStatus('❌ Please fill in Owner, Repo, and PAT', 'error');
+            return;
+        }
+
+        const statusEl = document.getElementById('push-status');
+        statusEl.style.display = 'block';
+        statusEl.innerHTML = '⏳ Pushing to GitHub...';
+        statusEl.className = 'status';
+
+        try {
+            const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
+                headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3+json' }
+            });
+
+            let sha = null;
+            if (getRes.ok) {
+                const fileData = await getRes.json();
+                sha = fileData.sha;
             }
+
+            const jsonContent = JSON.stringify(tokensData, null, 2);
+            const contentBase64 = btoa(unescape(encodeURIComponent(jsonContent)));
+
+            const bodyData = {
+                message: `Update cashlinks-data.json - ${new Date().toISOString().slice(0,19)}`,
+                content: contentBase64,
+                branch: branch,
+                ...(sha && { sha: sha })
+            };
+
+            const updateRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${pat}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if (updateRes.ok) {
+                showStatus(`✅ SUCCESS! cashlinks-data.json pushed.<br>Your live page will update in &lt;60 seconds.`, 'success');
+            } else {
+                throw new Error('Push failed');
+            }
+        } catch (err) {
+            showStatus(`❌ Push failed: ${err.message}`, 'error');
         }
+    }
 
-        // === YOUR EXISTING FUNCTIONS (unchanged) ===
-        async function loadLiveData() { /* your code */ }
-        function downloadJSON() { /* your code */ }
-        function copyJSONToClipboard() { /* your code */ }
-        async function pushToGitHub() { /* your code */ }
-        function showStatus(msg, type) { /* your code */ }
+    function showStatus(msg, type) {
+        const el = document.getElementById('push-status');
+        el.innerHTML = msg;
+        el.className = `status ${type}`;
+        el.style.display = 'block';
+        setTimeout(() => { el.style.display = 'none'; }, 8000);
+    }
 
-        window.onload = () => { renderTokens(); };
-    </script>
+    // ====================== INIT ======================
+    window.onload = () => {
+        renderTokens();
+        console.log('%c✅ Cash Links Updater ready!', 'color:#a000ff; font-weight:bold');
+    };
+</script>
 </body>
 </html>

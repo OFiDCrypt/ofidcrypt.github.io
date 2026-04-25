@@ -224,119 +224,60 @@
 							<p>Never miss an opportunity to claim your digital gifts, redeemable in Kinnected!</p>
 						</header>
 
-						<!-- === DYNAMIC CASH LINKS (3 rows of 3) - Keeps your exact CSS 100% intact === -->
+						<!-- === DYNAMIC CASH LINKS - Loads from JSON (auto-updates) === -->
 						<div id="cashlinks-container"></div>
 
 						<script>
-							// ==================== CASH LINKS DATA ====================
-							// (You can keep this here for now — later we can load from JSON)
-							const cashLinksData = [
-								{
-									id: "expb",
-									title: "BOUNCY BALL",
-									imageSrc: "/assets/images/dgcl-expb.JPG",
-									imageHref: "/bouncyball.html#buy-expb",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792617348",
-									extraClass: ""
-								},
-								{
-									id: "giddy",
-									title: "GIDDY STABLECOIN",
-									imageSrc: "/assets/images/dgcl-giddy.jpg",
-									imageHref: "/onegiddy.html#swap-giddy",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1777151285457",
-									extraClass: ""
-								},
-								{
-									id: "one",
-									title: "ONE",
-									imageSrc: "/assets/images/dgcl-one.JPG",
-									imageHref: "https://x.com/OneKinCommunity?s=20",
-									cashLink: "https://gfdevsoft.dev/k7m9x2qw8e4r5t6y/pay.html",
-									extraClass: ""
-								},
-								{
-									id: "kin",
-									title: "KIN",
-									imageSrc: "/assets/images/dgcl-kin.JPG",
-									imageHref: "https://x.com/OneKinCommunity?s=20",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766527744504",
-									extraClass: ""
-								},
-								{
-									id: "dobby",
-									title: "DOBBY",
-									imageSrc: "/assets/images/dgcl-dobby.JPG",
-									imageHref: "https://x.com/Dobby_Coin?s=20",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766791372692",
-									extraClass: "dobby-gift"
-								},
-								{
-									id: "mylo",
-									title: "MYLOCAT",
-									imageSrc: "/assets/images/dgcl-mylo.JPG",
-									imageHref: "https://x.com/MYLOCAT_?s=20",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792905923",
-									extraClass: ""
-								},
-								{
-									id: "duno",
-									title: "DUNO",
-									imageSrc: "/assets/images/dgcl-duno.JPG",
-									imageHref: "https://x.com/dunoglobal?s=20",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766790854415",
-									extraClass: ""
-								},
-								{
-									id: "cpt",
-									title: "CAPTAIN TRENCH",
-									imageSrc: "/assets/images/dgcl-cpt.JPG",
-									imageHref: "https://x.com/CaptTrench?s=20",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792808291",
-									extraClass: ""
-								},
-								{
-									id: "sinu",
-									title: "SOCK INU",
-									imageSrc: "/assets/images/dgcl-sinu.JPG",
-									imageHref: "https://x.com/Sock_Inu?s=20",
-									cashLink: "https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=1766792407380",
-									extraClass: ""
-								}
-							];
-
-							function renderCashLinks() {
+							async function renderCashLinks() {
 								const container = document.getElementById('cashlinks-container');
-								container.innerHTML = '';
+								container.innerHTML = '<p style="text-align:center; padding:40px; opacity:0.6;">Loading cash links...</p>';
 
-								// Create 3 rows of 3 items each (exactly what your CSS expects)
-								for (let i = 0; i < cashLinksData.length; i += 3) {
-									const rowDiv = document.createElement('div');
-									rowDiv.className = 'cashlinks-items';
+								try {
+									// Load the latest data from GitHub Pages
+									const response = await fetch('/cashlinks-data.json', { cache: 'no-store' });
 
-									const rowItems = cashLinksData.slice(i, i + 3);
+									if (!response.ok) throw new Error('JSON not found');
 
-									rowItems.forEach(token => {
-										const itemHTML = `
-                <article class="cashlinks-item ${token.extraClass || ''}" id="${token.id}">
-                    <a href="${token.imageHref}" class="image left" 
-                       ${token.imageHref.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                        <img src="${token.imageSrc}" alt="${token.title.toLowerCase()}-gift">
-                    </a>
-                    <div class="cashlinks-content">
-                        <h3>${token.title}</h3>
-                        <button class="button round-button"
-                            data-link="${token.cashLink}"
-                            onclick="return verifyRecaptchaForLinks(this);">
-                            Claim Cash
-                        </button>
-                    </div>
-                </article>
-            `;
-										rowDiv.innerHTML += itemHTML;
-									});
+									const cashLinksData = await response.json();
 
-									container.appendChild(rowDiv);
+									container.innerHTML = '';
+
+									// Create 3 rows of 3 items (exactly matches your CSS)
+									for (let i = 0; i < cashLinksData.length; i += 3) {
+										const rowDiv = document.createElement('div');
+										rowDiv.className = 'cashlinks-items';
+
+										const rowItems = cashLinksData.slice(i, i + 3);
+
+										rowItems.forEach(token => {
+											const itemHTML = `
+                        <article class="cashlinks-item ${token.extraClass || ''}" id="${token.id}">
+                            <a href="${token.imageHref}" class="image left" 
+                               ${token.imageHref.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                                <img src="${token.imageSrc}" alt="${token.title.toLowerCase()}-gift">
+                            </a>
+                            <div class="cashlinks-content">
+                                <h3>${token.title}</h3>
+                                <button class="button round-button"
+                                    data-link="${token.cashLink}"
+                                    onclick="return verifyRecaptchaForLinks(this);">
+                                    Claim Cash
+                                </button>
+                            </div>
+                        </article>
+                    `;
+											rowDiv.innerHTML += itemHTML;
+										});
+
+										container.appendChild(rowDiv);
+									}
+								} catch (err) {
+									console.error(err);
+									container.innerHTML = `
+                <p style="text-align:center; padding:40px; color:#ff6688;">
+                    ⚠️ Could not load cash links.<br>
+                    Make sure cashlinks-data.json exists in your repo root.
+                </p>`;
 								}
 							}
 
