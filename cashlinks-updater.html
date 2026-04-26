@@ -270,6 +270,30 @@
             color: #ff0066;
             border: 1px solid #ff0066;
         }
+
+        /* Clipboard UI Styling */
+        .id-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .copy-link-btn {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1rem;
+            opacity: 0.6;
+            transition: 0.2s;
+        }
+
+        .copy-link-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -373,10 +397,10 @@
         // 3. RENDER LOGIC
         function renderTokens() {
             const container = document.getElementById('tokens-container');
-            container.innerHTML = tokensData.length === 0 
-                ? '<p style="text-align:center; width:100%; opacity:0.5;">No data loaded. Click "Load Live" to start.</p>' 
+            container.innerHTML = tokensData.length === 0
+                ? '<p style="text-align:center; width:100%; opacity:0.5;">No data loaded. Click "Load Live" to start.</p>'
                 : '';
-            
+
             tokensData.forEach((token, index) => {
                 const div = document.createElement('div');
                 div.className = 'token-card';
@@ -384,7 +408,13 @@
                 <strong style="color:#a000ff;">${token.ticker || 'NEW'}</strong>
                 <button onclick="deleteToken(${index})" class="delete-btn">×</button>
                 <div class="form-row">
-                    <div><label>ID</label><input value="${token.id || ''}" onchange="updateField(${index}, 'id', this.value)"></div>
+    <div>
+    <label>ID</label>
+    <div class="id-input-wrapper">
+        <input value="${token.id || ''}" onchange="updateField(${index}, 'id', this.value)">
+        <button class="copy-link-btn" title="Copy Jump Link" onclick="copyJumpLink('${token.id}', this)">📋</button>
+    </div>
+</div>
                     <div><label>Ticker</label><input value="${token.ticker || ''}" onchange="updateField(${index}, 'ticker', this.value)"></div>
                 </div>
                 <label>Title</label><input value="${token.title || ''}" onchange="updateField(${index}, 'title', this.value)">
@@ -395,28 +425,57 @@
             });
         }
 
-        function updateField(i, f, v) { 
-            tokensData[i][f] = v; 
+        function updateField(i, f, v) {
+            tokensData[i][f] = v;
         }
 
-        function deleteToken(i) { 
-            if (confirm('Delete this token?')) { 
-                tokensData.splice(i, 1); 
-                renderTokens(); 
-            } 
+        function deleteToken(i) {
+            if (confirm('Delete this token?')) {
+                tokensData.splice(i, 1);
+                renderTokens();
+            }
         }
 
         function addNewToken() {
-            if (!dataLoaded) return; // safety
-            tokensData.push({ 
-                id: "new", 
-                ticker: "NEW", 
-                title: "", 
-                imageSrc: "", 
-                imageHref: "", 
-                cashLink: "" 
+            if (!dataLoaded) return;
+
+            // 1. Add the new blank token
+            tokensData.push({
+                id: "new",
+                ticker: "NEW",
+                title: "",
+                imageSrc: "",
+                imageHref: "",
+                cashLink: ""
             });
+
+            // 2. Re-render the UI
             renderTokens();
+
+            // 3. Smooth scroll and focus
+            setTimeout(() => {
+                const containers = document.querySelectorAll('.token-card');
+                const lastCard = containers[containers.length - 1];
+
+                if (lastCard) {
+                    // SMOOTH SCROLL: center the new card in the window
+                    lastCard.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                    // Visual feedback: brief purple glow
+                    lastCard.style.transition = "box-shadow 0.5s ease";
+                    lastCard.style.boxShadow = "0 0 20px rgba(160, 0, 255, 0.6)";
+
+                    // Focus the ID input field after a split second
+                    setTimeout(() => {
+                        const firstInput = lastCard.querySelector('input');
+                        if (firstInput) firstInput.focus();
+                        lastCard.style.boxShadow = "none"; // Remove glow after focus
+                    }, 600);
+                }
+            }, 100);
         }
 
         // NEW: Button state control
@@ -451,9 +510,9 @@
                 document.getElementById('repo').value = config.repo || "ofidcrypt.github.io";
                 document.getElementById('branch').value = config.branch || "main";
                 document.getElementById('path').value = config.path || "cashlinks-data.json";
-                if (config.pat) { 
-                    document.getElementById('pat').value = config.pat; 
-                    document.getElementById('save-pat').checked = true; 
+                if (config.pat) {
+                    document.getElementById('pat').value = config.pat;
+                    document.getElementById('save-pat').checked = true;
                 }
             }
         }
@@ -468,14 +527,14 @@
             try {
                 const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/${path}?t=${Date.now()}`);
                 if (!res.ok) throw new Error('Failed to fetch');
-                
+
                 tokensData = await res.json();
                 dataLoaded = true;           // ← Mark as loaded
                 updateAddButtonState();      // ← Enable button
                 renderTokens();
                 showStatus('✅ Latest data pulled from GitHub', 'success');
-            } catch (e) { 
-                showStatus('❌ Error loading live file', 'error'); 
+            } catch (e) {
+                showStatus('❌ Error loading live file', 'error');
             }
         }
 
@@ -485,11 +544,11 @@
             const repo = document.getElementById('repo').value;
             const pat = document.getElementById('pat').value;
             if (!pat) return showStatus('❌ Enter a PAT first to test.', 'error');
-            
+
             showStatus('🔍 Testing connection...', '');
             try {
-                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { 
-                    headers: { 'Authorization': `token ${pat}` } 
+                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+                    headers: { 'Authorization': `token ${pat}` }
                 });
                 if (res.status === 200) {
                     const data = await res.json();
@@ -498,8 +557,28 @@
                 } else if (res.status === 401) showStatus('❌ Invalid PAT.', 'error');
                 else if (res.status === 404) showStatus('❌ Repository not found.', 'error');
                 else showStatus(`❌ Error: ${res.statusText}`, 'error');
-            } catch (e) { 
-                showStatus('❌ Network error.', 'error'); 
+            } catch (e) {
+                showStatus('❌ Network error.', 'error');
+            }
+        }
+
+        // ID CLipboard Function
+        async function copyJumpLink(id, btn) {
+            // This builds the link based on your current domain
+            const baseUrl = window.location.origin + "/cashlinks.html#";
+            const fullLink = baseUrl + id;
+
+            try {
+                await navigator.clipboard.writeText(fullLink);
+
+                // Visual feedback
+                const originalIcon = btn.innerHTML;
+                btn.innerHTML = '✅';
+                setTimeout(() => {
+                    btn.innerHTML = originalIcon;
+                }, 1500);
+            } catch (err) {
+                console.error('Failed to copy', err);
             }
         }
 
@@ -511,47 +590,48 @@
             const path = document.getElementById('path').value;
             const pat = document.getElementById('pat').value;
             if (!pat) return showStatus('❌ Token required', 'error');
-            
+
             showStatus('⏳ Communicating with GitHub...', '');
             try {
-                const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { 
-                    headers: { 'Authorization': `token ${pat}` } 
+                const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, {
+                    headers: { 'Authorization': `token ${pat}` }
                 });
                 let sha = null;
-                if (getRes.ok) { 
-                    const data = await getRes.json(); 
-                    sha = data.sha; 
+                if (getRes.ok) {
+                    const data = await getRes.json();
+                    sha = data.sha;
                 }
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(tokensData, null, 2))));
                 const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
                     method: 'PUT',
                     headers: { 'Authorization': `token ${pat}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        message: "Update via CashLinks Manager", 
-                        content: content, 
-                        branch: branch, 
-                        sha: sha 
+                    body: JSON.stringify({
+                        message: "Update via CashLinks Manager",
+                        content: content,
+                        branch: branch,
+                        sha: sha
                     })
                 });
                 if (putRes.ok) showStatus('✅ SUCCESS! Content pushed to GitHub.', 'success');
                 else throw new Error();
-            } catch (e) { 
-                showStatus('❌ Push failed. Check your token permissions.', 'error'); 
+            } catch (e) {
+                showStatus('❌ Push failed. Check your token permissions.', 'error');
             }
         }
 
         function showStatus(msg, type) {
             const el = document.getElementById('push-status');
-            el.innerHTML = msg; 
-            el.className = 'status ' + (type || ''); 
+            el.innerHTML = msg;
+            el.className = 'status ' + (type || '');
             el.style.display = 'block';
         }
 
-        window.onload = () => { 
-            loadConfig(); 
+        window.onload = () => {
+            loadConfig();
             renderTokens();
             updateAddButtonState(); // initially disabled
         };
     </script>
 </body>
+
 </html>
