@@ -224,9 +224,6 @@
 							<p>Never miss an opportunity to claim your digital gifts, redeemable in Kinnected!</p>
 						</header>
 
-						<!-- === DYNAMIC CASH LINKS - Loads from JSON (auto-updates) === -->
-						<div id="cashlinks-container"></div>
-
 						<script>
 							async function renderCashLinks() {
 								const container = document.getElementById('cashlinks-container');
@@ -242,7 +239,7 @@
 
 									container.innerHTML = '';
 
-									// Create 3 rows of 3 items (exactly matches your CSS)
+									// Create 3 rows of 3 items
 									for (let i = 0; i < cashLinksData.length; i += 3) {
 										const rowDiv = document.createElement('div');
 										rowDiv.className = 'cashlinks-items';
@@ -254,7 +251,7 @@
                         <article class="cashlinks-item ${token.extraClass || ''}" id="${token.id}">
                             <a href="${token.imageHref}" class="image left" 
                                ${token.imageHref.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>
-                                <img src="${token.imageSrc}" alt="${token.title.toLowerCase()}-gift">
+                                 <img src="${token.imageSrc}" alt="${token.title.toLowerCase()}-gift">
                             </a>
                             <div class="cashlinks-content">
                                 <h3>${token.title}</h3>
@@ -271,6 +268,24 @@
 
 										container.appendChild(rowDiv);
 									}
+
+									// --- NEW: HANDLE JUMP LINKS (#ticker) ---
+									const currentHash = window.location.hash;
+									if (currentHash) {
+										// We use a tiny timeout to ensure the DOM has finished painting the new articles
+										setTimeout(() => {
+											const targetElement = document.querySelector(currentHash);
+											if (targetElement) {
+												targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+												// Optional: Temporary highlight effect so the user knows they "landed"
+												targetElement.style.outline = "2px solid #a000ff";
+												targetElement.style.outlineOffset = "5px";
+												setTimeout(() => { targetElement.style.outline = "none"; }, 2000);
+											}
+										}, 150);
+									}
+
 								} catch (err) {
 									console.error(err);
 									container.innerHTML = `
