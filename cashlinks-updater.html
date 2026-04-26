@@ -25,6 +25,58 @@
             line-height: 1.6;
         }
 
+        /* --- AUTH MODAL (FIXED) --- */
+        #gate-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gate-card {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--accent);
+            width: calc(100% - 30px);
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(160, 0, 255, 0.2);
+            box-sizing: border-box;
+        }
+
+        .pass-wrapper {
+            position: relative;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        #gate-pass-input {
+            padding-right: 45px;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text);
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- MAIN UI --- */
         header {
             background: linear-gradient(90deg, #1a1a22, #2a0033);
             padding: 2rem 5%;
@@ -44,7 +96,7 @@
         .container {
             max-width: 1200px;
             margin: 2rem auto;
-            padding: 0 5%;
+            padding: 0 20px;
         }
 
         .card {
@@ -74,6 +126,11 @@
 
             .section-header>div {
                 margin-left: 0 !important;
+                margin-top: 10px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
 
             h1 {
@@ -81,20 +138,24 @@
             }
 
             .card {
-                padding: 1.5rem 1.25rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
 
         .token-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.25rem;
         }
 
         .token-card {
             background: #25252e;
             border-radius: 12px;
-            padding: 1.75rem;
+            padding: 1.5rem;
             border: 1px solid var(--border);
             position: relative;
         }
@@ -133,9 +194,9 @@
 
         label {
             display: block;
-            margin: 14px 0 6px;
+            margin: 12px 0 4px;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #ccc;
         }
 
@@ -145,7 +206,7 @@
             border-radius: 8px;
             background: #1f1f28;
             color: #e0e0ff;
-            padding: 8px;
+            padding: 10px;
             box-sizing: border-box;
             font-size: 1rem;
         }
@@ -153,12 +214,11 @@
         input:focus {
             border-color: #a000ff;
             outline: none;
-            box-shadow: 0 0 0 4px rgba(160, 0, 255, 0.2);
         }
 
         .github-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1rem;
         }
 
@@ -167,16 +227,23 @@
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 9999px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
+            transition: 0.2s;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(160, 0, 255, 0.4);
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Disabled / Greyed out button */
+        button:disabled,
+        button.disabled {
+            background: #3a3a44 !important;
+            color: #777 !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
         }
 
         .btn-secondary {
@@ -189,6 +256,7 @@
             margin-top: 1rem;
             font-weight: 500;
             display: none;
+            text-align: center;
         }
 
         .success {
@@ -206,18 +274,36 @@
 </head>
 
 <body>
+    <div id="gate-overlay">
+        <div class="gate-card">
+            <h2 style="font-family:'Space Grotesk'; margin-top:0;">Update Cash Links</h2>
+            <div class="pass-wrapper">
+                <input type="password" id="gate-pass-input" placeholder="Enter Access Password">
+                <button type="button" class="toggle-pass" onclick="togglePass()">👁️</button>
+            </div>
+            <label
+                style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:20px; font-size: 0.9rem; cursor: pointer;">
+                <input type="checkbox" id="remember-gate" style="width:auto; margin:0;"> Remember Me
+            </label>
+            <button onclick="checkGate()" style="width:100%; padding: 15px; border-radius: 12px;">Unlock Portal</button>
+            <p id="gate-error"
+                style="color:#ff0066; font-size:0.85rem; display:none; margin-top:15px; font-weight: 600;">Incorrect
+                Password</p>
+        </div>
+    </div>
+
     <header>
         <h1>Cash Links Updater</h1>
-        <p style="margin:10px 0 0; opacity:0.9;">Secure Portal for OFiDCrypt.com</p>
+        <p style="margin:10px 0 0; opacity:0.9; font-size: 0.9rem;">Secure Admin Portal</p>
     </header>
 
     <div class="container">
         <div class="card">
             <div class="section-header">
                 <span>📋</span> Manage Tokens
-                <div style="margin-left:auto; display:flex; gap:10px; flex-wrap:wrap;">
+                <div style="margin-left:auto; display:flex; gap:10px;">
                     <button onclick="loadLiveData()" class="btn-secondary">🔄 Load Live</button>
-                    <button onclick="addNewToken()">+ Add Token</button>
+                    <button id="add-token-btn" onclick="addNewToken()">+ Add Token</button>
                 </div>
             </div>
             <div id="tokens-container" class="token-grid"></div>
@@ -225,25 +311,23 @@
 
         <div class="card">
             <div class="section-header"><span>🚀</span> Push to GitHub</div>
-
             <div class="github-grid">
                 <div><label>Owner</label><input id="owner" type="text" value="OFiDCrypt"></div>
                 <div><label>Repo</label><input id="repo" type="text" value="ofidcrypt.github.io"></div>
                 <div><label>Branch</label><input id="branch" type="text" value="main"></div>
                 <div><label>Path</label><input id="path" type="text" value="cashlinks-data.json"></div>
-
                 <div style="grid-column:1/-1;">
                     <label>GitHub Personal Access Token</label>
                     <input id="pat" type="password" placeholder="github_pat_...">
-                    <div style="margin-top: 10px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox" id="save-pat" style="width: auto;">
-                        <span>Remember token on this device (LocalStorage)</span>
-                    </div>
+                    <label
+                        style="display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.85rem; cursor: pointer;">
+                        <input type="checkbox" id="save-pat" style="width: auto; margin:0;">
+                        <span>Save PAT to this device</span>
+                    </label>
                 </div>
             </div>
-
             <button onclick="pushToGitHub()"
-                style="width:100%; margin-top:2rem; padding:18px; font-size:1.2rem;">SUBMIT</button>
+                style="width:100%; margin-top:2rem; padding:18px; font-size:1.1rem;">SUBMIT</button>
             <button onclick="testConnection()" class="btn-secondary" style="width:100%; margin-top:1rem;">🔍 Test
                 Connection</button>
             <div id="push-status" class="status"></div>
@@ -252,34 +336,47 @@
 
     <script>
         // 1. SECURITY CONFIGURATION
-        // Password: Cashlinks-updater2026@
         const GATE_KEY = "Q2FzaGxpbmtzLXVwZGF0ZXIyMDI2QUA=";
         const STORAGE_KEY = 'ofid_updater_config';
+        const PASS_STORAGE_KEY = 'ofid_gate_pass';
 
-        // 2. THE PASSWORD GATE (Runs immediately on load)
-        try {
-            const userInput = prompt("Enter Access Password:");
-            if (!userInput || btoa(userInput) !== GATE_KEY) {
-                document.body.innerHTML = `
-                <div style="color:white; text-align:center; margin-top:100px; font-family:sans-serif;">
-                    <h1>🚫 Access Denied</h1>
-                    <p>Incorrect password. Refresh to try again.</p>
-                </div>`;
-                throw new Error("Auth Failed");
-            }
-        } catch (e) {
-            // This stops the rest of the script from executing
-            window.stop();
-            throw e;
+        // 2. THE PASSWORD GATE
+        function togglePass() {
+            const x = document.getElementById("gate-pass-input");
+            x.type = x.type === "password" ? "text" : "password";
         }
 
+        function checkGate() {
+            const input = document.getElementById('gate-pass-input').value;
+            const remember = document.getElementById('remember-gate').checked;
+            if (btoa(input) === GATE_KEY) {
+                if (remember) localStorage.setItem(PASS_STORAGE_KEY, btoa(input));
+                document.getElementById('gate-overlay').style.display = 'none';
+            } else {
+                document.getElementById('gate-error').style.display = 'block';
+            }
+        }
+
+        (function autoGateCheck() {
+            const savedPass = localStorage.getItem(PASS_STORAGE_KEY);
+            if (savedPass === GATE_KEY) {
+                const checkExist = setInterval(() => {
+                    const overlay = document.getElementById('gate-overlay');
+                    if (overlay) { overlay.style.display = 'none'; clearInterval(checkExist); }
+                }, 5);
+            }
+        })();
+
         let tokensData = [];
+        let dataLoaded = false;   // ← NEW: track if data has been loaded
 
         // 3. RENDER LOGIC
         function renderTokens() {
             const container = document.getElementById('tokens-container');
-            container.innerHTML = tokensData.length === 0 ? '<p style="text-align:center; width:100%; opacity:0.5;">No data loaded. Click "Load Live" or "+ Add Token".</p>' : '';
-
+            container.innerHTML = tokensData.length === 0 
+                ? '<p style="text-align:center; width:100%; opacity:0.5;">No data loaded. Click "Load Live" to start.</p>' 
+                : '';
+            
             tokensData.forEach((token, index) => {
                 const div = document.createElement('div');
                 div.className = 'token-card';
@@ -287,23 +384,51 @@
                 <strong style="color:#a000ff;">${token.ticker || 'NEW'}</strong>
                 <button onclick="deleteToken(${index})" class="delete-btn">×</button>
                 <div class="form-row">
-                    <div><label>ID</label><input value="${token.id}" onchange="updateField(${index}, 'id', this.value)"></div>
-                    <div><label>Ticker</label><input value="${token.ticker}" onchange="updateField(${index}, 'ticker', this.value)"></div>
+                    <div><label>ID</label><input value="${token.id || ''}" onchange="updateField(${index}, 'id', this.value)"></div>
+                    <div><label>Ticker</label><input value="${token.ticker || ''}" onchange="updateField(${index}, 'ticker', this.value)"></div>
                 </div>
-                <label>Title</label><input value="${token.title}" onchange="updateField(${index}, 'title', this.value)">
-                <label>Image Path</label><input value="${token.imageSrc}" onchange="updateField(${index}, 'imageSrc', this.value)">
-                <label>Link Href</label><input value="${token.imageHref}" onchange="updateField(${index}, 'imageHref', this.value)">
-                <label>Cash Link</label><input value="${token.cashLink}" onchange="updateField(${index}, 'cashLink', this.value)">
-            `;
+                <label>Title</label><input value="${token.title || ''}" onchange="updateField(${index}, 'title', this.value)">
+                <label>Image Path</label><input value="${token.imageSrc || ''}" onchange="updateField(${index}, 'imageSrc', this.value)">
+                <label>Link Href</label><input value="${token.imageHref || ''}" onchange="updateField(${index}, 'imageHref', this.value)">
+                <label>Cash Link</label><input value="${token.cashLink || ''}" onchange="updateField(${index}, 'cashLink', this.value)">`;
                 container.appendChild(div);
             });
         }
 
-        function updateField(i, f, v) { tokensData[i][f] = v; }
-        function deleteToken(i) { if (confirm('Delete?')) { tokensData.splice(i, 1); renderTokens(); } }
+        function updateField(i, f, v) { 
+            tokensData[i][f] = v; 
+        }
+
+        function deleteToken(i) { 
+            if (confirm('Delete this token?')) { 
+                tokensData.splice(i, 1); 
+                renderTokens(); 
+            } 
+        }
+
         function addNewToken() {
-            tokensData.push({ id: "new", ticker: "NEW", title: "", imageSrc: "", imageHref: "", cashLink: "" });
+            if (!dataLoaded) return; // safety
+            tokensData.push({ 
+                id: "new", 
+                ticker: "NEW", 
+                title: "", 
+                imageSrc: "", 
+                imageHref: "", 
+                cashLink: "" 
+            });
             renderTokens();
+        }
+
+        // NEW: Button state control
+        function updateAddButtonState() {
+            const addBtn = document.getElementById('add-token-btn');
+            if (dataLoaded) {
+                addBtn.disabled = false;
+                addBtn.classList.remove('disabled');
+            } else {
+                addBtn.disabled = true;
+                addBtn.classList.add('disabled');
+            }
         }
 
         // 4. STORAGE LOGIC
@@ -326,9 +451,9 @@
                 document.getElementById('repo').value = config.repo || "ofidcrypt.github.io";
                 document.getElementById('branch').value = config.branch || "main";
                 document.getElementById('path').value = config.path || "cashlinks-data.json";
-                if (config.pat) {
-                    document.getElementById('pat').value = config.pat;
-                    document.getElementById('save-pat').checked = true;
+                if (config.pat) { 
+                    document.getElementById('pat').value = config.pat; 
+                    document.getElementById('save-pat').checked = true; 
                 }
             }
         }
@@ -338,49 +463,43 @@
             const owner = document.getElementById('owner').value;
             const repo = document.getElementById('repo').value;
             const path = document.getElementById('path').value;
+            showStatus('⏳ Loading...', '');
+
             try {
                 const res = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/${path}?t=${Date.now()}`);
-                if (!res.ok) throw new Error();
+                if (!res.ok) throw new Error('Failed to fetch');
+                
                 tokensData = await res.json();
+                dataLoaded = true;           // ← Mark as loaded
+                updateAddButtonState();      // ← Enable button
                 renderTokens();
                 showStatus('✅ Latest data pulled from GitHub', 'success');
-            } catch (e) { showStatus('❌ Error loading live file', 'error'); }
+            } catch (e) { 
+                showStatus('❌ Error loading live file', 'error'); 
+            }
         }
 
-        // 5. TEST CONNECTION FUNCTION
+        // 6. TEST & PUSH
         async function testConnection() {
             const owner = document.getElementById('owner').value;
             const repo = document.getElementById('repo').value;
             const pat = document.getElementById('pat').value;
-
             if (!pat) return showStatus('❌ Enter a PAT first to test.', 'error');
-
+            
             showStatus('🔍 Testing connection...', '');
-
             try {
-                // We try to fetch the repository metadata
-                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-                    headers: { 'Authorization': `token ${pat}` }
+                const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, { 
+                    headers: { 'Authorization': `token ${pat}` } 
                 });
-
                 if (res.status === 200) {
                     const data = await res.json();
-                    const permissions = data.permissions;
-
-                    if (permissions.push) {
-                        showStatus(`✅ Connection Successful! You have Write access to ${repo}.`, 'success');
-                    } else {
-                        showStatus(`⚠️ Connected, but your PAT doesn't have "Write" permission.`, 'error');
-                    }
-                } else if (res.status === 401) {
-                    showStatus('❌ Invalid PAT. Check for typos or expired token.', 'error');
-                } else if (res.status === 404) {
-                    showStatus('❌ Repository not found. Check Owner/Repo names.', 'error');
-                } else {
-                    showStatus(`❌ Error: ${res.statusText}`, 'error');
-                }
-            } catch (e) {
-                showStatus('❌ Network error. Check your internet.', 'error');
+                    if (data.permissions.push) showStatus(`✅ Connection Successful! You have Write access to ${repo}.`, 'success');
+                    else showStatus(`⚠️ Connected, but your PAT doesn't have "Write" permission.`, 'error');
+                } else if (res.status === 401) showStatus('❌ Invalid PAT.', 'error');
+                else if (res.status === 404) showStatus('❌ Repository not found.', 'error');
+                else showStatus(`❌ Error: ${res.statusText}`, 'error');
+            } catch (e) { 
+                showStatus('❌ Network error.', 'error'); 
             }
         }
 
@@ -391,47 +510,48 @@
             const branch = document.getElementById('branch').value;
             const path = document.getElementById('path').value;
             const pat = document.getElementById('pat').value;
-
             if (!pat) return showStatus('❌ Token required', 'error');
-
+            
             showStatus('⏳ Communicating with GitHub...', '');
-
             try {
-                const getUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
-                const getRes = await fetch(getUrl, { headers: { 'Authorization': `token ${pat}` } });
-
+                const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`, { 
+                    headers: { 'Authorization': `token ${pat}` } 
+                });
                 let sha = null;
-                if (getRes.ok) {
-                    const data = await getRes.json();
-                    sha = data.sha;
+                if (getRes.ok) { 
+                    const data = await getRes.json(); 
+                    sha = data.sha; 
                 }
-
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(tokensData, null, 2))));
                 const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
                     method: 'PUT',
                     headers: { 'Authorization': `token ${pat}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: "Update via CashLinks Manager",
-                        content: content,
-                        branch: branch,
-                        sha: sha
+                    body: JSON.stringify({ 
+                        message: "Update via CashLinks Manager", 
+                        content: content, 
+                        branch: branch, 
+                        sha: sha 
                     })
                 });
-
                 if (putRes.ok) showStatus('✅ SUCCESS! Content pushed to GitHub.', 'success');
                 else throw new Error();
-            } catch (e) { showStatus('❌ Push failed. Check your token permissions.', 'error'); }
+            } catch (e) { 
+                showStatus('❌ Push failed. Check your token permissions.', 'error'); 
+            }
         }
 
         function showStatus(msg, type) {
             const el = document.getElementById('push-status');
-            el.innerHTML = msg;
-            el.className = 'status ' + (type || '');
+            el.innerHTML = msg; 
+            el.className = 'status ' + (type || ''); 
             el.style.display = 'block';
         }
 
-        window.onload = () => { loadConfig(); renderTokens(); };
+        window.onload = () => { 
+            loadConfig(); 
+            renderTokens();
+            updateAddButtonState(); // initially disabled
+        };
     </script>
 </body>
-
 </html>
