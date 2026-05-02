@@ -4455,30 +4455,85 @@ body {
 }
 
 /* Wrapper */
-
 #wrapper {
-	-moz-transition: opacity 0.5s ease;
-	-webkit-transition: opacity 0.5s ease;
-	-ms-transition: opacity 0.5s ease;
-	transition: opacity 0.5s ease;
-	position: relative;
-	z-index: 1;
-	overflow: hidden;
+    -moz-transition: opacity 0.5s ease;
+    -webkit-transition: opacity 0.5s ease;
+    -ms-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
 }
 
-#wrapper>.bg {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: var(--bg-light-color);
-	background-image: url("../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../images/bg.jpg");
-	background-size: auto, auto, 100% auto;
-	background-position: center, center, top center;
-	background-repeat: repeat, no-repeat, no-repeat;
-	background-attachment: scroll, scroll, scroll;
-	z-index: -1;
+/* ==================== LIGHT BACKGROUND - TEMPORARILY DISABLED ==================== */
+/*
+#wrapper > .bg {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background-color: #f8f9fa;
+    background-image: 
+        linear-gradient(0deg, rgba(0,0,0,0.05), rgba(0,0,0,0.05)),
+        url("../images/bg-light.webp");
+    background-size: auto, 100% auto;
+    background-position: center, top center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: scroll, scroll;
+    z-index: -1;
+}
+
+#wrapper > .bg::before {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: url("../images/overlay-light.webp");
+    background-size: auto;
+    background-position: center;
+    background-repeat: repeat;
+    opacity: 0.45;
+    z-index: 1;
+    pointer-events: none;
+}
+*/
+
+/* ==================== DARK MODE BACKGROUND (ACTIVE) ==================== */
+#wrapper > .bg {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background-color: var(--bg-light-color);
+    background-image: 
+        linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)),
+        url("../images/bg.jpg");
+    background-size: auto, 100% auto;
+    background-position: center, top center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: scroll, scroll;
+    z-index: -1;
+}
+
+/* Dark overlay */
+#wrapper > .bg::before {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: url("../images/overlay.png");
+    background-size: auto;
+    background-position: center;
+    background-repeat: repeat;
+    opacity: 0.55;
+    z-index: 1;
+    pointer-events: none;
 }
 
 #wrapper>.bg.fixed {
@@ -4901,83 +4956,40 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 
 }
 
-/* Show/Hide Page Status Message */
-.status-message {
-	position: relative;
-	width: 100%;
-	margin-bottom: 35px;
-	padding: 5px 24px 5px 18px;
-	border-radius: 12px;
-	background: var(--status-bg, rgba(255, 215, 0, 0.12));
-	border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
-	color: var(--status-text, #b8860b);
+/* ============================================= */
+/* STATUS MESSAGES - YELLOW & GREEN             */
+/* ============================================= */
 
-	opacity: 0;
-	max-height: 0;
-	overflow: hidden;
-	transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.3s ease;
+/* ============== YELLOW STATUS MESSAGE ============== */
+.status-message {
+    position: relative;
+    width: 100%;
+    margin-bottom: 35px;
+    padding: 5px 24px 5px 18px;
+    border-radius: 12px;
+    background: var(--status-bg, rgba(255, 215, 0, 0.12));
+    border: 1px solid var(--status-border, rgba(255, 215, 0, 0.35));
+    color: var(--status-text, #b8860b);
+
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.4s ease, max-height 0.4s ease, margin-top 0.3s ease;
 }
 
 .status-message.show {
-	opacity: 1;
-	max-height: 320px;
-	margin-top: 14px;
+    opacity: 1;
+    max-height: 320px;
+    margin-top: 14px;
 }
 
-/* Close button - top right, own space, no border */
-.status-close {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	height: auto;
-	background: transparent;
-	text-align: center;
-	border: none;
-	outline: none;
-	font-size: 1em;
-	line-height: 1;
-	color: var(--status-text);
-	cursor: pointer;
-	padding: 4px 10px;
-	border-radius: 4px;
-	box-shadow: none;
-}
-
-.status-close:hover {
-	background: rgba(0, 0, 0, 0.07);
-}
-
-/* Inner content */
-.status-inner {
-	padding: 0 10px 0 10px;
-	text-align: center;
-	/* centers the message and checkbox */
-}
-
-.status-text {
-	margin: 20px 0 20px 0;
-	font-size: 0.94em;
-	line-height: 1.55;
-	text-align: center;
-	/* explicit center for the welcome text */
-}
-
-.status-message.hidden {
-	padding-top: 0 !important;
-	padding-bottom: 0 !important;
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-}
-
-/* Show/Hide Page Status Message — GREEN VERSION */
+/* ============== GREEN STATUS MESSAGE ============== */
 .status-message-green {
     position: relative;
     width: 100%;
     margin-bottom: 35px;
     padding: 5px 24px 5px 18px;
     border-radius: 12px;
-
-    /* Green theme */
     background: var(--status-bg-green, rgba(0, 128, 0, 0.12));
     border: 1px solid var(--status-border-green, rgba(0, 128, 0, 0.35));
     color: var(--status-text-green, #0f6d0f);
@@ -4994,47 +5006,109 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     margin-top: 14px;
 }
 
-/* Close button - top right, own space, no border */
+/* ============== SHARED CLOSE BUTTON ============== */
+.status-message .status-close,
 .status-message-green .status-close {
     position: absolute;
     top: 5px;
     right: 5px;
     height: auto;
     background: transparent;
-    text-align: center;
     border: none;
     outline: none;
     font-size: 1em;
     line-height: 1;
-    color: var(--status-text-green);
     cursor: pointer;
     padding: 4px 10px;
     border-radius: 4px;
     box-shadow: none;
 }
 
+/* ============== YELLOW CLOSE BUTTON ============== */
+.status-message .status-close {
+    color: var(--status-text, #b8860b);
+}
+
+.status-message .status-close:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+/* ============== GREEN CLOSE BUTTON ============== */
+.status-message-green .status-close {
+    color: var(--status-text-green, #0f6d0f);
+}
+
 .status-message-green .status-close:hover {
     background: rgba(0, 0, 0, 0.07);
 }
 
-/* Inner content */
+/* ============== INNER CONTENT ============== */
+.status-inner,
 .status-message-green .status-inner {
-    padding: 0 10px 0 10px;
+    padding: 0 10px;
     text-align: center;
 }
 
+.status-text,
 .status-message-green .status-text {
-    margin: 20px 0 20px 0;
+    margin: 20px 0;
     font-size: 0.94em;
     line-height: 1.55;
     text-align: center;
 }
 
+/* ============== HIDDEN STATE ============== */
+.status-message.hidden,
 .status-message-green.hidden {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+}
+
+/* ============== DARK MODE IMPROVEMENTS ============== */
+
+/* Yellow message in dark mode */
+body.dark-mode .status-message a {
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+body.dark-mode .status-message a:hover {
+    color: #ffffff !important;
+    border-bottom-color: #ffffff;
+}
+
+/* Green message in dark mode */
+body.dark-mode .status-message-green {
+    background: rgba(0, 220, 120, 0.18);
+    border: 1px solid rgba(0, 255, 140, 0.35);
+    color: #a0ffcc;
+}
+
+body.dark-mode .status-message-green .status-close {
+    color: #a0ffcc;
+}
+
+body.dark-mode .status-message-green .status-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .status-message-green a {
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+}
+
+body.dark-mode .status-message-green a:hover {
+    color: #ffffff !important;
+    border-bottom-color: #ffffff;
+}
+
+/* Extra pop in dark mode */
+body.dark-mode .status-message-green .status-text {
+    font-weight: 500;
 }
 
 /* Checkbox row */
@@ -5524,6 +5598,36 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
 		/* subtle hover pop */
 	}
 }
+
+/* ==================== LIGHT MODE NAV ==================== */
+/*
+body:not(.dark-mode) #nav {
+    background: rgba(255, 255, 255, 0.92);     
+    color: #5e4a8f;                            
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body:not(.dark-mode) #nav ul.links li a {
+    color: #5e4a8f;
+}
+
+body:not(.dark-mode) #nav ul.links li a:hover {
+    background-color: rgba(110, 75, 170, 0.12);
+    color: #4a3a7a;
+}
+
+body:not(.dark-mode) #nav ul.links li.active {
+    background-color: rgba(110, 75, 170, 0.18);
+}
+
+body:not(.dark-mode) #nav ul.links li.active a {
+    color: #4a3a7a;
+}
+
+body:not(.dark-mode) #nav a {
+    color: #5e4a8f;
+}
+*/
 
 /* Nav Panel Main */
 #navPanel {
@@ -8623,6 +8727,57 @@ article.community.featured {
 		font-size: 1em;
 		/* Restore original mobile list item size (inherits 0.9rem) */
 	}
+}
+
+/* ==================== LIGHT MODE COPYRIGHT & FOOTER ==================== */
+body:not(.dark-mode) #copyright {
+    color: #5e4a8f;                            /* soft purple */
+}
+
+body:not(.dark-mode) #copyright a {
+    color: #6b5aa0;
+    border-bottom-color: rgba(107, 90, 160, 0.4);
+}
+
+body:not(.dark-mode) #copyright a:hover {
+    color: #4a3a7a;
+    border-bottom-color: transparent;
+}
+
+body:not(.dark-mode) #copyright strong,
+body:not(.dark-mode) #copyright b,
+body:not(.dark-mode) #copyright h1,
+body:not(.dark-mode) #copyright h2,
+body:not(.dark-mode) #copyright h3,
+body:not(.dark-mode) #copyright h4,
+body:not(.dark-mode) #copyright h5,
+body:not(.dark-mode) #copyright h6 {
+    color: #4a3a7a;
+}
+
+/* Footer extended */
+body:not(.dark-mode) .footer-extended-container,
+body:not(.dark-mode) .footer-extended,
+body:not(.dark-mode) .footer-extended ul li a {
+    color: #5e4a8f;
+}
+
+body:not(.dark-mode) .footer-extended ul li a:hover {
+    color: #4a3a7a;
+}
+
+/* Purple pill in light mode */
+body:not(.dark-mode) .footer-extended h1.left-aligned .smaller-heading {
+    background-color: rgba(135, 82, 235, 0.18);
+    border-color: rgba(135, 82, 235, 0.3);
+    color: #6b5aa0;
+}
+
+/* Mobile */
+@media screen and (max-width: 900px) {
+    body:not(.dark-mode) #copyright {
+        color: #5e4a8f;
+    }
 }
 
 /* Video Main General styling (for all videos in .main) */
