@@ -5049,6 +5049,7 @@ body.is-preload #intro:not(.hidden)+#header+#nav {
     text-align: center;
 }
 
+/* ============== STATUS TEXT ============== */
 .status-text,
 .status-message-green .status-text {
     margin: 20px 0;
@@ -5084,11 +5085,11 @@ body.dark-mode .status-message a:hover {
 body.dark-mode .status-message-green {
     background: rgba(0, 220, 120, 0.18);
     border: 1px solid rgba(0, 255, 140, 0.35);
-    color: #a0ffcc;
+    color: #bff5d8;
 }
 
 body.dark-mode .status-message-green .status-close {
-    color: #a0ffcc;
+    color: #bff5d8;
 }
 
 body.dark-mode .status-message-green .status-close:hover {
@@ -5104,11 +5105,6 @@ body.dark-mode .status-message-green a {
 body.dark-mode .status-message-green a:hover {
     color: #ffffff !important;
     border-bottom-color: #ffffff;
-}
-
-/* Extra pop in dark mode */
-body.dark-mode .status-message-green .status-text {
-    font-weight: 500;
 }
 
 /* Checkbox row */
