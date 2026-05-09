@@ -89,9 +89,12 @@
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
 
-	<!-- Custom Shop Styles (integrated with existing CSS) -->
+	<!-- Custom Shop + Modal Styles -->
+	<!-- Custom Shop + Modal Styles -->
 	<style>
-		/* Adapt to Massively template */
+		/* ============================ */
+		/* SHOP CARDS                   */
+		/* ============================ */
 		.shop-section {
 			padding: 2em 0;
 		}
@@ -102,7 +105,6 @@
 			gap: 2em;
 			margin-bottom: 2em;
 			justify-content: center;
-			/* Centers cards when fewer than full row */
 		}
 
 		.shop-card {
@@ -113,16 +115,20 @@
 			text-align: center;
 			padding: 1em;
 			max-width: 340px;
-			/* Prevents cards from stretching too wide */
 			width: 100%;
 			margin: 0 auto;
 			position: relative;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
 		}
 
 		.shop-card .image-container {
 			padding: 0.75em;
 			position: relative;
 			display: block;
+			overflow: hidden;
+			border-radius: 0.5em;
 		}
 
 		.shop-card img {
@@ -130,29 +136,34 @@
 			height: auto;
 			border-radius: 0.5em;
 			display: block;
+			transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		}
 
-		/* === NEW: Expand overlay (small transparent image / icon) === */
+		/* Auto Hover Magnifying Effect on Shop Cards */
+		.shop-card:hover img {
+			transform: scale(1.16);
+		}
+
 		.shop-card .expand-overlay {
 			position: absolute;
 			bottom: 12px;
 			right: 12px;
 			background: rgba(255, 255, 255, 0.85);
 			border-radius: 50%;
-			width: 42px;
-			height: 42px;
+			width: 52px;
+			height: 52px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
 			cursor: pointer;
-			transition: all 0.2s ease;
+			transition: all 0.3s ease;
 			opacity: 0.9;
 			z-index: 2;
 		}
 
 		.shop-card .expand-overlay:hover {
-			transform: scale(1.12);
+			transform: scale(1.2);
 			opacity: 1;
 			background: rgba(255, 255, 255, 1);
 		}
@@ -162,7 +173,7 @@
 		}
 
 		.shop-card .expand-overlay i {
-			font-size: 1.4rem;
+			font-size: 1.65rem;
 			color: #a855f7;
 		}
 
@@ -179,9 +190,15 @@
 			font-size: 1em;
 			color: var(--accent, #a855f7);
 			display: flex;
+			flex-direction: column;
 			align-items: center;
-			justify-content: center;
-			gap: 0.5em;
+			gap: 0.35em;
+			margin-top: auto;
+			padding-top: 1em;
+		}
+
+		.shop-card .price i {
+			font-size: 1.35em;
 		}
 
 		.shop-card .cart-btn {
@@ -196,7 +213,7 @@
 			align-items: center;
 			justify-content: center;
 			text-align: center;
-			margin: 0.5em auto 0.5em;
+			margin: 0.8em auto 0.5em;
 			width: fit-content;
 			max-width: 100%;
 			gap: 0.5em;
@@ -208,7 +225,7 @@
 			border-color: #334155;
 		}
 
-		/* Existing styles (unchanged) */
+		/* Existing styles */
 		.buy-now {
 			background: rgba(168, 85, 247, 0.8);
 			color: white;
@@ -277,7 +294,7 @@
 			background: rgba(168, 85, 247, 0.8);
 		}
 
-		/* Responsive grid fixes (unchanged) */
+		/* Responsive grid */
 		@media (max-width: 480px) {
 			.shop-grid {
 				grid-template-columns: repeat(2, 1fr);
@@ -377,6 +394,8 @@
 			flex: 1;
 			overflow: hidden;
 			padding: 0 1.5em 1em;
+			position: relative;
+			z-index: 3;
 		}
 
 		.image-scroll {
@@ -388,6 +407,7 @@
 			padding-bottom: 1em;
 			scrollbar-width: thin;
 			scrollbar-color: #a855f7 #f1f1f1;
+			height: 100%;
 		}
 
 		body.dark-mode .image-scroll {
@@ -404,16 +424,17 @@
 
 		.image-slide img {
 			width: auto;
-			max-height: 55vh;
+			max-height: 68vh;
 			object-fit: contain;
 			border-radius: 1em;
 			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+			cursor: crosshair;
 		}
 
 		.variable-text {
 			margin-top: 1.25em;
 			text-align: center;
-			font-size: 1.1em;
+			font-size: 1.05em;
 			line-height: 1.5;
 			max-width: 90%;
 			font-style: italic;
@@ -425,9 +446,11 @@
 		}
 
 		.fixed-desc {
-			padding: 1.5em;
+			padding: 1.1em 1.5em;
 			background: #f8f8f8;
 			border-top: 1px solid #e5e5e5;
+			position: relative;
+			z-index: 1;
 		}
 
 		body.dark-mode .fixed-desc {
@@ -436,14 +459,18 @@
 		}
 
 		.fixed-desc h2 {
-			margin: 0 0 0.5em;
-			font-size: 1.5em;
+			margin: 0 0 0.4em;
+			font-size: 1.35em;
 		}
 
 		.fixed-desc .price {
-			font-size: 1.35em;
+			font-size: 1.25em;
 			color: #a855f7;
-			margin-bottom: 1em;
+			margin-bottom: 0.9em;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.4em;
 		}
 
 		body.dark-mode .fixed-desc .price {
@@ -451,11 +478,40 @@
 		}
 
 		.fixed-desc p {
-			margin-bottom: 1.5em;
-			line-height: 1.6;
+			margin-bottom: 1.1em;
+			line-height: 1.55;
+			font-size: 0.94em;
 		}
 
-		/* Make the whole modal feel premium on mobile */
+		/* ====================== MAGNIFYING LENS (5x) ====================== */
+		.magnifier-lens {
+			position: fixed;
+			width: 180px;
+			height: 180px;
+			border: 4px solid #a855f7;
+			border-radius: 50%;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+			background: #fff;
+			pointer-events: none;
+			display: none;
+			z-index: 10001;
+			overflow: hidden;
+		}
+
+		body.dark-mode .magnifier-lens {
+			border-color: #c084fc;
+		}
+
+		@media (min-width: 641px) {
+			.fixed-desc {
+				padding: 0.85em 1.5em 1.05em;
+			}
+
+			.image-slide img {
+				max-height: 70vh;
+			}
+		}
+
 		@media (max-width: 640px) {
 			.modal-content {
 				margin: 2vh auto;
@@ -464,7 +520,7 @@
 			}
 
 			.image-slide img {
-				max-height: 35vh;
+				max-height: 42vh;
 			}
 		}
 	</style>
@@ -615,7 +671,7 @@
 						</div>
 						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 						<h3>Chapter Book: Giddy Tales</h3>
-						<div class="price"><i class="fas fa-lightbulb"></i> $25.00 CAD / GIDDY</div>
+						<div class="price"><i class="fas fa-money-bill-wave"></i> $25.00 CAD / GIDDY</div>
 					</div>
 
 					<!-- Product 2 -->
@@ -629,7 +685,7 @@
 						</div>
 						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 						<h3>Bouncy Balls: Space First Edition</h3>
-						<div class="price"><i class="fas fa-lightbulb"></i> $15.00 CAD / GIDDY</div>
+						<div class="price"><i class="fas fa-money-bill-wave"></i> $15.00 CAD / GIDDY</div>
 					</div>
 
 					<!-- Product 3 -->
@@ -643,7 +699,7 @@
 						</div>
 						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 						<h3>Giddy Tee: Teleport</h3>
-						<div class="price"><i class="fas fa-lightbulb"></i> $30.00 CAD / GIDDY</div>
+						<div class="price"><i class="fas fa-money-bill-wave"></i> $30.00 CAD / GIDDY</div>
 					</div>
 
 					<!-- Product 4 -->
@@ -657,7 +713,7 @@
 						</div>
 						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 						<h3>Colouring Book: Dinner Time</h3>
-						<div class="price"><i class="fas fa-lightbulb"></i> $10.00 CAD / GIDDY</div>
+						<div class="price"><i class="fas fa-money-bill-wave"></i> $10.00 CAD / GIDDY</div>
 					</div>
 
 				</div>
@@ -715,6 +771,9 @@
 			</div>
 		</div>
 
+		<!-- Magnifying Lens -->
+		<div id="magnifier" class="magnifier-lens"></div>
+
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
 
@@ -727,8 +786,8 @@
 						previews: [
 							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
 							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with illustrations" },
-							{ src: "/assets/images/300x300-solana.png", text: "Back cover with summary" },
-							{ src: "/assets/images/300x300-solana.png", text: "Includes collectible card" }
+							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
+							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
 						]
 					},
 					2: {
@@ -766,79 +825,119 @@
 					}
 				};
 
-				// ==================== MODAL LOGIC ====================
+				// ==================== MODAL + MAGNIFIER LOGIC ====================
 				const modal = document.getElementById('previewModal');
 				const closeBtn = document.getElementById('closeModal');
 				const scrollContainer = document.getElementById('imageScrollContainer');
 				const fixedDescContainer = document.getElementById('modalFixedDescription');
+				const magnifier = document.getElementById('magnifier');   // ← Make sure this div exists in HTML
 
 				function openPreviewModal(productId) {
 					const product = products[productId];
 					if (!product) return;
 
-					// Build scrollable preview slides (image + variable text)
+					// Clear previous content
+					scrollContainer.innerHTML = '';
+
+					// Build slides
 					let slidesHTML = '';
 					product.previews.forEach(preview => {
 						slidesHTML += `
-							<div class="image-slide">
-								<img src="${preview.src}" alt="${product.title}">
-								<div class="variable-text">${preview.text}</div>
-							</div>
-						`;
+                    <div class="image-slide">
+                        <img src="${preview.src}" alt="${product.title}">
+                        <div class="variable-text">${preview.text}</div>
+                    </div>
+                `;
 					});
 					scrollContainer.innerHTML = slidesHTML;
 
-					// Fixed description at bottom
+					// Fixed description
 					fixedDescContainer.innerHTML = `
-						<h2>${product.title}</h2>
-						<div class="price"><i class="fas fa-lightbulb"></i> ${product.price}</div>
-						<p>${product.fixedDesc}</p>
-						<button class="cart-btn" style="width:100%; max-width:none; margin-top:1em;">
-							<i class="fas fa-shopping-cart"></i> Add to Cart
-						</button>
-					`;
+                <h2>${product.title}</h2>
+                <div class="price"><i class="fas fa-money-bill-wave"></i> ${product.price}</div>
+                <p>${product.fixedDesc}</p>
+                <button class="cart-btn" style="width:100%; max-width:none; margin-top:1em;">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+            `;
+
+					// Reset scroll
+					setTimeout(() => {
+						scrollContainer.scrollLeft = 0;
+					}, 10);
+
+					// Attach magnifier to all images
+					setTimeout(() => {
+						const images = scrollContainer.querySelectorAll('.image-slide img');
+						images.forEach(img => {
+							img.addEventListener('mousemove', showMagnifier);
+							img.addEventListener('mouseleave', hideMagnifier);
+						});
+					}, 100);
 
 					modal.style.display = 'block';
-					document.body.style.overflow = 'hidden'; // prevent background scroll
+					document.body.style.overflow = 'hidden';
+				}
+
+				function showMagnifier(e) {
+					const img = e.target;
+					magnifier.style.display = 'block';
+
+					const rect = img.getBoundingClientRect();
+					const x = e.clientX - rect.left;
+					const y = e.clientY - rect.top;
+
+					// Position the lens
+					magnifier.style.left = `${e.clientX - 90}px`;
+					magnifier.style.top = `${e.clientY - 90}px`;
+
+					// 5x zoom
+					const zoom = 5;
+					const bgX = -(x * zoom - 90) + 'px';
+					const bgY = -(y * zoom - 90) + 'px';
+
+					magnifier.style.backgroundImage = `url(${img.src})`;
+					magnifier.style.backgroundPosition = `${bgX} ${bgY}`;
+					magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
+				}
+
+				function hideMagnifier() {
+					magnifier.style.display = 'none';
 				}
 
 				function closeModal() {
 					modal.style.display = 'none';
 					document.body.style.overflow = '';
-					scrollContainer.innerHTML = ''; // clear for next time
+					hideMagnifier();
 				}
 
-				// Close button
+				// Close events
 				closeBtn.addEventListener('click', closeModal);
 
-				// Click outside content area to close
 				modal.addEventListener('click', function (e) {
 					if (e.target === modal) closeModal();
 				});
 
-				// Keyboard escape support
 				document.addEventListener('keydown', function (e) {
 					if (e.key === 'Escape' && modal.style.display === 'block') {
 						closeModal();
 					}
 				});
 
-				// ==================== ATTACH OVERLAY CLICKS ====================
+				// Attach to shop cards
 				const cards = document.querySelectorAll('.shop-card');
 				cards.forEach(card => {
 					const overlay = card.querySelector('.expand-overlay');
 					if (overlay) {
 						overlay.addEventListener('click', (e) => {
-							e.stopPropagation(); // prevent any card click bubbling
+							e.stopPropagation();
 							const productId = card.getAttribute('data-product-id');
-							if (productId) {
-								openPreviewModal(productId);
-							}
+							if (productId) openPreviewModal(productId);
 						});
 					}
 				});
 
-				// Keep your existing token selector and cart scripts
+				// Token selector and cart logic (unchanged)
 				const select = document.getElementById('token-select');
 				const paymentRows = document.querySelectorAll('.payment-summary .payment-row');
 				if (paymentRows.length > 0) {
@@ -856,22 +955,17 @@
 					select.addEventListener('change', updateTokenDisplay);
 				}
 
-				// Existing cart alerts (kept)
 				const cartButtons = document.querySelectorAll('.cart-btn');
 				cartButtons.forEach(btn => {
-					btn.addEventListener('click', () => {
-						alert('Item added to cart!');
-					});
+					btn.addEventListener('click', () => alert('Item added to cart!'));
 				});
 
 				const buyNow = document.querySelector('.buy-now');
 				if (buyNow) {
-					buyNow.addEventListener('click', () => {
-						alert('Proceeding to checkout with selected token.');
-					});
+					buyNow.addEventListener('click', () => alert('Proceeding to checkout with selected token.'));
 				}
 
-				console.log('%c✅ Preview modal with scrollable images + fixed description added!', 'color:#a855f7; font-weight:bold');
+				console.log('%c✅ Modal with 5x magnifying lens enabled!', 'color:#a855f7; font-weight:bold');
 			});
 		</script>
 
