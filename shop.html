@@ -775,84 +775,83 @@
 		<div id="magnifier" class="magnifier-lens"></div>
 
 		<script>
-			document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
 
-				// ==================== PRODUCT DATA ====================
-				const products = {
-					1: {
-						title: "Chapter Book: Giddy Tales",
-						price: "$25.00 CAD / GIDDY",
-						fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
-							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with illustrations" },
-							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
-							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
-						]
-					},
-					2: {
-						title: "Bouncy Balls: Space First Edition",
-						price: "$15.00 CAD / GIDDY",
-						fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs to complete your universe!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
-							{ src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" },
-							{ src: "/assets/images/300x300-solana.png", text: "Glow effect in action" },
-							{ src: "/assets/images/300x300-solana.png", text: "Fun size comparison" }
-						]
-					},
-					3: {
-						title: "Giddy Tee: Teleport",
-						price: "$30.00 CAD / GIDDY",
-						fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print, and built to last. Perfect for everyday adventures!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" },
-							{ src: "/assets/images/300x300-solana.png", text: "Front view with details" },
-							{ src: "/assets/images/300x300-solana.png", text: "Worn by a happy adult" },
-							{ src: "/assets/images/300x300-solana.png", text: "Close-up of print quality" }
-						]
-					},
-					4: {
-						title: "Colouring Book: Dinner Time",
-						price: "$10.00 CAD / GIDDY",
-						fixedDesc: "Magical colouring book for ages 2-5. Each page features fun scenes from Giddy's adventures. Comes with a set of vibrant crayons and hidden codes for exclusive digital gift credits!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover — colourful and inviting" },
-							{ src: "/assets/images/300x300-solana.png", text: "Sample colouring page" },
-							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with Giddy" },
-							{ src: "/assets/images/300x300-solana.png", text: "Crayons and activity pages" }
-						]
-					}
-				};
+        // ==================== PRODUCT DATA ====================
+        const products = {
+            1: {
+                title: "Chapter Book: Giddy Tales",
+                price: "$25.00 CAD / GIDDY",
+                fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
+                previews: [
+                    { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
+                    { src: "/assets/images/300x300-solana.png", text: "Inside spread with illustrations" },
+                    { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
+                    { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
+                ]
+            },
+            2: {
+                title: "Bouncy Balls: Space First Edition",
+                price: "$15.00 CAD / GIDDY",
+                fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs to complete your universe!",
+                previews: [
+                    { src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
+                    { src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" },
+                    { src: "/assets/images/300x300-solana.png", text: "Glow effect in action" },
+                    { src: "/assets/images/300x300-solana.png", text: "Fun size comparison" }
+                ]
+            },
+            3: {
+                title: "Giddy Tee: Teleport",
+                price: "$30.00 CAD / GIDDY",
+                fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print, and built to last. Perfect for everyday adventures!",
+                previews: [
+                    { src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" },
+                    { src: "/assets/images/300x300-solana.png", text: "Front view with details" },
+                    { src: "/assets/images/300x300-solana.png", text: "Worn by a happy adult" },
+                    { src: "/assets/images/300x300-solana.png", text: "Close-up of print quality" }
+                ]
+            },
+            4: {
+                title: "Colouring Book: Dinner Time",
+                price: "$10.00 CAD / GIDDY",
+                fixedDesc: "Magical colouring book for ages 2-5. Each page features fun scenes from Giddy's adventures. Comes with a set of vibrant crayons and hidden codes for exclusive digital gift credits!",
+                previews: [
+                    { src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover — colourful and inviting" },
+                    { src: "/assets/images/300x300-solana.png", text: "Sample colouring page" },
+                    { src: "/assets/images/300x300-solana.png", text: "Inside spread with Giddy" },
+                    { src: "/assets/images/300x300-solana.png", text: "Crayons and activity pages" }
+                ]
+            }
+        };
 
-				// ==================== MODAL + MAGNIFIER LOGIC ====================
-				const modal = document.getElementById('previewModal');
-				const closeBtn = document.getElementById('closeModal');
-				const scrollContainer = document.getElementById('imageScrollContainer');
-				const fixedDescContainer = document.getElementById('modalFixedDescription');
-				const magnifier = document.getElementById('magnifier');   // ← Make sure this div exists in HTML
+        // ==================== MODAL + MAGNIFIER LOGIC ====================
+        const modal = document.getElementById('previewModal');
+        const closeBtn = document.getElementById('closeModal');
+        const scrollContainer = document.getElementById('imageScrollContainer');
+        const fixedDescContainer = document.getElementById('modalFixedDescription');
+        const magnifier = document.getElementById('magnifier');
 
-				function openPreviewModal(productId) {
-					const product = products[productId];
-					if (!product) return;
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-					// Clear previous content
-					scrollContainer.innerHTML = '';
+        function openPreviewModal(productId) {
+            const product = products[productId];
+            if (!product) return;
 
-					// Build slides
-					let slidesHTML = '';
-					product.previews.forEach(preview => {
-						slidesHTML += `
+            scrollContainer.innerHTML = '';
+
+            let slidesHTML = '';
+            product.previews.forEach(preview => {
+                slidesHTML += `
                     <div class="image-slide">
                         <img src="${preview.src}" alt="${product.title}">
                         <div class="variable-text">${preview.text}</div>
                     </div>
                 `;
-					});
-					scrollContainer.innerHTML = slidesHTML;
+            });
+            scrollContainer.innerHTML = slidesHTML;
 
-					// Fixed description
-					fixedDescContainer.innerHTML = `
+            fixedDescContainer.innerHTML = `
                 <h2>${product.title}</h2>
                 <div class="price"><i class="fas fa-money-bill-wave"></i> ${product.price}</div>
                 <p>${product.fixedDesc}</p>
@@ -861,113 +860,124 @@
                 </button>
             `;
 
-					// Reset scroll
-					setTimeout(() => {
-						scrollContainer.scrollLeft = 0;
-					}, 10);
+            // Reset scroll to first image
+            setTimeout(() => {
+                scrollContainer.scrollLeft = 0;
+            }, 10);
 
-					// Attach magnifier to all images
-					setTimeout(() => {
-						const images = scrollContainer.querySelectorAll('.image-slide img');
-						images.forEach(img => {
-							img.addEventListener('mousemove', showMagnifier);
-							img.addEventListener('mouseleave', hideMagnifier);
-						});
-					}, 100);
+            // Attach magnifier events
+            setTimeout(() => {
+                const images = scrollContainer.querySelectorAll('.image-slide img');
+                images.forEach(img => {
+                    if (isTouchDevice) {
+                        img.addEventListener('touchstart', showMagnifier, { passive: false });
+                        img.addEventListener('touchmove', showMagnifier, { passive: false });
+                        img.addEventListener('touchend', hideMagnifier);
+                    } else {
+                        img.addEventListener('mousemove', showMagnifier);
+                        img.addEventListener('mouseleave', hideMagnifier);
+                    }
+                });
+            }, 100);
 
-					modal.style.display = 'block';
-					document.body.style.overflow = 'hidden';
-				}
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
 
-				function showMagnifier(e) {
-					const img = e.target;
-					magnifier.style.display = 'block';
+        function showMagnifier(e) {
+            if (e.touches) e.preventDefault();   // prevent page scroll on mobile
 
-					const rect = img.getBoundingClientRect();
-					const x = e.clientX - rect.left;
-					const y = e.clientY - rect.top;
+            const img = e.target || e.currentTarget;
+            magnifier.style.display = 'block';
 
-					// Position the lens
-					magnifier.style.left = `${e.clientX - 90}px`;
-					magnifier.style.top = `${e.clientY - 90}px`;
+            const rect = img.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-					// 5x zoom
-					const zoom = 5;
-					const bgX = -(x * zoom - 90) + 'px';
-					const bgY = -(y * zoom - 90) + 'px';
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
 
-					magnifier.style.backgroundImage = `url(${img.src})`;
-					magnifier.style.backgroundPosition = `${bgX} ${bgY}`;
-					magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
-				}
+            // Position the lens
+            magnifier.style.left = `${clientX - 90}px`;
+            magnifier.style.top = `${clientY - 90}px`;
 
-				function hideMagnifier() {
-					magnifier.style.display = 'none';
-				}
+            // 5x zoom
+            const zoom = 5;
+            const bgX = -(x * zoom - 90) + 'px';
+            const bgY = -(y * zoom - 90) + 'px';
 
-				function closeModal() {
-					modal.style.display = 'none';
-					document.body.style.overflow = '';
-					hideMagnifier();
-				}
+            magnifier.style.backgroundImage = `url(${img.src})`;
+            magnifier.style.backgroundPosition = `${bgX} ${bgY}`;
+            magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
+        }
 
-				// Close events
-				closeBtn.addEventListener('click', closeModal);
+        function hideMagnifier() {
+            magnifier.style.display = 'none';
+        }
 
-				modal.addEventListener('click', function (e) {
-					if (e.target === modal) closeModal();
-				});
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            hideMagnifier();
+        }
 
-				document.addEventListener('keydown', function (e) {
-					if (e.key === 'Escape' && modal.style.display === 'block') {
-						closeModal();
-					}
-				});
+        // Close events
+        closeBtn.addEventListener('click', closeModal);
 
-				// Attach to shop cards
-				const cards = document.querySelectorAll('.shop-card');
-				cards.forEach(card => {
-					const overlay = card.querySelector('.expand-overlay');
-					if (overlay) {
-						overlay.addEventListener('click', (e) => {
-							e.stopPropagation();
-							const productId = card.getAttribute('data-product-id');
-							if (productId) openPreviewModal(productId);
-						});
-					}
-				});
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) closeModal();
+        });
 
-				// Token selector and cart logic (unchanged)
-				const select = document.getElementById('token-select');
-				const paymentRows = document.querySelectorAll('.payment-summary .payment-row');
-				if (paymentRows.length > 0) {
-					const firstRow = paymentRows[0];
-					const labelSpan = firstRow.querySelector('span:nth-child(1)');
-					const amountSpan = firstRow.querySelector('span:nth-child(2)');
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
 
-					function updateTokenDisplay() {
-						const selectedText = (select.options[select.selectedIndex]?.text || 'KIN').trim();
-						labelSpan.textContent = `${selectedText} Qty`;
-						amountSpan.textContent = `250,000 ${selectedText}`;
-					}
+        // Attach to shop cards
+        const cards = document.querySelectorAll('.shop-card');
+        cards.forEach(card => {
+            const overlay = card.querySelector('.expand-overlay');
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = card.getAttribute('data-product-id');
+                    if (productId) openPreviewModal(productId);
+                });
+            }
+        });
 
-					updateTokenDisplay();
-					select.addEventListener('change', updateTokenDisplay);
-				}
+        // ==================== TOKEN SELECTOR + CART (unchanged) ====================
+        const select = document.getElementById('token-select');
+        const paymentRows = document.querySelectorAll('.payment-summary .payment-row');
+        if (paymentRows.length > 0) {
+            const firstRow = paymentRows[0];
+            const labelSpan = firstRow.querySelector('span:nth-child(1)');
+            const amountSpan = firstRow.querySelector('span:nth-child(2)');
 
-				const cartButtons = document.querySelectorAll('.cart-btn');
-				cartButtons.forEach(btn => {
-					btn.addEventListener('click', () => alert('Item added to cart!'));
-				});
+            function updateTokenDisplay() {
+                const selectedText = (select.options[select.selectedIndex]?.text || 'KIN').trim();
+                labelSpan.textContent = `${selectedText} Qty`;
+                amountSpan.textContent = `250,000 ${selectedText}`;
+            }
 
-				const buyNow = document.querySelector('.buy-now');
-				if (buyNow) {
-					buyNow.addEventListener('click', () => alert('Proceeding to checkout with selected token.'));
-				}
+            updateTokenDisplay();
+            select.addEventListener('change', updateTokenDisplay);
+        }
 
-				console.log('%c✅ Modal with 5x magnifying lens enabled!', 'color:#a855f7; font-weight:bold');
-			});
-		</script>
+        const cartButtons = document.querySelectorAll('.cart-btn');
+        cartButtons.forEach(btn => {
+            btn.addEventListener('click', () => alert('Item added to cart!'));
+        });
+
+        const buyNow = document.querySelector('.buy-now');
+        if (buyNow) {
+            buyNow.addEventListener('click', () => alert('Proceeding to checkout with selected token.'));
+        }
+
+        console.log('%c✅ Modal with 5x magnifying lens (Desktop: hover • Mobile: tap & drag)', 'color:#a855f7; font-weight:bold');
+    });
+</script>
 
 		<!-- Rest of your original scripts and HTML remain unchanged below -->
 		<!-- Bottom Nav, Footer, etc. are exactly as you provided -->
