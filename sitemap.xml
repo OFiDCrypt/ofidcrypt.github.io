@@ -86,6 +86,11 @@
     <priority>0.80</priority>
   </url>
   <url>
+    <loc>https://www.ofidcrypt.com/docs/main/giddy-data</loc>
+    <lastmod>2026-05-13T01:18:00+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
     <loc>https://www.ofidcrypt.com/docs/main/pa1</loc>
     <lastmod>2025-06-05T13:33:00+00:00</lastmod>
     <priority>0.80</priority>
