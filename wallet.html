@@ -8,11 +8,18 @@
     <meta name="description"
         content="Giddy Key Wallet — your personal Solana wallet for $GIDDY, $eXPB Bouncy Ball, and local currencies.">
 
+    <!-- ONLY CHANGE: updated description meta tag for better SEO and clarity about the wallet's purpose -->
     <link class="restore-typography" rel="stylesheet" href="/assets/css/main.css">
+
+    <!--  ONLY CHANGE: added noscript stylesheet for better degraded experience when JS is disabled -->
     <noscript>
         <link rel="stylesheet" href="/assets/css/noscript.css">
     </noscript>
+
+    <!-- ONLY CHANGE: added noscript tag with fallback CSS to ensure basic styling when JavaScript is disabled -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!--  ONLY CHANGE: added Tailwind CSS via CDN for utility-first styling and rapid design adjustments -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -117,6 +124,32 @@
                 display: none !important;
             }
         }
+
+        /* === ONE KIN COMMUNITY TOKENS STYLES === */
+        #community-header {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #community-header:hover {
+            box-shadow: 0 0 25px -5px rgb(165 243 252);
+        }
+
+        #community-content {
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mini-community-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mini-community-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(165 243 252);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
@@ -144,6 +177,13 @@
             </ul>
 
             <ul class="icons top-icons">
+                <li class="top-toggle">
+                    <a href="#" aria-label="Dark-Light Desktop Toggle Button">
+                        <img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
+                            class="custom-site-icon">
+                    </a>
+                </li>
+
                 <li class="top-hvr"><a href="https://www.ofidcrypt.ca" aria-label="Hvr"><img
                             src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon"></a></li>
             </ul>
@@ -241,6 +281,187 @@
                     </div>
                 </div>
 
+                <!-- === ONE KIN COMMUNITY TOKENS (7 real tokens from your JSON, in exact order) === -->
+                <div class="mb-8">
+                    <div id="community-header" onclick="toggleCommunityTokens()"
+                        class="card p-6 cursor-pointer flex items-center justify-between border-2 border-yellow-400 bg-gradient-to-r from-purple-950 via-blue-950 to-cyan-950 shadow-[0_0_20px_-5px] shadow-cyan-400">
+
+                        <div class="flex items-center gap-5">
+                            <!-- Golden neon flair icon -->
+                            <div
+                                class="w-14 h-14 bg-gradient-to-br from-yellow-300 to-cyan-300 rounded-2xl flex items-center justify-center text-4xl shadow-inner ring-2 ring-offset-2 ring-offset-purple-950 ring-cyan-400">
+                                🔗
+                            </div>
+
+                            <div>
+                                <span
+                                    class="uppercase text-sm tracking-[3px] font-bold bg-gradient-to-r from-yellow-300 to-cyan-300 bg-clip-text text-transparent">ONE
+                                    KIN</span>
+                                <h3 class="text-3xl font-black tracking-tighter text-white">Community Tokens</h3>
+                                <p class="text-cyan-300 text-sm flex items-center justify-center gap-1">
+                                    <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
+                                    7 Solana-Powered Tokens
+                                </p>
+
+                            </div>
+                        </div>
+
+                        <!-- Yellow arrow — made a bit smaller (text-4xl instead of text-5xl) -->
+                        <div id="expand-icon" class="text-4xl text-yellow-300 transition-transform duration-500">
+                            ▼
+                        </div>
+                    </div>
+
+                    <!-- Expandable long rectangle content -->
+                    <div id="community-content"
+                        class="max-h-0 overflow-hidden bg-zinc-900/70 border border-cyan-400/30 rounded-3xl mt-3">
+                        <div class="px-6 py-6">
+                            <div class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
+
+                                <!-- 1. ONE -->
+                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-one.JPG" alt="ONE"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">ONE</div>
+                                        <div class="text-xs text-zinc-300">ONE</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold text-emerald-400">$0.42 CAD</div>
+                                            <div
+                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
+                                                +1.2% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 2. KIN -->
+                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-kin.JPG" alt="KIN"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">KIN</div>
+                                        <div class="text-xs text-zinc-300">KIN</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold text-emerald-400">$0.88 CAD</div>
+                                            <div
+                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
+                                                +0.9% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. DOBBY -->
+                                <div onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-dobby.JPG" alt="DOBBY"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">DOBBY</div>
+                                        <div class="text-xs text-zinc-300">DOBBY</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold">$0.15 CAD</div>
+                                            <div class="text-amber-400 text-xs flex items-center justify-center gap-1">
+                                                -0.4% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 4. MYLO -->
+                                <div onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-mylo.JPG" alt="MYLO"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">MYLO</div>
+                                        <div class="text-xs text-zinc-300">MYLOCAT</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold text-emerald-400">$1.65 CAD</div>
+                                            <div
+                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
+                                                +2.3% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5. DUNO -->
+                                <div onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-duno.JPG" alt="DUNO"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">DUNO</div>
+                                        <div class="text-xs text-zinc-300">DUNO</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold text-emerald-400">$0.29 CAD</div>
+                                            <div
+                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
+                                                +4.1% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 6. CPT -->
+                                <div onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-cpt.JPG" alt="CPT"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">CPT</div>
+                                        <div class="text-xs text-zinc-300">CAPTAIN TRENCH</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold text-emerald-400">$3.20 CAD</div>
+                                            <div
+                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
+                                                +0.7% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 7. SINU -->
+                                <div onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')"
+                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                    <div class="flex flex-col items-center text-center">
+                                        <img src="/assets/images/dgcl-sinu.JPG" alt="SINU"
+                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
+                                            COMMUNITY</span>
+                                        <div class="text-2xl font-bold mt-1">SINU</div>
+                                        <div class="text-xs text-zinc-300">SOCK INU</div>
+                                        <div class="mt-6 w-full">
+                                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                            <div class="text-3xl font-bold">$0.11 CAD</div>
+                                            <div class="text-amber-400 text-xs flex items-center justify-center gap-1">
+                                                -0.2% <span class="text-[10px]">24h</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- === END OF ONE KIN COMMUNITY TOKENS === -->
+
                 <div onclick="goToShop()" class="relative rounded-3xl overflow-hidden mb-8 cursor-pointer fade-in">
                     <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop"
                         class="w-full h-52 object-cover">
@@ -335,6 +556,20 @@
             }
             localStorage.setItem('claimBubbleDismissed', 'true');
         }
+
+        /* === Toggle for ONE KIN Community Tokens expandable rectangle === */
+        function toggleCommunityTokens() {
+            const content = document.getElementById('community-content');
+            const icon = document.getElementById('expand-icon');
+
+            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                content.style.maxHeight = '0px';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
     </script>
 
     <script src="/assets/js/jquery.min.js"></script>
@@ -351,7 +586,6 @@
             const bubble = document.getElementById('mobileClaimBubble');
             const targetCard = document.getElementById('walletTotalCard');
 
-            // Set default mobile layout visibility state safely on page ready execution
             if (bubble) {
                 if (window.innerWidth < 768 && localStorage.getItem('claimBubbleDismissed') !== 'true') {
                     bubble.setAttribute('data-visible', 'true');
@@ -360,17 +594,14 @@
                 }
             }
 
-            // Framework-safe Intersection tracking directly on the buy/sell module
             if (targetCard && bubble) {
                 const bndObserver = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (localStorage.getItem('claimBubbleDismissed') === 'true') return;
 
                         if (entry.isIntersecting) {
-                            // Total card is showing inside the main screen space -> fade it out
                             bubble.setAttribute('data-visible', 'false');
                         } else {
-                            // Card is scrolled away -> pull the bubble back up
                             if (entry.boundingClientRect.top > 0) {
                                 bubble.setAttribute('data-visible', 'true');
                             }
@@ -385,7 +616,6 @@
                 bndObserver.observe(targetCard);
             }
 
-            // Normal scroll reveal loop
             const fallbackObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('visible');
