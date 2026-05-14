@@ -8,7 +8,7 @@
     <meta name="description"
         content="Giddy Key Wallet — your personal Solana wallet for $GIDDY, $eXPB Bouncy Ball, and local currencies.">
 
-    <link rel="stylesheet" href="/assets/css/main.css">
+    <link class="restore-typography" rel="stylesheet" href="/assets/css/main.css">
     <noscript>
         <link rel="stylesheet" href="/assets/css/noscript.css">
     </noscript>
@@ -84,14 +84,15 @@
 
         #mobileClaimBubble {
             position: fixed;
-            right: 15px;
-            bottom: calc(73px + env(safe-area-inset-bottom));
+            right: 13px;
+            bottom: calc(68px + env(safe-area-inset-bottom));
             z-index: 50;
             display: flex;
             align-items: center;
         }
 
         /* Remove border + outline from the close button */
+
         #mobileClaimBubble .close-btn {
             border: none;
             outline: none;
@@ -256,13 +257,13 @@
                     <img src="https://flagcdn.com/w40/ca.png" alt="Canada" class="h-5">
                 </div>
 
-                <div class="card p-5 fade-in mb-12">
+                <div id="walletTotalCard" class="card p-5 fade-in mb-12">
                     <div class="flex justify-between items-start">
                         <div class="flex items-center gap-3">
-                            <div class="text-4xl">💼</div>
+                            <div class="text-4xl">💰</div>
                             <div>
                                 <div class="font-bold text-2xl">TOTAL</div>
-                                <div class="text-sm text-zinc-400">BALANCE</div>
+                                <div class="text-sm text-zinc-400">CASH IN BAG</div>
                             </div>
                         </div>
                         <div class="text-right">
@@ -271,15 +272,20 @@
                             <div class="text-green-400 text-sm">+0.01% Today</div>
                         </div>
                     </div>
-                    <div class="flex justify-center gap-8 mt-8">
-                        <button onclick="buyToken()"
-                            class="w-20 h-20 bg-purple-600 hover:bg-purple-500 rounded-full text-4xl">＋</button>
-                        <button onclick="sellToken()"
-                            class="w-20 h-20 bg-purple-600 hover:bg-purple-500 rounded-full text-4xl">－</button>
-                    </div>
-                    <div class="flex justify-center gap-12 text-sm mt-2">
-                        <div>Buy</div>
-                        <div>Sell</div>
+
+                    <div class="flex flex-col items-center mt-8">
+                        <div class="flex justify-center gap-8">
+                            <div class="flex flex-col items-center w-20">
+                                <button onclick="buyToken()"
+                                    class="w-20 h-20 bg-purple-600 hover:bg-purple-500 rounded-full text-4xl mb-2">＋</button>
+                                <span class="text-sm font-medium">Buy</span>
+                            </div>
+                            <div class="flex flex-col items-center w-20">
+                                <button onclick="sellToken()"
+                                    class="w-20 h-20 bg-purple-600 hover:bg-purple-500 rounded-full text-4xl mb-2">－</button>
+                                <span class="text-sm font-medium">Sell</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -298,6 +304,7 @@
 
     </div>
 
+    <!-- ONLY CHANGE: mobile floating bubble moved outside #wrapper + class="mobile-claim" + positioning from the working version -->
     <div id="mobileClaimBubble" onclick="claimBonus()"
         class="mobile-claim bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-3 rounded-3xl shadow-2xl cursor-pointer items-center gap-2">
         <span>🎁</span>
@@ -315,9 +322,7 @@
             else if (token === 'giddy') window.location.href = '/onegiddy.html';
         }
         function goToShop() { window.location.href = '/shop.html'; }
-        function claimBonus() {
-            window.location.href = "/cashlinks.html#giddy";
-        }
+        function claimBonus() { window.location.href = "/cashlinks.html#giddy"; }
         function buyToken() { alert("Buy Interface Loading..."); }
         function sellToken() { alert("Sell Interface Loading..."); }
         function showProfile() { alert("Profile coming soon"); }
@@ -325,21 +330,11 @@
         function dismissClaimBubble() {
             const bubble = document.getElementById('mobileClaimBubble');
             if (bubble) {
-                bubble.style.setProperty('display', 'none', 'important');
+                bubble.setAttribute('data-visible', 'false');
+                setTimeout(() => bubble.style.setProperty('display', 'none', 'important'), 300);
             }
             localStorage.setItem('claimBubbleDismissed', 'true');
         }
-
-        window.addEventListener('load', () => {
-            if (window.innerWidth < 768 && localStorage.getItem('claimBubbleDismissed') !== 'true') {
-                document.getElementById('mobileClaimBubble').style.display = 'flex';
-            }
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
 
     <script src="/assets/js/jquery.min.js"></script>
@@ -350,6 +345,56 @@
     <script src="/assets/js/util.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/ofid-main.js"></script>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            const bubble = document.getElementById('mobileClaimBubble');
+            const targetCard = document.getElementById('walletTotalCard');
+
+            // Set default mobile layout visibility state safely on page ready execution
+            if (bubble) {
+                if (window.innerWidth < 768 && localStorage.getItem('claimBubbleDismissed') !== 'true') {
+                    bubble.setAttribute('data-visible', 'true');
+                } else {
+                    bubble.setAttribute('data-visible', 'false');
+                }
+            }
+
+            // Framework-safe Intersection tracking directly on the buy/sell module
+            if (targetCard && bubble) {
+                const bndObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (localStorage.getItem('claimBubbleDismissed') === 'true') return;
+
+                        if (entry.isIntersecting) {
+                            // Total card is showing inside the main screen space -> fade it out
+                            bubble.setAttribute('data-visible', 'false');
+                        } else {
+                            // Card is scrolled away -> pull the bubble back up
+                            if (entry.boundingClientRect.top > 0) {
+                                bubble.setAttribute('data-visible', 'true');
+                            }
+                        }
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '0px 0px -40px 0px',
+                    threshold: 0.1
+                });
+
+                bndObserver.observe(targetCard);
+            }
+
+            // Normal scroll reveal loop
+            const fallbackObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
+        });
+    </script>
 
 </body>
 
