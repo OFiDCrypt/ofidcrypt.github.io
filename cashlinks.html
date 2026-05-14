@@ -83,6 +83,9 @@
 	<!-- JavaScript Libraries -->
 	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
+	<!-- Tailwind CSS -->
+	<script src="https://cdn.tailwindcss.com"></script>
+
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
 
@@ -157,6 +160,34 @@
 		<!-- Main -->
 		<div id="main">
 
+			<div
+				class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black">
+
+				<div class="flex items-center gap-4 z-10">
+
+					<div onclick="window.location.href='/cashlinks-updater.html'"
+						class="flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+						<span class="text-xl">🔐</span>
+						Admin Panel
+					</div>
+
+				</div>
+
+				<h1
+					class="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none">
+					Digital Gifts
+				</h1>
+
+
+				<div class="flex items-center gap-5 z-10">
+					<i
+						class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+					<div onclick="showProfile()"
+						class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center text-black font-bold cursor-pointer hover:bg-purple-200 transition-colors">
+						👤</div>
+				</div>
+			</div>
+
 			<!-- Scrolling Ad Banner -->
 			<div id="expb-ball" class="ad-banner-wrapper">
 				<div class="ad-scroll-container">
@@ -218,7 +249,7 @@
 					<!-- Cash Links Section -->
 					<section id="cashlinks" class="cashlinks-section">
 						<header class="major">
-							<h2>Digital Gifts</h2>
+							<h2>Cash Links</h2>
 							<p><a href="../explore.html">Wallets & Apps</a> > <a href="../pages/kinnected.html">Get
 									Kinnected!</a> > <b>Cash Links</b></p>
 							<p>Never miss an opportunity to claim your digital gifts, redeemable in Kinnected!</p>
@@ -288,7 +319,7 @@
 											}
 										}, 150);
 									}
-									
+
 								} catch (err) {
 									console.error(err);
 									container.innerHTML = `
@@ -541,8 +572,8 @@
 			<div class="nav-item" onclick="window.location.href='../game/app-play.html'">
 				<i class="fas fa-gamepad"></i>Play Blinko!
 			</div>
-			<div class="nav-item" onclick="window.location.href='../bouncyball.html'">
-				<i class="fas fa-wallet"></i>Tokens
+			<div class="nav-item" onclick="window.location.href='../wallet.html'">
+				<i class="fas fa-wallet"></i>Wallet
 			</div>
 			<div class="nav-item" id="navPanelTrigger">
 				<i class="fas fa-bars"></i> Menu
