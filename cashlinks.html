@@ -83,19 +83,27 @@
 	<!-- JavaScript Libraries -->
 	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
 
-	<!-- Tailwind CSS -->
+	<!-- Tailwind CSS - Scoped to banner only -->
 	<script src="https://cdn.tailwindcss.com"></script>
+	<script>
+		tailwind.config = {
+			important: '.tailwind-banner',   // ← Isolates everything
+			corePlugins: {
+				preflight: false               // Prevents margin/padding resets
+			}
+		}
+	</script>
 
-<style>
-body h3 {
-  margin: 0 0 2rem 0;
-}
+	<style>
+		body h3 {
+			margin: 0 0 2rem 0;
+		}
 
-body p {
-  text-align: justify;
-  margin: 1.25rem 0;
-}
-</style>
+		body p {
+			text-align: justify;
+			margin: 1.25rem 0;
+		}
+	</style>
 
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
@@ -168,36 +176,39 @@ body p {
 			</ul>
 		</nav>
 
-		<!-- Main -->
+		<!-- MAIN CONTENT STARTS -->
 		<div id="main">
 
-			<div
-				class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black">
+			<!-- ISOLATED TAILWIND BANNER -->
+			<div class="tailwind-banner">
+				<div
+					class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black">
 
-				<div class="flex items-center gap-4 z-10">
+					<div class="flex items-center gap-4 z-10">
+						<div onclick="window.location.href='/cashlinks-updater.html'"
+							class="flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+							<span class="text-xl">🔐</span>
+							Admin Panel
+						</div>
+					</div>
 
-					<div onclick="window.location.href='/cashlinks-updater.html'"
-						class="flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
-						<span class="text-xl">🔐</span>
-						Admin Panel
+					<h1
+						class="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none">
+						Digital Gifts
+					</h1>
+
+					<div class="flex items-center gap-5 z-10">
+						<i
+							class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+						<div onclick="showProfile()"
+							class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center text-black font-bold cursor-pointer hover:bg-purple-200 transition-colors">
+							👤
+						</div>
 					</div>
 
 				</div>
-
-				<h1
-					class="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none">
-					Digital Gifts
-				</h1>
-
-
-				<div class="flex items-center gap-5 z-10">
-					<i
-						class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
-					<div onclick="showProfile()"
-						class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center text-black font-bold cursor-pointer hover:bg-purple-200 transition-colors">
-						👤</div>
-				</div>
 			</div>
+			<!-- END OF ISOLATED BANNER -->
 
 			<!-- Scrolling Ad Banner -->
 			<div id="expb-ball" class="ad-banner-wrapper">
@@ -275,20 +286,14 @@ body p {
 								container.innerHTML = '<p style="text-align:center; padding:40px; opacity:0.6;">Loading cash links...</p>';
 
 								try {
-									// Load the latest data from GitHub Pages
 									const response = await fetch('/cashlinks-data.json', { cache: 'no-store' });
-
 									if (!response.ok) throw new Error('JSON not found');
-
 									const cashLinksData = await response.json();
-
 									container.innerHTML = '';
 
-									// Create 3 rows of 3 items (exactly matches your CSS)
 									for (let i = 0; i < cashLinksData.length; i += 3) {
 										const rowDiv = document.createElement('div');
 										rowDiv.className = 'cashlinks-items';
-
 										const rowItems = cashLinksData.slice(i, i + 3);
 
 										rowItems.forEach(token => {
@@ -306,42 +311,39 @@ body p {
                                     Claim Cash
                                 </button>
                             </div>
-                        </article>
-                    `;
+                        </article>`;
 											rowDiv.innerHTML += itemHTML;
 										});
-
 										container.appendChild(rowDiv);
 									}
 
-									// --- NEW: HANDLE JUMP LINKS (#ticker) ---
+									// --- UNIFIED GLOW LOGIC FOR JUMP LINKS ---
 									const currentHash = window.location.hash;
 									if (currentHash) {
-										// We use a tiny timeout to ensure the DOM has finished painting the new articles
 										setTimeout(() => {
 											const targetElement = document.querySelector(currentHash);
 											if (targetElement) {
-												targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+												targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-												// Optional: Temporary highlight effect so the user knows they "landed"
-												targetElement.style.outline = "2px solid #a000ff";
-												targetElement.style.outlineOffset = "5px";
-												setTimeout(() => { targetElement.style.outline = "none"; }, 2000);
+												// Apply Soft Purple Face Glow
+												targetElement.style.transition = "all 0.8s ease-in-out";
+												targetElement.style.backgroundColor = "rgba(168, 85, 247, 0.25)";
+												targetElement.style.boxShadow = "inset 0 0 30px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)";
+
+												// Fade out
+												setTimeout(() => {
+													targetElement.style.backgroundColor = "";
+													targetElement.style.boxShadow = "none";
+												}, 2500);
 											}
-										}, 150);
+										}, 200);
 									}
 
 								} catch (err) {
 									console.error(err);
-									container.innerHTML = `
-                <p style="text-align:center; padding:40px; color:#ff6688;">
-                    ⚠️ Could not load cash links.<br>
-                    Make sure cashlinks-data.json exists in your repo root.
-                </p>`;
+									container.innerHTML = `<p style="text-align:center; padding:40px; color:#ff6688;">⚠️ Error loading links.</p>`;
 								}
 							}
-
-							// Render when page loads
 							document.addEventListener('DOMContentLoaded', renderCashLinks);
 						</script>
 
@@ -557,9 +559,19 @@ body p {
 				const element = document.getElementById(tokenId);
 				if (element) {
 					element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-					element.style.transition = 'background-color 0.8s ease';
-					element.style.backgroundColor = 'rgba(100, 200, 255, 0.15)';
-					setTimeout(() => { element.style.backgroundColor = ''; }, 1600);
+
+					// --- UNIFIED GLOW LOGIC FOR DIRECTORY ---
+					element.style.transition = 'all 0.8s ease-in-out';
+
+					// Apply Soft Purple Face Glow
+					element.style.backgroundColor = 'rgba(168, 85, 247, 0.25)';
+					element.style.boxShadow = 'inset 0 0 30px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)';
+
+					// Fade out
+					setTimeout(() => {
+						element.style.backgroundColor = '';
+						element.style.boxShadow = 'none';
+					}, 2500);
 				}
 			}
 
