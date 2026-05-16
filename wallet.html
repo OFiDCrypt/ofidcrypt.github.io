@@ -5,21 +5,17 @@
     <title>Giddy Key | Wallet</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="description"
-        content="Giddy Key Wallet — your personal Solana wallet for $GIDDY, $eXPB Bouncy Ball, and local currencies.">
+    <meta name="description" content="Giddy Key Wallet — your personal Solana wallet for $GIDDY, $eXPB Bouncy Ball, and local currencies.">
 
-    <!-- ONLY CHANGE: updated description meta tag for better SEO and clarity about the wallet's purpose -->
+    <!-- Stylesheets & Fonts -->
     <link class="restore-typography" rel="stylesheet" href="/assets/css/main.css">
-
-    <!--  ONLY CHANGE: added noscript stylesheet for better degraded experience when JS is disabled -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <noscript>
         <link rel="stylesheet" href="/assets/css/noscript.css">
     </noscript>
 
-    <!-- ONLY CHANGE: added noscript tag with fallback CSS to ensure basic styling when JavaScript is disabled -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!--  ONLY CHANGE: added Tailwind CSS via CDN for utility-first styling and rapid design adjustments -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -65,6 +61,9 @@
                 width: 96px;
                 height: 96px;
             }
+            #mobileClaimBubble {
+                display: none !important;
+            }
         }
 
         .back-btn {
@@ -74,13 +73,16 @@
             padding-right: 12px;
         }
 
-        /* Mobile Floating Bubble - fixed position so it stays on scroll */
+        /* Fixed Mobile Floating Bubble Layering */
         .mobile-claim {
             display: none;
             position: fixed;
-            bottom: 100px;
-            right: 20px;
-            z-index: 50;
+            bottom: 60px;
+            right: 13px;
+            z-index: 9999;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         @media (max-width: 767px) {
@@ -88,17 +90,6 @@
                 display: flex;
             }
         }
-
-        #mobileClaimBubble {
-            position: fixed;
-            right: 13px;
-            bottom: calc(68px + env(safe-area-inset-bottom));
-            z-index: 50;
-            display: flex;
-            align-items: center;
-        }
-
-        /* Remove border + outline from the close button */
 
         #mobileClaimBubble .close-btn {
             border: none;
@@ -108,30 +99,13 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        .mobile-claim {
-            display: none;
-        }
-
-        @media (max-width: 767px) {
-            .mobile-claim {
-                display: flex;
-            }
-        }
-
-        /* Hide mobile claim bubble on desktop only */
-        @media (min-width: 768px) {
-            #mobileClaimBubble {
-                display: none !important;
-            }
-        }
-
         /* === ONE KIN COMMUNITY TOKENS STYLES === */
         #community-header {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #community-header:hover {
-            box-shadow: 0 0 25px -5px rgb(165 243 252);
+            box-shadow: none;
         }
 
         #community-content {
@@ -150,6 +124,104 @@
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
+
+        /* === INTEGRATED MODAL STYLES === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: rgba(30, 5, 51, 0.98);
+            padding: 24px;
+            border-radius: 1.5rem;
+            width: 320px;
+            text-align: center;
+            animation: slideIn 0.3s ease-out;
+            border: 2px solid #6b21a8;
+            position: relative;
+            color: #ffffff;
+        }
+
+        @media (min-width: 768px) {
+            .modal-content {
+                width: 400px;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #a1a1aa;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .close:hover {
+            color: #ffffff;
+        }
+
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .modal-content input {
+            padding: 12px;
+            border: 1px solid #6b21a8;
+            border-radius: 12px;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: #a855f7;
+        }
+
+        .modal-content button[type="submit"] {
+            padding: 12px;
+            background-color: #9333ea;
+            color: white;
+            font-weight: bold;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .modal-content button[type="submit"]:hover {
+            background-color: #a855f7;
+        }
+
+        .modal-content button[type="submit"].failure {
+            background-color: #ef4444;
+        }
     </style>
 </head>
 
@@ -159,7 +231,7 @@
 
         <header class="header-subpage">
             <a href="/index.html">
-                <img src="/assets/images/webp/giddys-shop-tile-rnd.webp" alt="Giddy's Key" class="logo">
+                <img src="/assets/images/webp/giddy-key-logo.webp" alt="Giddys Key Logo" class="logo">
             </a>
         </header>
 
@@ -179,70 +251,86 @@
             <ul class="icons top-icons">
                 <li class="top-toggle">
                     <a href="#" aria-label="Dark-Light Desktop Toggle Button">
-                        <img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
-                            class="custom-site-icon">
+                        <img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button" class="custom-site-icon">
                     </a>
                 </li>
-
-                <li class="top-hvr"><a href="https://www.ofidcrypt.ca" aria-label="Hvr"><img
-                            src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon"></a></li>
-            </ul>
-            <ul class="icons">
-                <li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
+                <li class="top-hvr">
+                    <a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+                        <img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
+                    </a>
                 </li>
-                <li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
-                            class="label">YouTube</span></a></li>
-                <li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
-                            class="label">TikTok</span></a></li>
-                <li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
-                            class="label">Facebook</span></a></li>
-                <li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
-                            class="label">LinkedIn</span></a></li>
             </ul>
-
+            
+            <ul class="icons">
+                <li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a></li>
+                <li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span class="label">YouTube</span></a></li>
+                <li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span class="label">TikTok</span></a></li>
+                <li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+                <li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
+            </ul>
         </nav>
 
         <div id="main">
 
-            <div
-                class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black">
-
+            <!-- Wallet Title Bar -->
+            <div class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black mb-6">
                 <div class="flex items-center gap-4 z-10">
                     <button onclick="history.back()" class="back-btn">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-
-                    <div onclick="claimBonus()"
-                        class="hidden md:flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
-                        <span class="text-xl">🎁</span>
-                        Claim $GIDDY
+                    <div onclick="claimBonus()" class="hidden md:flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+                        <span class="text-xl">🎁</span> Claim $GIDDY
                     </div>
                 </div>
 
-                <h1
-                    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none">
-                    Giddy Key Wallet
+                <h1 class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none">
+                    MY MONEY
                 </h1>
 
                 <div class="flex items-center gap-5 z-10">
-                    <i
-                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
-                    <div onclick="showProfile()"
-                        class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center text-black font-bold cursor-pointer hover:bg-purple-200 transition-colors">
-                        👤</div>
+                    <i class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+                    <div onclick="showProfile()" class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center text-black font-bold cursor-pointer hover:bg-purple-200 transition-colors">👤</div>
                 </div>
             </div>
 
-            <div class="px-4 pt-2 pb-8">
-                <h2 class="text-4xl font-bold mt-6 mb-6"></h2>
+           <div class="px-4 pb-12">
+                
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <button onclick="createWalletPlaceholder()" class="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-zinc-300 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all">
+                        <span>ADD WALLET</span>
+                        <i class="fas fa-chevron-down text-zinc-300 text-base"></i>
+                    </button>
+                    <button onclick="openModal('redeem')" class="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-zinc-300 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all">
+                        <span>REDEEM CODE</span>
+                    </button>
+                </div>
 
-                <div class="grid grid-cols-2 gap-4 mb-8">
+                <!-- TOTAL widget -->
+                <div id="walletTotalCard" class="card p-5 fade-in mb-6">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-3">
+                            <div class="text-4xl">💰</div>
+                            <div>
+                                <div class="font-bold text-2xl">TOTAL</div>
+                                <div class="text-sm text-zinc-400">CASH IN BAG</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                            <div class="text-4xl font-bold">$1.68 CAD</div>
+                            <div class="text-green-400 text-sm">+0.01% Today</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary Tokens (eXPB + GIDDY) -->
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <!-- eXPB Tile -->
                     <div onclick="goToToken('expb')" class="card p-5 cursor-pointer token-card fade-in">
                         <div class="flex items-center justify-between gap-2">
                             <div class="card-content w-1/2 flex flex-col justify-center">
-                                <span
-                                    class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block leading-tight">DYNAMIC
-                                    TOKEN</span>
+                                <span class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block leading-tight">DYNAMIC TOKEN</span>
                                 <div class="text-2xl sm:text-3xl font-bold mt-1">eXPB</div>
                                 <div class="text-sm sm:text-lg leading-tight text-zinc-300">BOUNCY BALL</div>
                             </div>
@@ -258,18 +346,16 @@
                         <div class="text-purple-400 text-sm mt-6 flex items-center gap-1">Token Price Details →</div>
                     </div>
 
+                    <!-- GIDDY Tile -->
                     <div onclick="goToToken('giddy')" class="card p-5 cursor-pointer token-card fade-in">
                         <div class="flex items-center justify-between gap-2">
                             <div class="card-content w-1/2 flex flex-col justify-center">
-                                <span
-                                    class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block leading-tight">STABLE
-                                    TOKEN</span>
+                                <span class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block leading-tight">STABLE TOKEN</span>
                                 <div class="text-2xl sm:text-3xl font-bold mt-1">GIDDY</div>
                                 <div class="text-sm sm:text-lg leading-tight text-zinc-300">GIDDY DOLLAR</div>
                             </div>
                             <div class="w-1/2 flex justify-end">
-                                <img src="/assets/images/webp/giddy-case.webp" alt="GIDDY"
-                                    class="token-icon max-w-full">
+                                <img src="/assets/images/webp/giddy-case.webp" alt="GIDDY" class="token-icon max-w-full">
                             </div>
                         </div>
                         <div class="mt-8 card-content">
@@ -281,262 +367,240 @@
                     </div>
                 </div>
 
-                <!-- === ONE KIN COMMUNITY TOKENS (7 real tokens from your JSON, in exact order) === -->
-                <div class="mb-8">
-                    <div id="community-header" onclick="toggleCommunityTokens()"
-                        class="card p-6 cursor-pointer flex items-center justify-between border-2 border-yellow-400 bg-gradient-to-r from-purple-950 via-blue-950 to-cyan-950 shadow-[0_0_20px_-5px] shadow-cyan-400">
+                <!-- Location Badge -->
+                <div class="flex items-center justify-between bg-zinc-900/80 rounded-3xl px-6 py-3 text-sm mb-6">
+                    <span>British Columbia | Canada</span>
+                    <img src="https://flagcdn.com/w40/ca.png" alt="Canada" class="h-5">
+                </div>
 
-                        <div class="flex items-center gap-5">
-                            <!-- Golden neon flair icon -->
-                            <div
-                                class="w-14 h-14 bg-gradient-to-br from-yellow-300 to-cyan-300 rounded-2xl flex items-center justify-center text-4xl shadow-inner ring-2 ring-offset-2 ring-offset-purple-950 ring-cyan-400">
-                                🔗
-                            </div>
+                <!-- Store Banner -->
+                <div onclick="goToShop()" class="relative rounded-3xl overflow-hidden mb-6 cursor-pointer fade-in">
+                    <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop" class="w-full h-52 object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <button class="mt-4 w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-2xl font-semibold text-lg text-center text-zinc-300">Visit Store</button>
+                    </div>
+                </div>
 
-                            <div>
-                                <span
-                                    class="uppercase text-sm tracking-[3px] font-bold bg-gradient-to-r from-yellow-300 to-cyan-300 bg-clip-text text-transparent">ONE
-                                    KIN</span>
-                                <h3 class="text-3xl font-black tracking-tighter text-white">Community Tokens</h3>
-                                <p class="text-cyan-300 text-sm flex items-center justify-center gap-1">
-                                    <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span>
-                                    7 Solana-Powered Tokens
+                <!-- ONE KIN COMMUNITY TOKENS -->
+                <div class="mb-6">
+                    <div id="community-header" onclick="toggleCommunityTokens()" class="card p-6 cursor-pointer flex items-center justify-between border-2 border-yellow-400 bg-gradient-to-r from-purple-950 via-blue-950 to-cyan-950">
+                        <div class="flex items-center gap-5 w-full justify-start">
+                            <div class="w-14 h-14 bg-gradient-to-br from-yellow-300 to-cyan-300 rounded-2xl flex items-center justify-center text-4xl shadow-inner ring-2 ring-offset-2 ring-offset-purple-950 ring-cyan-400 flex-shrink-0">🔗</div>
+                            <div class="flex flex-col justify-center">
+                                <span class="uppercase text-sm tracking-[3px] font-bold bg-gradient-to-r from-yellow-300 to-cyan-300 bg-clip-text text-transparent">ONE KIN</span>
+                                <h3 class="text-3xl font-black tracking-tighter text-white leading-tight">Community Tokens</h3>
+                                <p class="text-cyan-300 text-sm flex items-center gap-1 mt-0.5">
+                                    <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></span> 7 Solana-Powered Tokens
                                 </p>
-
                             </div>
                         </div>
-
-                        <!-- Yellow arrow — made a bit smaller (text-4xl instead of text-5xl) -->
-                        <div id="expand-icon" class="text-4xl text-yellow-300 transition-transform duration-500">
-                            ▼
-                        </div>
+                        <div id="expand-icon" class="text-4xl text-yellow-300 transition-transform duration-500 flex-shrink-0">▼</div>
                     </div>
 
-                    <!-- Expandable long rectangle content -->
-                    <div id="community-content"
-                        class="max-h-0 overflow-hidden bg-zinc-900/70 border border-cyan-400/30 rounded-3xl mt-3">
+                    <!-- Expandable Slider Content -->
+                    <div id="community-content" class="max-h-0 overflow-hidden bg-zinc-900/70 border border-cyan-400/30 rounded-3xl mt-3">
                         <div class="px-6 py-6">
                             <div class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
-
                                 <!-- 1. ONE -->
-                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-one.JPG" alt="ONE"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-one.JPG" alt="ONE" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">ONE</div>
                                         <div class="text-xs text-zinc-300">ONE</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold text-emerald-400">$0.42 CAD</div>
-                                            <div
-                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
-                                                +1.2% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-emerald-400 text-xs flex items-center justify-center gap-1">+1.2% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- 2. KIN -->
-                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-kin.JPG" alt="KIN"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-kin.JPG" alt="KIN" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">KIN</div>
                                         <div class="text-xs text-zinc-300">KIN</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold text-emerald-400">$0.88 CAD</div>
-                                            <div
-                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
-                                                +0.9% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-emerald-400 text-xs flex items-center justify-center gap-1">+0.9% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- 3. DOBBY -->
-                                <div onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-dobby.JPG" alt="DOBBY"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-dobby.JPG" alt="DOBBY" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">DOBBY</div>
                                         <div class="text-xs text-zinc-300">DOBBY</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold">$0.15 CAD</div>
-                                            <div class="text-amber-400 text-xs flex items-center justify-center gap-1">
-                                                -0.4% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-amber-400 text-xs flex items-center justify-center gap-1">-0.4% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- 4. MYLO -->
-                                <div onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-mylo.JPG" alt="MYLO"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-mylo.JPG" alt="MYLO" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">MYLO</div>
                                         <div class="text-xs text-zinc-300">MYLOCAT</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold text-emerald-400">$1.65 CAD</div>
-                                            <div
-                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
-                                                +2.3% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-emerald-400 text-xs flex items-center justify-center gap-1">+2.3% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- 5. DUNO -->
-                                <div onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-duno.JPG" alt="DUNO"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-duno.JPG" alt="DUNO" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">DUNO</div>
                                         <div class="text-xs text-zinc-300">DUNO</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold text-emerald-400">$0.29 CAD</div>
-                                            <div
-                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
-                                                +4.1% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-emerald-400 text-xs flex items-center justify-center gap-1">+4.1% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- 6. CPT -->
-                                <div onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-cpt.JPG" alt="CPT"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-cpt.JPG" alt="CPT" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">CPT</div>
                                         <div class="text-xs text-zinc-300">CAPTAIN TRENCH</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold text-emerald-400">$3.20 CAD</div>
-                                            <div
-                                                class="text-emerald-400 text-xs flex items-center justify-center gap-1">
-                                                +0.7% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-emerald-400 text-xs flex items-center justify-center gap-1">+0.7% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- 7. SINU -->
-                                <div onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')"
-                                    class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
+                                <div onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')" class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-yellow-400/30">
                                     <div class="flex flex-col items-center text-center">
-                                        <img src="/assets/images/dgcl-sinu.JPG" alt="SINU"
-                                            class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
-                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN •
-                                            COMMUNITY</span>
+                                        <img src="/assets/images/dgcl-sinu.JPG" alt="SINU" class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
+                                        <span class="uppercase text-[10px] tracking-widest text-yellow-300">ONE KIN • COMMUNITY</span>
                                         <div class="text-2xl font-bold mt-1">SINU</div>
                                         <div class="text-xs text-zinc-300">SOCK INU</div>
                                         <div class="mt-6 w-full">
                                             <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
                                             <div class="text-3xl font-bold">$0.11 CAD</div>
-                                            <div class="text-amber-400 text-xs flex items-center justify-center gap-1">
-                                                -0.2% <span class="text-[10px]">24h</span></div>
+                                            <div class="text-amber-400 text-xs flex items-center justify-center gap-1">-0.2% <span class="text-[10px]">24h</span></div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- === END OF ONE KIN COMMUNITY TOKENS === -->
 
-                <div onclick="goToShop()" class="relative rounded-3xl overflow-hidden mb-8 cursor-pointer fade-in">
-                    <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop"
-                        class="w-full h-52 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <button
-                            class="mt-4 w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-2xl font-semibold text-lg text-center">Visit
-                            Store</button>
+                <!-- SOL Tile -->
+                <div class="card p-5 cursor-pointer token-card fade-in mb-6">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="card-content flex-1">
+                            <span class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block leading-tight">SOLANA</span>
+                            <div class="flex items-center gap-3 mt-1">
+                                <div class="text-3xl sm:text-4xl font-bold">SOL</div>
+                                <div class="flex gap-1.5 ml-2">
+                                    <button onclick="buyToken(); event.stopPropagation();" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-xl transition-all">Buy</button>
+                                    <button onclick="sellToken(); event.stopPropagation();" class="bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold px-3 py-1 rounded-xl transition-all">Sell</button>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                <div class="text-4xl font-bold">$25.50 CAD</div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <img src="/assets/images/webp/sol-case.webp" alt="SOL" class="token-icon max-w-full">
+                        </div>
+                    </div>
+                    <div class="mt-6 text-left">
+                        <a href="https://www.coingecko.com/en/coins/solana" target="_blank" onclick="event.stopPropagation();" class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 transition-colors">
+                            Token Price Details →
+                        </a>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between bg-zinc-900/80 rounded-3xl px-6 py-3 mb-8 text-sm">
-                    <span>Kelowna BC Canada</span>
-                    <img src="https://flagcdn.com/w40/ca.png" alt="Canada" class="h-5">
-                </div>
-
-                <div id="walletTotalCard" class="card p-5 fade-in mb-12">
-                    <div class="flex justify-between items-start">
-                        <div class="flex items-center gap-3">
-                            <div class="text-4xl">💰</div>
-                            <div>
-                                <div class="font-bold text-2xl">TOTAL</div>
-                                <div class="text-sm text-zinc-400">CASH IN BAG</div>
+                <!-- USDC Tile -->
+                <div class="card p-5 cursor-pointer token-card fade-in mb-6">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="card-content flex-1">
+                            <span class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block leading-tight">US DOLLAR COIN</span>
+                            <div class="flex items-center gap-3 mt-1">
+                                <div class="text-3xl sm:text-4xl font-bold">USDC</div>
+                                <div class="flex gap-1.5 ml-2">
+                                    <button onclick="buyToken(); event.stopPropagation();" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-xl transition-all">Buy</button>
+                                    <button onclick="sellToken(); event.stopPropagation();" class="bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold px-3 py-1 rounded-xl transition-all">Sell</button>
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                                <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                                <div class="text-4xl font-bold">$10.00 CAD</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
-                            <div class="text-4xl font-bold">$1.68 CAD</div>
-                            <div class="text-green-400 text-sm">+0.01% Today</div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col items-center mt-8">
-                        <div class="flex justify-center gap-8">
-                            <div class="flex flex-col items-center w-20">
-                                <button onclick="buyToken()"
-                                    class="w-20 h-20 bg-purple-600 hover:bg-purple-500 rounded-full text-4xl mb-2">＋</button>
-                                <span class="text-sm font-medium">Buy</span>
-                            </div>
-                            <div class="flex flex-col items-center w-20">
-                                <button onclick="sellToken()"
-                                    class="w-20 h-20 bg-purple-600 hover:bg-purple-500 rounded-full text-4xl mb-2">－</button>
-                                <span class="text-sm font-medium">Sell</span>
-                            </div>
+                        <div class="flex justify-end">
+                            <img src="/assets/images/webp/usdc-case.webp" alt="USDC" class="token-icon max-w-full">
                         </div>
                     </div>
+                    <div class="mt-6 text-left">
+                        <a href="https://www.coingecko.com/en/coins/usd-coin" target="_blank" onclick="event.stopPropagation();" class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 transition-colors">
+                            Token Price Details →
+                        </a>
+                    </div>
                 </div>
+
             </div>
         </div>
 
         <nav class="bottom-nav">
-            <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'"><i
-                    class="fas fa-comment-dots"></i>Ask Giddy</div>
-            <div class="nav-item" onclick="window.location.href='/kincommunity.html'"><i
-                    class="fas fa-users"></i>Connect</div>
-            <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i
-                    class="fas fa-gamepad"></i>Play Blinko!</div>
+            <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'"><i class="fas fa-comment-dots"></i>Ask Giddy</div>
+            <div class="nav-item" onclick="window.location.href='/kincommunity.html'"><i class="fas fa-users"></i>Connect</div>
+            <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i class="fas fa-gamepad"></i>Play Blinko!</div>
             <div class="nav-item active"><i class="fas fa-wallet"></i>Wallet</div>
             <div class="nav-item" id="navPanelTrigger"><i class="fas fa-bars"></i> Menu</div>
         </nav>
 
     </div>
 
-    <!-- ONLY CHANGE: mobile floating bubble moved outside #wrapper + class="mobile-claim" + positioning from the working version -->
-    <div id="mobileClaimBubble" onclick="claimBonus()"
-        class="mobile-claim bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-3 rounded-3xl shadow-2xl cursor-pointer items-center gap-2">
+    <!-- Integrated Redeem Code Modal Markup -->
+    <div id="redeem-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('redeem')">&times;</span>
+            <h2 class="text-2xl font-black tracking-tight mb-2">Redeem Code</h2>
+            <form id="redeem-form">
+                <input type="text" id="redeem-input" placeholder="Enter your 13-digit code" maxlength="13"
+                    pattern="[0-9]{13}" title="Please enter exactly 13 digits" required>
+                <small style="display: block; margin-top: 2px; color: #a1a1aa; font-size: 13px;">
+                    Exactly 13 digits (numbers only)
+                </small>
+                <div id="redeem-message" style="margin-top: 10px; font-size: 14px; min-height: 20px;"></div>
+                <button type="submit">Redeem</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mobile Floating Bubble Container -->
+    <div id="mobileClaimBubble" onclick="claimBonus()" class="mobile-claim bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-3 rounded-3xl shadow-2xl cursor-pointer items-center gap-2">
         <span>🎁</span>
         Claim $GIDDY
-
-        <button onclick="event.stopPropagation(); dismissClaimBubble();"
-            class="ml-auto text-white/90 hover:text-white text-2xl leading-none bg-transparent p-0 close-btn">
+        <button onclick="event.stopPropagation(); dismissClaimBubble();" class="ml-auto text-white/90 hover:text-white text-2xl leading-none bg-transparent p-0 close-btn">
             ×
         </button>
     </div>
 
+    <!-- Global Layout & Handlers JavaScript -->
     <script>
         function goToToken(token) {
             if (token === 'expb') window.location.href = '/bouncyball.html';
@@ -547,17 +611,45 @@
         function buyToken() { alert("Buy Interface Loading..."); }
         function sellToken() { alert("Sell Interface Loading..."); }
         function showProfile() { alert("Profile coming soon"); }
+        function createWalletPlaceholder() { alert("Wallet connection and creation coming soon"); }
+
+        function openModal(modalId) {
+            if (modalId === 'redeem') {
+                document.getElementById('redeem-modal').style.display = 'flex';
+                resetRedeemForm();
+            }
+        }
+
+        function closeModal(modalId) {
+            if (modalId === 'redeem') {
+                document.getElementById('redeem-modal').style.display = 'none';
+                resetRedeemForm();
+            }
+        }
+
+        function resetRedeemForm() {
+            document.getElementById('redeem-input').value = '';
+            const msg = document.getElementById('redeem-message');
+            if (msg) {
+                msg.textContent = '';
+                msg.style.color = '';
+            }
+            const btn = document.querySelector('#redeem-form button');
+            if (btn) {
+                btn.classList.remove('success', 'failure');
+                btn.textContent = 'Redeem';
+                btn.disabled = false;
+            }
+        }
 
         function dismissClaimBubble() {
             const bubble = document.getElementById('mobileClaimBubble');
             if (bubble) {
-                bubble.setAttribute('data-visible', 'false');
-                setTimeout(() => bubble.style.setProperty('display', 'none', 'important'), 300);
+                bubble.style.setProperty('display', 'none', 'important');
             }
             localStorage.setItem('claimBubbleDismissed', 'true');
         }
 
-        /* === Toggle for ONE KIN Community Tokens expandable rectangle === */
         function toggleCommunityTokens() {
             const content = document.getElementById('community-content');
             const icon = document.getElementById('expand-icon');
@@ -570,8 +662,48 @@
                 icon.style.transform = 'rotate(180deg)';
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const redeemForm = document.getElementById('redeem-form');
+            if (redeemForm) {
+                redeemForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const input = document.getElementById('redeem-input').value.trim();
+                    const messageDiv = document.getElementById('redeem-message');
+                    const button = redeemForm.querySelector('button');
+
+                    messageDiv.textContent = '';
+                    messageDiv.style.color = '#2ecc71';
+                    button.classList.remove('success', 'failure');
+
+                    if (!input) {
+                        messageDiv.textContent = 'Please enter a code.';
+                        messageDiv.style.color = '#e74c3c';
+                        button.classList.add('failure');
+                        return;
+                    }
+
+                    if (!/^\d{13}$/.test(input)) {
+                        messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+                        messageDiv.style.color = '#e74c3c';
+                        button.classList.add('failure');
+                        button.textContent = 'INVALID';
+                        return;
+                    }
+
+                    messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
+                    button.textContent = 'Checking...';
+                    button.disabled = true;
+
+                    setTimeout(() => {
+                        window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
+                    }, 800);
+                });
+            }
+        });
     </script>
 
+    <!-- Legacy Assets Integration Scripts -->
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery.scrollex.min.js"></script>
     <script src="/assets/js/jquery.scrolly.min.js"></script>
@@ -581,41 +713,9 @@
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/ofid-main.js"></script>
 
+    <!-- UI Observer Overrides Trigger -->
     <script>
         jQuery(document).ready(function ($) {
-            const bubble = document.getElementById('mobileClaimBubble');
-            const targetCard = document.getElementById('walletTotalCard');
-
-            if (bubble) {
-                if (window.innerWidth < 768 && localStorage.getItem('claimBubbleDismissed') !== 'true') {
-                    bubble.setAttribute('data-visible', 'true');
-                } else {
-                    bubble.setAttribute('data-visible', 'false');
-                }
-            }
-
-            if (targetCard && bubble) {
-                const bndObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (localStorage.getItem('claimBubbleDismissed') === 'true') return;
-
-                        if (entry.isIntersecting) {
-                            bubble.setAttribute('data-visible', 'false');
-                        } else {
-                            if (entry.boundingClientRect.top > 0) {
-                                bubble.setAttribute('data-visible', 'true');
-                            }
-                        }
-                    });
-                }, {
-                    root: null,
-                    rootMargin: '0px 0px -40px 0px',
-                    threshold: 0.1
-                });
-
-                bndObserver.observe(targetCard);
-            }
-
             const fallbackObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -627,5 +727,4 @@
     </script>
 
 </body>
-
 </html>
