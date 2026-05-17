@@ -80,6 +80,20 @@
 		<link rel="stylesheet" href="/assets/css/noscript.css">
 	</noscript>
 
+	<!-- JavaScript Libraries -->
+	<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+	<!-- Tailwind CSS - Scoped to banner only -->
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script>
+		tailwind.config = {
+			important: '.tailwind-banner',   // ← Isolates everything
+			corePlugins: {
+				preflight: false               // Prevents margin/padding resets
+			}
+		}
+	</script>
+
 	<!-- Font Awesome for icons -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -546,7 +560,7 @@
 		<nav id="nav">
 			<ul class="links">
 				<li><a href="index.html">Home</a></li>
-				<li class="active"><a href="ofidtales.html">Giddy's TV & Toys</a></li>
+				<li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
 				<li><a href="explore.html">Wallets & Apps</a></li>
 				<li><a href="bouncyball.html">Tokens</a></li>
 				<li><a href="cashlinks.html">Digital Gifts</a></li>
@@ -591,6 +605,42 @@
 
 		<!-- Main -->
 		<div id="main">
+
+			<!-- ISOLATED TAILWIND BANNER -->
+			<div class="tailwind-banner">
+				<div
+					class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black">
+
+					<div class="flex items-center gap-4 z-10">
+						<div id="cartNavBtn"
+							class="relative flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+							<span class="text-xl">🛒</span>
+							My Cart
+							<!-- Cart Count Badge -->
+							<span id="cartCountBadge"
+								class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center animate-bounce shadow-md">0</span>
+						</div>
+					</div>
+
+					<h1
+						class="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none">
+						Shopping Bag
+					</h1>
+
+					<div class="flex items-center gap-5 z-10">
+						<i
+							class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+						<div onclick="showProfile()"
+							class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-200 transition-colors overflow-hidden">
+							<img src="/assets/images/webp/ofidcrypt-digitized-logo.webp" alt="OFIDCrypt Logo"
+								class="w-full h-full object-cover" />
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+			<!-- END OF ISOLATED BANNER -->
 
 			<!-- Scrolling Ad Banner -->
 			<div id="expb-ball" class="ad-banner-wrapper">
@@ -656,7 +706,133 @@
 						Explore magical worlds and family-fun adventures!</p>
 				</header>
 
-				<h2>Item Catalogue: Collectibles</h2>
+				<h2>Signature Catalogue: Debut Items</h2>
+
+				<!-- DISTRIBUTOR TOGGLE DROPDOWN SYSTEM -->
+				<style>
+					.distributor-wrapper {
+						position: relative;
+						display: inline-block;
+						margin: 1.5em 0 2em 0;
+						/* Extra bottom margin */
+					}
+
+					.distributor-toggle-btn {
+						background: var(--card-bg, #1e1e2e);
+						color: var(--text-color, #e2e8f0);
+						border: 1px solid #6b21a8;
+						padding: 0.85em 1.35em;
+						border-radius: 9999px;
+						font-weight: 600;
+						cursor: pointer;
+						display: flex;
+						align-items: center;
+						gap: 10px;
+						transition: all 0.25s ease;
+						font-size: 1.02em;
+					}
+
+					.distributor-toggle-btn:hover {
+						background: #2a2a40;
+						border-color: #a855f7;
+						transform: translateY(-1px);
+					}
+
+					.distributor-dropdown-menu {
+						display: none;
+						position: absolute;
+						top: 110%;
+						left: 0;
+						background: var(--card-bg, #1a1a2e);
+						border: 2px solid #6b21a8;
+						border-radius: 16px;
+						width: 100%;
+						min-width: 300px;
+						box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+						overflow: hidden;
+						z-index: 1000;
+						padding: 6px 0;
+					}
+
+					.distributor-option {
+						padding: 0.95em 1.4em;
+						cursor: pointer;
+						transition: all 0.25s ease;
+						color: var(--text-color, #e2e8f0);
+						font-size: 1.02em;
+						display: flex;
+						align-items: center;
+						gap: 10px;
+					}
+
+					.distributor-option:hover {
+						background: #4c1d95;
+						color: white;
+						transform: scale(1.03);
+						padding-left: 1.65em;
+					}
+
+					.distributor-option:active {
+						transform: scale(0.98);
+					}
+
+					.distributor-option:not(:last-child) {
+						border-bottom: 1px solid rgba(107, 33, 168, 0.3);
+					}
+
+					/* Light Mode Support */
+					body:not(.dark-mode) .distributor-toggle-btn {
+						background: #f8f9fa;
+						color: #1e2937;
+						border-color: #a855f7;
+					}
+
+					body:not(.dark-mode) .distributor-dropdown-menu {
+						background: white;
+						border-color: #a855f7;
+						box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+					}
+
+					body:not(.dark-mode) .distributor-option {
+						color: #1e2937;
+					}
+
+					body:not(.dark-mode) .distributor-option:hover {
+						background: #e0d4ff;
+						color: #4c1d95;
+					}
+
+					/* Center Amazon Option */
+					.distributor-option-amazon {
+						justify-content: center;
+					}
+				</style>
+
+				<div class="distributor-wrapper">
+					<button id="distributorToggleBtn" class="distributor-toggle-btn">
+						<span>📦 Select your distributor</span>
+						<span style="font-size: 15px;">▼</span>
+					</button>
+
+					<div id="distributorDropdown" class="distributor-dropdown-menu" style="display: none;">
+						<div class="distributor-option" data-value="local">
+							🏪 Buy Local with Debit / Credit / Tokens
+						</div>
+						<div class="distributor-option distributor-option-amazon" data-value="amazon">
+							<i class="fab fa-amazon" style="color: #ff9900; font-size: 19px;"></i>
+							Shop on Amazon
+						</div>
+					</div>
+				</div>
+
+				<!-- Active Mode Display -->
+				<div class="active-mode-card" style="margin-bottom: 2.5em;">
+					<span class="active-mode-label">Active Mode: </span>
+					<span id="selectedDistributorLine" class="active-mode-value" style="color: #22c55e;">
+						🏪 Buy Local with Debit / Credit / Tokens
+					</span>
+				</div>
+
 				<div class="shop-grid">
 
 					<!-- Product 1 -->
@@ -668,7 +844,12 @@
 								<i class="fas fa-magnifying-glass-plus"></i>
 							</div>
 						</div>
-						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
+							Cart</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
 						<h3>Chapter Book: Giddy Tales</h3>
 						<div class="price"><i class="fas fa-money-bill-wave"></i> $25.00 CAD / GIDDY</div>
 					</div>
@@ -682,7 +863,12 @@
 								<i class="fas fa-magnifying-glass-plus"></i>
 							</div>
 						</div>
-						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
+							Cart</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
 						<h3>Bouncy Balls: Space First Edition</h3>
 						<div class="price"><i class="fas fa-money-bill-wave"></i> $15.00 CAD / GIDDY</div>
 					</div>
@@ -696,7 +882,12 @@
 								<i class="fas fa-magnifying-glass-plus"></i>
 							</div>
 						</div>
-						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
+							Cart</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
 						<h3>Giddy Tee: Teleport</h3>
 						<div class="price"><i class="fas fa-money-bill-wave"></i> $30.00 CAD / GIDDY</div>
 					</div>
@@ -710,14 +901,19 @@
 								<i class="fas fa-magnifying-glass-plus"></i>
 							</div>
 						</div>
-						<button class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
+							Cart</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
 						<h3>Colouring Book: Dinner Time</h3>
 						<div class="price"><i class="fas fa-money-bill-wave"></i> $10.00 CAD / GIDDY</div>
 					</div>
 
 				</div>
 
-				<button class="buy-now">BUY NOW</button>
+				<button class="buy-now" id="reviewCartBtn">Review Cart</button>
 
 				<div class="payment-summary">
 					<h2>Payment Summary</h2>
@@ -735,22 +931,22 @@
 					</select>
 					<div class="payment-row">
 						<span>Token Qty</span>
-						<span>250,000 KIN</span>
+						<span id="summaryTokenQty">0 KIN</span>
 					</div>
 					<div class="payment-row">
 						<span>CAD / GIDDY Price</span>
-						<span>$2.50</span>
+						<span id="summaryCadPrice">$0.00</span>
 					</div>
 					<div class="payment-row">
 						<span>USD Price</span>
-						<span>$2.50</span>
+						<span id="summaryUsdPrice">$0.00</span>
 					</div>
 				</div>
 			</section>
 		</div>
 
 		<!-- ============================ -->
-		<!-- NEW: PREVIEW MODAL HTML      -->
+		<!-- EXISTING: PREVIEW MODAL HTML -->
 		<!-- ============================ -->
 		<div id="previewModal">
 			<div class="modal-content">
@@ -770,6 +966,57 @@
 			</div>
 		</div>
 
+		<!-- ============================ -->
+		<!-- NEW: CHECKOUT GATEWAY MODAL  -->
+		<!-- ============================ -->
+		<div id="checkoutModal"
+			style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);">
+			<div
+				style="background: linear-gradient(135deg, #120326 0%, #000000 100%); margin: 10% auto; padding: 30px; border: 1px solid #7c3aed; width: 90%; max-width: 550px; border-radius: 20px; color: #fff; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3); font-family: sans-serif; position: relative;">
+				<span id="closeCheckoutModal"
+					style="color: #a78bfa; float: right; font-size: 30px; font-weight: bold; cursor: pointer; line-height: 20px;"
+					onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#a78bfa'">&times;</span>
+
+				<h2
+					style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 10px;">
+					<span>🔮</span> OFiDCrypt Checkout Gateway
+				</h2>
+
+				<div id="checkoutModalItems"
+					style="max-height: 200px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #4c1d95; padding-bottom: 15px;">
+					<!-- Items mapped dynamically -->
+				</div>
+
+				<div
+					style="background: rgba(124, 58, 237, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.2);">
+					<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+						<span style="color: #c084fc;">Total Est. Value:</span>
+						<span id="checkoutTotalCAD" style="font-weight: bold; color: #22c55e;">$0.00 CAD</span>
+					</div>
+					<div style="display: flex; justify-content: space-between;">
+						<span style="color: #c084fc;">Selected Crypto Settlement:</span>
+						<span id="checkoutCryptoSettlement" style="font-weight: bold; color: #a855f7;">0 eXPB</span>
+					</div>
+				</div>
+
+				<div
+					style="text-align: center; background: #2e1065; border: 1px solid #6b21a8; padding: 12px; border-radius: 10px; font-size: 13px; color: #ddd; margin-bottom: 20px;">
+					🛠️ <b>Development Mode:</b> Secure Web3 & Card Gateway Engine integration pending release.
+				</div>
+
+				<div style="display: flex; gap: 15px;">
+					<button id="clearCartBtn"
+						style="flex: 1; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; height: 50px; line-height: normal;"
+						onmouseover="this.style.background='rgba(239,68,68,0.1)'"
+						onmouseout="this.style.background='transparent'">🗑️ CLEAR ALL</button>
+					<button id="gatewayProceedBtn"
+						style="flex: 2; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(124,58,237,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; height: 50px; line-height: normal;"
+						onmouseover="this.style.transform='scale(1.02)'"
+						onmouseout="this.style.transform='scale(1)'">Proceed to Gateway</button>
+				</div>
+			</div>
+		</div>
+
 		<!-- Magnifying Lens -->
 		<div id="magnifier" class="magnifier-lens"></div>
 
@@ -781,6 +1028,8 @@
             1: {
                 title: "Chapter Book: Giddy Tales",
                 price: "$25.00 CAD / GIDDY",
+                priceVal: 25.00,
+                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
                 fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
                 previews: [
                     { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
@@ -792,6 +1041,8 @@
             2: {
                 title: "Bouncy Balls: Space First Edition",
                 price: "$15.00 CAD / GIDDY",
+                priceVal: 15.00,
+                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
                 fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs to complete your universe!",
                 previews: [
                     { src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
@@ -803,6 +1054,8 @@
             3: {
                 title: "Giddy Tee: Teleport",
                 price: "$30.00 CAD / GIDDY",
+                priceVal: 30.00,
+                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
                 fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print, and built to last. Perfect for everyday adventures!",
                 previews: [
                     { src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" },
@@ -814,6 +1067,8 @@
             4: {
                 title: "Colouring Book: Dinner Time",
                 price: "$10.00 CAD / GIDDY",
+                priceVal: 10.00,
+                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
                 fixedDesc: "Magical colouring book for ages 2-5. Each page features fun scenes from Giddy's adventures. Comes with a set of vibrant crayons and hidden codes for exclusive digital gift credits!",
                 previews: [
                     { src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover — colourful and inviting" },
@@ -823,6 +1078,268 @@
                 ]
             }
         };
+
+        // Current Active Distributor Mode (local or amazon)
+        let currentDistributorMode = "local";
+
+        // ==================== DISTRIBUTOR TOGGLE ENGINE ====================
+        const toggleBtn = document.getElementById('distributorToggleBtn');
+        const dropdown = document.getElementById('distributorDropdown');
+        const activeLineText = document.getElementById('selectedDistributorLine');
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            });
+        }
+
+        document.querySelectorAll('.distributor-option').forEach(option => {
+            option.addEventListener('click', function () {
+                const val = this.getAttribute('data-value');
+                currentDistributorMode = val;
+
+                if (val === 'amazon') {
+                    activeLineText.style.color = '#ff9900';
+                    activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Shop on Amazon`;
+                    document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
+                    document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = ''); 
+                } else {
+                    activeLineText.style.color = '#22c55e';
+                    activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
+                    document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = ''); 
+                    document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
+                }
+                if (dropdown) dropdown.style.display = 'none';
+            });
+        });
+
+        document.addEventListener('click', function () {
+            if (dropdown) dropdown.style.display = 'none';
+        });
+
+
+        // ==================== STATE ENGINE ====================
+        let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('ofid_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function addPromptToCart(productId, triggeringButton = null) {
+            if (currentDistributorMode === 'amazon') {
+                alert("Switch to local distribution to enable cart options.");
+                return false;
+            }
+
+            const prodId = parseInt(productId);
+            const countPrompt = prompt("How many items would you like to add to your cart?", "1");
+            if (countPrompt === null) return false;
+
+            const qty = parseInt(countPrompt);
+            if (!isNaN(qty) && qty > 0) {
+                const existingItem = cart.find(item => item.id === prodId);
+                if (existingItem) {
+                    existingItem.quantity += qty;
+                } else {
+                    cart.push({ id: prodId, quantity: qty });
+                }
+                saveCart();
+                alert('Item(s) added to cart!');
+
+                const badge = document.getElementById('cartCountBadge');
+                if (badge) {
+                    badge.classList.remove('animate-bounce');
+                    void badge.offsetWidth;
+                    badge.classList.add('animate-bounce');
+                }
+
+                if (triggeringButton) {
+                    const originalHTML = triggeringButton.innerHTML;
+                    triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
+                    triggeringButton.style.pointerEvents = 'none';
+                    triggeringButton.classList.add('success-state'); 
+
+                    setTimeout(() => {
+                        triggeringButton.innerHTML = originalHTML;
+                        triggeringButton.style.pointerEvents = '';
+                        triggeringButton.classList.remove('success-state');
+                    }, 2000);
+                }
+
+                return true;
+            } else {
+                alert("Please enter a valid quantity.");
+                return false;
+            }
+        }
+
+        function removeCartItemElement(productId) {
+            const prodId = parseInt(productId);
+            const matchedItem = cart.find(item => item.id === prodId);
+            if (!matchedItem) return;
+
+            if (matchedItem.quantity > 1) {
+                const countPrompt = prompt(`This item has a quantity of ${matchedItem.quantity}. How many would you like to remove?`, "1");
+                if (countPrompt === null) return;
+                const removeQty = parseInt(countPrompt);
+                if (!isNaN(removeQty) && removeQty > 0) {
+                    if (removeQty >= matchedItem.quantity) {
+                        cart = cart.filter(item => item.id !== prodId);
+                    } else {
+                        matchedItem.quantity -= removeQty;
+                    }
+                } else {
+                    alert("Invalid quantity entered.");
+                    return;
+                }
+            } else {
+                cart = cart.filter(item => item.id !== prodId);
+            }
+
+            saveCart();
+            if (cart.length === 0) {
+                closeCheckoutGateway();
+            } else {
+                openCheckoutGateway();
+            }
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            const badge = document.getElementById('cartCountBadge');
+
+            if (badge) {
+                if (totalItems > 0) {
+                    badge.textContent = totalItems;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+
+            let totalCAD = 0;
+            cart.forEach(item => {
+                const product = products[item.id];
+                if (product) {
+                    totalCAD += (product.priceVal * item.quantity);
+                }
+            });
+
+            const selectedToken = (document.getElementById('token-select')?.value || 'eXPB').trim();
+            const computedTokenQty = totalCAD * 10000;
+
+            const summaryTokenQty = document.getElementById('summaryTokenQty');
+            const summaryCadPrice = document.getElementById('summaryCadPrice');
+            const summaryUsdPrice = document.getElementById('summaryUsdPrice');
+
+            if (summaryTokenQty && summaryCadPrice && summaryUsdPrice) {
+                summaryTokenQty.textContent = `${computedTokenQty.toLocaleString()} ${selectedToken}`;
+                summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
+                summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
+            }
+        }
+
+        // ==================== CHECKOUT GATEWAY ENGINE ====================
+        const checkoutModal = document.getElementById('checkoutModal');
+        const closeCheckoutBtn = document.getElementById('closeCheckoutModal');
+        const reviewCartBtn = document.getElementById('reviewCartBtn');
+        const cartNavBtn = document.getElementById('cartNavBtn');
+        const clearCartBtn = document.getElementById('clearCartBtn');
+        const gatewayProceedBtn = document.getElementById('gatewayProceedBtn');
+
+        function openCheckoutGateway() {
+            if (currentDistributorMode === 'amazon') {
+                alert("Switch to local distribution to enable cart options.");
+                return;
+            }
+
+            if (cart.length === 0) {
+                alert("Your cart is empty! Add elements from the catalog first.");
+                return;
+            }
+
+            const itemsContainer = document.getElementById('checkoutModalItems');
+            let itemsHTML = '';
+            let totalCAD = 0;
+
+            cart.forEach(item => {
+                const product = products[item.id];
+                if (product) {
+                    const lineTotal = product.priceVal * item.quantity;
+                    totalCAD += lineTotal;
+                    itemsHTML += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
+                                <span style="display: inline-block; vertical-align: middle;"><span style="font-weight: bold; color: #a78bfa;">${item.quantity}x</span> ${product.title}</span>
+                            </div>
+                            <div style="color: #e9d5ff;">$${lineTotal.toFixed(2)} CAD</div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (itemsContainer) itemsContainer.innerHTML = itemsHTML;
+            
+            const totalCadEl = document.getElementById('checkoutTotalCAD');
+            if (totalCadEl) totalCadEl.textContent = `$${totalCAD.toFixed(2)} CAD`;
+
+            const selectEl = document.getElementById('token-select');
+            const cryptoSettlementEl = document.getElementById('checkoutCryptoSettlement');
+            if (selectEl && cryptoSettlementEl) {
+                const selectedToken = selectEl.value;
+                cryptoSettlementEl.textContent = `${(totalCAD * 10000).toLocaleString()} ${selectedToken}`;
+            }
+
+            if (itemsContainer) {
+                itemsContainer.querySelectorAll('.checkout-del-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        removeCartItemElement(this.getAttribute('data-id'));
+                    });
+                });
+            }
+
+            if (checkoutModal) {
+                checkoutModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeCheckoutGateway() {
+            if (checkoutModal) {
+                checkoutModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        if (reviewCartBtn) reviewCartBtn.addEventListener('click', openCheckoutGateway);
+        if (cartNavBtn) cartNavBtn.addEventListener('click', openCheckoutGateway);
+        if (closeCheckoutBtn) closeCheckoutBtn.addEventListener('click', closeCheckoutGateway);
+
+        if (clearCartBtn) {
+            clearCartBtn.addEventListener('click', () => {
+                if (confirm("Are you sure you want to empty your cart?")) {
+                    cart = [];
+                    saveCart();
+                    closeCheckoutGateway();
+                }
+            });
+        }
+
+        if (gatewayProceedBtn) {
+            gatewayProceedBtn.addEventListener('click', () => {
+                alert("Routing to Secure Checkout Gateway Engine page configuration coming soon!");
+            });
+        }
+
+        if (checkoutModal) {
+            checkoutModal.addEventListener('click', function (e) {
+                if (e.target === checkoutModal) closeCheckoutGateway();
+            });
+        }
+
 
         // ==================== MODAL + MAGNIFIER LOGIC ====================
         const modal = document.getElementById('previewModal');
@@ -837,7 +1354,7 @@
             const product = products[productId];
             if (!product) return;
 
-            scrollContainer.innerHTML = '';
+            if (scrollContainer) scrollContainer.innerHTML = '';
 
             let slidesHTML = '';
             product.previews.forEach(preview => {
@@ -848,24 +1365,45 @@
                     </div>
                 `;
             });
-            scrollContainer.innerHTML = slidesHTML;
+            if (scrollContainer) scrollContainer.innerHTML = slidesHTML;
 
-            fixedDescContainer.innerHTML = `
-                <h2>${product.title}</h2>
-                <div class="price"><i class="fas fa-money-bill-wave"></i> ${product.price}</div>
-                <p>${product.fixedDesc}</p>
-                <button class="cart-btn" style="width:100%; max-width:none; margin-top:1em;">
-                    <i class="fas fa-shopping-cart"></i> Add to Cart
-                </button>
-            `;
+            let modalActionHtml = '';
+            if (currentDistributorMode === 'amazon') {
+                modalActionHtml = `
+                    <a href="${product.amazonUrl || 'https://www.amazon.com'}" target="_blank" class="cart-btn" style="display:block; text-align:center; width:100%; max-width:none; margin-top:1em; background: #ff9900; color: #000; border-color: #e48700; margin-left: auto; margin-right: auto;">
+                        <i class="fab fa-amazon"></i> Buy on Amazon
+                    </a>
+                `;
+            } else {
+                modalActionHtml = `
+                    <button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%; max-width:none; margin-top:1em; margin-left: auto; margin-right: auto;">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                `;
+            }
 
-            // Reset scroll to first image
+            if (fixedDescContainer) {
+                fixedDescContainer.innerHTML = `
+                    <h2>${product.title}</h2>
+                    <div class="price"><i class="fas fa-money-bill-wave"></i> ${product.price}</div>
+                    <p>${product.fixedDesc}</p>
+                    ${modalActionHtml}
+                `;
+
+                const localAddBtn = fixedDescContainer.querySelector('.modal-add-to-cart');
+                if (localAddBtn) {
+                    localAddBtn.addEventListener('click', function () {
+                        addPromptToCart(this.getAttribute('data-id'), this);
+                    });
+                }
+            }
+
             setTimeout(() => {
-                scrollContainer.scrollLeft = 0;
+                if (scrollContainer) scrollContainer.scrollLeft = 0;
             }, 10);
 
-            // Attach magnifier events
             setTimeout(() => {
+                if (!scrollContainer) return;
                 const images = scrollContainer.querySelectorAll('.image-slide img');
                 images.forEach(img => {
                     if (isTouchDevice) {
@@ -879,12 +1417,15 @@
                 });
             }, 100);
 
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function showMagnifier(e) {
-            if (e.touches) e.preventDefault();   // prevent page scroll on mobile
+            if (!magnifier) return;
+            if (e.touches) e.preventDefault();
 
             const img = e.target || e.currentTarget;
             magnifier.style.display = 'block';
@@ -896,11 +1437,9 @@
             const x = clientX - rect.left;
             const y = clientY - rect.top;
 
-            // Position the lens
             magnifier.style.left = `${clientX - 90}px`;
             magnifier.style.top = `${clientY - 90}px`;
 
-            // 5x zoom
             const zoom = 5;
             const bgX = -(x * zoom - 90) + 'px';
             const bgY = -(y * zoom - 90) + 'px';
@@ -911,29 +1450,31 @@
         }
 
         function hideMagnifier() {
-            magnifier.style.display = 'none';
+            if (magnifier) magnifier.style.display = 'none';
         }
 
         function closeModal() {
-            modal.style.display = 'none';
+            if (modal) modal.style.display = 'none';
             document.body.style.overflow = '';
             hideMagnifier();
         }
 
-        // Close events
-        closeBtn.addEventListener('click', closeModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) closeModal();
-        });
+        if (modal) {
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) closeModal();
+            });
+        }
 
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && modal.style.display === 'block') {
+            if (e.key === 'Escape') {
                 closeModal();
+                closeCheckoutGateway();
             }
         });
 
-        // Attach to shop cards
+        // Setup Catalog Cards
         const cards = document.querySelectorAll('.shop-card');
         cards.forEach(card => {
             const overlay = card.querySelector('.expand-overlay');
@@ -944,42 +1485,39 @@
                     if (productId) openPreviewModal(productId);
                 });
             }
-        });
 
-        // ==================== TOKEN SELECTOR + CART (unchanged) ====================
-        const select = document.getElementById('token-select');
-        const paymentRows = document.querySelectorAll('.payment-summary .payment-row');
-        if (paymentRows.length > 0) {
-            const firstRow = paymentRows[0];
-            const labelSpan = firstRow.querySelector('span:nth-child(1)');
-            const amountSpan = firstRow.querySelector('span:nth-child(2)');
-
-            function updateTokenDisplay() {
-                const selectedText = (select.options[select.selectedIndex]?.text || 'KIN').trim();
-                labelSpan.textContent = `${selectedText} Qty`;
-                amountSpan.textContent = `250,000 ${selectedText}`;
+            const cardBtn = card.querySelector('.card-add-to-cart');
+            if (cardBtn) {
+                cardBtn.addEventListener('click', function() {
+                    const productId = card.getAttribute('data-product-id');
+                    addPromptToCart(productId, this);
+                });
             }
 
-            updateTokenDisplay();
-            select.addEventListener('change', updateTokenDisplay);
-        }
-
-        const cartButtons = document.querySelectorAll('.cart-btn');
-        cartButtons.forEach(btn => {
-            btn.addEventListener('click', () => alert('Item added to cart!'));
+            const amzBtn = card.querySelector('.card-amazon-btn');
+            const currentId = card.getAttribute('data-product-id');
+            if (amzBtn && products[currentId] && products[currentId].amazonUrl) {
+                amzBtn.setAttribute('href', products[currentId].amazonUrl);
+            }
         });
 
-        const buyNow = document.querySelector('.buy-now');
-        if (buyNow) {
-            buyNow.addEventListener('click', () => alert('Proceeding to checkout with selected token.'));
+        const select = document.getElementById('token-select');
+        if (select) {
+            select.addEventListener('change', updateCartUI);
         }
 
-        console.log('%c✅ Modal with 5x magnifying lens (Desktop: hover • Mobile: tap & drag)', 'color:#a855f7; font-weight:bold');
+        updateCartUI();
     });
 </script>
 
-		<!-- Rest of your original scripts and HTML remain unchanged below -->
-		<!-- Bottom Nav, Footer, etc. are exactly as you provided -->
+		<!-- Profile Click Handler -->
+		<script>
+			function showProfile() {
+				alert("Profile coming soon");
+			}
+		</script>
+
+		<!-- Bottom Nav, Footer, etc. -->
 
 		<!-- Bottom Nav -->
 		<nav class="bottom-nav">

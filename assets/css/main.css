@@ -184,6 +184,7 @@ textarea {
 	--button-primary-text-color: #ffffff;
 	--form-label-color: #212931;
 	--form-border-color: #eeeeee;
+	--form-back-color: #ffffff;
 	--form-focus-border-color: #7019c7;
 	--checkbox-radio-color: #ffffff;
 	--checkbox-radio-bg-border-color: #212931;
@@ -301,6 +302,7 @@ body.dark-mode {
 	--form-label-color: #ffffff;
 	--form-border-color: #a1a1a1;
 	--form-focus-border-color: #663399;
+	--form-back-color: #111416;
 	--card-bg-color: #0f172a;
 	--checkbox-radio-color: #ffffff;
 	--checkbox-radio-bg-border-color: #a1a1a1;
@@ -3218,7 +3220,7 @@ select {
 }
 
 select option {
-	background-color: #ffffff;
+	background-color: var(--form-back-color);
 	color: var(--form-label-color);
 }
 
