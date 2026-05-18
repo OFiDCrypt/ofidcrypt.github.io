@@ -1683,16 +1683,28 @@
 
 				currentPaymentMethod = tile.id === 'method-fiat' ? 'fiat' : 'crypto';
 
-				// Manage dynamic state variable updates
 				if (currentPaymentMethod === 'fiat') {
 					currentSelectedToken = 'CAD';
+
+					// === VISUAL CLEANUP ===
+					// Strip highlights immediately so there's no visual clutter in Fiat mode
+					document.querySelectorAll('.token-item').forEach(item => {
+						item.classList.remove('selected');
+					});
 				} else {
-					const selectedTokenItem = document.querySelector('.token-item.selected');
-					if (selectedTokenItem) {
-						currentSelectedToken = selectedTokenItem.getAttribute('data-token');
-					} else {
-						currentSelectedToken = 'eXPB';
-					}
+					// === THE FIX: ALWAYS DEFAULT TO eXPB ON SWAP ===
+					// Hard-reset the selection state to avoid accidental orders
+					currentSelectedToken = 'eXPB';
+
+					// === VISUAL SYSTEM RESET ===
+					// Clean the slate and highlight ONLY the default eXPB block
+					document.querySelectorAll('.token-item').forEach(item => {
+						if (item.getAttribute('data-token') === 'eXPB') {
+							item.classList.add('selected');
+						} else {
+							item.classList.remove('selected');
+						}
+					});
 				}
 
 				// Toggle main page contextual warning banners/labels
@@ -1767,44 +1779,61 @@
 			if (fiatTile) switchPaymentTile(fiatTile);
 
 			// Token selection matrix changer
-document.querySelectorAll('.token-item').forEach(item => {
-    item.addEventListener('click', function () {
-        // Guard Clause: Don't allow token swaps if locked in Visa/Mastercard mode
-        if (currentPaymentMethod === 'fiat') return;
+			document.querySelectorAll('.token-item').forEach(item => {
+				item.addEventListener('click', function () {
 
-        // 1. Save the token asset value string to your tracking state variable
-        currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
+					// === THE COUPLER ===
+					// If a user directly clicks a token while in Fiat mode, force switch tiles first
+					if (currentPaymentMethod === 'fiat') {
+						if (cryptoTile && typeof switchPaymentTile === 'function') {
+							switchPaymentTile(cryptoTile);
+						}
+					}
 
-        // 2. Sync your labels and calculate cart math quietly
-        if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
-        if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update
+					// 1. Save the token asset value string safely
+					currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
 
-        // 3. FORCE PURPLE HIGHLIGHT RE-ASSIGNMENT (Run this LAST to prevent overrides)
-        document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
-        this.classList.add('selected');
+					// 2. Sync your labels and calculate cart math quietly
+					if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
+					if (typeof updateCartUI === 'function') updateCartUI(true);
 
-        // Dynamic logging to verify it works in your browser console
-        console.log(`Token Highlight moved to: ${currentSelectedToken}`);
-    });
-});
+					// 3. Apply the purple highlight layout states
+					document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+					this.classList.add('selected');
 
-// Token dropdown
-const tokenListTitle = document.querySelector('.token-list-title');
-const tokenOptionsContainer = document.querySelector('.token-options');
-if (tokenListTitle && tokenOptionsContainer) {
-    tokenListTitle.addEventListener('click', function () {
-        // TARGET THE LAST SPAN (THE ARROW) TO PREVENT OVERWRITING THE TEXT NODE TITLE
-        const arrowEl = this.querySelector('span:last-child');
-        
-        if (tokenOptionsContainer.style.display === 'flex') {
-            tokenOptionsContainer.style.display = 'none';
-            if (arrowEl) arrowEl.textContent = '▼';
-        } else {
-            tokenOptionsContainer.style.display = 'flex';
-            if (arrowEl) arrowEl.textContent = '▲';
-        }
-    });
-}
+					console.log(`Token directly selected & coupled: ${currentSelectedToken}`);
+				});
+			});
+
+			// Token dropdown linked with payment method tile activation
+			const tokenListTitle = document.querySelector('.token-list-title');
+			const tokenOptionsContainer = document.querySelector('.token-options');
+
+			if (tokenListTitle && tokenOptionsContainer) {
+				tokenListTitle.addEventListener('click', function () {
+
+					// === THE AUTO-SWITCH COUPLER ===
+					// If the user clicks here while still in fiat mode, force-activate the crypto tile first
+					if (currentPaymentMethod === 'fiat') {
+						const cryptoTile = document.getElementById('method-crypto');
+						if (cryptoTile && typeof switchPaymentTile === 'function') {
+							// This triggers your existing tile rules, highlights, and resets currentSelectedToken to eXPB
+							switchPaymentTile(cryptoTile);
+						}
+					}
+
+					// Now run the standard dropdown toggle behavior safely
+					const arrowEl = this.querySelector('span:last-child');
+
+					if (tokenOptionsContainer.style.display === 'flex') {
+						tokenOptionsContainer.style.display = 'none';
+						if (arrowEl) arrowEl.textContent = '▼';
+					} else {
+						tokenOptionsContainer.style.display = 'flex';
+						if (arrowEl) arrowEl.textContent = '▲';
+					}
+				});
+			}
 
 			// ==================== FIXED CART UI (Red Circle Counter) ====================
 			function updateCartUI(isSilent = false) { // Added default false parameter here
