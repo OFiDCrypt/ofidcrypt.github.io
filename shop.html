@@ -1088,7 +1088,7 @@
 						</div>
 					</div>
 
-					<h1>Giddy's Shop</br> Kids Toys</h1>
+					<h1>Giddy's Magical</br> Gifts & Toys</h1>
 					<p><a href="/ofidtales.html">Giddy's Home</a> > <b>Giddy's Shop</b></p>
 					<p>Browse and buy kids toys and collectibles using your debit/credit card or community tokens.
 						Explore magical worlds and family-fun adventures!</p>
@@ -1767,41 +1767,44 @@
 			if (fiatTile) switchPaymentTile(fiatTile);
 
 			// Token selection matrix changer
-			document.querySelectorAll('.token-item').forEach(item => {
-				item.addEventListener('click', function () {
-					// Guard Clause: Don't allow token swaps if locked in Visa/Mastercard mode
-					if (currentPaymentMethod === 'fiat') return;
+document.querySelectorAll('.token-item').forEach(item => {
+    item.addEventListener('click', function () {
+        // Guard Clause: Don't allow token swaps if locked in Visa/Mastercard mode
+        if (currentPaymentMethod === 'fiat') return;
 
-					// 1. Save the token asset value string to your tracking state variable
-					currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
+        // 1. Save the token asset value string to your tracking state variable
+        currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
 
-					// 2. Sync your labels and calculate cart math quietly
-					if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
-					if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update
+        // 2. Sync your labels and calculate cart math quietly
+        if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
+        if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update
 
-					// 3. FORCE PURPLE HIGHLIGHT RE-ASSIGNMENT (Run this LAST to prevent overrides)
-					document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
-					this.classList.add('selected');
+        // 3. FORCE PURPLE HIGHLIGHT RE-ASSIGNMENT (Run this LAST to prevent overrides)
+        document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
 
-					// Dynamic logging to verify it works in your browser console
-					console.log(`Token Highlight moved to: ${currentSelectedToken}`);
-				});
-			});
+        // Dynamic logging to verify it works in your browser console
+        console.log(`Token Highlight moved to: ${currentSelectedToken}`);
+    });
+});
 
-			// Token dropdown
-			const tokenListTitle = document.querySelector('.token-list-title');
-			const tokenOptionsContainer = document.querySelector('.token-options');
-			if (tokenListTitle && tokenOptionsContainer) {
-				tokenListTitle.addEventListener('click', function () {
-					if (tokenOptionsContainer.style.display === 'flex') {
-						tokenOptionsContainer.style.display = 'none';
-						this.querySelector('span').textContent = '▼';
-					} else {
-						tokenOptionsContainer.style.display = 'flex';
-						this.querySelector('span').textContent = '▲';
-					}
-				});
-			}
+// Token dropdown
+const tokenListTitle = document.querySelector('.token-list-title');
+const tokenOptionsContainer = document.querySelector('.token-options');
+if (tokenListTitle && tokenOptionsContainer) {
+    tokenListTitle.addEventListener('click', function () {
+        // TARGET THE LAST SPAN (THE ARROW) TO PREVENT OVERWRITING THE TEXT NODE TITLE
+        const arrowEl = this.querySelector('span:last-child');
+        
+        if (tokenOptionsContainer.style.display === 'flex') {
+            tokenOptionsContainer.style.display = 'none';
+            if (arrowEl) arrowEl.textContent = '▼';
+        } else {
+            tokenOptionsContainer.style.display = 'flex';
+            if (arrowEl) arrowEl.textContent = '▲';
+        }
+    });
+}
 
 			// ==================== FIXED CART UI (Red Circle Counter) ====================
 			function updateCartUI(isSilent = false) { // Added default false parameter here
