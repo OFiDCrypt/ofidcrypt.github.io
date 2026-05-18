@@ -1402,29 +1402,11 @@
 
 			<h2
 				style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff;">
-				Order Summary</h2>
+				Order Summary
+			</h2>
 
-			<!-- ITEMS ONLY -->
 			<div id="checkoutModalItems"
 				style="max-height: 260px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #4c1d95; padding-bottom: 15px;">
-				<!-- Only cart items populated here -->
-			</div>
-
-			<div
-				style="background: rgba(124, 58, 237, 0.1); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.3);">
-				<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-					<span style="color: #c084fc;">Total Est. Value:</span>
-					<span id="checkoutTotalCAD" style="font-weight: bold; color: #22c55e;">$0.00 CAD</span>
-				</div>
-				<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-					<span style="color: #c084fc;">Payment Method:</span>
-					<span id="checkoutPaymentMethod" style="font-weight: bold; color: #a855f7;">VISA /
-						MASTERCARD</span>
-				</div>
-				<div style="display: flex; justify-content: space-between;">
-					<span style="color: #c084fc;">Settlement Currency:</span>
-					<span id="checkoutSettlementCurrency" style="font-weight: bold; color: #14f195;">CAD</span>
-				</div>
 			</div>
 
 			<div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; box-sizing: border-box;">
@@ -1452,6 +1434,37 @@
 						<option value="QC">Quebec</option>
 						<option value="OTHER">Other / N/A</option>
 					</select>
+				</div>
+			</div>
+
+			<div
+				style="background: rgba(124, 58, 237, 0.1); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.3);">
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+					<span style="color: #c084fc;">Total Est. Value:</span>
+					<span id="checkoutTotalCAD" style="font-weight: bold; color: #22c55e;">$0.00 CAD</span>
+				</div>
+
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
+					<span style="color: #a78bfa; opacity: 0.8;">Est. Shipping:</span>
+					<span id="checkoutShipping" style="color: #fff; opacity: 0.8;">$0.00 CAD</span>
+				</div>
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
+					<span style="color: #a78bfa; opacity: 0.8;">GST / HST:</span>
+					<span id="checkoutTaxGstHst" style="color: #fff; opacity: 0.8;">$0.00 CAD</span>
+				</div>
+				<div
+					style="display: flex; justify-content: space-between; margin-bottom: 14px; font-size: 14px; border-bottom: 1px dashed rgba(167, 139, 250, 0.2); padding-bottom: 10px;">
+					<span style="color: #a78bfa; opacity: 0.8;">PST / QST:</span>
+					<span id="checkoutTaxPstQst" style="color: #fff; opacity: 0.8;">$0.00 CAD</span>
+				</div>
+
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+					<span style="color: #c084fc;">Payment Method:</span>
+					<span id="checkoutPaymentMethod" style="font-weight: bold; color: #a855f7;">VISA / MASTERCARD</span>
+				</div>
+				<div style="display: flex; justify-content: space-between;">
+					<span style="color: #c084fc;">Settlement Currency:</span>
+					<span id="checkoutSettlementCurrency" style="font-weight: bold; color: #14f195;">CAD</span>
 				</div>
 			</div>
 
@@ -1695,85 +1708,85 @@
 			}
 
 			function syncCheckoutLabels() {
-    const paymentEl = document.getElementById('checkoutPaymentMethod');
-    const settlementEl = document.getElementById('checkoutSettlementCurrency');
+				const paymentEl = document.getElementById('checkoutPaymentMethod');
+				const settlementEl = document.getElementById('checkoutSettlementCurrency');
 
-    // Summary row elements
-    const summaryTokenQty = document.getElementById('summaryTokenQty');
-    const summaryCadPrice = document.getElementById('summaryCadPrice');
-    const priceRowLabel = summaryCadPrice ? summaryCadPrice.previousElementSibling : null;
+				// Summary row elements
+				const summaryTokenQty = document.getElementById('summaryTokenQty');
+				const summaryCadPrice = document.getElementById('summaryCadPrice');
+				const priceRowLabel = summaryCadPrice ? summaryCadPrice.previousElementSibling : null;
 
-    // Target the main screen status text containers
-    const activeFiatLabel = document.getElementById('activeFiatLabel');
-    const activeCryptoLabel = document.getElementById('activeCryptoLabel');
+				// Target the main screen status text containers
+				const activeFiatLabel = document.getElementById('activeFiatLabel');
+				const activeCryptoLabel = document.getElementById('activeCryptoLabel');
 
-    // Calculate current cart total value in CAD natively
-    let cartTotalCAD = 0;
-    if (typeof cart !== 'undefined' && Array.isArray(cart)) {
-        cart.forEach(item => {
-            const p = products[item.id];
-            if (p) {
-                cartTotalCAD += p.priceVal * item.quantity;
-            }
-        });
-    }
+				// Calculate current cart total value in CAD natively
+				let cartTotalCAD = 0;
+				if (typeof cart !== 'undefined' && Array.isArray(cart)) {
+					cart.forEach(item => {
+						const p = products[item.id];
+						if (p) {
+							cartTotalCAD += p.priceVal * item.quantity;
+						}
+					});
+				}
 
-    if (currentPaymentMethod === 'fiat') {
-        if (paymentEl) paymentEl.textContent = 'VISA / MASTERCARD';
-        if (settlementEl) settlementEl.textContent = 'CAD';
+				if (currentPaymentMethod === 'fiat') {
+					if (paymentEl) paymentEl.textContent = 'VISA / MASTERCARD';
+					if (settlementEl) settlementEl.textContent = 'CAD';
 
-        // Update the Order Summary fields to reflect overall CAD Cart Value
-        if (summaryTokenQty) summaryTokenQty.textContent = 'CAD';
-        if (priceRowLabel) priceRowLabel.textContent = 'Base Asset Price';
-        if (summaryCadPrice) summaryCadPrice.textContent = `$${cartTotalCAD.toFixed(2)} CAD`;
+					// Update the Order Summary fields to reflect overall CAD Cart Value
+					if (summaryTokenQty) summaryTokenQty.textContent = 'CAD';
+					if (priceRowLabel) priceRowLabel.textContent = 'Base Asset Price';
+					if (summaryCadPrice) summaryCadPrice.textContent = `$${cartTotalCAD.toFixed(2)} CAD`;
 
-        // === MAIN SCREEN TILES SYNC FOR FIAT ===
-        if (activeFiatLabel) activeFiatLabel.style.display = 'block';
-        if (activeCryptoLabel) activeCryptoLabel.style.display = 'none';
-    } else {
-        if (paymentEl) paymentEl.textContent = 'SOLANA NETWORK';
-        if (settlementEl) settlementEl.textContent = currentSelectedToken;
+					// === MAIN SCREEN TILES SYNC FOR FIAT ===
+					if (activeFiatLabel) activeFiatLabel.style.display = 'block';
+					if (activeCryptoLabel) activeCryptoLabel.style.display = 'none';
+				} else {
+					if (paymentEl) paymentEl.textContent = 'SOLANA NETWORK';
+					if (settlementEl) settlementEl.textContent = currentSelectedToken;
 
-        // Restore the Crypto matrix layout views
-        if (summaryTokenQty) summaryTokenQty.textContent = currentSelectedToken;
-        if (priceRowLabel) priceRowLabel.textContent = `CAD / ${currentSelectedToken} Price`;
+					// Restore the Crypto matrix layout views
+					if (summaryTokenQty) summaryTokenQty.textContent = currentSelectedToken;
+					if (priceRowLabel) priceRowLabel.textContent = `CAD / ${currentSelectedToken} Price`;
 
-        // === MAIN SCREEN TILES SYNC FOR CRYPTO ===
-        if (activeFiatLabel) activeFiatLabel.style.display = 'none';
-        if (activeCryptoLabel) activeCryptoLabel.style.display = 'block';
-        
-        // Dynamically update the main screen string under the OR divider
-        if (activeCryptoLabel) {
-            activeCryptoLabel.textContent = `Active Method: TOKENS / SOLANA (${currentSelectedToken})`;
-        }
-    }
-}
+					// === MAIN SCREEN TILES SYNC FOR CRYPTO ===
+					if (activeFiatLabel) activeFiatLabel.style.display = 'none';
+					if (activeCryptoLabel) activeCryptoLabel.style.display = 'block';
 
-if (fiatTile) fiatTile.addEventListener('click', () => switchPaymentTile(fiatTile));
-if (cryptoTile) cryptoTile.addEventListener('click', () => switchPaymentTile(cryptoTile));
-if (fiatTile) switchPaymentTile(fiatTile);
+					// Dynamically update the main screen string under the OR divider
+					if (activeCryptoLabel) {
+						activeCryptoLabel.textContent = `Active Method: TOKENS / SOLANA (${currentSelectedToken})`;
+					}
+				}
+			}
+
+			if (fiatTile) fiatTile.addEventListener('click', () => switchPaymentTile(fiatTile));
+			if (cryptoTile) cryptoTile.addEventListener('click', () => switchPaymentTile(cryptoTile));
+			if (fiatTile) switchPaymentTile(fiatTile);
 
 			// Token selection matrix changer
-document.querySelectorAll('.token-item').forEach(item => {
-    item.addEventListener('click', function () {
-        // Guard Clause: Don't allow token swaps if locked in Visa/Mastercard mode
-        if (currentPaymentMethod === 'fiat') return;
+			document.querySelectorAll('.token-item').forEach(item => {
+				item.addEventListener('click', function () {
+					// Guard Clause: Don't allow token swaps if locked in Visa/Mastercard mode
+					if (currentPaymentMethod === 'fiat') return;
 
-        // 1. Save the token asset value string to your tracking state variable
-        currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
+					// 1. Save the token asset value string to your tracking state variable
+					currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
 
-        // 2. Sync your labels and calculate cart math quietly
-        if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
-        if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update
+					// 2. Sync your labels and calculate cart math quietly
+					if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
+					if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update
 
-        // 3. FORCE PURPLE HIGHLIGHT RE-ASSIGNMENT (Run this LAST to prevent overrides)
-        document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
-        this.classList.add('selected');
-        
-        // Dynamic logging to verify it works in your browser console
-        console.log(`Token Highlight moved to: ${currentSelectedToken}`);
-    });
-});
+					// 3. FORCE PURPLE HIGHLIGHT RE-ASSIGNMENT (Run this LAST to prevent overrides)
+					document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+					this.classList.add('selected');
+
+					// Dynamic logging to verify it works in your browser console
+					console.log(`Token Highlight moved to: ${currentSelectedToken}`);
+				});
+			});
 
 			// Token dropdown
 			const tokenListTitle = document.querySelector('.token-list-title');
@@ -1791,82 +1804,82 @@ document.querySelectorAll('.token-item').forEach(item => {
 			}
 
 			// ==================== FIXED CART UI (Red Circle Counter) ====================
-function updateCartUI(isSilent = false) { // Added default false parameter here
-    let totalItems = 0;
-    let totalCAD = 0;
+			function updateCartUI(isSilent = false) { // Added default false parameter here
+				let totalItems = 0;
+				let totalCAD = 0;
 
-    cart.forEach(item => {
-        totalItems += item.quantity;
-        const p = products[item.id];
-        if (p) totalCAD += p.priceVal * item.quantity;
-    });
+				cart.forEach(item => {
+					totalItems += item.quantity;
+					const p = products[item.id];
+					if (p) totalCAD += p.priceVal * item.quantity;
+				});
 
-    // === RED CIRCLE COUNTERS ===
-    const desktopBadge = document.getElementById('cartCountBadge');
-    const mobileBadge = document.getElementById('mobileCartCountBadge');
+				// === RED CIRCLE COUNTERS ===
+				const desktopBadge = document.getElementById('cartCountBadge');
+				const mobileBadge = document.getElementById('mobileCartCountBadge');
 
-    if (desktopBadge) {
-        desktopBadge.textContent = totalItems;
-        desktopBadge.classList.toggle('hidden', totalItems === 0);
-    }
-    if (mobileBadge) {
-        mobileBadge.textContent = totalItems;
-        mobileBadge.classList.toggle('hidden', totalItems === 0);
-    }
+				if (desktopBadge) {
+					desktopBadge.textContent = totalItems;
+					desktopBadge.classList.toggle('hidden', totalItems === 0);
+				}
+				if (mobileBadge) {
+					mobileBadge.textContent = totalItems;
+					mobileBadge.classList.toggle('hidden', totalItems === 0);
+				}
 
-    // Mobile floating bubble
-    const bubble = document.getElementById('mobileCartBubble');
-    const checkoutModal = document.getElementById('checkoutModal');
-    
-    // Check if the checkout modal is currently open on the screen
-    const isModalOpen = checkoutModal && checkoutModal.style.display === 'block';
+				// Mobile floating bubble
+				const bubble = document.getElementById('mobileCartBubble');
+				const checkoutModal = document.getElementById('checkoutModal');
 
-    // === AIRTIGHT BUBBLE GUARD CONDITION ===
-    // Never show the bubble if:
-    // 1. We requested a quiet update (isSilent)
-    // 2. The user is ALREADY inside the checkout modal (isModalOpen)
-    if (bubble && totalItems > 0 && !isBubbleDismissedManually && !isInitialPageLoad && !isSilent && !isModalOpen) {
-        bubble.classList.add('show-bubble');
+				// Check if the checkout modal is currently open on the screen
+				const isModalOpen = checkoutModal && checkoutModal.style.display === 'block';
 
-        bubble.onclick = function () {
-            if (typeof openCheckoutGateway === 'function') {
-                openCheckoutGateway();
-            }
-            isBubbleDismissedManually = true;
-            this.classList.remove('show-bubble');
-        };
-    } else if (bubble) {
-        // Force fully hiding the bubble notification if the modal is active or update is silent
-        bubble.classList.remove('show-bubble');
-    }
+				// === AIRTIGHT BUBBLE GUARD CONDITION ===
+				// Never show the bubble if:
+				// 1. We requested a quiet update (isSilent)
+				// 2. The user is ALREADY inside the checkout modal (isModalOpen)
+				if (bubble && totalItems > 0 && !isBubbleDismissedManually && !isInitialPageLoad && !isSilent && !isModalOpen) {
+					bubble.classList.add('show-bubble');
 
-    // Summary prices & Labels Guard Tracker
-    const summaryTokenQty = document.getElementById('summaryTokenQty');
-    const summaryCadPrice = document.getElementById('summaryCadPrice');
-    const summaryUsdPrice = document.getElementById('summaryUsdPrice');
-    const priceRowLabel = summaryCadPrice ? summaryCadPrice.previousElementSibling : null;
+					bubble.onclick = function () {
+						if (typeof openCheckoutGateway === 'function') {
+							openCheckoutGateway();
+						}
+						isBubbleDismissedManually = true;
+						this.classList.remove('show-bubble');
+					};
+				} else if (bubble) {
+					// Force fully hiding the bubble notification if the modal is active or update is silent
+					bubble.classList.remove('show-bubble');
+				}
 
-    if (summaryTokenQty) {
-        summaryTokenQty.textContent = currentSelectedToken;
-    }
-    if (summaryCadPrice) {
-        if (currentPaymentMethod === 'fiat') {
-            summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
-            if (priceRowLabel) priceRowLabel.textContent = 'Base Asset Price';
-        } else {
-            summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
-            if (priceRowLabel) priceRowLabel.textContent = `CAD / ${currentSelectedToken} Price`;
-        }
-    }
-    if (summaryUsdPrice) {
-        summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
-    }
-}
+				// Summary prices & Labels Guard Tracker
+				const summaryTokenQty = document.getElementById('summaryTokenQty');
+				const summaryCadPrice = document.getElementById('summaryCadPrice');
+				const summaryUsdPrice = document.getElementById('summaryUsdPrice');
+				const priceRowLabel = summaryCadPrice ? summaryCadPrice.previousElementSibling : null;
 
-dismissCartBubble = function () {
-    isBubbleDismissedManually = true;
-    document.getElementById('mobileCartBubble')?.classList.remove('show-bubble');
-};
+				if (summaryTokenQty) {
+					summaryTokenQty.textContent = currentSelectedToken;
+				}
+				if (summaryCadPrice) {
+					if (currentPaymentMethod === 'fiat') {
+						summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
+						if (priceRowLabel) priceRowLabel.textContent = 'Base Asset Price';
+					} else {
+						summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
+						if (priceRowLabel) priceRowLabel.textContent = `CAD / ${currentSelectedToken} Price`;
+					}
+				}
+				if (summaryUsdPrice) {
+					summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
+				}
+			}
+
+			dismissCartBubble = function () {
+				isBubbleDismissedManually = true;
+				document.getElementById('mobileCartBubble')?.classList.remove('show-bubble');
+			};
 
 			// ==================== CHECKOUT MODAL ====================
 			openCheckoutGateway = function () {
@@ -1905,61 +1918,61 @@ dismissCartBubble = function () {
 				});
 
 				itemsContainer.innerHTML = html;
-        document.getElementById('checkoutTotalCAD').textContent = `$${total.toFixed(2)} CAD`;
+				document.getElementById('checkoutTotalCAD').textContent = `$${total.toFixed(2)} CAD`;
 
-        // === INDESTRUCTIBLE EVENT DELEGATION FOR DELETE BUTTONS ===
-        // Remove any old clone listeners by clearing and setting a fresh root handler
-        itemsContainer.onclick = null; 
-        
-        itemsContainer.onclick = function (e) {
-            // Check if the clicked element (or its closest parent) is the trash button
-            const delBtn = e.target.closest('.checkout-del-btn');
-            if (!delBtn) return; // Ignore clicks on text, quantities, etc.
+				// === INDESTRUCTIBLE EVENT DELEGATION FOR DELETE BUTTONS ===
+				// Remove any old clone listeners by clearing and setting a fresh root handler
+				itemsContainer.onclick = null;
 
-            e.preventDefault();
-            e.stopPropagation();
+				itemsContainer.onclick = function (e) {
+					// Check if the clicked element (or its closest parent) is the trash button
+					const delBtn = e.target.closest('.checkout-del-btn');
+					if (!delBtn) return; // Ignore clicks on text, quantities, etc.
 
-            // 1. Read and normalize id string loosely to match both string & integer formats
-            const idToRemove = delBtn.getAttribute('data-id');
-            const itemIndex = cart.findIndex(item => item.id == idToRemove);
-            
-            if (itemIndex !== -1) {
-                // Modify global array in-place safely without crashing 'const' definitions
-                cart.splice(itemIndex, 1);
-            }
-            
-            // 2. Sync main page layout matrices and persistent local storage memory
-            if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update so bubble stays hidden
-            
-            // 3. Handle modal screen redraw states instantly
-            if (cart.length === 0) {
-                if (typeof closeCheckoutGateway === 'function') {
-                    closeCheckoutGateway();
-                } else {
-                    document.getElementById('checkoutModal').style.display = 'none';
-                    document.body.style.overflow = '';
-                }
-                alert("Your cart is empty!");
-            } else {
-                // Re-draw the modal layout immediately to calculate new math equations
-                openCheckoutGateway();
-            }
-        };
+					e.preventDefault();
+					e.stopPropagation();
+
+					// 1. Read and normalize id string loosely to match both string & integer formats
+					const idToRemove = delBtn.getAttribute('data-id');
+					const itemIndex = cart.findIndex(item => item.id == idToRemove);
+
+					if (itemIndex !== -1) {
+						// Modify global array in-place safely without crashing 'const' definitions
+						cart.splice(itemIndex, 1);
+					}
+
+					// 2. Sync main page layout matrices and persistent local storage memory
+					if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update so bubble stays hidden
+
+					// 3. Handle modal screen redraw states instantly
+					if (cart.length === 0) {
+						if (typeof closeCheckoutGateway === 'function') {
+							closeCheckoutGateway();
+						} else {
+							document.getElementById('checkoutModal').style.display = 'none';
+							document.body.style.overflow = '';
+						}
+						alert("Your cart is empty!");
+					} else {
+						// Re-draw the modal layout immediately to calculate new math equations
+						openCheckoutGateway();
+					}
+				};
 
 				// Settlement Currency Selector
-let tokenArea = document.getElementById('checkoutModalTokenSelectorSpace');
-if (!tokenArea && itemsContainer) {
-    tokenArea = document.createElement('div');
-    tokenArea.id = 'checkoutModalTokenSelectorSpace';
-    itemsContainer.parentNode.insertBefore(tokenArea, itemsContainer.nextSibling);
-}
+				let tokenArea = document.getElementById('checkoutModalTokenSelectorSpace');
+				if (!tokenArea && itemsContainer) {
+					tokenArea = document.createElement('div');
+					tokenArea.id = 'checkoutModalTokenSelectorSpace';
+					itemsContainer.parentNode.insertBefore(tokenArea, itemsContainer.nextSibling);
+				}
 
-if (tokenArea) {
-    if (currentPaymentMethod === 'fiat') {
-        // FORCE THE BACKGROUND STATE ENGINE TO CAD RIGHT HERE
-        currentSelectedToken = 'CAD';
+				if (tokenArea) {
+					if (currentPaymentMethod === 'fiat') {
+						// FORCE THE BACKGROUND STATE ENGINE TO CAD RIGHT HERE
+						currentSelectedToken = 'CAD';
 
-        tokenArea.innerHTML = `
+						tokenArea.innerHTML = `
             <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
             <div style="margin-bottom: 16px;">
                 <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
@@ -1968,9 +1981,9 @@ if (tokenArea) {
                 </select>
             </div>
         `;
-    } else {
-        // We update the content dynamically EVERY time the modal fires up
-        tokenArea.innerHTML = `
+					} else {
+						// We update the content dynamically EVERY time the modal fires up
+						tokenArea.innerHTML = `
             <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
             <div style="margin-bottom: 16px;">
                 <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
@@ -1989,34 +2002,34 @@ if (tokenArea) {
             </div>
         `;
 
-        // Instantly re-attach the event listener to the fresh DOM layout
-        const select = tokenArea.querySelector('#token-select');
-        if (select) {
-            select.addEventListener('change', function () {
-                currentSelectedToken = this.value;
-                const match = document.querySelector(`.token-item[data-token="${currentSelectedToken}"]`);
-                if (match) {
-                    document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
-                    match.classList.add('selected');
-                }
-                
-                // Keep main page active title label context synced alongside dropdown menu selections
-                const activeCryptoLabel = document.getElementById('activeCryptoLabel');
-                if (activeCryptoLabel) {
-                    activeCryptoLabel.textContent = `Active Method: TOKENS / SOLANA (${currentSelectedToken})`;
-                }
+						// Instantly re-attach the event listener to the fresh DOM layout
+						const select = tokenArea.querySelector('#token-select');
+						if (select) {
+							select.addEventListener('change', function () {
+								currentSelectedToken = this.value;
+								const match = document.querySelector(`.token-item[data-token="${currentSelectedToken}"]`);
+								if (match) {
+									document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+									match.classList.add('selected');
+								}
 
-                syncCheckoutLabels();
-                updateCartUI();
-            });
-        }
-    }
-}
+								// Keep main page active title label context synced alongside dropdown menu selections
+								const activeCryptoLabel = document.getElementById('activeCryptoLabel');
+								if (activeCryptoLabel) {
+									activeCryptoLabel.textContent = `Active Method: TOKENS / SOLANA (${currentSelectedToken})`;
+								}
 
-syncCheckoutLabels();
-document.getElementById('checkoutModal').style.display = 'block';
-document.body.style.overflow = 'hidden';
-};
+								syncCheckoutLabels();
+								updateCartUI();
+							});
+						}
+					}
+				}
+
+				syncCheckoutLabels();
+				document.getElementById('checkoutModal').style.display = 'block';
+				document.body.style.overflow = 'hidden';
+			};
 
 			function closeCheckoutGateway() {
 				const modal = document.getElementById('checkoutModal');
