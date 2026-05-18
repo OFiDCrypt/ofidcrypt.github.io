@@ -103,7 +103,6 @@
 	<!-- Meta Language -->
 	<meta http-equiv='content-language' content='en-gb'>
 
-	<!-- Custom Shop + Modal Styles -->
 	<style>
 		/* ============================ */
 		/* SHOP CARDS                   */
@@ -313,57 +312,165 @@
 		}
 
 		/* ======================================================== */
-		/* FIXED: WHITE LIGHT-MODE CART SUMMARY SECTION             */
+		/* EXPANDED INTERACTIVE CART SUMMARY SECTION (LIGHT MODE)   */
 		/* ======================================================== */
 		.payment-summary {
 			background: #ffffff;
-			/* Hard Forced White Background */
 			border: 1px solid #e2e8f0;
 			border-radius: 1em;
 			padding: 1.5em;
 			margin-top: 2em;
 			box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.06);
 			transition: all 0.3s ease;
+			text-align: center;
 		}
 
 		.payment-summary h2 {
-			margin-bottom: 1em;
+			margin-bottom: 0.5em;
 			font-size: 1.35em;
 			font-weight: 600;
 		}
 
+		.section-subtitle {
+			font-size: 0.78rem;
+			letter-spacing: 1px;
+			color: #64748b;
+			font-weight: bold;
+			margin-bottom: 1.25rem;
+			text-transform: uppercase;
+			text-align: center;
+			/* Centering rule added */
+		}
+
+		.or-separator {
+			margin: 1.25rem 0;
+			color: #94a3b8;
+			font-size: 0.85rem;
+			font-weight: 600;
+		}
+
+		/* Payment Option Tiles */
+		.payment-method-tile {
+			background: #ffffff;
+			color: #0f172a;
+			border-radius: 12px;
+			padding: 1.25rem;
+			cursor: pointer;
+			transition: all 0.25s ease;
+			border: 2px solid #e2e8f0;
+		}
+
+		.payment-method-tile.active {
+			border-color: #a855f7;
+			box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+		}
+
+		.tile-header {
+			font-size: 1.15rem;
+			font-weight: 700;
+			margin-bottom: 0.75rem;
+		}
+
+		.logo-row {
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+			align-items: center;
+			min-height: 32px;
+		}
+
+		.payment-logo {
+			display: block;
+		}
+
+		.solana-icon {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 0.25rem;
+		}
+
+		/* Token Selection Embedding Structure */
+		.token-list-wrapper {
+			margin-top: 1rem;
+			border-top: 1px solid #e2e8f0;
+			text-align: left;
+		}
+
+		.token-list-title {
+			padding: 0.75rem 0.5rem 0.35rem;
+			font-weight: 700;
+			font-size: 0.85rem;
+			color: #64748b;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			cursor: pointer;
+			user-select: none;
+		}
+
+		.token-options {
+			display: none;
+			/* COLLAPSED BY DEFAULT – expands only when user clicks "Select Token:" */
+			flex-direction: column;
+			gap: 4px;
+		}
+
+		.token-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 0.65rem 0.75rem;
+			border: 1px solid transparent;
+			border-bottom: 1px solid #f1f5f9;
+			color: #334155;
+			font-weight: 600;
+			font-size: 0.95rem;
+			transition: all 0.2s ease;
+			border-radius: 6px;
+		}
+
+		.token-item:last-child {
+			border-bottom: 1px solid transparent;
+		}
+
+		.token-item:hover {
+			background: #f8fafc;
+		}
+
+		.token-item.selected {
+			background: #f3e8ff;
+			border-color: #d8b4fe;
+			color: #6b21a8;
+		}
+
+		/* Dynamic Visual Badges matching context rules */
+		.token-badge {
+			font-size: 0.8rem;
+			font-weight: 700;
+		}
+
+		.badge-green {
+			color: #16a34a;
+		}
+
+		.badge-purple {
+			color: #7c3aed;
+		}
+
+		/* Active Method Labels (shown beneath selected tile) */
+		.active-method-label {
+			margin: 1rem 0;
+			text-align: center;
+			font-weight: 700;
+			font-size: 1.1em;
+			color: #22c55e;
+		}
+
+		/* General Price Breakdown Rows Layout */
 		.payment-row {
 			display: flex;
 			justify-content: space-between;
 			margin: 0.6em 0;
 			font-size: 0.95em;
-		}
-
-		/* Select Options Restyling */
-		select {
-			width: 100%;
-			padding: 0.6em 0.75em;
-			border-radius: 0.5em;
-			border: 1px solid #cbd5e1;
-			background-color: #ffffff;
-			color: #333333;
-			text-align: center;
-			font-size: 0.9em;
-			font-weight: 500;
-			outline: none;
-			cursor: pointer;
-			transition: all 0.2s ease;
-		}
-
-		select:focus {
-			border-color: #a855f7;
-			box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
-		}
-
-		select option {
-			text-align: center;
-			background: #ffffff;
-			color: #333333;
 		}
 
 		/* ============================ */
@@ -410,50 +517,89 @@
 			transform: none !important;
 		}
 
+		/* Dark Mode Core Summary Structural Wrappers */
 		body.dark-mode .payment-summary {
 			background: #16213e;
-			/* Cosmic Depth Box Accent */
 			border-color: #334155;
 			color: #e2e8f0;
 			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 		}
 
-		body.dark-mode select {
-			background: #2d2d44;
-			color: #e2e8f0;
+		body.dark-mode .section-subtitle {
+			color: #94a3b8;
+		}
+
+		body.dark-mode .or-separator {
+			color: #64748b;
+		}
+
+		/* Dark Mode Option Tiles Rules */
+		body.dark-mode .payment-method-tile {
+			background: #1f293d;
 			border-color: #334155;
+			color: #f1f5f9;
 		}
 
-		body.dark-mode select:focus {
+		body.dark-mode .payment-method-tile.active {
 			border-color: #c084fc;
+			box-shadow: 0 0 15px rgba(192, 132, 252, 0.25);
 		}
 
-		body.dark-mode select option {
-			background: #2d2d44;
-			color: #e2e8f0;
+		body.dark-mode .token-list-wrapper {
+			border-top-color: #334155;
+		}
+
+		body.dark-mode .token-list-title {
+			color: #94a3b8;
+		}
+
+		body.dark-mode .token-item {
+			border-bottom-color: #29354f;
+			color: #cbd5e1;
+		}
+
+		body.dark-mode .token-item:hover {
+			background: #24304a;
+		}
+
+		body.dark-mode .token-item.selected {
+			background: #2e1a47;
+			border-color: #6b21a8;
+			color: #e9d5ff;
+		}
+
+		body.dark-mode .badge-green {
+			color: #4ade80;
+		}
+
+		body.dark-mode .badge-purple {
+			color: #c084fc;
+		}
+
+		body.dark-mode .active-method-label {
+			color: #4ade80;
 		}
 
 		body.dark-mode .buy-now {
 			background: #663399;
-			color: #1a1a2e;
+			color: #ffffff;
 			box-shadow: 0 4px 12px rgba(192, 132, 252, 0.3);
 		}
 
 		body.dark-mode .buy-now:hover {
 			background: #a855f7;
-			color: #ffffff;
 			box-shadow: 0 6px 16px rgba(192, 132, 252, 0.45);
 		}
 
-		/* ======================================================== */
+		/* ============================ */
 		/* MOBILE FLOATING CART BUBBLE                              */
-		/* ======================================================== */
+		/* ============================ */
 		.mobile-cart {
 			display: none;
 			position: fixed;
-			bottom: 67px;
-			right: 14px;
-			bottom: calc(67px + env(safe-area-inset-bottom));
+			bottom: 74px;
+			right: 13px;
+			bottom: calc(74px + env(safe-area-inset-bottom));
 			z-index: 9999;
 			opacity: 1;
 			transform: translateY(0);
@@ -466,7 +612,7 @@
 			font-weight: 700;
 			padding: 8px 20px;
 			/* Reduced vertical padding from 12px to 8px to make it less tall */
-			border-radius: 24px;
+			border-radius: 20px;
 			align-items: center;
 			gap: 8px;
 			cursor: pointer;
@@ -514,6 +660,7 @@
 			-webkit-tap-highlight-color: transparent;
 			cursor: pointer;
 			margin: 0 0 0 auto;
+			color: rgba(255, 255, 255, 0.9);
 			/* CRITICAL FIX: Forces all margins to 0 while keeping margin-left: auto */
 			font-size: 1.5rem;
 
@@ -552,12 +699,6 @@
 				background: transparent;
 				box-shadow: none;
 				-webkit-tap-highlight-color: transparent;
-			}
-		}
-
-		@media (min-width: 768px) {
-			#mobileCartBubble {
-				display: none !important;
 			}
 		}
 
@@ -746,8 +887,8 @@
 		/* ====================== MAGNIFYING LENS (5x) ====================== */
 		.magnifier-lens {
 			position: fixed;
-			width: 180px;
-			height: 180px;
+			width: 250px;
+			height: 250px;
 			border: 4px solid #a855f7;
 			border-radius: 50%;
 			box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
@@ -1067,7 +1208,7 @@
 						</div>
 						<div class="distributor-option distributor-option-amazon" data-value="amazon">
 							<i class="fab fa-amazon" style="color: #ff9900; font-size: 19px;"></i>
-							Shop on Amazon
+							Buy on Amazon
 						</div>
 					</div>
 				</div>
@@ -1151,25 +1292,83 @@
 					</div>
 
 				</div>
-				<button class="buy-now" id="reviewCartBtn">Review Cart</button>
 
+				<!-- PAYMENT SUMMARY - FULL IMPLEMENTATION -->
 				<div class="payment-summary">
 					<h2>Payment Summary</h2>
-					<label for="token-select">Select Token</label>
-					<select id="token-select">
-						<option>eXPB</option>
-						<option>GIDDY</option>
-						<option>ONE</option>
-						<option>KIN</option>
-						<option>DOBBY</option>
-						<option>DUNO</option>
-						<option>MYLO</option>
-						<option>CPT</option>
-						<option>SINU</option>
-					</select>
-					<div class="payment-row">
-						<span>Token Qty</span>
-						<span id="summaryTokenQty">0 KIN</span>
+					<p class="section-subtitle">CHOOSE PAYMENT METHOD</p>
+
+					<!-- VISA / MASTERCARD TILE -->
+					<div class="payment-method-tile active" id="method-fiat" data-method-name="VISA / MASTERCARD">
+						<div class="tile-header">Visa / Mastercard / Debit Card</div>
+						<div class="logo-row">
+							<svg class="payment-logo" viewBox="0 0 24 15" width="42" height="26">
+								<circle cx="7" cy="7.5" r="7" fill="#EB001B" />
+								<circle cx="17" cy="7.5" r="7" fill="#F79E1B" />
+							</svg>
+							<span
+								style="font-family: Arial Black, sans-serif; font-size: 28px; font-weight: 900; letter-spacing: -2px; color: #1428A0; line-height: 1;">VISA</span>
+						</div>
+					</div>
+
+					<div id="activeFiatLabel" class="active-method-label">Active Method: VISA / MASTERCARD</div>
+
+					<div class="or-separator">— OR —</div>
+
+					<!-- SOLANA TOKENS TILE -->
+					<div class="payment-method-tile" id="method-crypto" data-method-name="Tokens on Solana">
+						<div class="tile-header">Pay with Tokens / Solana</div>
+						<div class="solana-icon">
+							<img src="/assets/images/300x300-solana.png" alt="Solana"
+								style="width: 42px; height: 42px; object-fit: contain;">
+						</div>
+
+						<div class="token-list-wrapper">
+							<div class="token-list-title">Select Token: <span style="font-size: 0.75em;">▼</span></div>
+							<div class="token-options">
+								<div class="token-item selected" data-token="eXPB">
+									<span class="token-name">$eXPB BOUNCY BALL</span>
+									<span class="token-badge badge-green">15% Off</span>
+								</div>
+								<div class="token-item" data-token="GIDDY">
+									<span class="token-name">$GIDDY DOLLAR</span>
+									<span class="token-badge badge-purple">+ Raffle Draw</span>
+								</div>
+								<div class="token-item" data-token="SOL">
+									<span class="token-name">$SOL</span>
+								</div>
+								<div class="token-item" data-token="ONE">
+									<span class="token-name">$ONE</span>
+								</div>
+								<div class="token-item" data-token="KIN">
+									<span class="token-name">$KIN</span>
+								</div>
+								<div class="token-item" data-token="DOBBY">
+									<span class="token-name">$DOBBY</span>
+								</div>
+								<div class="token-item" data-token="DUNO">
+									<span class="token-name">$DUNO</span>
+								</div>
+								<div class="token-item" data-token="MYLO">
+									<span class="token-name">$MYLO</span>
+								</div>
+								<div class="token-item" data-token="CPT">
+									<span class="token-name">$CPT</span>
+								</div>
+								<div class="token-item" data-token="SINU">
+									<span class="token-name">$SINU</span>
+								</div>
+							</div>
+
+							<div id="activeCryptoLabel" class="active-method-label" style="display: none;">Active
+								Method: Tokens on Solana</div>
+						</div>
+					</div>
+
+					<!-- Summary Rows -->
+					<div class="payment-row" style="margin-top: 1.5em;">
+						<span>Selected Token Asset</span>
+						<span id="summaryTokenQty">eXPB</span>
 					</div>
 					<div class="payment-row">
 						<span>CAD / GIDDY Price</span>
@@ -1179,651 +1378,603 @@
 						<span>USD Price</span>
 						<span id="summaryUsdPrice">$0.00</span>
 					</div>
+
+					<!-- REVIEW CART BUTTON - MOVED TO END OF CONTAINER -->
+					<button class="buy-now" id="reviewCartBtn"
+						style="margin-top: 1.5em; width: 100%; max-width: none;">REVIEW CART</button>
 				</div>
 			</section>
 		</div>
 
-		<!-- ============================ -->
-		<!-- EXISTING: PREVIEW MODAL HTML -->
-		<!-- ============================ -->
-		<div id="previewModal">
-			<div class="modal-content">
-				<div class="modal-header">
-					<span class="close-modal" id="closeModal">&times;</span>
-				</div>
-
-				<div class="modal-scroll-area">
-					<div id="imageScrollContainer" class="image-scroll">
-						<!-- Populated dynamically by JavaScript -->
-					</div>
-				</div>
-
-				<div id="modalFixedDescription" class="fixed-desc">
-					<!-- Populated dynamically by JavaScript -->
-				</div>
-			</div>
-		</div>
-
-		<!-- ============================ -->
-		<!-- NEW: CHECKOUT GATEWAY MODAL  -->
-		<!-- ============================ -->
+		<!-- CHECKOUT MODAL - FINAL CLEAN VERSION -->
 		<div id="checkoutModal"
 			style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);">
 			<div
-				style="background: linear-gradient(135deg, #120326 0%, #000000 100%); margin: 10% auto; padding: 30px; border: 1px solid #7c3aed; width: 90%; max-width: 550px; border-radius: 20px; color: #fff; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3); font-family: sans-serif; position: relative;">
+				style="background: linear-gradient(135deg, #120326 0%, #000000 100%); margin: 8% auto; padding: 30px; border: 1px solid #7c3aed; width: 90%; max-width: 520px; border-radius: 20px; color: #fff; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3); position: relative;">
 				<span id="closeCheckoutModal"
 					style="color: #a78bfa; float: right; font-size: 30px; font-weight: bold; cursor: pointer; line-height: 20px;"
 					onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#a78bfa'">&times;</span>
 
 				<h2
-					style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 10px;">
-					Order Summary
-				</h2>
+					style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff;">
+					Order Summary</h2>
 
+				<!-- ITEMS ONLY -->
 				<div id="checkoutModalItems"
-					style="max-height: 200px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #4c1d95; padding-bottom: 15px;">
-					<!-- Items mapped dynamically -->
+					style="max-height: 260px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #4c1d95; padding-bottom: 15px;">
+					<!-- Only cart items populated here -->
 				</div>
 
 				<div
-					style="background: rgba(124, 58, 237, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.2);">
-					<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+					style="background: rgba(124, 58, 237, 0.1); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.3);">
+					<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
 						<span style="color: #c084fc;">Total Est. Value:</span>
 						<span id="checkoutTotalCAD" style="font-weight: bold; color: #22c55e;">$0.00 CAD</span>
 					</div>
+					<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+						<span style="color: #c084fc;">Payment Method:</span>
+						<span id="checkoutPaymentMethod" style="font-weight: bold; color: #a855f7;">VISA /
+							MASTERCARD</span>
+					</div>
 					<div style="display: flex; justify-content: space-between;">
-						<span style="color: #c084fc;">Selected Crypto Settlement:</span>
-						<span id="checkoutCryptoSettlement" style="font-weight: bold; color: #a855f7;">0 eXPB</span>
+						<span style="color: #c084fc;">Settlement Currency:</span>
+						<span id="checkoutSettlementCurrency" style="font-weight: bold; color: #14f195;">CAD</span>
+					</div>
+				</div>
+
+				<div
+					style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; box-sizing: border-box;">
+					<div>
+						<label
+							style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Country</label>
+						<select id="country-select"
+							style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
+							<option value="CA" selected>🇨🇦 Canada</option>
+							<option value="US">🇺🇸 United States</option>
+							<option value="MX">🇲🇽 Mexico</option>
+							<option value="GB">🇬🇧 United Kingdom</option>
+							<option value="OTHER">🌍 Other</option>
+						</select>
+					</div>
+					<div>
+						<label
+							style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Province
+							/ State</label>
+						<select id="province-select"
+							style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
+							<option value="BC" selected>British Columbia</option>
+							<option value="AB">Alberta</option>
+							<option value="ON">Ontario</option>
+							<option value="QC">Quebec</option>
+							<option value="OTHER">Other / N/A</option>
+						</select>
 					</div>
 				</div>
 
 				<div
 					style="text-align: center; background: #2e1065; border: 1px solid #6b21a8; padding: 12px; border-radius: 10px; font-size: 13px; color: #ddd; margin-bottom: 20px;">
-					🛠️ <b>Development Mode:</b> Secure Web3 & Card Gateway Engine integration pending release.
+					🛠️ <b>Development Mode:</b> Secure Web3 & Card Gateway integration pending release.
 				</div>
 
-				<!-- Updated Button Container -->
-				<div style="display: flex; gap: 15px; width: 100%; box-sizing: border-box;">
+				<div style="display: flex; gap: 15px;">
 					<button id="clearCartBtn"
-						style="flex: 1; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; height: 50px; line-height: normal;"
-						onmouseover="this.style.background='rgba(239,68,68,0.1)'"
-						onmouseout="this.style.background='transparent'">🗑️ CLEAR</button>
+						style="flex: 1; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 13px 0 !important; line-height: 1; border-radius: 30px; font-weight: bold; cursor: pointer;">
+						<span style="display: inline-block; margin-top: -1px; margin-right: 4px;">🗑️</span> CLEAR
+					</button>
 					<button id="gatewayProceedBtn"
-						style="flex: 1; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(124,58,237,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; height: 50px; line-height: normal;"
-						onmouseover="this.style.transform='scale(1.02)'"
-						onmouseout="this.style.transform='scale(1)'">Proceed</button>
+						style="flex: 1; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 13px 0 !important; line-height: 1; border-radius: 30px; font-weight: bold; cursor: pointer;">
+						Proceed
+					</button>
 				</div>
 			</div>
 		</div>
 
-		<!-- MOBILE CART COMPONENT (AMENDED) -->
-		<!-- The cart bubble now closes automatically when clicked to open checkout -->
-		<!-- The number indicator is now an identical red-circle badge (top-right on the icon) matching the desktop Tailwind badge exactly -->
+		<!-- Mobile Cart Bubble -->
 		<div id="mobileCartBubble" onclick="openCheckoutGateway()" class="mobile-cart">
 			<span class="relative inline-flex">
 				<span class="text-2xl">🛒</span>
 				<span id="mobileCartCountBadge" class="mobile-cart-badge hidden">0</span>
 			</span>
 			<span class="font-semibold">My Cart</span>
-			<button onclick="event.stopPropagation(); dismissCartBubble();" class="close-btn">
-				&times;
-			</button>
+			<button onclick="event.stopPropagation(); dismissCartBubble();" class="close-btn">&times;</button>
+		</div>
+
+		<!-- PRODUCT PREVIEW MODAL -->
+		<div id="previewModal"
+			style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); overflow: hidden;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<span class="close-modal" style="cursor:pointer; font-size:2.5rem; color:#888;">&times;</span>
+				</div>
+
+				<div class="modal-scroll-area">
+					<div class="image-scroll"></div>
+				</div>
+
+				<div class="fixed-desc">
+					<!-- Populated by JS -->
+				</div>
+			</div>
 		</div>
 
 		<!-- Magnifying Lens -->
 		<div id="magnifier" class="magnifier-lens"></div>
 
 		<script>
-			// Expose layout engines globally to support native HTML inline 'onclick' directives
-			let openCheckoutGateway;
-			let dismissCartBubble;
-			// Added a manual tracking state for explicit close button behaviors
-			let isBubbleDismissedManually = false;
+// Expose layout engines globally to support native HTML inline 'onclick' directives
+let openCheckoutGateway;
+let dismissCartBubble;
+let showProfile;
 
-			document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-				// ==================== PRODUCT DATA ====================
-				const products = {
-					1: {
-						title: "Chapter Book: Giddy Tales",
-						price: "$25.00 CAD / GIDDY",
-						priceVal: 25.00,
-						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
-						fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
-							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with illustrations" },
-							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
-							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
-						]
-					},
-					2: {
-						title: "Bouncy Balls: Space First Edition",
-						price: "$15.00 CAD / GIDDY",
-						priceVal: 15.00,
-						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
-						fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs to complete your universe!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
-							{ src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" },
-							{ src: "/assets/images/300x300-solana.png", text: "Glow effect in action" },
-							{ src: "/assets/images/300x300-solana.png", text: "Fun size comparison" }
-						]
-					},
-					3: {
-						title: "Giddy Tee: Teleport",
-						price: "$30.00 CAD / GIDDY",
-						priceVal: 30.00,
-						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
-						fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print, and built to last. Perfect for everyday adventures!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" },
-							{ src: "/assets/images/300x300-solana.png", text: "Front view with details" },
-							{ src: "/assets/images/300x300-solana.png", text: "Worn by a happy adult" },
-							{ src: "/assets/images/300x300-solana.png", text: "Close-up of print quality" }
-						]
-					},
-					4: {
-						title: "Colouring Book: Dinner Time",
-						price: "$10.00 CAD / GIDDY",
-						priceVal: 10.00,
-						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
-						fixedDesc: "Magical colouring book for ages 2-5. Each page features fun scenes from Giddy's adventures. Comes with a set of vibrant crayons and hidden codes for exclusive digital gift credits!",
-						previews: [
-							{ src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover — colourful and inviting" },
-							{ src: "/assets/images/300x300-solana.png", text: "Sample colouring page" },
-							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with Giddy" },
-							{ src: "/assets/images/300x300-solana.png", text: "Crayons and activity pages" }
-						]
-					}
-				};
+    // ==================== PRODUCT DATA ====================
+    const products = {
+        1: {
+            title: "Chapter Book: Giddy Tales",
+            price: "$25.00 CAD / GIDDY",
+            priceVal: 25.00,
+            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
+            fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
+            previews: [
+                { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
+                { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
+                { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
+            ]
+        },
+        2: {
+            title: "Bouncy Balls: Space First Edition",
+            price: "$15.00 CAD / GIDDY",
+            priceVal: 15.00,
+            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
+            fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs!",
+            previews: [
+                { src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
+                { src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" }
+            ]
+        },
+        3: {
+            title: "Giddy Tee: Teleport",
+            price: "$30.00 CAD / GIDDY",
+            priceVal: 30.00,
+            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
+            fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print.",
+            previews: [
+                { src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" }
+            ]
+        },
+        4: {
+            title: "Colouring Book: Dinner Time",
+            price: "$10.00 CAD / GIDDY",
+            priceVal: 10.00,
+            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
+            fixedDesc: "Magical colouring book for ages 2-5. Comes with crayons and hidden codes for digital gifts!",
+            previews: [
+                { src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover" }
+            ]
+        }
+    };
 
-				// Current Active Distributor Mode
-				let currentDistributorMode = "local";
+    // ==================== STATE ====================
+    let currentDistributorMode = "local";
+    let currentPaymentMethod = 'fiat';
+    let currentSelectedToken = 'eXPB';
+    let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
+    let isBubbleDismissedManually = false;
+    let isInitialPageLoad = true;
 
-				// ==================== DISTRIBUTOR TOGGLE ENGINE ====================
-				const toggleBtn = document.getElementById('distributorToggleBtn');
-				const dropdown = document.getElementById('distributorDropdown');
-				const activeLineText = document.getElementById('selectedDistributorLine');
+    showProfile = function () {
+        alert("👤 Profile & Account features coming soon!");
+    };
 
-				if (toggleBtn) {
-					toggleBtn.addEventListener('click', function (e) {
-						e.stopPropagation();
-						dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-					});
-				}
+    // ==================== DISTRIBUTOR TOGGLE ====================
+    const toggleBtn = document.getElementById('distributorToggleBtn');
+    const dropdown = document.getElementById('distributorDropdown');
+    const activeLineText = document.getElementById('selectedDistributorLine');
 
-				document.querySelectorAll('.distributor-option').forEach(option => {
-					option.addEventListener('click', function () {
-						const val = this.getAttribute('data-value');
-						currentDistributorMode = val;
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        });
+    }
 
-						if (val === 'amazon') {
-							activeLineText.style.color = '#ff9900';
-							activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Shop on Amazon`;
-							document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
-							document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = '');
-						} else {
-							activeLineText.style.color = '#22c55e';
-							activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
-							document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = '');
-							document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
-						}
-						if (dropdown) dropdown.style.display = 'none';
-					});
-				});
+    document.querySelectorAll('.distributor-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const val = this.getAttribute('data-value');
+            currentDistributorMode = val;
+            if (val === 'amazon') {
+                activeLineText.style.color = '#ff9900';
+                activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Buy on Amazon`;
+                document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
+                document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'block');
+            } else {
+                activeLineText.style.color = '#22c55e';
+                activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
+                document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'flex');
+                document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
+            }
+            dropdown.style.display = 'none';
+        });
+    });
 
-				document.addEventListener('click', function () {
-					if (dropdown) dropdown.style.display = 'none';
-				});
+    document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
 
-				// ==================== STATE ENGINE ====================
-				let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
+    // ==================== CART FUNCTIONS ====================
+    function saveCart() {
+        localStorage.setItem('ofid_cart', JSON.stringify(cart));
+        updateCartUI();
+    }
 
-				function saveCart() {
-					localStorage.setItem('ofid_cart', JSON.stringify(cart));
-					updateCartUI();
-				}
+    function addPromptToCart(productId, triggeringButton = null) {
+        if (currentDistributorMode === 'amazon') {
+            alert("🛒 Cart only works in Local mode.");
+            if (dropdown) dropdown.style.display = 'block';
+            return false;
+        }
+        const qty = parseInt(prompt("How many would you like to add?", "1"));
+        if (!qty || qty <= 0) return false;
 
-				function addPromptToCart(productId, triggeringButton = null) {
-					if (currentDistributorMode === 'amazon') {
-						alert("🛒 Cart is only available in Local mode.\n\nOpening distributor selector so you can switch...");
+        const existing = cart.find(item => item.id === parseInt(productId));
+        if (existing) existing.quantity += qty;
+        else cart.push({ id: parseInt(productId), quantity: qty });
 
-						if (dropdown) dropdown.style.display = 'block';
-						if (toggleBtn) {
-							toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-						}
-						return false;
-					}
+        isBubbleDismissedManually = false;
+        saveCart();
 
-					const prodId = parseInt(productId);
-					const countPrompt = prompt("How many items would you like to add to your cart?", "1");
-					if (countPrompt === null) return false;
+        if (triggeringButton) {
+            const original = triggeringButton.innerHTML;
+            triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
+            triggeringButton.classList.add('success-state');
+            setTimeout(() => {
+                triggeringButton.innerHTML = original;
+                triggeringButton.classList.remove('success-state');
+            }, 1800);
+        }
+    }
 
-					const qty = parseInt(countPrompt);
-					if (!isNaN(qty) && qty > 0) {
-						const existingItem = cart.find(item => item.id === prodId);
-						if (existingItem) {
-							existingItem.quantity += qty;
-						} else {
-							cart.push({ id: prodId, quantity: qty });
-						}
+    function removeCartItemElement(productId) {
+        const id = parseInt(productId);
+        const item = cart.find(i => i.id === id);
+        if (!item) return;
 
-						// Allow bubble to surface again when a user intentionally adds an item
-						isBubbleDismissedManually = false;
-						saveCart();
+        if (item.quantity > 1) {
+            const removeQty = parseInt(prompt(`Remove how many? (current: ${item.quantity})`, "1"));
+            if (!removeQty || removeQty <= 0) return;
+            if (removeQty >= item.quantity) cart = cart.filter(i => i.id !== id);
+            else item.quantity -= removeQty;
+        } else {
+            cart = cart.filter(i => i.id !== id);
+        }
+        saveCart();
+        if (cart.length === 0) closeCheckoutGateway();
+        else openCheckoutGateway();
+    }
 
-						const badge = document.getElementById('cartCountBadge');
-						if (badge) {
-							badge.classList.remove('animate-bounce');
-							void badge.offsetWidth;
-							badge.classList.add('animate-bounce');
-						}
+    // ==================== PAYMENT TILES ====================
+    const fiatTile = document.getElementById('method-fiat');
+    const cryptoTile = document.getElementById('method-crypto');
 
-						if (triggeringButton) {
-							const originalHTML = triggeringButton.innerHTML;
-							triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
-							triggeringButton.style.pointerEvents = 'none';
-							triggeringButton.classList.add('success-state');
+    function switchPaymentTile(tile) {
+        fiatTile.classList.remove('active');
+        cryptoTile.classList.remove('active');
+        tile.classList.add('active');
+        currentPaymentMethod = tile.id === 'method-fiat' ? 'fiat' : 'crypto';
+        syncCheckoutLabels();
+    }
 
-							setTimeout(() => {
-								triggeringButton.innerHTML = originalHTML;
-								triggeringButton.style.pointerEvents = '';
-								triggeringButton.classList.remove('success-state');
-							}, 2000);
-						}
-						return true;
-					} else {
-						alert("Please enter a valid quantity.");
-						return false;
-					}
-				}
+    function syncCheckoutLabels() {
+        const paymentEl = document.getElementById('checkoutPaymentMethod');
+        const settlementEl = document.getElementById('checkoutSettlementCurrency');
+        if (paymentEl) paymentEl.textContent = currentPaymentMethod === 'fiat' ? 'VISA / MASTERCARD' : 'TOKENS / SOLANA';
+        if (settlementEl) settlementEl.textContent = currentPaymentMethod === 'fiat' ? 'CAD' : currentSelectedToken;
+    }
 
-				function removeCartItemElement(productId) {
-					const prodId = parseInt(productId);
-					const matchedItem = cart.find(item => item.id === prodId);
-					if (!matchedItem) return;
+    if (fiatTile) fiatTile.addEventListener('click', () => switchPaymentTile(fiatTile));
+    if (cryptoTile) cryptoTile.addEventListener('click', () => switchPaymentTile(cryptoTile));
+    if (fiatTile) switchPaymentTile(fiatTile);
 
-					if (matchedItem.quantity > 1) {
-						const countPrompt = prompt(`This item has a quantity of ${matchedItem.quantity}. How many would you like to remove?`, "1");
-						if (countPrompt === null) return;
-						const removeQty = parseInt(countPrompt);
-						if (!isNaN(removeQty) && removeQty > 0) {
-							if (removeQty >= matchedItem.quantity) {
-								cart = cart.filter(item => item.id !== prodId);
-							} else {
-								matchedItem.quantity -= removeQty;
-							}
-						} else {
-							alert("Invalid quantity entered.");
-							return;
-						}
-					} else {
-						cart = cart.filter(item => item.id !== prodId);
-					}
+    // Token selection
+    document.querySelectorAll('.token-item').forEach(item => {
+        item.addEventListener('click', function () {
+            document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+            this.classList.add('selected');
+            currentSelectedToken = this.getAttribute('data-token');
+            syncCheckoutLabels();
+            updateCartUI();
+        });
+    });
 
-					saveCart();
-					if (cart.length === 0) {
-						closeCheckoutGateway();
-					} else {
-						openCheckoutGateway();
-					}
-				}
+    // Token dropdown
+    const tokenListTitle = document.querySelector('.token-list-title');
+    const tokenOptionsContainer = document.querySelector('.token-options');
+    if (tokenListTitle && tokenOptionsContainer) {
+        tokenListTitle.addEventListener('click', function () {
+            if (tokenOptionsContainer.style.display === 'flex') {
+                tokenOptionsContainer.style.display = 'none';
+                this.querySelector('span').textContent = '▼';
+            } else {
+                tokenOptionsContainer.style.display = 'flex';
+                this.querySelector('span').textContent = '▲';
+            }
+        });
+    }
 
-				function updateCartUI() {
-					let totalItems = 0;
-					let totalCAD = 0;
+    // ==================== FIXED CART UI (Red Circle Counter) ====================
+    function updateCartUI() {
+        let totalItems = 0;
+        let totalCAD = 0;
 
-					cart.forEach(item => {
-						totalItems += item.quantity;
-						const product = products[item.id];
-						if (product) {
-							totalCAD += (product.priceVal * item.quantity);
-						}
-					});
+        cart.forEach(item => {
+            totalItems += item.quantity;
+            const p = products[item.id];
+            if (p) totalCAD += p.priceVal * item.quantity;
+        });
 
-					const mobileCartBubble = document.getElementById('mobileCartBubble');
-					const mobileBadge = document.getElementById('mobileCartCountBadge');
-					const desktopBadge = document.getElementById('cartCountBadge');
+        // === RED CIRCLE COUNTERS ===
+        const desktopBadge = document.getElementById('cartCountBadge');
+        const mobileBadge = document.getElementById('mobileCartCountBadge');
 
-					if (mobileCartBubble) {
-						// Keep hidden if completely empty or manually closed by clicking 'X'
-						if (totalItems > 0 && !isBubbleDismissedManually) {
-							mobileCartBubble.classList.add('show-bubble');
-						} else {
-							mobileCartBubble.classList.remove('show-bubble');
-						}
-					}
+        if (desktopBadge) {
+            desktopBadge.textContent = totalItems;
+            desktopBadge.classList.toggle('hidden', totalItems === 0);
+        }
+        if (mobileBadge) {
+            mobileBadge.textContent = totalItems;
+            mobileBadge.classList.toggle('hidden', totalItems === 0);
+        }
 
-					if (mobileBadge) {
-						if (totalItems > 0) {
-							mobileBadge.textContent = totalItems;
-							mobileBadge.classList.remove('hidden');
-						} else {
-							mobileBadge.classList.add('hidden');
-						}
-					}
+       // Mobile floating bubble
+const bubble = document.getElementById('mobileCartBubble');
+if (bubble && totalItems > 0 && !isBubbleDismissedManually && !isInitialPageLoad) {
+    bubble.classList.add('show-bubble');
+    
+    // Add the click handler to open summary and hide itself immediately
+    bubble.onclick = function() {
+        if (typeof openCheckoutGateway === 'function') {
+            openCheckoutGateway(); // Opens the order summary modal
+        }
+        isBubbleDismissedManually = true; // Prevents it from popping back up instantly
+        this.classList.remove('show-bubble'); // Safely hides the bubble
+    };
+    
+} else if (bubble) {
+    bubble.classList.remove('show-bubble');
+}
 
-					if (desktopBadge) {
-						if (totalItems > 0) {
-							desktopBadge.textContent = totalItems;
-							desktopBadge.classList.remove('hidden');
-						} else {
-							desktopBadge.classList.add('hidden');
-						}
-					}
+        // Summary prices
+        document.getElementById('summaryTokenQty').textContent = currentSelectedToken;
+        document.getElementById('summaryCadPrice').textContent = `$${totalCAD.toFixed(2)} CAD`;
+        document.getElementById('summaryUsdPrice').textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
+    }
 
-					const selectedToken = (document.getElementById('token-select')?.value || 'eXPB').trim();
-					const computedTokenQty = totalCAD * 10000;
+    dismissCartBubble = function () {
+        isBubbleDismissedManually = true;
+        document.getElementById('mobileCartBubble')?.classList.remove('show-bubble');
+    };
 
-					const summaryTokenQty = document.getElementById('summaryTokenQty');
-					const summaryCadPrice = document.getElementById('summaryCadPrice');
-					const summaryUsdPrice = document.getElementById('summaryUsdPrice');
+    // ==================== CHECKOUT MODAL ====================
+    openCheckoutGateway = function () {
+        if (currentDistributorMode === 'amazon') {
+            if (confirm("🛒 Cart only works in Local mode.\n\nSwitch to Local Mode?")) {
+                currentDistributorMode = "local";
+                activeLineText.style.color = '#22c55e';
+                activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
+                document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'flex');
+                document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
+                if (toggleBtn) toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+                return;
+            } else {
+                return;
+            }
+        }
 
-					if (summaryTokenQty && summaryCadPrice && summaryUsdPrice) {
-						summaryTokenQty.textContent = `${computedTokenQty.toLocaleString()} ${selectedToken}`;
-						summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
-						summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
-					}
-				}
+        if (cart.length === 0) return alert("Your cart is empty!");
 
-				// Implementation of dismissal for custom mobile bubble container template UI
-				dismissCartBubble = function () {
-					isBubbleDismissedManually = true;
-					const bubble = document.getElementById('mobileCartBubble');
-					if (bubble) {
-						bubble.classList.remove('show-bubble');
-					}
-				};
+        const itemsContainer = document.getElementById('checkoutModalItems');
+        let html = '', total = 0;
 
-				// ==================== CHECKOUT GATEWAY ENGINE ====================
-				const checkoutModal = document.getElementById('checkoutModal');
-				const closeCheckoutBtn = document.getElementById('closeCheckoutModal');
-				const reviewCartBtn = document.getElementById('reviewCartBtn');
-				const cartNavBtn = document.getElementById('cartNavBtn');
-				const clearCartBtn = document.getElementById('clearCartBtn');
-				const gatewayProceedBtn = document.getElementById('gatewayProceedBtn');
-
-				openCheckoutGateway = function () {
-					if (currentDistributorMode === 'amazon') {
-						alert("🛒 Cart is only available in Local mode.\n\nOpening distributor selector so you can switch...");
-
-						if (dropdown) dropdown.style.display = 'block';
-						if (toggleBtn) {
-							toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-						}
-						return;
-					}
-
-					if (cart.length === 0) {
-						alert("Your cart is empty! Add items from the catalog first.");
-						return;
-					}
-
-					const itemsContainer = document.getElementById('checkoutModalItems');
-					let itemsHTML = '';
-					let totalCAD = 0;
-
-					cart.forEach(item => {
-						const product = products[item.id];
-						if (product) {
-							const lineTotal = product.priceVal * item.quantity;
-							totalCAD += lineTotal;
-							itemsHTML += `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
-                        <span style="display: inline-block; vertical-align: middle;"><span style="font-weight: bold; color: #a78bfa;">${item.quantity}x</span> ${product.title}</span>
+        cart.forEach(item => {
+            const p = products[item.id];
+            if (!p) return;
+            const lineTotal = p.priceVal * item.quantity;
+            total += lineTotal;
+            html += `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s; display: inline-flex; align-items:center; justify-content:center; vertical-align:middle;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
+                        <span><strong>${item.quantity}x</strong> ${p.title}</span>
                     </div>
-                    <div style="color: #e9d5ff;">$${lineTotal.toFixed(2)} CAD</div>
-                </div>
-            `;
-						}
-					});
+                    <div>$${lineTotal.toFixed(2)} CAD</div>
+                </div>`;
+        });
 
-					if (itemsContainer) itemsContainer.innerHTML = itemsHTML;
+        itemsContainer.innerHTML = html;
+        document.getElementById('checkoutTotalCAD').textContent = `$${total.toFixed(2)} CAD`;
 
-					const totalCadEl = document.getElementById('checkoutTotalCAD');
-					if (totalCadEl) totalCadEl.textContent = `$${totalCAD.toFixed(2)} CAD`;
+        // Settlement Currency Selector
+        let tokenArea = document.getElementById('checkoutModalTokenSelectorSpace');
+        if (!tokenArea && itemsContainer) {
+            tokenArea = document.createElement('div');
+            tokenArea.id = 'checkoutModalTokenSelectorSpace';
+            itemsContainer.parentNode.insertBefore(tokenArea, itemsContainer.nextSibling);
+        }
+        if (tokenArea) {
+            if (currentPaymentMethod === 'fiat') {
+                tokenArea.innerHTML = `
+                    <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
+<div style="margin-bottom: 16px;">
+    <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
+    <select id="token-select" disabled style="width: 100%; background: #110e2e; border: 1px solid #4c1d95; color: #888; padding: 10px 8px !important; line-height: 1.4; height: auto; min-height: 38px; box-sizing: border-box; outline: none; font-size: 14px; cursor: not-allowed; opacity: 0.6; vertical-align: middle;">
+        <option value="CAD" selected>CAD (Fiat Settlement Locked)</option>
+    </select>
+</div>
+                `;
+            } else {
+                tokenArea.innerHTML = `
+                    <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
+<div style="margin-bottom: 16px;">
+    <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
+    <select id="token-select" style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 10px 8px !important; border-radius: 6px; line-height: 1.4; height: auto; min-height: 38px; box-sizing: border-box; outline: none; font-size: 14px; cursor: pointer; vertical-align: middle;">
+        <option value="eXPB" ${currentSelectedToken === 'eXPB' ? 'selected' : ''}>$eXPB / Dynamic Discount / 15%</option>
+        <option value="GIDDY" ${currentSelectedToken === 'GIDDY' ? 'selected' : ''}>$GIDDY / Stable Dollar + Raffle</option>
+        <option value="SOL" ${currentSelectedToken === 'SOL' ? 'selected' : ''}>$SOL / Native Currency of Solana SPL</option>
+        <option value="ONE" ${currentSelectedToken === 'ONE' ? 'selected' : ''}>$ONE</option>
+        <option value="KIN" ${currentSelectedToken === 'KIN' ? 'selected' : ''}>$KIN</option>
+        <option value="DOBBY" ${currentSelectedToken === 'DOBBY' ? 'selected' : ''}>$DOBBY</option>
+        <option value="DUNO" ${currentSelectedToken === 'DUNO' ? 'selected' : ''}>$DUNO</option>
+        <option value="MYLO" ${currentSelectedToken === 'MYLO' ? 'selected' : ''}>$MYLO</option>
+        <option value="CPT" ${currentSelectedToken === 'CPT' ? 'selected' : ''}>$CPT</option>
+        <option value="SINU" ${currentSelectedToken === 'SINU' ? 'selected' : ''}>$SINU</option>
+    </select>
+</div>
+                `;
 
-					const selectEl = document.getElementById('token-select');
-					const cryptoSettlementEl = document.getElementById('checkoutCryptoSettlement');
-					if (selectEl && cryptoSettlementEl) {
-						const selectedToken = selectEl.value;
-						cryptoSettlementEl.textContent = `${(totalCAD * 10000).toLocaleString()} ${selectedToken}`;
-					}
+                const select = tokenArea.querySelector('#token-select');
+                if (select) {
+                    select.addEventListener('change', function () {
+                        currentSelectedToken = this.value;
+                        const match = document.querySelector(`.token-item[data-token="${currentSelectedToken}"]`);
+                        if (match) {
+                            document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+                            match.classList.add('selected');
+                        }
+                        syncCheckoutLabels();
+                        updateCartUI();
+                    });
+                }
+            }
+        }
 
-					if (itemsContainer) {
-						itemsContainer.querySelectorAll('.checkout-del-btn').forEach(btn => {
-							btn.addEventListener('click', function () {
-								removeCartItemElement(this.getAttribute('data-id'));
-							});
-						});
-					}
+        syncCheckoutLabels();
+        document.getElementById('checkoutModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
 
-					if (checkoutModal) {
-						checkoutModal.style.display = 'block';
-						document.body.style.overflow = 'hidden';
-					}
+    function closeCheckoutGateway() {
+        const modal = document.getElementById('checkoutModal');
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = '';
+        updateCartUI();
+    }
 
-					// NEW: Bubble closes automatically when clicked to open checkout (as requested)
-					const mobileCartBubbleEl = document.getElementById('mobileCartBubble');
-					if (mobileCartBubbleEl) {
-						mobileCartBubbleEl.classList.remove('show-bubble');
-					}
-				};
+    // Wire buttons
+    document.getElementById('reviewCartBtn')?.addEventListener('click', openCheckoutGateway);
+    document.getElementById('cartNavBtn')?.addEventListener('click', openCheckoutGateway);
+    document.getElementById('closeCheckoutModal')?.addEventListener('click', closeCheckoutGateway);
+    document.getElementById('clearCartBtn')?.addEventListener('click', () => {
+        if (confirm("Empty cart?")) { cart = []; saveCart(); closeCheckoutGateway(); }
+    });
+    document.getElementById('gatewayProceedBtn')?.addEventListener('click', () => alert("Secure checkout coming soon!"));
 
-				function closeCheckoutGateway() {
-					if (checkoutModal) {
-						checkoutModal.style.display = 'none';
-						document.body.style.overflow = '';
-					}
+    // ==================== PRODUCT MODAL + MAGNIFIER ====================
+const previewModal = document.getElementById('previewModal');
+const magnifier = document.getElementById('magnifier');
 
-					// NEW: Re-show mobile bubble (if cart still has items) when checkout modal is closed
-					updateCartUI();
-				}
+function openPreviewModal(productId) {
+    const product = products[productId];
+    if (!product || !previewModal) return;
 
-				if (reviewCartBtn) reviewCartBtn.addEventListener('click', openCheckoutGateway);
-				if (cartNavBtn) cartNavBtn.addEventListener('click', openCheckoutGateway);
-				if (closeCheckoutBtn) closeCheckoutBtn.addEventListener('click', closeCheckoutGateway);
-
-				if (clearCartBtn) {
-					clearCartBtn.addEventListener('click', () => {
-						if (confirm("Are you sure you want to empty your cart?")) {
-							cart = [];
-							saveCart();
-							closeCheckoutGateway();
-						}
-					});
-				}
-
-				if (gatewayProceedBtn) {
-					gatewayProceedBtn.addEventListener('click', () => {
-						alert("Routing to Secure Checkout Gateway Engine page configuration coming soon!");
-					});
-				}
-
-				if (checkoutModal) {
-					checkoutModal.addEventListener('click', function (e) {
-						if (e.target === checkoutModal) closeCheckoutGateway();
-					});
-				}
-
-				// ==================== MODAL + MAGNIFIER LOGIC ====================
-				const modal = document.getElementById('previewModal');
-				const closeBtn = document.getElementById('closeModal');
-				const scrollContainer = document.getElementById('imageScrollContainer');
-				const fixedDescContainer = document.getElementById('modalFixedDescription');
-				const magnifier = document.getElementById('magnifier');
-
-				const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-				function openPreviewModal(productId) {
-					const product = products[productId];
-					if (!product) return;
-
-					if (scrollContainer) scrollContainer.innerHTML = '';
-
-					let slidesHTML = '';
-					product.previews.forEach(preview => {
-						slidesHTML += `
+    const scrollArea = previewModal.querySelector('.image-scroll');
+    if (scrollArea) {
+        scrollArea.innerHTML = product.previews.map(p => `
             <div class="image-slide">
-                <img src="${preview.src}" alt="${product.title}">
-                <div class="variable-text">${preview.text}</div>
+                <img src="${p.src}" alt="${product.title}">
+                <div class="variable-text">${p.text}</div>
             </div>
-        `;
-					});
-					if (scrollContainer) scrollContainer.innerHTML = slidesHTML;
+        `).join('');
+    }
 
-					let modalActionHtml = '';
-					if (currentDistributorMode === 'amazon') {
-						modalActionHtml = `
-            <a href="${product.amazonUrl || 'https://www.amazon.com'}" target="_blank" class="cart-btn" style="display:block; text-align:center; width:100%; max-width:none; margin-top:1em; background: #ff9900; color: #000; border-color: #e48700; margin-left: auto; margin-right: auto;">
-                <i class="fab fa-amazon"></i> Buy on Amazon
-            </a>
-        `;
-					} else {
-						modalActionHtml = `
-            <button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%; max-width:none; margin-top:1em; margin-left: auto; margin-right: auto;">
-                <i class="fas fa-shopping-cart"></i> Add to Cart
-            </button>
-        `;
-					}
+const fixedDesc = previewModal.querySelector('.fixed-desc');
+if (fixedDesc) {
+    // Injecting a localized scoped style block to kill any visited/active purple text lines completely
+    const action = currentDistributorMode === 'amazon' ?
+        `<style>
+            .card-amazon-btn, 
+            .card-amazon-btn:visited, 
+            .card-amazon-btn:active, 
+            .card-amazon-btn:hover { 
+                color: #000000; 
+                text-decoration: none; 
+                border-bottom: 0;
+                border: none;
+                box-shadow: none;
+                font-weight: bold;
+				border-radius: 6px;
+            }
+         </style>
+         <a href="${product.amazonUrl}" target="_blank" class="cart-btn card-amazon-btn" style="display:block; width:100%; text-align:center; background:#ff9900; color:#000; text-decoration:none;"><i class="fab fa-amazon"></i> Buy on Amazon</a>` :
+        `<button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%;">🛒 Add to Cart</button>`;
 
-					if (fixedDescContainer) {
-						fixedDescContainer.innerHTML = `
-            <h2>${product.title}</h2>
-            <div class="price"> ${product.price}</div>
-            <p>${product.fixedDesc}</p>
-            ${modalActionHtml}
-        `;
+    fixedDesc.innerHTML = `<h2>${product.title}</h2><div class="price">${product.price}</div><p>${product.fixedDesc}</p>${action}`;
 
-						const localAddBtn = fixedDescContainer.querySelector('.modal-add-to-cart');
-						if (localAddBtn) {
-							localAddBtn.addEventListener('click', function () {
-								addPromptToCart(this.getAttribute('data-id'), this);
-							});
-						}
-					}
+    fixedDesc.querySelector('.modal-add-to-cart')?.addEventListener('click', function () {
+        addPromptToCart(this.getAttribute('data-id'), this);
+    });
+}
 
-					setTimeout(() => { if (scrollContainer) scrollContainer.scrollLeft = 0; }, 10);
+    previewModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    setTimeout(initMagnifier, 100);
+}
 
-					setTimeout(() => {
-						if (!scrollContainer) return;
-						const images = scrollContainer.querySelectorAll('.image-slide img');
-						images.forEach(img => {
-							if (isTouchDevice) {
-								img.addEventListener('touchstart', showMagnifier, { passive: false });
-								img.addEventListener('touchmove', showMagnifier, { passive: false });
-								img.addEventListener('touchend', hideMagnifier);
-							} else {
-								img.addEventListener('mousemove', showMagnifier);
-								img.addEventListener('mouseleave', hideMagnifier);
-							}
-						});
-					}, 100);
+    function closePreviewModal() {
+        if (previewModal) previewModal.style.display = 'none';
+        document.body.style.overflow = '';
+        if (magnifier) magnifier.style.display = 'none';
+    }
 
-					if (modal) {
-						modal.style.display = 'block';
-						document.body.style.overflow = 'hidden';
-					}
-				}
+    previewModal?.querySelector('.close-modal')?.addEventListener('click', closePreviewModal);
+    previewModal?.addEventListener('click', e => { if (e.target === previewModal) closePreviewModal(); });
 
-				function showMagnifier(e) {
-					if (!magnifier) return;
-					if (e.touches) e.preventDefault();
+    function initMagnifier() {
+        if (!magnifier) return;
+        previewModal.querySelectorAll('.image-slide img').forEach(img => {
+            img.addEventListener('mousemove', (e) => {
+                const rect = img.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                magnifier.style.display = 'block';
+                magnifier.style.left = `${e.clientX - 90}px`;
+                magnifier.style.top = `${e.clientY - 90}px`;
+                magnifier.style.backgroundImage = `url(${img.src})`;
+                magnifier.style.backgroundPosition = `-${x * 5 - 90}px -${y * 5 - 90}px`;
+                magnifier.style.backgroundSize = `${img.width * 5}px ${img.height * 5}px`;
+            });
+            img.addEventListener('mouseleave', () => magnifier.style.display = 'none');
+        });
+    }
 
-					const img = e.target || e.currentTarget;
-					magnifier.style.display = 'block';
+    // Card handlers
+    document.querySelectorAll('.shop-card').forEach(card => {
+        card.addEventListener('click', function (e) {
+            if (e.target.closest('.cart-btn') || e.target.closest('a')) return;
+            const id = this.getAttribute('data-product-id');
+            if (id) openPreviewModal(id);
+        });
 
-					const rect = img.getBoundingClientRect();
-					const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-					const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const addBtn = card.querySelector('.card-add-to-cart');
+        if (addBtn) addBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            addPromptToCart(card.getAttribute('data-product-id'), addBtn);
+        });
 
-					const x = clientX - rect.left;
-					const y = clientY - rect.top;
+        const amzBtn = card.querySelector('.card-amazon-btn');
+        if (amzBtn) amzBtn.addEventListener('click', e => e.stopPropagation());
+    });
 
-					magnifier.style.left = `${clientX - 90}px`;
-					magnifier.style.top = `${clientY - 90}px`;
+    // Keyboard
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closePreviewModal();
+            closeCheckoutGateway();
+        }
+    });
 
-					const zoom = 5;
-					const bgX = -(x * zoom - 90) + 'px';
-					const bgY = -(y * zoom - 90) + 'px';
-
-					magnifier.style.backgroundImage = `url(${img.src})`;
-					magnifier.style.backgroundPosition = `${bgX} ${bgY}`;
-					magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
-				}
-
-				function hideMagnifier() {
-					if (magnifier) magnifier.style.display = 'none';
-				}
-
-				function closeModal() {
-					if (modal) modal.style.display = 'none';
-					document.body.style.overflow = '';
-					hideMagnifier();
-				}
-
-				if (closeBtn) closeBtn.addEventListener('click', closeModal);
-
-				if (modal) {
-					modal.addEventListener('click', function (e) {
-						if (e.target === modal) closeModal();
-					});
-				}
-
-				document.addEventListener('keydown', function (e) {
-					if (e.key === 'Escape') {
-						closeModal();
-						closeCheckoutGateway();
-					}
-				});
-
-				// ==================== SETUP CATALOG CARDS ====================
-				const cards = document.querySelectorAll('.shop-card');
-				cards.forEach(card => {
-					const imgContainer = card.querySelector('.image-container');
-					if (imgContainer) {
-						imgContainer.addEventListener('click', (e) => {
-							e.stopPropagation();
-							const productId = card.getAttribute('data-product-id');
-							if (productId) openPreviewModal(productId);
-						});
-					}
-
-					const cardBtn = card.querySelector('.card-add-to-cart');
-					if (cardBtn) {
-						cardBtn.addEventListener('click', function () {
-							const productId = card.getAttribute('data-product-id');
-							addPromptToCart(productId, this);
-						});
-					}
-
-					const amzBtn = card.querySelector('.card-amazon-btn');
-					const currentId = card.getAttribute('data-product-id');
-					if (amzBtn && products[currentId] && products[currentId].amazonUrl) {
-						amzBtn.setAttribute('href', products[currentId].amazonUrl);
-					}
-				});
-
-				const select = document.getElementById('token-select');
-				if (select) {
-					select.addEventListener('change', updateCartUI);
-				}
-
-				updateCartUI();
-			});
-		</script>
-
-		<!-- Profile Click Handler -->
-		<script>
-			function showProfile() {
-				alert("Profile coming soon");
-			}
-		</script>
-
-		<!-- Bottom Nav, Footer, etc. -->
+    updateCartUI();
+    isInitialPageLoad = false;
+});
+</script>
 
 		<!-- Bottom Nav -->
 		<nav class="bottom-nav">
