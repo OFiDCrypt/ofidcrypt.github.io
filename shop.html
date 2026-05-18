@@ -104,439 +104,480 @@
 	<meta http-equiv='content-language' content='en-gb'>
 
 	<!-- Custom Shop + Modal Styles -->
-	<style>
-		/* ============================ */
-		/* SHOP CARDS                   */
-		/* ============================ */
-		.shop-section {
-			padding: 2em 0;
-		}
+    <style>
+        /* ============================ */
+        /* SHOP CARDS                   */
+        /* ============================ */
+        .shop-section {
+            padding: 2em 0;
+        }
 
-		.shop-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-			gap: 2em;
-			margin-bottom: 2em;
-			justify-content: center;
-		}
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2em;
+            margin-bottom: 2em;
+            justify-content: center;
+        }
 
-		.shop-card {
-			background: var(--card-bg, #fff);
-			border-radius: 1em;
-			overflow: hidden;
-			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-			text-align: center;
-			padding: 1em;
-			max-width: 340px;
-			width: 100%;
-			margin: 0 auto;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			height: 100%;
-		}
+        .shop-card {
+            background: var(--card-bg, #fff);
+            border-radius: 1em;
+            overflow: hidden;
+            box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 1em;
+            max-width: 340px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-		.shop-card .image-container {
-			padding: 0.75em;
-			position: relative;
-			display: block;
-			overflow: hidden;
-			border-radius: 0.5em;
-		}
+        .shop-card .image-container {
+            padding: 0.75em;
+            position: relative;
+            display: block;
+            overflow: hidden;
+            border-radius: 0.5em;
+        }
 
-		.shop-card img {
-			width: 100%;
-			height: auto;
-			border-radius: 0.5em;
-			display: block;
-			transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-		}
+        .shop-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5em;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-		/* Auto Hover Magnifying Effect on Shop Cards */
-		.shop-card:hover img {
-			transform: scale(1.16);
-		}
+        /* Auto Hover Magnifying Effect on Shop Cards */
+        .shop-card:hover img {
+            transform: scale(1.16);
+        }
 
-		.shop-card .expand-overlay {
-			position: absolute;
-			bottom: 12px;
-			right: 12px;
-			background: rgba(255, 255, 255, 0.85);
-			border-radius: 50%;
-			width: 52px;
-			height: 52px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-			cursor: pointer;
-			transition: all 0.3s ease;
-			opacity: 0.9;
-			z-index: 2;
-		}
+        .shop-card .expand-overlay {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+            z-index: 2;
+        }
 
-		.shop-card .expand-overlay:hover {
-			transform: scale(1.2);
-			opacity: 1;
-			background: rgba(255, 255, 255, 1);
-		}
+        .shop-card .expand-overlay:hover {
+            transform: scale(1.2);
+            opacity: 1;
+            background: rgba(255, 255, 255, 1);
+        }
 
-		body.dark-mode .shop-card .expand-overlay {
-			background: rgba(30, 30, 46, 0.9);
-		}
+        body.dark-mode .shop-card .expand-overlay {
+            background: rgba(30, 30, 46, 0.9);
+        }
 
-		.shop-card .expand-overlay i {
-			font-size: 1.65rem;
-			color: #a855f7;
-		}
+        .shop-card .expand-overlay i {
+            font-size: 1.65rem;
+            color: #a855f7;
+        }
 
-		body.dark-mode .shop-card .expand-overlay i {
-			color: #c084fc;
-		}
+        body.dark-mode .shop-card .expand-overlay i {
+            color: #c084fc;
+        }
 
-		.shop-card h3 {
-			margin: 0.5em 0 0.25em;
-			font-size: 1.2em;
-		}
+        .shop-card h3 {
+            margin: 0.5em 0 0.25em;
+            font-size: 1.2em;
+        }
 
-		.shop-card .price {
-			font-size: 1em;
-			color: var(--accent, #a855f7);
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 0.35em;
-			margin-top: auto;
-			padding-top: 1em;
-		}
+        .shop-card .price {
+            font-size: 1em;
+            color: var(--accent, #a855f7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35em;
+            margin-top: auto;
+            padding-top: 1em;
+        }
 
-		.shop-card .price i {
-			font-size: 1.35em;
-		}
+        .shop-card .price i {
+            font-size: 1.35em;
+        }
 
-		.shop-card .cart-btn {
-			background: transparent;
-			color: #000;
-			border: 1px solid #ddd;
-			border-radius: 0.5em;
-			padding: 0.5em 1.5em;
-			font-size: 0.75em;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			text-align: center;
-			margin: 0.8em auto 0.5em;
-			width: fit-content;
-			max-width: 100%;
-			gap: 0.5em;
-			box-sizing: border-box;
-		}
+       /* ======================================================== */
+        /* AMENDED: THEMED CART BUTTONS (Preserves Exact Layout)    */
+        /* ======================================================== */
+        .shop-card .cart-btn {
+            background: #1e1b4b;                     /* Cosmic Indigo */
+            color: #a78bfa;                          /* Radiant Purple Text */
+            border: 2px solid #4c1d95;               /* Deep Velvet Accent Border */
+            border-radius: 0.5em;                    /* Kept original constraint */
+            padding: 0.6em 0;                        /* Removed horizontal padding to let width manage edges */
+            font-size: 0.75em;                       /* Kept original constraint */
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0.8em auto 0.5em;                /* Kept exact original positioning margins */
+            
+            /* FIXED FRAME RULES: Prevents button shrinking during text changes */
+            width: 140px;                            /* Locked explicit frame width */
+            max-width: 100%;                         /* Kept original constraint */
+            
+            gap: 0.5em;                              /* Kept original constraint */
+            box-sizing: border-box;                  /* Kept original constraint */
+            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; /* Excluded width from transitions */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+        }
 
-		body.dark-mode .shop-card .cart-btn {
-			color: #fff;
-			border-color: #334155;
-		}
+        /* Hover & Active Micro-interactions */
+        .shop-card .cart-btn:hover {
+            background: #4c1d95;
+            color: #ffffff;
+            border-color: #a78bfa;
+            box-shadow: 0 0 12px rgba(167, 139, 250, 0.45);
+            transform: translateY(-1px);
+        }
 
-		/* Existing styles */
-		.buy-now {
-			background: rgba(168, 85, 247, 0.8);
-			color: white;
-			border: none;
-			padding: 1em;
-			font-size: 1.2em;
-			border-radius: 0.5em;
-			width: 100%;
-			max-width: 300px;
-			margin: 1em auto;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			text-align: center;
-		}
+        .shop-card .cart-btn:active {
+            transform: translateY(1px);
+        }
 
-		.payment-summary {
-			background: var(--card-bg, #f9f9f9);
-			border-radius: 1em;
-			padding: 1.5em;
-			margin-top: 2em;
-			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-		}
+        /* Light-to-Dark Mode Context Alternation Engines */
+        body.dark-mode .shop-card .cart-btn {
+            background: #111029;
+            color: #c084fc;
+            border-color: #581c87;
+        }
 
-		.payment-summary h2 {
-			margin-bottom: 1em;
-		}
+        body.dark-mode .shop-card .cart-btn:hover {
+            background: #581c87;
+            color: #ffffff;
+            border-color: #c084fc;
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.45);
+        }
 
-		.payment-row {
-			display: flex;
-			justify-content: space-between;
-			margin: 0.5em 0;
-		}
+        /* Success Engine State Callback Hook (Maintains identical frame sizes) */
+        .shop-card .cart-btn.success-state {
+            background: #052e16 !important;
+            color: #4ade80 !important;
+            border-color: #22c55e !important;
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.35) !important;
+            transform: none !important;              /* Locks position safely on success callback */
+        }
 
-		select {
-			width: 100%;
-			padding: 0em 0.75em;
-			border-radius: 0.5em;
-			border: 1px solid #ddd;
-			text-align: center;
-		}
+        /* Existing styles */
+        .buy-now {
+            background: rgba(168, 85, 247, 0.8);
+            color: white;
+            border: none;
+            padding: 1em;
+            font-size: 1.2em;
+            border-radius: 0.5em;
+            width: 100%;
+            max-width: 300px;
+            margin: 1em auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-		select option {
-			text-align: center;
-		}
+        .payment-summary {
+            background: var(--card-bg, #f9f9f9);
+            border-radius: 1em;
+            padding: 1.5em;
+            margin-top: 2em;
+            box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+        }
 
-		/* Dark mode overrides */
-		body.dark-mode .shop-card {
-			background: #1a1a2e;
-			color: #e2e8f0;
-		}
+        .payment-summary h2 {
+            margin-bottom: 1em;
+        }
 
-		body.dark-mode .payment-summary {
-			background: #1a1a2e;
-			color: #e2e8f0;
-		}
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5em 0;
+        }
 
-		body.dark-mode select {
-			background: #2d2d44;
-			color: white;
-			border-color: #334155;
-		}
+        select {
+            width: 100%;
+            padding: 0em 0.75em;
+            border-radius: 0.5em;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
 
-		body.dark-mode .buy-now {
-			background: rgba(168, 85, 247, 0.8);
-		}
+        select option {
+            text-align: center;
+        }
 
-		/* Responsive grid */
-		@media (max-width: 480px) {
-			.shop-grid {
-				grid-template-columns: repeat(2, 1fr);
-				gap: 1em;
-			}
-		}
+        /* Dark mode overrides */
+        body.dark-mode .shop-card {
+            background: #1a1a2e;
+            color: #e2e8f0;
+        }
 
-		@media (min-width: 481px) and (max-width: 980px) {
-			.shop-grid {
-				grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-				gap: 1.5em;
-			}
-		}
+        body.dark-mode .payment-summary {
+            background: #1a1a2e;
+            color: #e2e8f0;
+        }
 
-		@media (min-width: 981px) {
-			.shop-grid {
-				grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
-				max-width: 1400px;
-				margin-left: auto;
-				margin-right: auto;
-				gap: 2em;
-			}
+        body.dark-mode select {
+            background: #2d2d44;
+            color: white;
+            border-color: #334155;
+        }
 
-			.shop-card {
-				max-width: 340px;
-			}
-		}
+        body.dark-mode .buy-now {
+            background: rgba(168, 85, 247, 0.8);
+        }
 
-		@media (min-width: 1681px) {
-			.shop-grid {
-				grid-template-columns: repeat(4, minmax(280px, 340px));
-				max-width: 1500px;
-				margin-left: auto;
-				margin-right: auto;
-				gap: 2.5em;
-				justify-content: center;
-			}
+        /* Responsive grid */
+        @media (max-width: 480px) {
+            .shop-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1em;
+            }
+        }
 
-			.shop-card {
-				max-width: 340px;
-			}
-		}
+        @media (min-width: 481px) and (max-width: 980px) {
+            .shop-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 1.5em;
+            }
+        }
 
-		/* ============================ */
-		/* NEW: PRODUCT PREVIEW MODAL   */
-		/* ============================ */
-		#previewModal {
-			display: none;
-			position: fixed;
-			z-index: 10000;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.92);
-			overflow: hidden;
-		}
+        @media (min-width: 981px) {
+            .shop-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+                max-width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+                gap: 2em;
+            }
 
-		.modal-content {
-			background: #fff;
-			margin: 4vh auto;
-			width: 92%;
-			max-width: 960px;
-			max-height: 92vh;
-			border-radius: 1.25em;
-			overflow: hidden;
-			display: flex;
-			flex-direction: column;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-			position: relative;
-		}
+            .shop-card {
+                max-width: 340px;
+            }
+        }
 
-		body.dark-mode .modal-content {
-			background: #1a1a2e;
-			color: #e2e8f0;
-		}
+        @media (min-width: 1681px) {
+            .shop-grid {
+                grid-template-columns: repeat(4, minmax(280px, 340px));
+                max-width: 1500px;
+                margin-left: auto;
+                margin-right: auto;
+                gap: 2.5em;
+                justify-content: center;
+            }
 
-		.modal-header {
-			padding: 1em 1.5em 0.5em;
-			display: flex;
-			justify-content: flex-end;
-		}
+            .shop-card {
+                max-width: 340px;
+            }
+        }
 
-		.close-modal {
-			font-size: 2.2rem;
-			font-weight: 300;
-			color: #666;
-			cursor: pointer;
-			line-height: 1;
-		}
+        /* ============================ */
+        /* NEW: PRODUCT PREVIEW MODAL   */
+        /* ============================ */
+        #previewModal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.92);
+            overflow: hidden;
+        }
 
-		body.dark-mode .close-modal {
-			color: #c084fc;
-		}
+        .modal-content {
+            background: #fff;
+            margin: 4vh auto;
+            width: 92%;
+            max-width: 960px;
+            max-height: 92vh;
+            border-radius: 1.25em;
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
 
-		.modal-scroll-area {
-			flex: 1;
-			overflow: hidden;
-			padding: 0 1.5em 1em;
-			position: relative;
-			z-index: 3;
-		}
+        body.dark-mode .modal-content {
+            background: #1a1a2e;
+            color: #e2e8f0;
+        }
 
-		.image-scroll {
-			display: flex;
-			gap: 1.5em;
-			overflow-x: auto;
-			scroll-snap-type: x mandatory;
-			-webkit-overflow-scrolling: touch;
-			padding-bottom: 1em;
-			scrollbar-width: thin;
-			scrollbar-color: #a855f7 #f1f1f1;
-			height: 100%;
-		}
+        .modal-header {
+            padding: 1em 1.5em 0.5em;
+            display: flex;
+            justify-content: flex-end;
+        }
 
-		body.dark-mode .image-scroll {
-			scrollbar-color: #c084fc #2d2d44;
-		}
+        .close-modal {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #666;
+            cursor: pointer;
+            line-height: 1;
+        }
 
-		.image-slide {
-			flex: 0 0 100%;
-			scroll-snap-align: center;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
+        body.dark-mode .close-modal {
+            color: #c084fc;
+        }
 
-		.image-slide img {
-			width: auto;
-			max-height: 68vh;
-			object-fit: contain;
-			border-radius: 1em;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-			cursor: crosshair;
-		}
+        .modal-scroll-area {
+            flex: none;
+            overflow: visible;
+            padding: 0 1.5em 1em;
+            position: relative;
+            z-index: 3;
+        }
 
-		.variable-text {
-			margin-top: 1.25em;
-			text-align: center;
-			font-size: 1.05em;
-			line-height: 1.5;
-			max-width: 90%;
-			font-style: italic;
-			color: #555;
-		}
+        .image-scroll {
+            display: flex;
+            gap: 1.5em;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 1em;
+            scrollbar-width: thin;
+            scrollbar-color: #a855f7 #f1f1f1;
+            height: 100%;
+        }
 
-		body.dark-mode .variable-text {
-			color: #cbd5e1;
-		}
+        body.dark-mode .image-scroll {
+            scrollbar-color: #c084fc #2d2d44;
+        }
 
-		.fixed-desc {
-			padding: 1.1em 1.5em;
-			background: #f8f8f8;
-			border-top: 1px solid #e5e5e5;
-			position: relative;
-			z-index: 1;
-		}
+        .image-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-		body.dark-mode .fixed-desc {
-			background: #16213e;
-			border-top-color: #334155;
-		}
+        .image-slide img {
+            width: auto;
+            max-height: 68vh;
+            object-fit: contain;
+            border-radius: 1em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            cursor: crosshair;
+        }
 
-		.fixed-desc h2 {
-			margin: 0 0 0.4em;
-			font-size: 1.35em;
-		}
+        .variable-text {
+            margin-top: 1.25em;
+            text-align: center;
+            font-size: 1.05em;
+            line-height: 1.5;
+            max-width: 90%;
+            font-style: italic;
+            color: #555;
+        }
 
-		.fixed-desc .price {
-			font-size: 1.25em;
-			color: #a855f7;
-			margin-bottom: 0.9em;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 0.4em;
-		}
+        body.dark-mode .variable-text {
+            color: #cbd5e1;
+        }
 
-		body.dark-mode .fixed-desc .price {
-			color: #c084fc;
-		}
+        .fixed-desc {
+            padding: 1.1em 1.5em;
+            background: #f8f8f8;
+            border-top: 1px solid #e5e5e5;
+            position: relative;
+            z-index: 1;
+        }
 
-		.fixed-desc p {
-			margin-bottom: 1.1em;
-			line-height: 1.55;
-			font-size: 0.94em;
-		}
+        body.dark-mode .fixed-desc {
+            background: #16213e;
+            border-top-color: #334155;
+        }
 
-		/* ====================== MAGNIFYING LENS (5x) ====================== */
-		.magnifier-lens {
-			position: fixed;
-			width: 180px;
-			height: 180px;
-			border: 4px solid #a855f7;
-			border-radius: 50%;
-			box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-			background: #fff;
-			pointer-events: none;
-			display: none;
-			z-index: 10001;
-			overflow: hidden;
-		}
+        .fixed-desc h2 {
+            margin: 0 0 0.4em;
+            font-size: 1.35em;
+        }
 
-		body.dark-mode .magnifier-lens {
-			border-color: #c084fc;
-		}
+        .fixed-desc .price {
+            font-size: 1.25em;
+            color: #a855f7;
+            margin-bottom: 0.9em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4em;
+        }
 
-		@media (min-width: 641px) {
-			.fixed-desc {
-				padding: 0.85em 1.5em 1.05em;
-			}
+        body.dark-mode .fixed-desc .price {
+            color: #c084fc;
+        }
 
-			.image-slide img {
-				max-height: 70vh;
-			}
-		}
+        .fixed-desc p {
+            margin-bottom: 1.1em;
+            line-height: 1.55;
+            font-size: 0.94em;
+        }
 
-		@media (max-width: 640px) {
-			.modal-content {
-				margin: 2vh auto;
-				width: 98%;
-				max-height: 96vh;
-			}
+        /* ====================== MAGNIFYING LENS (5x) ====================== */
+        .magnifier-lens {
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            border: 4px solid #a855f7;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            background: #fff;
+            pointer-events: none;
+            display: none;
+            z-index: 10001;
+            overflow: hidden;
+        }
 
-			.image-slide img {
-				max-height: 42vh;
-			}
-		}
-	</style>
+        body.dark-mode .magnifier-lens {
+            border-color: #c084fc;
+        }
+
+        @media (min-width: 641px) {
+            .fixed-desc {
+                padding: 0.85em 1.5em 1.05em;
+            }
+
+            .image-slide img {
+                max-height: 70vh;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .modal-content {
+                margin: 2vh auto;
+                width: 95%;
+                max-height: 96vh;
+            }
+
+            .image-slide img {
+                max-height: 35vh;
+            }
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -835,84 +876,75 @@
 
 				<div class="shop-grid">
 
-					<!-- Product 1 -->
-					<div class="shop-card" data-product-id="1">
-						<div class="image-container">
-							<img src="/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp"
-								alt="Chapter Book: The Ball of One Billion Wonders">
-							<div class="expand-overlay">
-								<i class="fas fa-magnifying-glass-plus"></i>
-							</div>
-						</div>
-						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
-							Cart</button>
-						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-							<i class="fab fa-amazon"></i> Buy on Amazon
-						</a>
-						<h3>Chapter Book: Giddy Tales</h3>
-						<div class="price"><i class="fas fa-money-bill-wave"></i> $25.00 CAD / GIDDY</div>
-					</div>
+    <!-- Product 1 -->
+    <div class="shop-card" data-product-id="1">
+        <div class="image-container" style="cursor: pointer;">
+            <img src="/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp"
+                alt="Chapter Book: The Ball of One Billion Wonders">
+        </div>
+        <button class="cart-btn card-add-to-cart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+            <i class="fab fa-amazon"></i> Buy on Amazon
+        </a>
+        <h3>Chapter Book: Giddy Tales</h3>
+        <div class="price"> $25.00 CAD / GIDDY</div>
+    </div>
 
-					<!-- Product 2 -->
-					<div class="shop-card" data-product-id="2">
-						<div class="image-container">
-							<img src="/assets/images/webp/products/product-bb-st-e1.webp"
-								alt="Bouncy Balls: Space First Edition">
-							<div class="expand-overlay">
-								<i class="fas fa-magnifying-glass-plus"></i>
-							</div>
-						</div>
-						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
-							Cart</button>
-						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-							<i class="fab fa-amazon"></i> Buy on Amazon
-						</a>
-						<h3>Bouncy Balls: Space First Edition</h3>
-						<div class="price"><i class="fas fa-money-bill-wave"></i> $15.00 CAD / GIDDY</div>
-					</div>
+    <!-- Product 2 -->
+    <div class="shop-card" data-product-id="2">
+        <div class="image-container" style="cursor: pointer;">
+            <img src="/assets/images/webp/products/product-bb-st-e1.webp"
+                alt="Bouncy Balls: Space First Edition">
+        </div>
+        <button class="cart-btn card-add-to-cart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+            <i class="fab fa-amazon"></i> Buy on Amazon
+        </a>
+        <h3>Bouncy Balls: Space First Edition</h3>
+        <div class="price"> $15.00 CAD / GIDDY</div>
+    </div>
 
-					<!-- Product 3 -->
-					<div class="shop-card" data-product-id="3">
-						<div class="image-container">
-							<img src="/assets/images/webp/products/product-giddy-tee-teleport-1.webp"
-								alt="Giddy Tee: Teleport">
-							<div class="expand-overlay">
-								<i class="fas fa-magnifying-glass-plus"></i>
-							</div>
-						</div>
-						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
-							Cart</button>
-						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-							<i class="fab fa-amazon"></i> Buy on Amazon
-						</a>
-						<h3>Giddy Tee: Teleport</h3>
-						<div class="price"><i class="fas fa-money-bill-wave"></i> $30.00 CAD / GIDDY</div>
-					</div>
+    <!-- Product 3 -->
+    <div class="shop-card" data-product-id="3">
+        <div class="image-container" style="cursor: pointer;">
+            <img src="/assets/images/webp/products/product-giddy-tee-teleport-1.webp"
+                alt="Giddy Tee: Teleport">
+        </div>
+        <button class="cart-btn card-add-to-cart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+            <i class="fab fa-amazon"></i> Buy on Amazon
+        </a>
+        <h3>Giddy Tee: Teleport</h3>
+        <div class="price"> $30.00 CAD / GIDDY</div>
+    </div>
 
-					<!-- Product 4 -->
-					<div class="shop-card" data-product-id="4">
-						<div class="image-container">
-							<img src="/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp"
-								alt="Colouring Book: Dinner Time">
-							<div class="expand-overlay">
-								<i class="fas fa-magnifying-glass-plus"></i>
-							</div>
-						</div>
-						<button class="cart-btn card-add-to-cart"><i class="fas fa-shopping-cart"></i> Add to
-							Cart</button>
-						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-							<i class="fab fa-amazon"></i> Buy on Amazon
-						</a>
-						<h3>Colouring Book: Dinner Time</h3>
-						<div class="price"><i class="fas fa-money-bill-wave"></i> $10.00 CAD / GIDDY</div>
-					</div>
+    <!-- Product 4 -->
+    <div class="shop-card" data-product-id="4">
+        <div class="image-container" style="cursor: pointer;">
+            <img src="/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp"
+                alt="Colouring Book: Dinner Time">
+        </div>
+        <button class="cart-btn card-add-to-cart">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+            <i class="fab fa-amazon"></i> Buy on Amazon
+        </a>
+        <h3>Colouring Book: Dinner Time</h3>
+        <div class="price"> $10.00 CAD / GIDDY</div>
+    </div>
 
-				</div>
-
+</div>
 				<button class="buy-now" id="reviewCartBtn">Review Cart</button>
 
 				<div class="payment-summary">
@@ -979,7 +1011,7 @@
 
 				<h2
 					style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 10px;">
-					<span>🔮</span> OFiDCrypt Checkout Gateway
+					Order Summary
 				</h2>
 
 				<div id="checkoutModalItems"
@@ -1004,15 +1036,16 @@
 					🛠️ <b>Development Mode:</b> Secure Web3 & Card Gateway Engine integration pending release.
 				</div>
 
-				<div style="display: flex; gap: 15px;">
+				<!-- Updated Button Container -->
+				<div style="display: flex; gap: 15px; width: 100%; box-sizing: border-box;">
 					<button id="clearCartBtn"
 						style="flex: 1; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; height: 50px; line-height: normal;"
 						onmouseover="this.style.background='rgba(239,68,68,0.1)'"
-						onmouseout="this.style.background='transparent'">🗑️ CLEAR ALL</button>
+						onmouseout="this.style.background='transparent'">🗑️ CLEAR</button>
 					<button id="gatewayProceedBtn"
-						style="flex: 2; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(124,58,237,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; height: 50px; line-height: normal;"
+						style="flex: 1; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 12px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(124,58,237,0.4); transition: all 0.3s; display: flex; align-items: center; justify-content: center; height: 50px; line-height: normal;"
 						onmouseover="this.style.transform='scale(1.02)'"
-						onmouseout="this.style.transform='scale(1)'">Proceed to Gateway</button>
+						onmouseout="this.style.transform='scale(1)'">Proceed</button>
 				</div>
 			</div>
 		</div>
@@ -1021,255 +1054,255 @@
 		<div id="magnifier" class="magnifier-lens"></div>
 
 		<script>
-    document.addEventListener('DOMContentLoaded', function () {
+			document.addEventListener('DOMContentLoaded', function () {
 
-        // ==================== PRODUCT DATA ====================
-        const products = {
-            1: {
-                title: "Chapter Book: Giddy Tales",
-                price: "$25.00 CAD / GIDDY",
-                priceVal: 25.00,
-                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
-                fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
-                previews: [
-                    { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
-                    { src: "/assets/images/300x300-solana.png", text: "Inside spread with illustrations" },
-                    { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
-                    { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
-                ]
-            },
-            2: {
-                title: "Bouncy Balls: Space First Edition",
-                price: "$15.00 CAD / GIDDY",
-                priceVal: 15.00,
-                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
-                fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs to complete your universe!",
-                previews: [
-                    { src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
-                    { src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" },
-                    { src: "/assets/images/300x300-solana.png", text: "Glow effect in action" },
-                    { src: "/assets/images/300x300-solana.png", text: "Fun size comparison" }
-                ]
-            },
-            3: {
-                title: "Giddy Tee: Teleport",
-                price: "$30.00 CAD / GIDDY",
-                priceVal: 30.00,
-                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
-                fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print, and built to last. Perfect for everyday adventures!",
-                previews: [
-                    { src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" },
-                    { src: "/assets/images/300x300-solana.png", text: "Front view with details" },
-                    { src: "/assets/images/300x300-solana.png", text: "Worn by a happy adult" },
-                    { src: "/assets/images/300x300-solana.png", text: "Close-up of print quality" }
-                ]
-            },
-            4: {
-                title: "Colouring Book: Dinner Time",
-                price: "$10.00 CAD / GIDDY",
-                priceVal: 10.00,
-                amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
-                fixedDesc: "Magical colouring book for ages 2-5. Each page features fun scenes from Giddy's adventures. Comes with a set of vibrant crayons and hidden codes for exclusive digital gift credits!",
-                previews: [
-                    { src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover — colourful and inviting" },
-                    { src: "/assets/images/300x300-solana.png", text: "Sample colouring page" },
-                    { src: "/assets/images/300x300-solana.png", text: "Inside spread with Giddy" },
-                    { src: "/assets/images/300x300-solana.png", text: "Crayons and activity pages" }
-                ]
-            }
-        };
+				// ==================== PRODUCT DATA ====================
+				const products = {
+					1: {
+						title: "Chapter Book: Giddy Tales",
+						price: "$25.00 CAD / GIDDY",
+						priceVal: 25.00,
+						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
+						fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
+						previews: [
+							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
+							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with illustrations" },
+							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
+							{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
+						]
+					},
+					2: {
+						title: "Bouncy Balls: Space First Edition",
+						price: "$15.00 CAD / GIDDY",
+						priceVal: 15.00,
+						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
+						fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs to complete your universe!",
+						previews: [
+							{ src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
+							{ src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" },
+							{ src: "/assets/images/300x300-solana.png", text: "Glow effect in action" },
+							{ src: "/assets/images/300x300-solana.png", text: "Fun size comparison" }
+						]
+					},
+					3: {
+						title: "Giddy Tee: Teleport",
+						price: "$30.00 CAD / GIDDY",
+						priceVal: 30.00,
+						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
+						fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print, and built to last. Perfect for everyday adventures!",
+						previews: [
+							{ src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" },
+							{ src: "/assets/images/300x300-solana.png", text: "Front view with details" },
+							{ src: "/assets/images/300x300-solana.png", text: "Worn by a happy adult" },
+							{ src: "/assets/images/300x300-solana.png", text: "Close-up of print quality" }
+						]
+					},
+					4: {
+						title: "Colouring Book: Dinner Time",
+						price: "$10.00 CAD / GIDDY",
+						priceVal: 10.00,
+						amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
+						fixedDesc: "Magical colouring book for ages 2-5. Each page features fun scenes from Giddy's adventures. Comes with a set of vibrant crayons and hidden codes for exclusive digital gift credits!",
+						previews: [
+							{ src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover — colourful and inviting" },
+							{ src: "/assets/images/300x300-solana.png", text: "Sample colouring page" },
+							{ src: "/assets/images/300x300-solana.png", text: "Inside spread with Giddy" },
+							{ src: "/assets/images/300x300-solana.png", text: "Crayons and activity pages" }
+						]
+					}
+				};
 
-        // Current Active Distributor Mode (local or amazon)
-        let currentDistributorMode = "local";
+				// Current Active Distributor Mode (local or amazon)
+				let currentDistributorMode = "local";
 
-        // ==================== DISTRIBUTOR TOGGLE ENGINE ====================
-        const toggleBtn = document.getElementById('distributorToggleBtn');
-        const dropdown = document.getElementById('distributorDropdown');
-        const activeLineText = document.getElementById('selectedDistributorLine');
+				// ==================== DISTRIBUTOR TOGGLE ENGINE ====================
+				const toggleBtn = document.getElementById('distributorToggleBtn');
+				const dropdown = document.getElementById('distributorDropdown');
+				const activeLineText = document.getElementById('selectedDistributorLine');
 
-        if (toggleBtn) {
-            toggleBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-            });
-        }
+				if (toggleBtn) {
+					toggleBtn.addEventListener('click', function (e) {
+						e.stopPropagation();
+						dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+					});
+				}
 
-        document.querySelectorAll('.distributor-option').forEach(option => {
-            option.addEventListener('click', function () {
-                const val = this.getAttribute('data-value');
-                currentDistributorMode = val;
+				document.querySelectorAll('.distributor-option').forEach(option => {
+					option.addEventListener('click', function () {
+						const val = this.getAttribute('data-value');
+						currentDistributorMode = val;
 
-                if (val === 'amazon') {
-                    activeLineText.style.color = '#ff9900';
-                    activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Shop on Amazon`;
-                    document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
-                    document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = ''); 
-                } else {
-                    activeLineText.style.color = '#22c55e';
-                    activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
-                    document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = ''); 
-                    document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
-                }
-                if (dropdown) dropdown.style.display = 'none';
-            });
-        });
+						if (val === 'amazon') {
+							activeLineText.style.color = '#ff9900';
+							activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Shop on Amazon`;
+							document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
+							document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = '');
+						} else {
+							activeLineText.style.color = '#22c55e';
+							activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
+							document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = '');
+							document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
+						}
+						if (dropdown) dropdown.style.display = 'none';
+					});
+				});
 
-        document.addEventListener('click', function () {
-            if (dropdown) dropdown.style.display = 'none';
-        });
+				document.addEventListener('click', function () {
+					if (dropdown) dropdown.style.display = 'none';
+				});
 
 
-        // ==================== STATE ENGINE ====================
-        let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
+				// ==================== STATE ENGINE ====================
+				let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
 
-        function saveCart() {
-            localStorage.setItem('ofid_cart', JSON.stringify(cart));
-            updateCartUI();
-        }
+				function saveCart() {
+					localStorage.setItem('ofid_cart', JSON.stringify(cart));
+					updateCartUI();
+				}
 
-        function addPromptToCart(productId, triggeringButton = null) {
-            if (currentDistributorMode === 'amazon') {
-                alert("Switch to local distribution to enable cart options.");
-                return false;
-            }
+				function addPromptToCart(productId, triggeringButton = null) {
+					if (currentDistributorMode === 'amazon') {
+						alert("Switch to local distribution to enable cart options.");
+						return false;
+					}
 
-            const prodId = parseInt(productId);
-            const countPrompt = prompt("How many items would you like to add to your cart?", "1");
-            if (countPrompt === null) return false;
+					const prodId = parseInt(productId);
+					const countPrompt = prompt("How many items would you like to add to your cart?", "1");
+					if (countPrompt === null) return false;
 
-            const qty = parseInt(countPrompt);
-            if (!isNaN(qty) && qty > 0) {
-                const existingItem = cart.find(item => item.id === prodId);
-                if (existingItem) {
-                    existingItem.quantity += qty;
-                } else {
-                    cart.push({ id: prodId, quantity: qty });
-                }
-                saveCart();
-                alert('Item(s) added to cart!');
+					const qty = parseInt(countPrompt);
+					if (!isNaN(qty) && qty > 0) {
+						const existingItem = cart.find(item => item.id === prodId);
+						if (existingItem) {
+							existingItem.quantity += qty;
+						} else {
+							cart.push({ id: prodId, quantity: qty });
+						}
+						saveCart();
+						alert('Item(s) added to cart!');
 
-                const badge = document.getElementById('cartCountBadge');
-                if (badge) {
-                    badge.classList.remove('animate-bounce');
-                    void badge.offsetWidth;
-                    badge.classList.add('animate-bounce');
-                }
+						const badge = document.getElementById('cartCountBadge');
+						if (badge) {
+							badge.classList.remove('animate-bounce');
+							void badge.offsetWidth;
+							badge.classList.add('animate-bounce');
+						}
 
-                if (triggeringButton) {
-                    const originalHTML = triggeringButton.innerHTML;
-                    triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
-                    triggeringButton.style.pointerEvents = 'none';
-                    triggeringButton.classList.add('success-state'); 
+						if (triggeringButton) {
+							const originalHTML = triggeringButton.innerHTML;
+							triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
+							triggeringButton.style.pointerEvents = 'none';
+							triggeringButton.classList.add('success-state');
 
-                    setTimeout(() => {
-                        triggeringButton.innerHTML = originalHTML;
-                        triggeringButton.style.pointerEvents = '';
-                        triggeringButton.classList.remove('success-state');
-                    }, 2000);
-                }
+							setTimeout(() => {
+								triggeringButton.innerHTML = originalHTML;
+								triggeringButton.style.pointerEvents = '';
+								triggeringButton.classList.remove('success-state');
+							}, 2000);
+						}
 
-                return true;
-            } else {
-                alert("Please enter a valid quantity.");
-                return false;
-            }
-        }
+						return true;
+					} else {
+						alert("Please enter a valid quantity.");
+						return false;
+					}
+				}
 
-        function removeCartItemElement(productId) {
-            const prodId = parseInt(productId);
-            const matchedItem = cart.find(item => item.id === prodId);
-            if (!matchedItem) return;
+				function removeCartItemElement(productId) {
+					const prodId = parseInt(productId);
+					const matchedItem = cart.find(item => item.id === prodId);
+					if (!matchedItem) return;
 
-            if (matchedItem.quantity > 1) {
-                const countPrompt = prompt(`This item has a quantity of ${matchedItem.quantity}. How many would you like to remove?`, "1");
-                if (countPrompt === null) return;
-                const removeQty = parseInt(countPrompt);
-                if (!isNaN(removeQty) && removeQty > 0) {
-                    if (removeQty >= matchedItem.quantity) {
-                        cart = cart.filter(item => item.id !== prodId);
-                    } else {
-                        matchedItem.quantity -= removeQty;
-                    }
-                } else {
-                    alert("Invalid quantity entered.");
-                    return;
-                }
-            } else {
-                cart = cart.filter(item => item.id !== prodId);
-            }
+					if (matchedItem.quantity > 1) {
+						const countPrompt = prompt(`This item has a quantity of ${matchedItem.quantity}. How many would you like to remove?`, "1");
+						if (countPrompt === null) return;
+						const removeQty = parseInt(countPrompt);
+						if (!isNaN(removeQty) && removeQty > 0) {
+							if (removeQty >= matchedItem.quantity) {
+								cart = cart.filter(item => item.id !== prodId);
+							} else {
+								matchedItem.quantity -= removeQty;
+							}
+						} else {
+							alert("Invalid quantity entered.");
+							return;
+						}
+					} else {
+						cart = cart.filter(item => item.id !== prodId);
+					}
 
-            saveCart();
-            if (cart.length === 0) {
-                closeCheckoutGateway();
-            } else {
-                openCheckoutGateway();
-            }
-        }
+					saveCart();
+					if (cart.length === 0) {
+						closeCheckoutGateway();
+					} else {
+						openCheckoutGateway();
+					}
+				}
 
-        function updateCartUI() {
-            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-            const badge = document.getElementById('cartCountBadge');
+				function updateCartUI() {
+					const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+					const badge = document.getElementById('cartCountBadge');
 
-            if (badge) {
-                if (totalItems > 0) {
-                    badge.textContent = totalItems;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
-            }
+					if (badge) {
+						if (totalItems > 0) {
+							badge.textContent = totalItems;
+							badge.classList.remove('hidden');
+						} else {
+							badge.classList.add('hidden');
+						}
+					}
 
-            let totalCAD = 0;
-            cart.forEach(item => {
-                const product = products[item.id];
-                if (product) {
-                    totalCAD += (product.priceVal * item.quantity);
-                }
-            });
+					let totalCAD = 0;
+					cart.forEach(item => {
+						const product = products[item.id];
+						if (product) {
+							totalCAD += (product.priceVal * item.quantity);
+						}
+					});
 
-            const selectedToken = (document.getElementById('token-select')?.value || 'eXPB').trim();
-            const computedTokenQty = totalCAD * 10000;
+					const selectedToken = (document.getElementById('token-select')?.value || 'eXPB').trim();
+					const computedTokenQty = totalCAD * 10000;
 
-            const summaryTokenQty = document.getElementById('summaryTokenQty');
-            const summaryCadPrice = document.getElementById('summaryCadPrice');
-            const summaryUsdPrice = document.getElementById('summaryUsdPrice');
+					const summaryTokenQty = document.getElementById('summaryTokenQty');
+					const summaryCadPrice = document.getElementById('summaryCadPrice');
+					const summaryUsdPrice = document.getElementById('summaryUsdPrice');
 
-            if (summaryTokenQty && summaryCadPrice && summaryUsdPrice) {
-                summaryTokenQty.textContent = `${computedTokenQty.toLocaleString()} ${selectedToken}`;
-                summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
-                summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
-            }
-        }
+					if (summaryTokenQty && summaryCadPrice && summaryUsdPrice) {
+						summaryTokenQty.textContent = `${computedTokenQty.toLocaleString()} ${selectedToken}`;
+						summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
+						summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
+					}
+				}
 
-        // ==================== CHECKOUT GATEWAY ENGINE ====================
-        const checkoutModal = document.getElementById('checkoutModal');
-        const closeCheckoutBtn = document.getElementById('closeCheckoutModal');
-        const reviewCartBtn = document.getElementById('reviewCartBtn');
-        const cartNavBtn = document.getElementById('cartNavBtn');
-        const clearCartBtn = document.getElementById('clearCartBtn');
-        const gatewayProceedBtn = document.getElementById('gatewayProceedBtn');
+				// ==================== CHECKOUT GATEWAY ENGINE ====================
+				const checkoutModal = document.getElementById('checkoutModal');
+				const closeCheckoutBtn = document.getElementById('closeCheckoutModal');
+				const reviewCartBtn = document.getElementById('reviewCartBtn');
+				const cartNavBtn = document.getElementById('cartNavBtn');
+				const clearCartBtn = document.getElementById('clearCartBtn');
+				const gatewayProceedBtn = document.getElementById('gatewayProceedBtn');
 
-        function openCheckoutGateway() {
-            if (currentDistributorMode === 'amazon') {
-                alert("Switch to local distribution to enable cart options.");
-                return;
-            }
+				function openCheckoutGateway() {
+					if (currentDistributorMode === 'amazon') {
+						alert("Switch to local distribution to enable cart options.");
+						return;
+					}
 
-            if (cart.length === 0) {
-                alert("Your cart is empty! Add elements from the catalog first.");
-                return;
-            }
+					if (cart.length === 0) {
+						alert("Your cart is empty! Add items from the catalog first.");
+						return;
+					}
 
-            const itemsContainer = document.getElementById('checkoutModalItems');
-            let itemsHTML = '';
-            let totalCAD = 0;
+					const itemsContainer = document.getElementById('checkoutModalItems');
+					let itemsHTML = '';
+					let totalCAD = 0;
 
-            cart.forEach(item => {
-                const product = products[item.id];
-                if (product) {
-                    const lineTotal = product.priceVal * item.quantity;
-                    totalCAD += lineTotal;
-                    itemsHTML += `
+					cart.forEach(item => {
+						const product = products[item.id];
+						if (product) {
+							const lineTotal = product.priceVal * item.quantity;
+							totalCAD += lineTotal;
+							itemsHTML += `
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
@@ -1278,237 +1311,238 @@
                             <div style="color: #e9d5ff;">$${lineTotal.toFixed(2)} CAD</div>
                         </div>
                     `;
-                }
-            });
+						}
+					});
 
-            if (itemsContainer) itemsContainer.innerHTML = itemsHTML;
-            
-            const totalCadEl = document.getElementById('checkoutTotalCAD');
-            if (totalCadEl) totalCadEl.textContent = `$${totalCAD.toFixed(2)} CAD`;
+					if (itemsContainer) itemsContainer.innerHTML = itemsHTML;
 
-            const selectEl = document.getElementById('token-select');
-            const cryptoSettlementEl = document.getElementById('checkoutCryptoSettlement');
-            if (selectEl && cryptoSettlementEl) {
-                const selectedToken = selectEl.value;
-                cryptoSettlementEl.textContent = `${(totalCAD * 10000).toLocaleString()} ${selectedToken}`;
-            }
+					const totalCadEl = document.getElementById('checkoutTotalCAD');
+					if (totalCadEl) totalCadEl.textContent = `$${totalCAD.toFixed(2)} CAD`;
 
-            if (itemsContainer) {
-                itemsContainer.querySelectorAll('.checkout-del-btn').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        removeCartItemElement(this.getAttribute('data-id'));
-                    });
-                });
-            }
+					const selectEl = document.getElementById('token-select');
+					const cryptoSettlementEl = document.getElementById('checkoutCryptoSettlement');
+					if (selectEl && cryptoSettlementEl) {
+						const selectedToken = selectEl.value;
+						cryptoSettlementEl.textContent = `${(totalCAD * 10000).toLocaleString()} ${selectedToken}`;
+					}
 
-            if (checkoutModal) {
-                checkoutModal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
-        }
+					if (itemsContainer) {
+						itemsContainer.querySelectorAll('.checkout-del-btn').forEach(btn => {
+							btn.addEventListener('click', function () {
+								removeCartItemElement(this.getAttribute('data-id'));
+							});
+						});
+					}
 
-        function closeCheckoutGateway() {
-            if (checkoutModal) {
-                checkoutModal.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        }
+					if (checkoutModal) {
+						checkoutModal.style.display = 'block';
+						document.body.style.overflow = 'hidden';
+					}
+				}
 
-        if (reviewCartBtn) reviewCartBtn.addEventListener('click', openCheckoutGateway);
-        if (cartNavBtn) cartNavBtn.addEventListener('click', openCheckoutGateway);
-        if (closeCheckoutBtn) closeCheckoutBtn.addEventListener('click', closeCheckoutGateway);
+				function closeCheckoutGateway() {
+					if (checkoutModal) {
+						checkoutModal.style.display = 'none';
+						document.body.style.overflow = '';
+					}
+				}
 
-        if (clearCartBtn) {
-            clearCartBtn.addEventListener('click', () => {
-                if (confirm("Are you sure you want to empty your cart?")) {
-                    cart = [];
-                    saveCart();
-                    closeCheckoutGateway();
-                }
-            });
-        }
+				if (reviewCartBtn) reviewCartBtn.addEventListener('click', openCheckoutGateway);
+				if (cartNavBtn) cartNavBtn.addEventListener('click', openCheckoutGateway);
+				if (closeCheckoutBtn) closeCheckoutBtn.addEventListener('click', closeCheckoutGateway);
 
-        if (gatewayProceedBtn) {
-            gatewayProceedBtn.addEventListener('click', () => {
-                alert("Routing to Secure Checkout Gateway Engine page configuration coming soon!");
-            });
-        }
+				if (clearCartBtn) {
+					clearCartBtn.addEventListener('click', () => {
+						if (confirm("Are you sure you want to empty your cart?")) {
+							cart = [];
+							saveCart();
+							closeCheckoutGateway();
+						}
+					});
+				}
 
-        if (checkoutModal) {
-            checkoutModal.addEventListener('click', function (e) {
-                if (e.target === checkoutModal) closeCheckoutGateway();
-            });
-        }
+				if (gatewayProceedBtn) {
+					gatewayProceedBtn.addEventListener('click', () => {
+						alert("Routing to Secure Checkout Gateway Engine page configuration coming soon!");
+					});
+				}
+
+				if (checkoutModal) {
+					checkoutModal.addEventListener('click', function (e) {
+						if (e.target === checkoutModal) closeCheckoutGateway();
+					});
+				}
 
 
-        // ==================== MODAL + MAGNIFIER LOGIC ====================
-        const modal = document.getElementById('previewModal');
-        const closeBtn = document.getElementById('closeModal');
-        const scrollContainer = document.getElementById('imageScrollContainer');
-        const fixedDescContainer = document.getElementById('modalFixedDescription');
-        const magnifier = document.getElementById('magnifier');
+				// ==================== MODAL + MAGNIFIER LOGIC ====================
+				const modal = document.getElementById('previewModal');
+				const closeBtn = document.getElementById('closeModal');
+				const scrollContainer = document.getElementById('imageScrollContainer');
+				const fixedDescContainer = document.getElementById('modalFixedDescription');
+				const magnifier = document.getElementById('magnifier');
 
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+				const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-        function openPreviewModal(productId) {
-            const product = products[productId];
-            if (!product) return;
+				function openPreviewModal(productId) {
+					const product = products[productId];
+					if (!product) return;
 
-            if (scrollContainer) scrollContainer.innerHTML = '';
+					if (scrollContainer) scrollContainer.innerHTML = '';
 
-            let slidesHTML = '';
-            product.previews.forEach(preview => {
-                slidesHTML += `
+					let slidesHTML = '';
+					product.previews.forEach(preview => {
+						slidesHTML += `
                     <div class="image-slide">
                         <img src="${preview.src}" alt="${product.title}">
                         <div class="variable-text">${preview.text}</div>
                     </div>
                 `;
-            });
-            if (scrollContainer) scrollContainer.innerHTML = slidesHTML;
+					});
+					if (scrollContainer) scrollContainer.innerHTML = slidesHTML;
 
-            let modalActionHtml = '';
-            if (currentDistributorMode === 'amazon') {
-                modalActionHtml = `
+					let modalActionHtml = '';
+					if (currentDistributorMode === 'amazon') {
+						modalActionHtml = `
                     <a href="${product.amazonUrl || 'https://www.amazon.com'}" target="_blank" class="cart-btn" style="display:block; text-align:center; width:100%; max-width:none; margin-top:1em; background: #ff9900; color: #000; border-color: #e48700; margin-left: auto; margin-right: auto;">
                         <i class="fab fa-amazon"></i> Buy on Amazon
                     </a>
                 `;
-            } else {
-                modalActionHtml = `
+					} else {
+						modalActionHtml = `
                     <button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%; max-width:none; margin-top:1em; margin-left: auto; margin-right: auto;">
                         <i class="fas fa-shopping-cart"></i> Add to Cart
                     </button>
                 `;
-            }
+					}
 
-            if (fixedDescContainer) {
-                fixedDescContainer.innerHTML = `
+					if (fixedDescContainer) {
+						fixedDescContainer.innerHTML = `
                     <h2>${product.title}</h2>
-                    <div class="price"><i class="fas fa-money-bill-wave"></i> ${product.price}</div>
+                    <div class="price"> ${product.price}</div>
                     <p>${product.fixedDesc}</p>
                     ${modalActionHtml}
                 `;
 
-                const localAddBtn = fixedDescContainer.querySelector('.modal-add-to-cart');
-                if (localAddBtn) {
-                    localAddBtn.addEventListener('click', function () {
-                        addPromptToCart(this.getAttribute('data-id'), this);
-                    });
-                }
-            }
+						const localAddBtn = fixedDescContainer.querySelector('.modal-add-to-cart');
+						if (localAddBtn) {
+							localAddBtn.addEventListener('click', function () {
+								addPromptToCart(this.getAttribute('data-id'), this);
+							});
+						}
+					}
 
-            setTimeout(() => {
-                if (scrollContainer) scrollContainer.scrollLeft = 0;
-            }, 10);
+					setTimeout(() => {
+						if (scrollContainer) scrollContainer.scrollLeft = 0;
+					}, 10);
 
-            setTimeout(() => {
-                if (!scrollContainer) return;
-                const images = scrollContainer.querySelectorAll('.image-slide img');
-                images.forEach(img => {
-                    if (isTouchDevice) {
-                        img.addEventListener('touchstart', showMagnifier, { passive: false });
-                        img.addEventListener('touchmove', showMagnifier, { passive: false });
-                        img.addEventListener('touchend', hideMagnifier);
-                    } else {
-                        img.addEventListener('mousemove', showMagnifier);
-                        img.addEventListener('mouseleave', hideMagnifier);
-                    }
-                });
-            }, 100);
+					setTimeout(() => {
+						if (!scrollContainer) return;
+						const images = scrollContainer.querySelectorAll('.image-slide img');
+						images.forEach(img => {
+							if (isTouchDevice) {
+								img.addEventListener('touchstart', showMagnifier, { passive: false });
+								img.addEventListener('touchmove', showMagnifier, { passive: false });
+								img.addEventListener('touchend', hideMagnifier);
+							} else {
+								img.addEventListener('mousemove', showMagnifier);
+								img.addEventListener('mouseleave', hideMagnifier);
+							}
+						});
+					}, 100);
 
-            if (modal) {
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
-        }
+					if (modal) {
+						modal.style.display = 'block';
+						document.body.style.overflow = 'hidden';
+					}
+				}
 
-        function showMagnifier(e) {
-            if (!magnifier) return;
-            if (e.touches) e.preventDefault();
+				function showMagnifier(e) {
+					if (!magnifier) return;
+					if (e.touches) e.preventDefault();
 
-            const img = e.target || e.currentTarget;
-            magnifier.style.display = 'block';
+					const img = e.target || e.currentTarget;
+					magnifier.style.display = 'block';
 
-            const rect = img.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+					const rect = img.getBoundingClientRect();
+					const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+					const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
+					const x = clientX - rect.left;
+					const y = clientY - rect.top;
 
-            magnifier.style.left = `${clientX - 90}px`;
-            magnifier.style.top = `${clientY - 90}px`;
+					magnifier.style.left = `${clientX - 90}px`;
+					magnifier.style.top = `${clientY - 90}px`;
 
-            const zoom = 5;
-            const bgX = -(x * zoom - 90) + 'px';
-            const bgY = -(y * zoom - 90) + 'px';
+					const zoom = 5;
+					const bgX = -(x * zoom - 90) + 'px';
+					const bgY = -(y * zoom - 90) + 'px';
 
-            magnifier.style.backgroundImage = `url(${img.src})`;
-            magnifier.style.backgroundPosition = `${bgX} ${bgY}`;
-            magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
-        }
+					magnifier.style.backgroundImage = `url(${img.src})`;
+					magnifier.style.backgroundPosition = `${bgX} ${bgY}`;
+					magnifier.style.backgroundSize = `${img.width * zoom}px ${img.height * zoom}px`;
+				}
 
-        function hideMagnifier() {
-            if (magnifier) magnifier.style.display = 'none';
-        }
+				function hideMagnifier() {
+					if (magnifier) magnifier.style.display = 'none';
+				}
 
-        function closeModal() {
-            if (modal) modal.style.display = 'none';
-            document.body.style.overflow = '';
-            hideMagnifier();
-        }
+				function closeModal() {
+					if (modal) modal.style.display = 'none';
+					document.body.style.overflow = '';
+					hideMagnifier();
+				}
 
-        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+				if (closeBtn) closeBtn.addEventListener('click', closeModal);
 
-        if (modal) {
-            modal.addEventListener('click', function (e) {
-                if (e.target === modal) closeModal();
-            });
-        }
+				if (modal) {
+					modal.addEventListener('click', function (e) {
+						if (e.target === modal) closeModal();
+					});
+				}
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeCheckoutGateway();
-            }
-        });
+				document.addEventListener('keydown', function (e) {
+					if (e.key === 'Escape') {
+						closeModal();
+						closeCheckoutGateway();
+					}
+				});
 
-        // Setup Catalog Cards
-        const cards = document.querySelectorAll('.shop-card');
-        cards.forEach(card => {
-            const overlay = card.querySelector('.expand-overlay');
-            if (overlay) {
-                overlay.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const productId = card.getAttribute('data-product-id');
-                    if (productId) openPreviewModal(productId);
-                });
-            }
+				// ==================== UPDATED SETUP CATALOG CARDS ====================
+				const cards = document.querySelectorAll('.shop-card');
+				cards.forEach(card => {
+					// Look for the image container instead of the old overlay wrapper
+					const imgContainer = card.querySelector('.image-container');
+					if (imgContainer) {
+						imgContainer.addEventListener('click', (e) => {
+							e.stopPropagation();
+							const productId = card.getAttribute('data-product-id');
+							if (productId) openPreviewModal(productId);
+						});
+					}
 
-            const cardBtn = card.querySelector('.card-add-to-cart');
-            if (cardBtn) {
-                cardBtn.addEventListener('click', function() {
-                    const productId = card.getAttribute('data-product-id');
-                    addPromptToCart(productId, this);
-                });
-            }
+					const cardBtn = card.querySelector('.card-add-to-cart');
+					if (cardBtn) {
+						cardBtn.addEventListener('click', function () {
+							const productId = card.getAttribute('data-product-id');
+							addPromptToCart(productId, this);
+						});
+					}
 
-            const amzBtn = card.querySelector('.card-amazon-btn');
-            const currentId = card.getAttribute('data-product-id');
-            if (amzBtn && products[currentId] && products[currentId].amazonUrl) {
-                amzBtn.setAttribute('href', products[currentId].amazonUrl);
-            }
-        });
+					const amzBtn = card.querySelector('.card-amazon-btn');
+					const currentId = card.getAttribute('data-product-id');
+					if (amzBtn && products[currentId] && products[currentId].amazonUrl) {
+						amzBtn.setAttribute('href', products[currentId].amazonUrl);
+					}
+				});
 
-        const select = document.getElementById('token-select');
-        if (select) {
-            select.addEventListener('change', updateCartUI);
-        }
+				const select = document.getElementById('token-select');
+				if (select) {
+					select.addEventListener('change', updateCartUI);
+				}
 
-        updateCartUI();
-    });
-</script>
+				updateCartUI();
+			});
+		</script>
 
 		<!-- Profile Click Handler -->
 		<script>
