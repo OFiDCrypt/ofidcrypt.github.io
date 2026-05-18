@@ -1295,12 +1295,11 @@
 
 				<!-- PAYMENT SUMMARY - FULL IMPLEMENTATION -->
 				<div class="payment-summary">
-					<h2>Payment Summary</h2>
+					<h2>How to Pay</h2>
 					<p class="section-subtitle">CHOOSE PAYMENT METHOD</p>
 
-					<!-- VISA / MASTERCARD TILE -->
 					<div class="payment-method-tile active" id="method-fiat" data-method-name="VISA / MASTERCARD">
-						<div class="tile-header">Visa / Mastercard / Debit Card</div>
+						<div class="tile-header">Visa / Mastercard / Debit</div>
 						<div class="logo-row">
 							<svg class="payment-logo" viewBox="0 0 24 15" width="42" height="26">
 								<circle cx="7" cy="7.5" r="7" fill="#EB001B" />
@@ -1315,471 +1314,587 @@
 
 					<div class="or-separator">— OR —</div>
 
-					<!-- SOLANA TOKENS TILE -->
+					<div id="activeCryptoLabel" class="active-method-label"
+						style="display: none; margin-bottom: 12px; font-weight: bold;">
+						Active Method: SOLANA NETWORK
+					</div>
+
 					<div class="payment-method-tile" id="method-crypto" data-method-name="Tokens on Solana">
-						<div class="tile-header">Pay with Tokens / Solana</div>
+						<div class="tile-header">Pay with Tokens</div>
 						<div class="solana-icon">
 							<img src="/assets/images/300x300-solana.png" alt="Solana"
 								style="width: 42px; height: 42px; object-fit: contain;">
 						</div>
+					</div>
 
-						<div class="token-list-wrapper">
-							<div class="token-list-title">Select Token: <span style="font-size: 0.75em;">▼</span></div>
-							<div class="token-options">
-								<div class="token-item selected" data-token="eXPB">
-									<span class="token-name">$eXPB BOUNCY BALL</span>
-									<span class="token-badge badge-green">15% Off</span>
-								</div>
-								<div class="token-item" data-token="GIDDY">
-									<span class="token-name">$GIDDY DOLLAR</span>
-									<span class="token-badge badge-purple">+ Raffle Draw</span>
-								</div>
-								<div class="token-item" data-token="SOL">
-									<span class="token-name">$SOL</span>
-								</div>
-								<div class="token-item" data-token="ONE">
-									<span class="token-name">$ONE</span>
-								</div>
-								<div class="token-item" data-token="KIN">
-									<span class="token-name">$KIN</span>
-								</div>
-								<div class="token-item" data-token="DOBBY">
-									<span class="token-name">$DOBBY</span>
-								</div>
-								<div class="token-item" data-token="DUNO">
-									<span class="token-name">$DUNO</span>
-								</div>
-								<div class="token-item" data-token="MYLO">
-									<span class="token-name">$MYLO</span>
-								</div>
-								<div class="token-item" data-token="CPT">
-									<span class="token-name">$CPT</span>
-								</div>
-								<div class="token-item" data-token="SINU">
-									<span class="token-name">$SINU</span>
-								</div>
+
+					<div class="token-list-wrapper">
+						<div class="token-list-title">Select Token: <span style="font-size: 0.75em;">▼</span></div>
+						<div class="token-options">
+							<div class="token-item selected" data-token="eXPB">
+								<span class="token-name">$eXPB BOUNCY BALL</span>
+								<span class="token-badge badge-green">15% Off</span>
 							</div>
-
-							<div id="activeCryptoLabel" class="active-method-label" style="display: none;">Active
-								Method: Tokens on Solana</div>
+							<div class="token-item" data-token="GIDDY">
+								<span class="token-name">$GIDDY DOLLAR</span>
+								<span class="token-badge badge-purple">+ Raffle Draw</span>
+							</div>
+							<div class="token-item" data-token="SOL">
+								<span class="token-name">$SOL</span>
+							</div>
+							<div class="token-item" data-token="ONE">
+								<span class="token-name">$ONE</span>
+							</div>
+							<div class="token-item" data-token="KIN">
+								<span class="token-name">$KIN</span>
+							</div>
+							<div class="token-item" data-token="DOBBY">
+								<span class="token-name">$DOBBY</span>
+							</div>
+							<div class="token-item" data-token="DUNO">
+								<span class="token-name">$DUNO</span>
+							</div>
+							<div class="token-item" data-token="MYLO">
+								<span class="token-name">$MYLO</span>
+							</div>
+							<div class="token-item" data-token="CPT">
+								<span class="token-name">$CPT</span>
+							</div>
+							<div class="token-item" data-token="SINU">
+								<span class="token-name">$SINU</span>
+							</div>
 						</div>
-					</div>
 
-					<!-- Summary Rows -->
-					<div class="payment-row" style="margin-top: 1.5em;">
-						<span>Selected Token Asset</span>
-						<span id="summaryTokenQty">eXPB</span>
+						<div id="activeCryptoLabel" class="active-method-label" style="display: none;">Active
+							Method: Tokens on Solana</div>
 					</div>
-					<div class="payment-row">
-						<span>CAD / GIDDY Price</span>
-						<span id="summaryCadPrice">$0.00</span>
-					</div>
-					<div class="payment-row">
-						<span>USD Price</span>
-						<span id="summaryUsdPrice">$0.00</span>
-					</div>
-
-					<!-- REVIEW CART BUTTON - MOVED TO END OF CONTAINER -->
-					<button class="buy-now" id="reviewCartBtn"
-						style="margin-top: 1.5em; width: 100%; max-width: none;">REVIEW CART</button>
 				</div>
-			</section>
-		</div>
 
-		<!-- CHECKOUT MODAL - FINAL CLEAN VERSION -->
-		<div id="checkoutModal"
-			style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);">
+				<!-- Summary Rows -->
+				<div class="payment-row" style="margin-top: 1.5em;">
+					<span>Selected Settlement Asset</span>
+					<span id="summaryTokenQty">eXPB</span>
+				</div>
+				<div class="payment-row">
+					<span>CAD / GIDDY Price</span>
+					<span id="summaryCadPrice">$0.00</span>
+				</div>
+				<div class="payment-row">
+					<span>USD Price</span>
+					<span id="summaryUsdPrice">$0.00</span>
+				</div>
+
+				<!-- REVIEW CART BUTTON - MOVED TO END OF CONTAINER -->
+				<button class="buy-now" id="reviewCartBtn"
+					style="margin-top: 1.5em; width: 100%; max-width: none;">REVIEW CART</button>
+		</div>
+		</section>
+	</div>
+
+	<!-- CHECKOUT MODAL - FINAL CLEAN VERSION -->
+	<div id="checkoutModal"
+		style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);">
+		<div
+			style="background: linear-gradient(135deg, #120326 0%, #000000 100%); margin: 8% auto; padding: 30px; border: 1px solid #7c3aed; width: 90%; max-width: 520px; border-radius: 20px; color: #fff; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3); position: relative;">
+			<span id="closeCheckoutModal"
+				style="color: #a78bfa; float: right; font-size: 30px; font-weight: bold; cursor: pointer; line-height: 20px;"
+				onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#a78bfa'">&times;</span>
+
+			<h2
+				style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff;">
+				Order Summary</h2>
+
+			<!-- ITEMS ONLY -->
+			<div id="checkoutModalItems"
+				style="max-height: 260px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #4c1d95; padding-bottom: 15px;">
+				<!-- Only cart items populated here -->
+			</div>
+
 			<div
-				style="background: linear-gradient(135deg, #120326 0%, #000000 100%); margin: 8% auto; padding: 30px; border: 1px solid #7c3aed; width: 90%; max-width: 520px; border-radius: 20px; color: #fff; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3); position: relative;">
-				<span id="closeCheckoutModal"
-					style="color: #a78bfa; float: right; font-size: 30px; font-weight: bold; cursor: pointer; line-height: 20px;"
-					onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#a78bfa'">&times;</span>
-
-				<h2
-					style="font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #4c1d95; padding-bottom: 10px; color: #fff;">
-					Order Summary</h2>
-
-				<!-- ITEMS ONLY -->
-				<div id="checkoutModalItems"
-					style="max-height: 260px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px dashed #4c1d95; padding-bottom: 15px;">
-					<!-- Only cart items populated here -->
+				style="background: rgba(124, 58, 237, 0.1); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.3);">
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+					<span style="color: #c084fc;">Total Est. Value:</span>
+					<span id="checkoutTotalCAD" style="font-weight: bold; color: #22c55e;">$0.00 CAD</span>
 				</div>
-
-				<div
-					style="background: rgba(124, 58, 237, 0.1); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.3);">
-					<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-						<span style="color: #c084fc;">Total Est. Value:</span>
-						<span id="checkoutTotalCAD" style="font-weight: bold; color: #22c55e;">$0.00 CAD</span>
-					</div>
-					<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-						<span style="color: #c084fc;">Payment Method:</span>
-						<span id="checkoutPaymentMethod" style="font-weight: bold; color: #a855f7;">VISA /
-							MASTERCARD</span>
-					</div>
-					<div style="display: flex; justify-content: space-between;">
-						<span style="color: #c084fc;">Settlement Currency:</span>
-						<span id="checkoutSettlementCurrency" style="font-weight: bold; color: #14f195;">CAD</span>
-					</div>
+				<div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+					<span style="color: #c084fc;">Payment Method:</span>
+					<span id="checkoutPaymentMethod" style="font-weight: bold; color: #a855f7;">VISA /
+						MASTERCARD</span>
 				</div>
-
-				<div
-					style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; box-sizing: border-box;">
-					<div>
-						<label
-							style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Country</label>
-						<select id="country-select"
-							style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
-							<option value="CA" selected>🇨🇦 Canada</option>
-							<option value="US">🇺🇸 United States</option>
-							<option value="MX">🇲🇽 Mexico</option>
-							<option value="GB">🇬🇧 United Kingdom</option>
-							<option value="OTHER">🌍 Other</option>
-						</select>
-					</div>
-					<div>
-						<label
-							style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Province
-							/ State</label>
-						<select id="province-select"
-							style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
-							<option value="BC" selected>British Columbia</option>
-							<option value="AB">Alberta</option>
-							<option value="ON">Ontario</option>
-							<option value="QC">Quebec</option>
-							<option value="OTHER">Other / N/A</option>
-						</select>
-					</div>
-				</div>
-
-				<div
-					style="text-align: center; background: #2e1065; border: 1px solid #6b21a8; padding: 12px; border-radius: 10px; font-size: 13px; color: #ddd; margin-bottom: 20px;">
-					🛠️ <b>Development Mode:</b> Secure Web3 & Card Gateway integration pending release.
-				</div>
-
-				<div style="display: flex; gap: 15px;">
-					<button id="clearCartBtn"
-						style="flex: 1; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 13px 0 !important; line-height: 1; border-radius: 30px; font-weight: bold; cursor: pointer;">
-						<span style="display: inline-block; margin-top: -1px; margin-right: 4px;">🗑️</span> CLEAR
-					</button>
-					<button id="gatewayProceedBtn"
-						style="flex: 1; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 13px 0 !important; line-height: 1; border-radius: 30px; font-weight: bold; cursor: pointer;">
-						Proceed
-					</button>
+				<div style="display: flex; justify-content: space-between;">
+					<span style="color: #c084fc;">Settlement Currency:</span>
+					<span id="checkoutSettlementCurrency" style="font-weight: bold; color: #14f195;">CAD</span>
 				</div>
 			</div>
-		</div>
 
-		<!-- Mobile Cart Bubble -->
-		<div id="mobileCartBubble" onclick="openCheckoutGateway()" class="mobile-cart">
-			<span class="relative inline-flex">
-				<span class="text-2xl">🛒</span>
-				<span id="mobileCartCountBadge" class="mobile-cart-badge hidden">0</span>
-			</span>
-			<span class="font-semibold">My Cart</span>
-			<button onclick="event.stopPropagation(); dismissCartBubble();" class="close-btn">&times;</button>
-		</div>
-
-		<!-- PRODUCT PREVIEW MODAL -->
-		<div id="previewModal"
-			style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); overflow: hidden;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<span class="close-modal" style="cursor:pointer; font-size:2.5rem; color:#888;">&times;</span>
+			<div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 25px; box-sizing: border-box;">
+				<div>
+					<label
+						style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Country</label>
+					<select id="country-select"
+						style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
+						<option value="CA" selected>🇨🇦 Canada</option>
+						<option value="US">🇺🇸 United States</option>
+						<option value="MX">🇲🇽 Mexico</option>
+						<option value="GB">🇬🇧 United Kingdom</option>
+						<option value="OTHER">🌍 Other</option>
+					</select>
 				</div>
-
-				<div class="modal-scroll-area">
-					<div class="image-scroll"></div>
-				</div>
-
-				<div class="fixed-desc">
-					<!-- Populated by JS -->
+				<div>
+					<label
+						style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Province
+						/ State</label>
+					<select id="province-select"
+						style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
+						<option value="BC" selected>British Columbia</option>
+						<option value="AB">Alberta</option>
+						<option value="ON">Ontario</option>
+						<option value="QC">Quebec</option>
+						<option value="OTHER">Other / N/A</option>
+					</select>
 				</div>
 			</div>
+
+			<div
+				style="text-align: center; background: #2e1065; border: 1px solid #6b21a8; padding: 12px; border-radius: 10px; font-size: 13px; color: #ddd; margin-bottom: 20px;">
+				🛠️ <b>Development Mode:</b> Secure Web3 & Card Gateway integration pending release.
+			</div>
+
+			<div style="display: flex; gap: 15px;">
+				<button id="clearCartBtn"
+					style="flex: 1; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 13px 0 !important; line-height: 1; border-radius: 30px; font-weight: bold; cursor: pointer;">
+					<span style="display: inline-block; margin-top: -1px; margin-right: 4px;">🗑️</span> CLEAR
+				</button>
+				<button id="gatewayProceedBtn"
+					style="flex: 1; display: flex; align-items: center; justify-content: center; background: linear-gradient(to right, #7c3aed, #ec4899); border: none; color: white; padding: 13px 0 !important; line-height: 1; border-radius: 30px; font-weight: bold; cursor: pointer;">
+					Proceed
+				</button>
+			</div>
 		</div>
+	</div>
 
-		<!-- Magnifying Lens -->
-		<div id="magnifier" class="magnifier-lens"></div>
+	<!-- Mobile Cart Bubble -->
+	<div id="mobileCartBubble" onclick="openCheckoutGateway()" class="mobile-cart">
+		<span class="relative inline-flex">
+			<span class="text-2xl">🛒</span>
+			<span id="mobileCartCountBadge" class="mobile-cart-badge hidden">0</span>
+		</span>
+		<span class="font-semibold">My Cart</span>
+		<button onclick="event.stopPropagation(); dismissCartBubble();" class="close-btn">&times;</button>
+	</div>
 
-		<script>
-// Expose layout engines globally to support native HTML inline 'onclick' directives
-let openCheckoutGateway;
-let dismissCartBubble;
-let showProfile;
+	<!-- PRODUCT PREVIEW MODAL -->
+	<div id="previewModal"
+		style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); overflow: hidden;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span class="close-modal" style="cursor:pointer; font-size:2.5rem; color:#888;">&times;</span>
+			</div>
 
-document.addEventListener('DOMContentLoaded', function () {
+			<div class="modal-scroll-area">
+				<div class="image-scroll"></div>
+			</div>
 
-    // ==================== PRODUCT DATA ====================
-    const products = {
-        1: {
-            title: "Chapter Book: Giddy Tales",
-            price: "$25.00 CAD / GIDDY",
-            priceVal: 25.00,
-            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
-            fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
-            previews: [
-                { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
-                { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
-                { src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
-            ]
-        },
-        2: {
-            title: "Bouncy Balls: Space First Edition",
-            price: "$15.00 CAD / GIDDY",
-            priceVal: 15.00,
-            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
-            fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs!",
-            previews: [
-                { src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
-                { src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" }
-            ]
-        },
-        3: {
-            title: "Giddy Tee: Teleport",
-            price: "$30.00 CAD / GIDDY",
-            priceVal: 30.00,
-            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
-            fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print.",
-            previews: [
-                { src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" }
-            ]
-        },
-        4: {
-            title: "Colouring Book: Dinner Time",
-            price: "$10.00 CAD / GIDDY",
-            priceVal: 10.00,
-            amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
-            fixedDesc: "Magical colouring book for ages 2-5. Comes with crayons and hidden codes for digital gifts!",
-            previews: [
-                { src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover" }
-            ]
-        }
-    };
+			<div class="fixed-desc">
+				<!-- Populated by JS -->
+			</div>
+		</div>
+	</div>
 
-    // ==================== STATE ====================
-    let currentDistributorMode = "local";
-    let currentPaymentMethod = 'fiat';
-    let currentSelectedToken = 'eXPB';
-    let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
-    let isBubbleDismissedManually = false;
-    let isInitialPageLoad = true;
+	<!-- Magnifying Lens -->
+	<div id="magnifier" class="magnifier-lens"></div>
 
-    showProfile = function () {
-        alert("👤 Profile & Account features coming soon!");
-    };
+	<script>
+		// Expose layout engines globally to support native HTML inline 'onclick' directives
+		let openCheckoutGateway;
+		let dismissCartBubble;
+		let showProfile;
 
-    // ==================== DISTRIBUTOR TOGGLE ====================
-    const toggleBtn = document.getElementById('distributorToggleBtn');
-    const dropdown = document.getElementById('distributorDropdown');
-    const activeLineText = document.getElementById('selectedDistributorLine');
+		document.addEventListener('DOMContentLoaded', function () {
 
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-        });
-    }
+			// ==================== PRODUCT DATA ====================
+			const products = {
+				1: {
+					title: "Chapter Book: Giddy Tales",
+					price: "$25.00 CAD / GIDDY",
+					priceVal: 25.00,
+					amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_1",
+					fixedDesc: "A fun youth chapter book filled with Giddy's magical adventures. Perfect for ages 8-10. High-quality printing with illustrations. Includes a collectible card and secret code for an exclusive digital gift!",
+					previews: [
+						{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp", text: "Front cover — vibrant and eye-catching" },
+						{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-02.webp", text: "Back cover with summary" },
+						{ src: "/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10-03.webp", text: "Includes collectible card" }
+					]
+				},
+				2: {
+					title: "Bouncy Balls: Space First Edition",
+					price: "$15.00 CAD / GIDDY",
+					priceVal: 15.00,
+					amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_2",
+					fixedDesc: "Signature limited-edition bouncy balls inspired by the cosmos. Durable, high-bounce, and glow-in-the-dark. Collect all designs!",
+					previews: [
+						{ src: "/assets/images/webp/products/product-bb-st-e1.webp", text: "Space First Edition packaging" },
+						{ src: "/assets/images/300x300-solana.png", text: "Individual bouncy balls up close" }
+					]
+				},
+				3: {
+					title: "Giddy Tee: Teleport",
+					price: "$30.00 CAD / GIDDY",
+					priceVal: 30.00,
+					amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_3",
+					fixedDesc: "Premium quality adult T-shirt featuring the 'Teleport' design. Super soft fabric, vibrant print.",
+					previews: [
+						{ src: "/assets/images/webp/products/product-giddy-tee-teleport-1.webp", text: "Rear view — Teleport design" }
+					]
+				},
+				4: {
+					title: "Colouring Book: Dinner Time",
+					price: "$10.00 CAD / GIDDY",
+					priceVal: 10.00,
+					amazonUrl: "https://www.amazon.com/dp/YOUR_ASIN_4",
+					fixedDesc: "Magical colouring book for ages 2-5. Comes with crayons and hidden codes for digital gifts!",
+					previews: [
+						{ src: "/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp", text: "Front cover" }
+					]
+				}
+			};
 
-    document.querySelectorAll('.distributor-option').forEach(option => {
-        option.addEventListener('click', function () {
-            const val = this.getAttribute('data-value');
-            currentDistributorMode = val;
-            if (val === 'amazon') {
-                activeLineText.style.color = '#ff9900';
-                activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Buy on Amazon`;
-                document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
-                document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'block');
-            } else {
-                activeLineText.style.color = '#22c55e';
-                activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
-                document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'flex');
-                document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
-            }
-            dropdown.style.display = 'none';
-        });
-    });
+			// ==================== STATE ====================
+			let currentDistributorMode = "local";
+			let currentPaymentMethod = 'fiat';
+			let currentSelectedToken = 'eXPB';
+			let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
+			let isBubbleDismissedManually = false;
+			let isInitialPageLoad = true;
 
-    document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
+			showProfile = function () {
+				alert("👤 Profile & Account features coming soon!");
+			};
 
-    // ==================== CART FUNCTIONS ====================
-    function saveCart() {
-        localStorage.setItem('ofid_cart', JSON.stringify(cart));
-        updateCartUI();
-    }
+			// ==================== DISTRIBUTOR TOGGLE ====================
+			const toggleBtn = document.getElementById('distributorToggleBtn');
+			const dropdown = document.getElementById('distributorDropdown');
+			const activeLineText = document.getElementById('selectedDistributorLine');
 
-    function addPromptToCart(productId, triggeringButton = null) {
-        if (currentDistributorMode === 'amazon') {
-            alert("🛒 Cart only works in Local mode.");
-            if (dropdown) dropdown.style.display = 'block';
-            return false;
-        }
-        const qty = parseInt(prompt("How many would you like to add?", "1"));
-        if (!qty || qty <= 0) return false;
+			if (toggleBtn) {
+				toggleBtn.addEventListener('click', (e) => {
+					e.stopPropagation();
+					dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+				});
+			}
 
-        const existing = cart.find(item => item.id === parseInt(productId));
-        if (existing) existing.quantity += qty;
-        else cart.push({ id: parseInt(productId), quantity: qty });
+			document.querySelectorAll('.distributor-option').forEach(option => {
+				option.addEventListener('click', function () {
+					const val = this.getAttribute('data-value');
+					currentDistributorMode = val;
+					if (val === 'amazon') {
+						activeLineText.style.color = '#ff9900';
+						activeLineText.innerHTML = `<i class="fab fa-amazon"></i> Buy on Amazon`;
+						document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'none');
+						document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'block');
+					} else {
+						activeLineText.style.color = '#22c55e';
+						activeLineText.innerHTML = `🏪 Buy Local with Credit / Debit / Tokens`;
+						document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'flex');
+						document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
+					}
+					dropdown.style.display = 'none';
+				});
+			});
 
-        isBubbleDismissedManually = false;
-        saveCart();
+			document.addEventListener('click', () => { if (dropdown) dropdown.style.display = 'none'; });
 
-        if (triggeringButton) {
-            const original = triggeringButton.innerHTML;
-            triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
-            triggeringButton.classList.add('success-state');
-            setTimeout(() => {
-                triggeringButton.innerHTML = original;
-                triggeringButton.classList.remove('success-state');
-            }, 1800);
-        }
-    }
+			// ==================== CART FUNCTIONS ====================
+			function saveCart() {
+				localStorage.setItem('ofid_cart', JSON.stringify(cart));
+				updateCartUI();
+			}
 
-    function removeCartItemElement(productId) {
-        const id = parseInt(productId);
-        const item = cart.find(i => i.id === id);
-        if (!item) return;
+			function addPromptToCart(productId, triggeringButton = null) {
+				if (currentDistributorMode === 'amazon') {
+					alert("🛒 Cart only works in Local mode.");
+					if (dropdown) dropdown.style.display = 'block';
+					return false;
+				}
+				const qty = parseInt(prompt("How many would you like to add?", "1"));
+				if (!qty || qty <= 0) return false;
 
-        if (item.quantity > 1) {
-            const removeQty = parseInt(prompt(`Remove how many? (current: ${item.quantity})`, "1"));
-            if (!removeQty || removeQty <= 0) return;
-            if (removeQty >= item.quantity) cart = cart.filter(i => i.id !== id);
-            else item.quantity -= removeQty;
-        } else {
-            cart = cart.filter(i => i.id !== id);
-        }
-        saveCart();
-        if (cart.length === 0) closeCheckoutGateway();
-        else openCheckoutGateway();
-    }
+				const existing = cart.find(item => item.id === parseInt(productId));
+				if (existing) existing.quantity += qty;
+				else cart.push({ id: parseInt(productId), quantity: qty });
 
-    // ==================== PAYMENT TILES ====================
-    const fiatTile = document.getElementById('method-fiat');
-    const cryptoTile = document.getElementById('method-crypto');
+				isBubbleDismissedManually = false;
+				saveCart();
 
-    function switchPaymentTile(tile) {
-        fiatTile.classList.remove('active');
-        cryptoTile.classList.remove('active');
-        tile.classList.add('active');
-        currentPaymentMethod = tile.id === 'method-fiat' ? 'fiat' : 'crypto';
-        syncCheckoutLabels();
-    }
+				if (triggeringButton) {
+					const original = triggeringButton.innerHTML;
+					triggeringButton.innerHTML = `<i class="fas fa-check"></i> Added!`;
+					triggeringButton.classList.add('success-state');
+					setTimeout(() => {
+						triggeringButton.innerHTML = original;
+						triggeringButton.classList.remove('success-state');
+					}, 1800);
+				}
+			}
 
-    function syncCheckoutLabels() {
-        const paymentEl = document.getElementById('checkoutPaymentMethod');
-        const settlementEl = document.getElementById('checkoutSettlementCurrency');
-        if (paymentEl) paymentEl.textContent = currentPaymentMethod === 'fiat' ? 'VISA / MASTERCARD' : 'TOKENS / SOLANA';
-        if (settlementEl) settlementEl.textContent = currentPaymentMethod === 'fiat' ? 'CAD' : currentSelectedToken;
-    }
+			function removeCartItemElement(productId) {
+				const id = parseInt(productId);
+				const item = cart.find(i => i.id === id);
+				if (!item) return;
 
-    if (fiatTile) fiatTile.addEventListener('click', () => switchPaymentTile(fiatTile));
-    if (cryptoTile) cryptoTile.addEventListener('click', () => switchPaymentTile(cryptoTile));
-    if (fiatTile) switchPaymentTile(fiatTile);
+				if (item.quantity > 1) {
+					const removeQty = parseInt(prompt(`Remove how many? (current: ${item.quantity})`, "1"));
+					if (!removeQty || removeQty <= 0) return;
+					if (removeQty >= item.quantity) cart = cart.filter(i => i.id !== id);
+					else item.quantity -= removeQty;
+				} else {
+					cart = cart.filter(i => i.id !== id);
+				}
+				saveCart();
+				if (cart.length === 0) closeCheckoutGateway();
+				else openCheckoutGateway();
+			}
 
-    // Token selection
-    document.querySelectorAll('.token-item').forEach(item => {
-        item.addEventListener('click', function () {
-            document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
-            this.classList.add('selected');
-            currentSelectedToken = this.getAttribute('data-token');
-            syncCheckoutLabels();
-            updateCartUI();
-        });
-    });
+			// ==================== PAYMENT TILES ====================
+			const fiatTile = document.getElementById('method-fiat');
+			const cryptoTile = document.getElementById('method-crypto');
 
-    // Token dropdown
-    const tokenListTitle = document.querySelector('.token-list-title');
-    const tokenOptionsContainer = document.querySelector('.token-options');
-    if (tokenListTitle && tokenOptionsContainer) {
-        tokenListTitle.addEventListener('click', function () {
-            if (tokenOptionsContainer.style.display === 'flex') {
-                tokenOptionsContainer.style.display = 'none';
-                this.querySelector('span').textContent = '▼';
-            } else {
-                tokenOptionsContainer.style.display = 'flex';
-                this.querySelector('span').textContent = '▲';
-            }
-        });
-    }
+			// Target labels on the main screen
+			const activeFiatLabel = document.getElementById('activeFiatLabel');
+			const activeCryptoLabel = document.getElementById('activeCryptoLabel');
 
-    // ==================== FIXED CART UI (Red Circle Counter) ====================
-    function updateCartUI() {
-        let totalItems = 0;
-        let totalCAD = 0;
+			function switchPaymentTile(tile) {
+				fiatTile.classList.remove('active');
+				cryptoTile.classList.remove('active');
+				tile.classList.add('active');
 
+				currentPaymentMethod = tile.id === 'method-fiat' ? 'fiat' : 'crypto';
+
+				// Manage dynamic state variable updates
+				if (currentPaymentMethod === 'fiat') {
+					currentSelectedToken = 'CAD';
+				} else {
+					const selectedTokenItem = document.querySelector('.token-item.selected');
+					if (selectedTokenItem) {
+						currentSelectedToken = selectedTokenItem.getAttribute('data-token');
+					} else {
+						currentSelectedToken = 'eXPB';
+					}
+				}
+
+				// Toggle main page contextual warning banners/labels
+				if (currentPaymentMethod === 'fiat') {
+					if (activeFiatLabel) activeFiatLabel.style.display = 'block';
+					if (activeCryptoLabel) activeCryptoLabel.style.display = 'none';
+				} else {
+					if (activeFiatLabel) activeFiatLabel.style.display = 'none';
+					if (activeCryptoLabel) activeCryptoLabel.style.display = 'block';
+				}
+
+				syncCheckoutLabels();
+			}
+
+			function syncCheckoutLabels() {
+    const paymentEl = document.getElementById('checkoutPaymentMethod');
+    const settlementEl = document.getElementById('checkoutSettlementCurrency');
+
+    // Summary row elements
+    const summaryTokenQty = document.getElementById('summaryTokenQty');
+    const summaryCadPrice = document.getElementById('summaryCadPrice');
+    const priceRowLabel = summaryCadPrice ? summaryCadPrice.previousElementSibling : null;
+
+    // Target the main screen status text containers
+    const activeFiatLabel = document.getElementById('activeFiatLabel');
+    const activeCryptoLabel = document.getElementById('activeCryptoLabel');
+
+    // Calculate current cart total value in CAD natively
+    let cartTotalCAD = 0;
+    if (typeof cart !== 'undefined' && Array.isArray(cart)) {
         cart.forEach(item => {
-            totalItems += item.quantity;
             const p = products[item.id];
-            if (p) totalCAD += p.priceVal * item.quantity;
+            if (p) {
+                cartTotalCAD += p.priceVal * item.quantity;
+            }
         });
+    }
 
-        // === RED CIRCLE COUNTERS ===
-        const desktopBadge = document.getElementById('cartCountBadge');
-        const mobileBadge = document.getElementById('mobileCartCountBadge');
+    if (currentPaymentMethod === 'fiat') {
+        if (paymentEl) paymentEl.textContent = 'VISA / MASTERCARD';
+        if (settlementEl) settlementEl.textContent = 'CAD';
 
-        if (desktopBadge) {
-            desktopBadge.textContent = totalItems;
-            desktopBadge.classList.toggle('hidden', totalItems === 0);
-        }
-        if (mobileBadge) {
-            mobileBadge.textContent = totalItems;
-            mobileBadge.classList.toggle('hidden', totalItems === 0);
-        }
+        // Update the Order Summary fields to reflect overall CAD Cart Value
+        if (summaryTokenQty) summaryTokenQty.textContent = 'CAD';
+        if (priceRowLabel) priceRowLabel.textContent = 'Base Asset Price';
+        if (summaryCadPrice) summaryCadPrice.textContent = `$${cartTotalCAD.toFixed(2)} CAD`;
 
-       // Mobile floating bubble
-const bubble = document.getElementById('mobileCartBubble');
-if (bubble && totalItems > 0 && !isBubbleDismissedManually && !isInitialPageLoad) {
-    bubble.classList.add('show-bubble');
-    
-    // Add the click handler to open summary and hide itself immediately
-    bubble.onclick = function() {
-        if (typeof openCheckoutGateway === 'function') {
-            openCheckoutGateway(); // Opens the order summary modal
+        // === MAIN SCREEN TILES SYNC FOR FIAT ===
+        if (activeFiatLabel) activeFiatLabel.style.display = 'block';
+        if (activeCryptoLabel) activeCryptoLabel.style.display = 'none';
+    } else {
+        if (paymentEl) paymentEl.textContent = 'SOLANA NETWORK';
+        if (settlementEl) settlementEl.textContent = currentSelectedToken;
+
+        // Restore the Crypto matrix layout views
+        if (summaryTokenQty) summaryTokenQty.textContent = currentSelectedToken;
+        if (priceRowLabel) priceRowLabel.textContent = `CAD / ${currentSelectedToken} Price`;
+
+        // === MAIN SCREEN TILES SYNC FOR CRYPTO ===
+        if (activeFiatLabel) activeFiatLabel.style.display = 'none';
+        if (activeCryptoLabel) activeCryptoLabel.style.display = 'block';
+        
+        // Dynamically update the main screen string under the OR divider
+        if (activeCryptoLabel) {
+            activeCryptoLabel.textContent = `Active Method: TOKENS / SOLANA (${currentSelectedToken})`;
         }
-        isBubbleDismissedManually = true; // Prevents it from popping back up instantly
-        this.classList.remove('show-bubble'); // Safely hides the bubble
-    };
-    
-} else if (bubble) {
-    bubble.classList.remove('show-bubble');
+    }
 }
 
-        // Summary prices
-        document.getElementById('summaryTokenQty').textContent = currentSelectedToken;
-        document.getElementById('summaryCadPrice').textContent = `$${totalCAD.toFixed(2)} CAD`;
-        document.getElementById('summaryUsdPrice').textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
+if (fiatTile) fiatTile.addEventListener('click', () => switchPaymentTile(fiatTile));
+if (cryptoTile) cryptoTile.addEventListener('click', () => switchPaymentTile(cryptoTile));
+if (fiatTile) switchPaymentTile(fiatTile);
+
+			// Token selection matrix changer
+document.querySelectorAll('.token-item').forEach(item => {
+    item.addEventListener('click', function () {
+        // Guard Clause: Don't allow token swaps if locked in Visa/Mastercard mode
+        if (currentPaymentMethod === 'fiat') return;
+
+        // 1. Save the token asset value string to your tracking state variable
+        currentSelectedToken = this.getAttribute('data-token') || 'eXPB';
+
+        // 2. Sync your labels and calculate cart math quietly
+        if (typeof syncCheckoutLabels === 'function') syncCheckoutLabels();
+        if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update
+
+        // 3. FORCE PURPLE HIGHLIGHT RE-ASSIGNMENT (Run this LAST to prevent overrides)
+        document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+        
+        // Dynamic logging to verify it works in your browser console
+        console.log(`Token Highlight moved to: ${currentSelectedToken}`);
+    });
+});
+
+			// Token dropdown
+			const tokenListTitle = document.querySelector('.token-list-title');
+			const tokenOptionsContainer = document.querySelector('.token-options');
+			if (tokenListTitle && tokenOptionsContainer) {
+				tokenListTitle.addEventListener('click', function () {
+					if (tokenOptionsContainer.style.display === 'flex') {
+						tokenOptionsContainer.style.display = 'none';
+						this.querySelector('span').textContent = '▼';
+					} else {
+						tokenOptionsContainer.style.display = 'flex';
+						this.querySelector('span').textContent = '▲';
+					}
+				});
+			}
+
+			// ==================== FIXED CART UI (Red Circle Counter) ====================
+function updateCartUI(isSilent = false) { // Added default false parameter here
+    let totalItems = 0;
+    let totalCAD = 0;
+
+    cart.forEach(item => {
+        totalItems += item.quantity;
+        const p = products[item.id];
+        if (p) totalCAD += p.priceVal * item.quantity;
+    });
+
+    // === RED CIRCLE COUNTERS ===
+    const desktopBadge = document.getElementById('cartCountBadge');
+    const mobileBadge = document.getElementById('mobileCartCountBadge');
+
+    if (desktopBadge) {
+        desktopBadge.textContent = totalItems;
+        desktopBadge.classList.toggle('hidden', totalItems === 0);
+    }
+    if (mobileBadge) {
+        mobileBadge.textContent = totalItems;
+        mobileBadge.classList.toggle('hidden', totalItems === 0);
     }
 
-    dismissCartBubble = function () {
-        isBubbleDismissedManually = true;
-        document.getElementById('mobileCartBubble')?.classList.remove('show-bubble');
-    };
+    // Mobile floating bubble
+    const bubble = document.getElementById('mobileCartBubble');
+    const checkoutModal = document.getElementById('checkoutModal');
+    
+    // Check if the checkout modal is currently open on the screen
+    const isModalOpen = checkoutModal && checkoutModal.style.display === 'block';
 
-    // ==================== CHECKOUT MODAL ====================
-    openCheckoutGateway = function () {
-        if (currentDistributorMode === 'amazon') {
-            if (confirm("🛒 Cart only works in Local mode.\n\nSwitch to Local Mode?")) {
-                currentDistributorMode = "local";
-                activeLineText.style.color = '#22c55e';
-                activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
-                document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'flex');
-                document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
-                if (toggleBtn) toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
-                return;
-            } else {
-                return;
+    // === AIRTIGHT BUBBLE GUARD CONDITION ===
+    // Never show the bubble if:
+    // 1. We requested a quiet update (isSilent)
+    // 2. The user is ALREADY inside the checkout modal (isModalOpen)
+    if (bubble && totalItems > 0 && !isBubbleDismissedManually && !isInitialPageLoad && !isSilent && !isModalOpen) {
+        bubble.classList.add('show-bubble');
+
+        bubble.onclick = function () {
+            if (typeof openCheckoutGateway === 'function') {
+                openCheckoutGateway();
             }
+            isBubbleDismissedManually = true;
+            this.classList.remove('show-bubble');
+        };
+    } else if (bubble) {
+        // Force fully hiding the bubble notification if the modal is active or update is silent
+        bubble.classList.remove('show-bubble');
+    }
+
+    // Summary prices & Labels Guard Tracker
+    const summaryTokenQty = document.getElementById('summaryTokenQty');
+    const summaryCadPrice = document.getElementById('summaryCadPrice');
+    const summaryUsdPrice = document.getElementById('summaryUsdPrice');
+    const priceRowLabel = summaryCadPrice ? summaryCadPrice.previousElementSibling : null;
+
+    if (summaryTokenQty) {
+        summaryTokenQty.textContent = currentSelectedToken;
+    }
+    if (summaryCadPrice) {
+        if (currentPaymentMethod === 'fiat') {
+            summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
+            if (priceRowLabel) priceRowLabel.textContent = 'Base Asset Price';
+        } else {
+            summaryCadPrice.textContent = `$${totalCAD.toFixed(2)} CAD`;
+            if (priceRowLabel) priceRowLabel.textContent = `CAD / ${currentSelectedToken} Price`;
         }
+    }
+    if (summaryUsdPrice) {
+        summaryUsdPrice.textContent = `$${(totalCAD * 0.73).toFixed(2)} USD`;
+    }
+}
 
-        if (cart.length === 0) return alert("Your cart is empty!");
+dismissCartBubble = function () {
+    isBubbleDismissedManually = true;
+    document.getElementById('mobileCartBubble')?.classList.remove('show-bubble');
+};
 
-        const itemsContainer = document.getElementById('checkoutModalItems');
-        let html = '', total = 0;
+			// ==================== CHECKOUT MODAL ====================
+			openCheckoutGateway = function () {
+				if (currentDistributorMode === 'amazon') {
+					if (confirm("🛒 Cart only works in Local mode.\n\nSwitch to Local Mode?")) {
+						currentDistributorMode = "local";
+						activeLineText.style.color = '#22c55e';
+						activeLineText.innerHTML = `🏪 Buy Local with Debit / Credit / Tokens`;
+						document.querySelectorAll('.card-add-to-cart').forEach(b => b.style.display = 'flex');
+						document.querySelectorAll('.card-amazon-btn').forEach(b => b.style.display = 'none');
+						if (toggleBtn) toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+						return;
+					} else {
+						return;
+					}
+				}
 
-        cart.forEach(item => {
-            const p = products[item.id];
-            if (!p) return;
-            const lineTotal = p.priceVal * item.quantity;
-            total += lineTotal;
-            html += `
+				if (cart.length === 0) return alert("Your cart is empty!");
+
+				const itemsContainer = document.getElementById('checkoutModalItems');
+				let html = '', total = 0;
+
+				cart.forEach(item => {
+					const p = products[item.id];
+					if (!p) return;
+					const lineTotal = p.priceVal * item.quantity;
+					total += lineTotal;
+					html += `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                     <div style="display:flex;align-items:center;gap:8px;">
                         <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s; display: inline-flex; align-items:center; justify-content:center; vertical-align:middle;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
@@ -1787,109 +1902,161 @@ if (bubble && totalItems > 0 && !isBubbleDismissedManually && !isInitialPageLoad
                     </div>
                     <div>$${lineTotal.toFixed(2)} CAD</div>
                 </div>`;
-        });
+				});
 
-        itemsContainer.innerHTML = html;
+				itemsContainer.innerHTML = html;
         document.getElementById('checkoutTotalCAD').textContent = `$${total.toFixed(2)} CAD`;
 
-        // Settlement Currency Selector
-        let tokenArea = document.getElementById('checkoutModalTokenSelectorSpace');
-        if (!tokenArea && itemsContainer) {
-            tokenArea = document.createElement('div');
-            tokenArea.id = 'checkoutModalTokenSelectorSpace';
-            itemsContainer.parentNode.insertBefore(tokenArea, itemsContainer.nextSibling);
-        }
-        if (tokenArea) {
-            if (currentPaymentMethod === 'fiat') {
-                tokenArea.innerHTML = `
-                    <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
-<div style="margin-bottom: 16px;">
-    <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
-    <select id="token-select" disabled style="width: 100%; background: #110e2e; border: 1px solid #4c1d95; color: #888; padding: 10px 8px !important; line-height: 1.4; height: auto; min-height: 38px; box-sizing: border-box; outline: none; font-size: 14px; cursor: not-allowed; opacity: 0.6; vertical-align: middle;">
-        <option value="CAD" selected>CAD (Fiat Settlement Locked)</option>
-    </select>
-</div>
-                `;
-            } else {
-                tokenArea.innerHTML = `
-                    <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
-<div style="margin-bottom: 16px;">
-    <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
-    <select id="token-select" style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 10px 8px !important; border-radius: 6px; line-height: 1.4; height: auto; min-height: 38px; box-sizing: border-box; outline: none; font-size: 14px; cursor: pointer; vertical-align: middle;">
-        <option value="eXPB" ${currentSelectedToken === 'eXPB' ? 'selected' : ''}>$eXPB / Dynamic Discount / 15%</option>
-        <option value="GIDDY" ${currentSelectedToken === 'GIDDY' ? 'selected' : ''}>$GIDDY / Stable Dollar + Raffle</option>
-        <option value="SOL" ${currentSelectedToken === 'SOL' ? 'selected' : ''}>$SOL / Native Currency of Solana SPL</option>
-        <option value="ONE" ${currentSelectedToken === 'ONE' ? 'selected' : ''}>$ONE</option>
-        <option value="KIN" ${currentSelectedToken === 'KIN' ? 'selected' : ''}>$KIN</option>
-        <option value="DOBBY" ${currentSelectedToken === 'DOBBY' ? 'selected' : ''}>$DOBBY</option>
-        <option value="DUNO" ${currentSelectedToken === 'DUNO' ? 'selected' : ''}>$DUNO</option>
-        <option value="MYLO" ${currentSelectedToken === 'MYLO' ? 'selected' : ''}>$MYLO</option>
-        <option value="CPT" ${currentSelectedToken === 'CPT' ? 'selected' : ''}>$CPT</option>
-        <option value="SINU" ${currentSelectedToken === 'SINU' ? 'selected' : ''}>$SINU</option>
-    </select>
-</div>
-                `;
+        // === INDESTRUCTIBLE EVENT DELEGATION FOR DELETE BUTTONS ===
+        // Remove any old clone listeners by clearing and setting a fresh root handler
+        itemsContainer.onclick = null; 
+        
+        itemsContainer.onclick = function (e) {
+            // Check if the clicked element (or its closest parent) is the trash button
+            const delBtn = e.target.closest('.checkout-del-btn');
+            if (!delBtn) return; // Ignore clicks on text, quantities, etc.
 
-                const select = tokenArea.querySelector('#token-select');
-                if (select) {
-                    select.addEventListener('change', function () {
-                        currentSelectedToken = this.value;
-                        const match = document.querySelector(`.token-item[data-token="${currentSelectedToken}"]`);
-                        if (match) {
-                            document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
-                            match.classList.add('selected');
-                        }
-                        syncCheckoutLabels();
-                        updateCartUI();
-                    });
-                }
+            e.preventDefault();
+            e.stopPropagation();
+
+            // 1. Read and normalize id string loosely to match both string & integer formats
+            const idToRemove = delBtn.getAttribute('data-id');
+            const itemIndex = cart.findIndex(item => item.id == idToRemove);
+            
+            if (itemIndex !== -1) {
+                // Modify global array in-place safely without crashing 'const' definitions
+                cart.splice(itemIndex, 1);
             }
+            
+            // 2. Sync main page layout matrices and persistent local storage memory
+            if (typeof updateCartUI === 'function') updateCartUI(true); // Quiet update so bubble stays hidden
+            
+            // 3. Handle modal screen redraw states instantly
+            if (cart.length === 0) {
+                if (typeof closeCheckoutGateway === 'function') {
+                    closeCheckoutGateway();
+                } else {
+                    document.getElementById('checkoutModal').style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+                alert("Your cart is empty!");
+            } else {
+                // Re-draw the modal layout immediately to calculate new math equations
+                openCheckoutGateway();
+            }
+        };
+
+				// Settlement Currency Selector
+let tokenArea = document.getElementById('checkoutModalTokenSelectorSpace');
+if (!tokenArea && itemsContainer) {
+    tokenArea = document.createElement('div');
+    tokenArea.id = 'checkoutModalTokenSelectorSpace';
+    itemsContainer.parentNode.insertBefore(tokenArea, itemsContainer.nextSibling);
+}
+
+if (tokenArea) {
+    if (currentPaymentMethod === 'fiat') {
+        // FORCE THE BACKGROUND STATE ENGINE TO CAD RIGHT HERE
+        currentSelectedToken = 'CAD';
+
+        tokenArea.innerHTML = `
+            <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
+            <div style="margin-bottom: 16px;">
+                <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
+                <select id="token-select" disabled style="width: 100%; background: #110e2e; border: 1px solid #4c1d95; color: #888; padding: 10px 8px !important; line-height: 1.4; height: auto; min-height: 38px; box-sizing: border-box; outline: none; font-size: 14px; cursor: not-allowed; opacity: 0.6; vertical-align: middle;">
+                    <option value="CAD" selected>CAD (Fiat Settlement Locked)</option>
+                </select>
+            </div>
+        `;
+    } else {
+        // We update the content dynamically EVERY time the modal fires up
+        tokenArea.innerHTML = `
+            <hr style="border-color: rgba(167, 139, 250, 0.2); margin: 16px 0;">
+            <div style="margin-bottom: 16px;">
+                <label for="token-select" style="display: block; font-size: 13px; color: #a78bfa; margin-bottom: 6px; font-weight: 500;">Settlement Currency Token Type Selector:</label>
+                <select id="token-select" style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 10px 8px !important; border-radius: 6px; line-height: 1.4; height: auto; min-height: 38px; box-sizing: border-box; outline: none; font-size: 14px; cursor: pointer; vertical-align: middle;">
+                    <option value="eXPB" ${currentSelectedToken === 'eXPB' ? 'selected' : ''}>$eXPB / Dynamic Discount / 15%</option>
+                    <option value="GIDDY" ${currentSelectedToken === 'GIDDY' ? 'selected' : ''}>$GIDDY / Stable Dollar + Raffle</option>
+                    <option value="SOL" ${currentSelectedToken === 'SOL' ? 'selected' : ''}>$SOL / Native Network Currency</option>
+                    <option value="ONE" ${currentSelectedToken === 'ONE' ? 'selected' : ''}>$ONE</option>
+                    <option value="KIN" ${currentSelectedToken === 'KIN' ? 'selected' : ''}>$KIN</option>
+                    <option value="DOBBY" ${currentSelectedToken === 'DOBBY' ? 'selected' : ''}>$DOBBY</option>
+                    <option value="DUNO" ${currentSelectedToken === 'DUNO' ? 'selected' : ''}>$DUNO</option>
+                    <option value="MYLO" ${currentSelectedToken === 'MYLO' ? 'selected' : ''}>$MYLO</option>
+                    <option value="CPT" ${currentSelectedToken === 'CPT' ? 'selected' : ''}>$CPT</option>
+                    <option value="SINU" ${currentSelectedToken === 'SINU' ? 'selected' : ''}>$SINU</option>
+                </select>
+            </div>
+        `;
+
+        // Instantly re-attach the event listener to the fresh DOM layout
+        const select = tokenArea.querySelector('#token-select');
+        if (select) {
+            select.addEventListener('change', function () {
+                currentSelectedToken = this.value;
+                const match = document.querySelector(`.token-item[data-token="${currentSelectedToken}"]`);
+                if (match) {
+                    document.querySelectorAll('.token-item').forEach(i => i.classList.remove('selected'));
+                    match.classList.add('selected');
+                }
+                
+                // Keep main page active title label context synced alongside dropdown menu selections
+                const activeCryptoLabel = document.getElementById('activeCryptoLabel');
+                if (activeCryptoLabel) {
+                    activeCryptoLabel.textContent = `Active Method: TOKENS / SOLANA (${currentSelectedToken})`;
+                }
+
+                syncCheckoutLabels();
+                updateCartUI();
+            });
         }
-
-        syncCheckoutLabels();
-        document.getElementById('checkoutModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    };
-
-    function closeCheckoutGateway() {
-        const modal = document.getElementById('checkoutModal');
-        if (modal) modal.style.display = 'none';
-        document.body.style.overflow = '';
-        updateCartUI();
     }
+}
 
-    // Wire buttons
-    document.getElementById('reviewCartBtn')?.addEventListener('click', openCheckoutGateway);
-    document.getElementById('cartNavBtn')?.addEventListener('click', openCheckoutGateway);
-    document.getElementById('closeCheckoutModal')?.addEventListener('click', closeCheckoutGateway);
-    document.getElementById('clearCartBtn')?.addEventListener('click', () => {
-        if (confirm("Empty cart?")) { cart = []; saveCart(); closeCheckoutGateway(); }
-    });
-    document.getElementById('gatewayProceedBtn')?.addEventListener('click', () => alert("Secure checkout coming soon!"));
+syncCheckoutLabels();
+document.getElementById('checkoutModal').style.display = 'block';
+document.body.style.overflow = 'hidden';
+};
 
-    // ==================== PRODUCT MODAL + MAGNIFIER ====================
-const previewModal = document.getElementById('previewModal');
-const magnifier = document.getElementById('magnifier');
+			function closeCheckoutGateway() {
+				const modal = document.getElementById('checkoutModal');
+				if (modal) modal.style.display = 'none';
+				document.body.style.overflow = '';
+				updateCartUI();
+			}
 
-function openPreviewModal(productId) {
-    const product = products[productId];
-    if (!product || !previewModal) return;
+			// Wire buttons
+			document.getElementById('reviewCartBtn')?.addEventListener('click', openCheckoutGateway);
+			document.getElementById('cartNavBtn')?.addEventListener('click', openCheckoutGateway);
+			document.getElementById('closeCheckoutModal')?.addEventListener('click', closeCheckoutGateway);
+			document.getElementById('clearCartBtn')?.addEventListener('click', () => {
+				if (confirm("Empty cart?")) { cart = []; saveCart(); closeCheckoutGateway(); }
+			});
+			document.getElementById('gatewayProceedBtn')?.addEventListener('click', () => alert("Secure checkout coming soon!"));
 
-    const scrollArea = previewModal.querySelector('.image-scroll');
-    if (scrollArea) {
-        scrollArea.innerHTML = product.previews.map(p => `
+			// ==================== PRODUCT MODAL + MAGNIFIER ====================
+			const previewModal = document.getElementById('previewModal');
+			const magnifier = document.getElementById('magnifier');
+
+			function openPreviewModal(productId) {
+				const product = products[productId];
+				if (!product || !previewModal) return;
+
+				const scrollArea = previewModal.querySelector('.image-scroll');
+				if (scrollArea) {
+					scrollArea.innerHTML = product.previews.map(p => `
             <div class="image-slide">
                 <img src="${p.src}" alt="${product.title}">
                 <div class="variable-text">${p.text}</div>
             </div>
         `).join('');
-    }
+				}
 
-const fixedDesc = previewModal.querySelector('.fixed-desc');
-if (fixedDesc) {
-    // Injecting a localized scoped style block to kill any visited/active purple text lines completely
-    const action = currentDistributorMode === 'amazon' ?
-        `<style>
+				const fixedDesc = previewModal.querySelector('.fixed-desc');
+				if (fixedDesc) {
+					// Injecting a localized scoped style block to kill any visited/active purple text lines completely
+					const action = currentDistributorMode === 'amazon' ?
+						`<style>
             .card-amazon-btn, 
             .card-amazon-btn:visited, 
             .card-amazon-btn:active, 
@@ -1904,255 +2071,285 @@ if (fixedDesc) {
             }
          </style>
          <a href="${product.amazonUrl}" target="_blank" class="cart-btn card-amazon-btn" style="display:block; width:100%; text-align:center; background:#ff9900; color:#000; text-decoration:none;"><i class="fab fa-amazon"></i> Buy on Amazon</a>` :
-        `<button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%;">🛒 Add to Cart</button>`;
+						`<button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%;">🛒 Add to Cart</button>`;
 
-    fixedDesc.innerHTML = `<h2>${product.title}</h2><div class="price">${product.price}</div><p>${product.fixedDesc}</p>${action}`;
+					fixedDesc.innerHTML = `<h2>${product.title}</h2><div class="price">${product.price}</div><p>${product.fixedDesc}</p>${action}`;
 
-    fixedDesc.querySelector('.modal-add-to-cart')?.addEventListener('click', function () {
-        addPromptToCart(this.getAttribute('data-id'), this);
-    });
-}
+					fixedDesc.querySelector('.modal-add-to-cart')?.addEventListener('click', function () {
+						addPromptToCart(this.getAttribute('data-id'), this);
+					});
+				}
 
-    previewModal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-    setTimeout(initMagnifier, 100);
-}
+				previewModal.style.display = 'block';
+				document.body.style.overflow = 'hidden';
+				setTimeout(initMagnifier, 100);
+			}
 
-    function closePreviewModal() {
-        if (previewModal) previewModal.style.display = 'none';
-        document.body.style.overflow = '';
-        if (magnifier) magnifier.style.display = 'none';
-    }
+			function closePreviewModal() {
+				if (previewModal) previewModal.style.display = 'none';
+				document.body.style.overflow = '';
+				if (magnifier) magnifier.style.display = 'none';
+			}
 
-    previewModal?.querySelector('.close-modal')?.addEventListener('click', closePreviewModal);
-    previewModal?.addEventListener('click', e => { if (e.target === previewModal) closePreviewModal(); });
+			previewModal?.querySelector('.close-modal')?.addEventListener('click', closePreviewModal);
+			previewModal?.addEventListener('click', e => { if (e.target === previewModal) closePreviewModal(); });
 
-    function initMagnifier() {
-        if (!magnifier) return;
-        previewModal.querySelectorAll('.image-slide img').forEach(img => {
-            img.addEventListener('mousemove', (e) => {
-                const rect = img.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                magnifier.style.display = 'block';
-                magnifier.style.left = `${e.clientX - 90}px`;
-                magnifier.style.top = `${e.clientY - 90}px`;
-                magnifier.style.backgroundImage = `url(${img.src})`;
-                magnifier.style.backgroundPosition = `-${x * 5 - 90}px -${y * 5 - 90}px`;
-                magnifier.style.backgroundSize = `${img.width * 5}px ${img.height * 5}px`;
-            });
-            img.addEventListener('mouseleave', () => magnifier.style.display = 'none');
-        });
-    }
+			function initMagnifier() {
+				if (!magnifier) return;
+				previewModal.querySelectorAll('.image-slide img').forEach(img => {
 
-    // Card handlers
-    document.querySelectorAll('.shop-card').forEach(card => {
-        card.addEventListener('click', function (e) {
-            if (e.target.closest('.cart-btn') || e.target.closest('a')) return;
-            const id = this.getAttribute('data-product-id');
-            if (id) openPreviewModal(id);
-        });
-
-        const addBtn = card.querySelector('.card-add-to-cart');
-        if (addBtn) addBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            addPromptToCart(card.getAttribute('data-product-id'), addBtn);
-        });
-
-        const amzBtn = card.querySelector('.card-amazon-btn');
-        if (amzBtn) amzBtn.addEventListener('click', e => e.stopPropagation());
-    });
-
-    // Keyboard
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            closePreviewModal();
-            closeCheckoutGateway();
-        }
-    });
-
-    updateCartUI();
-    isInitialPageLoad = false;
-});
-</script>
-
-		<!-- Bottom Nav -->
-		<nav class="bottom-nav">
-			<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
-				<i class="fas fa-comment-dots"></i>Ask Giddy
-			</div>
-			<div class="nav-item" onclick="window.location.href='/kincommunity.html'">
-				<i class="fas fa-users"></i>Connect
-			</div>
-			<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
-			</div>
-			<div class="nav-item" onclick="window.location.href='/wallet.html'">
-				<i class="fas fa-wallet"></i>Wallet
-			</div>
-			<div class="nav-item" id="navPanelTrigger">
-				<i class="fas fa-bars"></i> Menu
-			</div>
-		</nav>
-
-		<!-- Footer -->
-		<footer id="footer">
-			<section>
-				<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
-					<h2 class="centered-heading">Contact Us</h2>
-					<div class="fields">
-						<div class="field">
-							<label for="name">Name</label>
-							<input type="text" name="name" id="name" required>
-						</div>
-						<div class="field">
-							<label for="email">Email</label>
-							<input type="email" name="email" id="email" required>
-						</div>
-						<div class="field">
-							<label for="message">Message</label>
-							<textarea name="message" id="message" rows="3" required></textarea>
-						</div>
-					</div>
-					<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
-					<ul class="actions">
-						<li><input type="submit" value="Send Message"></li>
-					</ul>
-				</form>
-				<script>
-					function verifyRecaptcha() {
-						var response = grecaptcha.getResponse();
-						if (response.length == 0) {
-							alert("Please complete the reCAPTCHA.");
-							return false;
-						} else {
-							return true;
+					// --- UNIFIED POINTER ENGINE ---
+					function handleMove(e) {
+						// Stop phone from pull-to-refresh or window jumping during a drag action
+						if (e.type.startsWith('touch') && e.cancelable) {
+							e.preventDefault();
 						}
+
+						// Extract position correctly whether it's a mouse or touch point
+						const pointer = e.touches ? e.touches[0] : e;
+						const rect = img.getBoundingClientRect();
+
+						const x = pointer.clientX - rect.left;
+						const y = pointer.clientY - rect.top;
+
+						// Optional safety guard: Hide lens if finger drifts outside image boundaries
+						if (x < 0 || x > rect.width || y < 0 || y > rect.height) {
+							magnifier.style.display = 'none';
+							return;
+						}
+
+						magnifier.style.display = 'block';
+						magnifier.style.left = `${pointer.clientX - 90}px`;
+						magnifier.style.top = `${pointer.clientY - 90}px`;
+						magnifier.style.backgroundImage = `url(${img.src})`;
+						magnifier.style.backgroundPosition = `-${x * 5 - 90}px -${y * 5 - 90}px`;
+						magnifier.style.backgroundSize = `${img.width * 5}px ${img.height * 5}px`;
 					}
-				</script>
-			</section>
 
-			<!-- Footer Social Location, Links & Other Contact -->
-			<section class="split contact">
-				<section>
-					<h3>Location</h3>
-					<p>British Columbia, Canada</p>
-				</section>
-				<section>
-					<h3>Email</h3>
-					<p><a href="mailto:hello@giddys.ca">hello@giddys.ca</a></p>
-				</section>
-				<section>
-					<h3>Telegram</h3>
-					<p><a href="https://t.me/oneGIDDY">Giddy's by OFiDCrypt</a></p>
-				</section>
-				<!-- Hvr -->
-				<section>
-					<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
-						<img src="/assets/images/hvr-logo02.svg" alt="Hvr Logo" id="contact-img"
-							class="custom-site-icon-contact">
-					</a>
-					<p><a href="https://www.ofidcrypt.ca">OFiDCrypt.ca</a></p>
-				</section>
-				<section>
+					function handleHide() {
+						magnifier.style.display = 'none';
+					}
 
-					<ul class="icons alt">
-						<li><a href="https://x.com/Giddys_CA" class="icon brands fa-x-twitter"><span
-									class="label">X</span></a></li>
-						<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
-									class="label">YouTube</span></a></li>
-						<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
-									class="label">TikTok</span></a></li>
-						<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
-									class="label">Facebook</span></a></li>
-						<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
-									class="label">LinkedIn</span></a></li>
-					</ul>
-				</section>
-			</section>
-		</footer>
+					// --- DESKTOP MOUSE INTERFACE ---
+					img.addEventListener('mousemove', handleMove);
+					img.addEventListener('mouseleave', handleHide);
 
-		<!-- Copyright -->
-		<div id="copyright">
-			<ul>
-				<li><a href="/docs/main.html">Docs</a></li>
-				<li><a href="/discover.html">News & PR</a></li>
-				<li><a href="/pages/affiliate.html">Partners</a></li>
-				<li><a href="/pages/about.html">About</a></li>
-			</ul>
-			<ul>
-				<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
-			</ul>
-			<ul>
-				<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-			</ul>
-			<ul>
-				<li><a href="/docs/privacy-policy.html">Privacy</a></li>
-			</ul>
+					// --- MOBILE TOUCH DRAG INTERFACE ---
+					img.addEventListener('touchstart', handleMove, { passive: false });
+					img.addEventListener('touchmove', handleMove, { passive: false });
+					img.addEventListener('touchend', handleHide);
+					img.addEventListener('touchcancel', handleHide);
+				});
+			}
+
+			// Card handlers
+			document.querySelectorAll('.shop-card').forEach(card => {
+				card.addEventListener('click', function (e) {
+					if (e.target.closest('.cart-btn') || e.target.closest('a')) return;
+					const id = this.getAttribute('data-product-id');
+					if (id) openPreviewModal(id);
+				});
+
+				const addBtn = card.querySelector('.card-add-to-cart');
+				if (addBtn) addBtn.addEventListener('click', e => {
+					e.stopPropagation();
+					addPromptToCart(card.getAttribute('data-product-id'), addBtn);
+				});
+
+				const amzBtn = card.querySelector('.card-amazon-btn');
+				if (amzBtn) amzBtn.addEventListener('click', e => e.stopPropagation());
+			});
+
+			// Keyboard
+			document.addEventListener('keydown', e => {
+				if (e.key === 'Escape') {
+					closePreviewModal();
+					closeCheckoutGateway();
+				}
+			});
+
+			updateCartUI();
+			isInitialPageLoad = false;
+		});
+	</script>
+
+	<!-- Bottom Nav -->
+	<nav class="bottom-nav">
+		<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
+			<i class="fas fa-comment-dots"></i>Ask Giddy
 		</div>
-
-		<!-- Footer Extended Links Container -->
-		<div class="footer-extended-container">
-			<section class="footer-extended">
-				<h1 class="footer-left-aligned">
-					<span class="footer-small-heading">Partner Token Projects</span><br />
-				</h1>
-				<ul>
-					<li><a href="kincommunity.html#one-kin">$ONE</a></li>
-					<li><a href="kincommunity.html#one-kin">$KIN</a></li>
-					<li><a href="kincommunity.html#token-partners">$DOBBY</a></li>
-					<li><a href="kincommunity.html#token-partners">$DUNO</a></li>
-					<li><a href="kincommunity.html#token-partners">$MYLO</a></li>
-					<li><a href="kincommunity.html#token-partners">$CPT</a></li>
-					<li><a href="kincommunity.html#token-partners">$SINU</a></li>
-				</ul>
-			</section>
-
-			<section class="footer-extended">
-				<h1 class="footer-left-aligned">
-					<span class="footer-small-heading">Affiliate Partnerships</span><br />
-				</h1>
-				<ul>
-					<li><a href="pages/affiliate.html#kraken">Kraken</a></li>
-					<li><a href="pages/affiliate.html#ledger">Ledger</a></li>
-				</ul>
-			</section>
-
-			<section class="footer-extended">
-				<h1 class="footer-left-aligned">
-					<span class="footer-small-heading">Tech Collab & Site Partners</span><br />
-				</h1>
-				<ul>
-					<li><a href="pages/kinnected.html">GFDevSoft's Kinnected!</a></li>
-					<li><a href="pages/affiliate.html#hvr">HVR Technologies</a></li>
-				</ul>
-			</section>
-
-			<section class="footer-extended">
-				<h1 class="footer-left-aligned">
-					<span class="footer-small-heading">Collab Communities</span><br />
-				</h1>
-				<ul>
-					<li><a href="kincommunity.html">ONE Kin</a></li>
-					<li><a href="https://x.com/_WEB3M_">WEB3M</a></li>
-					<li><a href="https://x.com/theweb3family">The Web3 Family</a></li>
-				</ul>
-			</section>
+		<div class="nav-item" onclick="window.location.href='/kincommunity.html'">
+			<i class="fas fa-users"></i>Connect
 		</div>
+		<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
+			<i class="fas fa-gamepad"></i>Play Blinko!
+		</div>
+		<div class="nav-item" onclick="window.location.href='/wallet.html'">
+			<i class="fas fa-wallet"></i>Wallet
+		</div>
+		<div class="nav-item" id="navPanelTrigger">
+			<i class="fas fa-bars"></i> Menu
+		</div>
+	</nav>
 
-		<!-- Link to non-critical JavaScript files -->
-		<script src="/assets/js/jquery.min.js"></script>
-		<script src="/assets/js/jquery.scrollex.min.js"></script>
-		<script src="/assets/js/jquery.scrolly.min.js"></script>
+	<!-- Footer -->
+	<footer id="footer">
+		<section>
+			<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
+				<h2 class="centered-heading">Contact Us</h2>
+				<div class="fields">
+					<div class="field">
+						<label for="name">Name</label>
+						<input type="text" name="name" id="name" required>
+					</div>
+					<div class="field">
+						<label for="email">Email</label>
+						<input type="email" name="email" id="email" required>
+					</div>
+					<div class="field">
+						<label for="message">Message</label>
+						<textarea name="message" id="message" rows="3" required></textarea>
+					</div>
+				</div>
+				<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+				<ul class="actions">
+					<li><input type="submit" value="Send Message"></li>
+				</ul>
+			</form>
+			<script>
+				function verifyRecaptcha() {
+					var response = grecaptcha.getResponse();
+					if (response.length == 0) {
+						alert("Please complete the reCAPTCHA.");
+						return false;
+					} else {
+						return true;
+					}
+				}
+			</script>
+		</section>
 
-		<!-- REQUIRED for HTML5UP main.js -->
-		<script src="/assets/js/browser.min.js"></script>
-		<script src="/assets/js/breakpoints.min.js"></script>
-		<script src="/assets/js/util.js"></script>
+		<!-- Footer Social Location, Links & Other Contact -->
+		<section class="split contact">
+			<section>
+				<h3>Location</h3>
+				<p>British Columbia, Canada</p>
+			</section>
+			<section>
+				<h3>Email</h3>
+				<p><a href="mailto:hello@giddys.ca">hello@giddys.ca</a></p>
+			</section>
+			<section>
+				<h3>Telegram</h3>
+				<p><a href="https://t.me/oneGIDDY">Giddy's by OFiDCrypt</a></p>
+			</section>
+			<!-- Hvr -->
+			<section>
+				<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+					<img src="/assets/images/hvr-logo02.svg" alt="Hvr Logo" id="contact-img"
+						class="custom-site-icon-contact">
+				</a>
+				<p><a href="https://www.ofidcrypt.ca">OFiDCrypt.ca</a></p>
+			</section>
+			<section>
 
-		<!-- Your custom logic must be LAST -->
-		<script src="/assets/js/main.js"></script>
-		<script src="/assets/js/ofid-main.js"></script>
+				<ul class="icons alt">
+					<li><a href="https://x.com/Giddys_CA" class="icon brands fa-x-twitter"><span
+								class="label">X</span></a></li>
+					<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+								class="label">YouTube</span></a></li>
+					<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
+								class="label">TikTok</span></a></li>
+					<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+								class="label">Facebook</span></a></li>
+					<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+								class="label">LinkedIn</span></a></li>
+				</ul>
+			</section>
+		</section>
+	</footer>
+
+	<!-- Copyright -->
+	<div id="copyright">
+		<ul>
+			<li><a href="/docs/main.html">Docs</a></li>
+			<li><a href="/discover.html">News & PR</a></li>
+			<li><a href="/pages/affiliate.html">Partners</a></li>
+			<li><a href="/pages/about.html">About</a></li>
+		</ul>
+		<ul>
+			<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
+		</ul>
+		<ul>
+			<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+		</ul>
+		<ul>
+			<li><a href="/docs/privacy-policy.html">Privacy</a></li>
+		</ul>
+	</div>
+
+	<!-- Footer Extended Links Container -->
+	<div class="footer-extended-container">
+		<section class="footer-extended">
+			<h1 class="footer-left-aligned">
+				<span class="footer-small-heading">Partner Token Projects</span><br />
+			</h1>
+			<ul>
+				<li><a href="kincommunity.html#one-kin">$ONE</a></li>
+				<li><a href="kincommunity.html#one-kin">$KIN</a></li>
+				<li><a href="kincommunity.html#token-partners">$DOBBY</a></li>
+				<li><a href="kincommunity.html#token-partners">$DUNO</a></li>
+				<li><a href="kincommunity.html#token-partners">$MYLO</a></li>
+				<li><a href="kincommunity.html#token-partners">$CPT</a></li>
+				<li><a href="kincommunity.html#token-partners">$SINU</a></li>
+			</ul>
+		</section>
+
+		<section class="footer-extended">
+			<h1 class="footer-left-aligned">
+				<span class="footer-small-heading">Affiliate Partnerships</span><br />
+			</h1>
+			<ul>
+				<li><a href="pages/affiliate.html#kraken">Kraken</a></li>
+				<li><a href="pages/affiliate.html#ledger">Ledger</a></li>
+			</ul>
+		</section>
+
+		<section class="footer-extended">
+			<h1 class="footer-left-aligned">
+				<span class="footer-small-heading">Tech Collab & Site Partners</span><br />
+			</h1>
+			<ul>
+				<li><a href="pages/kinnected.html">GFDevSoft's Kinnected!</a></li>
+				<li><a href="pages/affiliate.html#hvr">HVR Technologies</a></li>
+			</ul>
+		</section>
+
+		<section class="footer-extended">
+			<h1 class="footer-left-aligned">
+				<span class="footer-small-heading">Collab Communities</span><br />
+			</h1>
+			<ul>
+				<li><a href="kincommunity.html">ONE Kin</a></li>
+				<li><a href="https://x.com/_WEB3M_">WEB3M</a></li>
+				<li><a href="https://x.com/theweb3family">The Web3 Family</a></li>
+			</ul>
+		</section>
+	</div>
+
+	<!-- Link to non-critical JavaScript files -->
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/jquery.scrollex.min.js"></script>
+	<script src="/assets/js/jquery.scrolly.min.js"></script>
+
+	<!-- REQUIRED for HTML5UP main.js -->
+	<script src="/assets/js/browser.min.js"></script>
+	<script src="/assets/js/breakpoints.min.js"></script>
+	<script src="/assets/js/util.js"></script>
+
+	<!-- Your custom logic must be LAST -->
+	<script src="/assets/js/main.js"></script>
+	<script src="/assets/js/ofid-main.js"></script>
 
 </body>
 
