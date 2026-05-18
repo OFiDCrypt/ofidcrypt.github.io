@@ -104,480 +104,686 @@
 	<meta http-equiv='content-language' content='en-gb'>
 
 	<!-- Custom Shop + Modal Styles -->
-    <style>
-        /* ============================ */
-        /* SHOP CARDS                   */
-        /* ============================ */
-        .shop-section {
-            padding: 2em 0;
-        }
+	<style>
+		/* ============================ */
+		/* SHOP CARDS                   */
+		/* ============================ */
+		.shop-section {
+			padding: 2em 0;
+		}
 
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 2em;
-            margin-bottom: 2em;
-            justify-content: center;
-        }
+		.shop-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 2em;
+			margin-bottom: 2em;
+			justify-content: center;
+		}
 
-        .shop-card {
-            background: var(--card-bg, #fff);
-            border-radius: 1em;
-            overflow: hidden;
-            box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 1em;
-            max-width: 340px;
-            width: 100%;
-            margin: 0 auto;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
+		.shop-card {
+			background: var(--card-bg, #fff);
+			border-radius: 1em;
+			overflow: hidden;
+			box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+			text-align: center;
+			padding: 1em;
+			max-width: 340px;
+			width: 100%;
+			margin: 0 auto;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
 
-        .shop-card .image-container {
-            padding: 0.75em;
-            position: relative;
-            display: block;
-            overflow: hidden;
-            border-radius: 0.5em;
-        }
+		.shop-card .image-container {
+			padding: 0.75em;
+			position: relative;
+			display: block;
+			overflow: hidden;
+			border-radius: 0.5em;
+		}
 
-        .shop-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 0.5em;
-            display: block;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+		.shop-card img {
+			width: 100%;
+			height: auto;
+			border-radius: 0.5em;
+			display: block;
+			transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		}
 
-        /* Auto Hover Magnifying Effect on Shop Cards */
-        .shop-card:hover img {
-            transform: scale(1.16);
-        }
+		/* Auto Hover Magnifying Effect on Shop Cards */
+		.shop-card:hover img {
+			transform: scale(1.16);
+		}
 
-        .shop-card .expand-overlay {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 50%;
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0.9;
-            z-index: 2;
-        }
+		.shop-card .expand-overlay {
+			position: absolute;
+			bottom: 12px;
+			right: 12px;
+			background: rgba(255, 255, 255, 0.85);
+			border-radius: 50%;
+			width: 52px;
+			height: 52px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+			cursor: pointer;
+			transition: all 0.3s ease;
+			opacity: 0.9;
+			z-index: 2;
+		}
 
-        .shop-card .expand-overlay:hover {
-            transform: scale(1.2);
-            opacity: 1;
-            background: rgba(255, 255, 255, 1);
-        }
+		.shop-card .expand-overlay:hover {
+			transform: scale(1.2);
+			opacity: 1;
+			background: rgba(255, 255, 255, 1);
+		}
 
-        body.dark-mode .shop-card .expand-overlay {
-            background: rgba(30, 30, 46, 0.9);
-        }
+		body.dark-mode .shop-card .expand-overlay {
+			background: rgba(30, 30, 46, 0.9);
+		}
 
-        .shop-card .expand-overlay i {
-            font-size: 1.65rem;
-            color: #a855f7;
-        }
+		.shop-card .expand-overlay i {
+			font-size: 1.65rem;
+			color: #a855f7;
+		}
 
-        body.dark-mode .shop-card .expand-overlay i {
-            color: #c084fc;
-        }
+		body.dark-mode .shop-card .expand-overlay i {
+			color: #c084fc;
+		}
 
-        .shop-card h3 {
-            margin: 0.5em 0 0.25em;
-            font-size: 1.2em;
-        }
+		.shop-card h3 {
+			margin: 0.5em 0 0.25em;
+			font-size: 1.2em;
+		}
 
-        .shop-card .price {
-            font-size: 1em;
-            color: var(--accent, #a855f7);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.35em;
-            margin-top: auto;
-            padding-top: 1em;
-        }
+		.shop-card .price {
+			font-size: 1em;
+			color: var(--accent, #a855f7);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.35em;
+			margin-top: auto;
+			padding-top: 1em;
+		}
 
-        .shop-card .price i {
-            font-size: 1.35em;
-        }
+		.shop-card .price i {
+			font-size: 1.35em;
+		}
 
-       /* ======================================================== */
-        /* AMENDED: THEMED CART BUTTONS (Preserves Exact Layout)    */
-        /* ======================================================== */
-        .shop-card .cart-btn {
-            background: #1e1b4b;                     /* Cosmic Indigo */
-            color: #a78bfa;                          /* Radiant Purple Text */
-            border: 2px solid #4c1d95;               /* Deep Velvet Accent Border */
-            border-radius: 0.5em;                    /* Kept original constraint */
-            padding: 0.6em 0;                        /* Removed horizontal padding to let width manage edges */
-            font-size: 0.75em;                       /* Kept original constraint */
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            margin: 0.8em auto 0.5em;                /* Kept exact original positioning margins */
-            
-            /* FIXED FRAME RULES: Prevents button shrinking during text changes */
-            width: 140px;                            /* Locked explicit frame width */
-            max-width: 100%;                         /* Kept original constraint */
-            
-            gap: 0.5em;                              /* Kept original constraint */
-            box-sizing: border-box;                  /* Kept original constraint */
-            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; /* Excluded width from transitions */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
-        }
+		/* ======================================================== */
+		/* ADD TO CART BUTTONS + AMAZON (LIGHT MODE DEFAULT)        */
+		/* ======================================================== */
+		.shop-card .cart-btn {
+			background: #f3e8ff;
+			color: #6b21a8;
+			border: 2px solid #c084fc;
+			border-radius: 0.5em;
+			padding: 0.65em 1em;
+			font-size: 0.78em;
+			font-weight: 600;
+			cursor: pointer;
 
-        /* Hover & Active Micro-interactions */
-        .shop-card .cart-btn:hover {
-            background: #4c1d95;
-            color: #ffffff;
-            border-color: #a78bfa;
-            box-shadow: 0 0 12px rgba(167, 139, 250, 0.45);
-            transform: translateY(-1px);
-        }
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5em;
 
-        .shop-card .cart-btn:active {
-            transform: translateY(1px);
-        }
+			margin: 0.9em auto 0.6em;
+			width: 100%;
+			max-width: 160px;
 
-        /* Light-to-Dark Mode Context Alternation Engines */
-        body.dark-mode .shop-card .cart-btn {
-            background: #111029;
-            color: #c084fc;
-            border-color: #581c87;
-        }
+			box-sizing: border-box;
+			transition: all 0.2s ease;
+			box-shadow: 0 4px 6px -1px rgba(168, 85, 247, 0.1);
+			white-space: nowrap;
+			/* Prevents wrapping */
+			text-align: center;
+		}
 
-        body.dark-mode .shop-card .cart-btn:hover {
-            background: #581c87;
-            color: #ffffff;
-            border-color: #c084fc;
-            box-shadow: 0 0 12px rgba(192, 132, 252, 0.45);
-        }
+		/* Hover & Active states (Light Mode) */
+		.shop-card .cart-btn:hover {
+			background: #a855f7;
+			color: #ffffff;
+			border-color: #9333ea;
+			box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
+			transform: translateY(-1px);
+		}
 
-        /* Success Engine State Callback Hook (Maintains identical frame sizes) */
-        .shop-card .cart-btn.success-state {
-            background: #052e16 !important;
-            color: #4ade80 !important;
-            border-color: #22c55e !important;
-            box-shadow: 0 0 12px rgba(34, 197, 94, 0.35) !important;
-            transform: none !important;              /* Locks position safely on success callback */
-        }
+		.shop-card .cart-btn:active {
+			transform: translateY(1px);
+		}
 
-        /* Existing styles */
-        .buy-now {
-            background: rgba(168, 85, 247, 0.8);
-            color: white;
-            border: none;
-            padding: 1em;
-            font-size: 1.2em;
-            border-radius: 0.5em;
-            width: 100%;
-            max-width: 300px;
-            margin: 1em auto;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+		/* Amazon Button Variant (Light Mode) */
+		.shop-card .cart-btn.card-amazon-btn {
+			background: #ff9900;
+			color: #111111;
+			border-color: #e48700;
+			max-width: 195px;
+			/* Extra room for full "Buy on Amazon" text */
+			font-size: 0.74em;
+			/* Slightly smaller to fit comfortably */
+			padding: 0.62em 0.9em;
+		}
 
-        .payment-summary {
-            background: var(--card-bg, #f9f9f9);
-            border-radius: 1em;
-            padding: 1.5em;
-            margin-top: 2em;
-            box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
-        }
+		.shop-card .cart-btn.card-amazon-btn:hover {
+			background: #e68a00;
+			color: #000000;
+			border-color: #cc7a00;
+			box-shadow: 0 0 12px rgba(230, 138, 0, 0.35);
+		}
 
-        .payment-summary h2 {
-            margin-bottom: 1em;
-        }
+		/* Success Engine State Callback Hook (Light Mode Default) */
+		.shop-card .cart-btn.success-state {
+			background: #dcfce7 !important;
+			color: #15803d !important;
+			border-color: #22c55e !important;
+			box-shadow: 0 0 12px rgba(34, 197, 94, 0.2) !important;
+			transform: none !important;
+		}
 
-        .payment-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 0.5em 0;
-        }
+		/* Primary Action Accent Button */
+		.buy-now {
+			background: #a855f7;
+			color: white;
+			border: none;
+			padding: 0.9em 1.5em;
+			font-size: 1.1em;
+			font-weight: 600;
+			border-radius: 0.5em;
+			width: 100%;
+			max-width: 300px;
+			margin: 1.2em auto 0;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			transition: all 0.2s ease;
+			box-shadow: 0 4px 10px rgba(168, 85, 247, 0.25);
+		}
 
-        select {
-            width: 100%;
-            padding: 0em 0.75em;
-            border-radius: 0.5em;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
+		.buy-now:hover {
+			background: #9333ea;
+			transform: translateY(-1px);
+			box-shadow: 0 6px 14px rgba(168, 85, 247, 0.35);
+		}
 
-        select option {
-            text-align: center;
-        }
+		/* ======================================================== */
+		/* FIXED: WHITE LIGHT-MODE CART SUMMARY SECTION             */
+		/* ======================================================== */
+		.payment-summary {
+			background: #ffffff;
+			/* Hard Forced White Background */
+			border: 1px solid #e2e8f0;
+			border-radius: 1em;
+			padding: 1.5em;
+			margin-top: 2em;
+			box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.06);
+			transition: all 0.3s ease;
+		}
 
-        /* Dark mode overrides */
-        body.dark-mode .shop-card {
-            background: #1a1a2e;
-            color: #e2e8f0;
-        }
+		.payment-summary h2 {
+			margin-bottom: 1em;
+			font-size: 1.35em;
+			font-weight: 600;
+		}
 
-        body.dark-mode .payment-summary {
-            background: #1a1a2e;
-            color: #e2e8f0;
-        }
+		.payment-row {
+			display: flex;
+			justify-content: space-between;
+			margin: 0.6em 0;
+			font-size: 0.95em;
+		}
 
-        body.dark-mode select {
-            background: #2d2d44;
-            color: white;
-            border-color: #334155;
-        }
+		/* Select Options Restyling */
+		select {
+			width: 100%;
+			padding: 0.6em 0.75em;
+			border-radius: 0.5em;
+			border: 1px solid #cbd5e1;
+			background-color: #ffffff;
+			color: #333333;
+			text-align: center;
+			font-size: 0.9em;
+			font-weight: 500;
+			outline: none;
+			cursor: pointer;
+			transition: all 0.2s ease;
+		}
 
-        body.dark-mode .buy-now {
-            background: rgba(168, 85, 247, 0.8);
-        }
+		select:focus {
+			border-color: #a855f7;
+			box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.15);
+		}
 
-        /* Responsive grid */
-        @media (max-width: 480px) {
-            .shop-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1em;
-            }
-        }
+		select option {
+			text-align: center;
+			background: #ffffff;
+			color: #333333;
+		}
 
-        @media (min-width: 481px) and (max-width: 980px) {
-            .shop-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                gap: 1.5em;
-            }
-        }
+		/* ============================ */
+		/* DARK MODE INHERITANCE MAPS   */
+		/* ============================ */
+		body.dark-mode .shop-card {
+			background: #1a1a2e;
+			color: #e2e8f0;
+		}
 
-        @media (min-width: 981px) {
-            .shop-grid {
-                grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
-                max-width: 1400px;
-                margin-left: auto;
-                margin-right: auto;
-                gap: 2em;
-            }
+		/* Dark Mode Cart Buttons Override */
+		body.dark-mode .shop-card .cart-btn {
+			background: #1e1b4b;
+			color: #a78bfa;
+			border-color: #4c1d95;
+		}
 
-            .shop-card {
-                max-width: 340px;
-            }
-        }
+		body.dark-mode .shop-card .cart-btn:hover {
+			background: #4c1d95;
+			color: #ffffff;
+			border-color: #a78bfa;
+			box-shadow: 0 0 12px rgba(167, 139, 250, 0.45);
+		}
 
-        @media (min-width: 1681px) {
-            .shop-grid {
-                grid-template-columns: repeat(4, minmax(280px, 340px));
-                max-width: 1500px;
-                margin-left: auto;
-                margin-right: auto;
-                gap: 2.5em;
-                justify-content: center;
-            }
+		/* Dark Mode Amazon Button Override */
+		body.dark-mode .shop-card .cart-btn.card-amazon-btn {
+			background: #d97706;
+			color: #000000;
+			border-color: #b45309;
+		}
 
-            .shop-card {
-                max-width: 340px;
-            }
-        }
+		body.dark-mode .shop-card .cart-btn.card-amazon-btn:hover {
+			background: #b45309;
+			color: #ffffff;
+			border-color: #d97706;
+		}
 
-        /* ============================ */
-        /* NEW: PRODUCT PREVIEW MODAL   */
-        /* ============================ */
-        #previewModal {
-            display: none;
-            position: fixed;
-            z-index: 10000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.92);
-            overflow: hidden;
-        }
+		/* Dark Mode Success State Override */
+		body.dark-mode .shop-card .cart-btn.success-state {
+			background: #052e16 !important;
+			color: #4ade80 !important;
+			border-color: #22c55e !important;
+			box-shadow: 0 0 12px rgba(34, 197, 94, 0.35) !important;
+			transform: none !important;
+		}
 
-        .modal-content {
-            background: #fff;
-            margin: 4vh auto;
-            width: 92%;
-            max-width: 960px;
-            max-height: 92vh;
-            border-radius: 1.25em;
-            overflow-x: hidden;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            position: relative;
-        }
+		body.dark-mode .payment-summary {
+			background: #16213e;
+			/* Cosmic Depth Box Accent */
+			border-color: #334155;
+			color: #e2e8f0;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+		}
 
-        body.dark-mode .modal-content {
-            background: #1a1a2e;
-            color: #e2e8f0;
-        }
+		body.dark-mode select {
+			background: #2d2d44;
+			color: #e2e8f0;
+			border-color: #334155;
+		}
 
-        .modal-header {
-            padding: 1em 1.5em 0.5em;
-            display: flex;
-            justify-content: flex-end;
-        }
+		body.dark-mode select:focus {
+			border-color: #c084fc;
+		}
 
-        .close-modal {
-            font-size: 2.2rem;
-            font-weight: 300;
-            color: #666;
-            cursor: pointer;
-            line-height: 1;
-        }
+		body.dark-mode select option {
+			background: #2d2d44;
+			color: #e2e8f0;
+		}
 
-        body.dark-mode .close-modal {
-            color: #c084fc;
-        }
+		body.dark-mode .buy-now {
+			background: #663399;
+			color: #1a1a2e;
+			box-shadow: 0 4px 12px rgba(192, 132, 252, 0.3);
+		}
 
-        .modal-scroll-area {
-            flex: none;
-            overflow: visible;
-            padding: 0 1.5em 1em;
-            position: relative;
-            z-index: 3;
-        }
+		body.dark-mode .buy-now:hover {
+			background: #a855f7;
+			color: #ffffff;
+			box-shadow: 0 6px 16px rgba(192, 132, 252, 0.45);
+		}
 
-        .image-scroll {
-            display: flex;
-            gap: 1.5em;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 1em;
-            scrollbar-width: thin;
-            scrollbar-color: #a855f7 #f1f1f1;
-            height: 100%;
-        }
+		/* ======================================================== */
+		/* MOBILE FLOATING CART BUBBLE                              */
+		/* ======================================================== */
+		.mobile-cart {
+			display: none;
+			position: fixed;
+			bottom: 67px;
+			right: 14px;
+			bottom: calc(67px + env(safe-area-inset-bottom));
+			z-index: 9999;
+			opacity: 1;
+			transform: translateY(0);
+			pointer-events: auto;
 
-        body.dark-mode .image-scroll {
-            scrollbar-color: #c084fc #2d2d44;
-        }
+			/* Matches structural styles of .mobile-claim */
+			background: linear-gradient(to right, #9333ea, #ec4899);
+			color: #ffffff;
+			font-size: 0.875rem;
+			font-weight: 700;
+			padding: 8px 20px;
+			/* Reduced vertical padding from 12px to 8px to make it less tall */
+			border-radius: 24px;
+			align-items: center;
+			gap: 8px;
+			cursor: pointer;
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+		}
 
-        .image-slide {
-            flex: 0 0 100%;
-            scroll-snap-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+		@media (max-width: 767px) {
+			.mobile-cart.show-bubble {
+				display: flex !important;
+			}
+		}
 
-        .image-slide img {
-            width: auto;
-            max-height: 68vh;
-            object-fit: contain;
-            border-radius: 1em;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            cursor: crosshair;
-        }
+		@media (min-width: 768px) {
+			#mobileCartBubble {
+				display: none !important;
+			}
+		}
 
-        .variable-text {
-            margin-top: 1.25em;
-            text-align: center;
-            font-size: 1.05em;
-            line-height: 1.5;
-            max-width: 90%;
-            font-style: italic;
-            color: #555;
-        }
+		/* Mobile Cart Badge – identical to the Tailwind desktop red-circle badge */
+		.mobile-cart-badge {
+			position: absolute;
+			top: -8px;
+			right: -8px;
+			background-color: #ef4444;
+			color: #ffffff;
+			font-size: 12px;
+			font-weight: 700;
+			width: 24px;
+			height: 24px;
+			border-radius: 9999px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+			z-index: 10;
+			line-height: 1;
+		}
 
-        body.dark-mode .variable-text {
-            color: #cbd5e1;
-        }
+		/* Matches #mobileClaimBubble button styles exactly with alignment override */
+		#mobileCartBubble .close-btn {
+			border: none;
+			outline: none;
+			background: transparent;
+			box-shadow: none;
+			-webkit-tap-highlight-color: transparent;
+			cursor: pointer;
+			margin: 0 0 0 auto;
+			/* CRITICAL FIX: Forces all margins to 0 while keeping margin-left: auto */
+			font-size: 1.5rem;
 
-        .fixed-desc {
-            padding: 1.1em 1.5em;
-            background: #f8f8f8;
-            border-top: 1px solid #e5e5e5;
-            position: relative;
-            z-index: 1;
-        }
+			/* Structural centering alignment fixes */
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			line-height: 1;
+			/* Keeps the line box tight */
+			height: 1.5rem;
+			/* Forces height to match the exact font size scale */
+			width: 1.5rem;
+			/* Forces a square layout box to eliminate offset spacing */
+			padding: 0;
+			transition: color 0.2s ease;
+		}
 
-        body.dark-mode .fixed-desc {
-            background: #16213e;
-            border-top-color: #334155;
-        }
+		#mobileCartBubble .close-btn:hover {
+			color: #ffffff;
+		}
 
-        .fixed-desc h2 {
-            margin: 0 0 0.4em;
-            font-size: 1.35em;
-        }
+		/* ============================ */
+		/* RESPONSIVE LAYOUT ENGINES    */
+		/* ============================ */
+		@media (max-width: 480px) {
+			.shop-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1em;
+			}
+		}
 
-        .fixed-desc .price {
-            font-size: 1.25em;
-            color: #a855f7;
-            margin-bottom: 0.9em;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.4em;
-        }
+		@media (max-width: 767px) {
+			#mobileCartBubble .close-btn {
+				border: none;
+				outline: none;
+				background: transparent;
+				box-shadow: none;
+				-webkit-tap-highlight-color: transparent;
+			}
+		}
 
-        body.dark-mode .fixed-desc .price {
-            color: #c084fc;
-        }
+		@media (min-width: 768px) {
+			#mobileCartBubble {
+				display: none !important;
+			}
+		}
 
-        .fixed-desc p {
-            margin-bottom: 1.1em;
-            line-height: 1.55;
-            font-size: 0.94em;
-        }
+		@media (min-width: 481px) and (max-width: 980px) {
+			.shop-grid {
+				grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+				gap: 1.5em;
+			}
+		}
 
-        /* ====================== MAGNIFYING LENS (5x) ====================== */
-        .magnifier-lens {
-            position: fixed;
-            width: 180px;
-            height: 180px;
-            border: 4px solid #a855f7;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-            background: #fff;
-            pointer-events: none;
-            display: none;
-            z-index: 10001;
-            overflow: hidden;
-        }
+		@media (min-width: 981px) {
+			.shop-grid {
+				grid-template-columns: repeat(auto-fit, minmax(240px, 340px));
+				max-width: 1400px;
+				margin-left: auto;
+				margin-right: auto;
+				gap: 2em;
+			}
 
-        body.dark-mode .magnifier-lens {
-            border-color: #c084fc;
-        }
+			.shop-card {
+				max-width: 340px;
+			}
+		}
 
-        @media (min-width: 641px) {
-            .fixed-desc {
-                padding: 0.85em 1.5em 1.05em;
-            }
+		@media (min-width: 1681px) {
+			.shop-grid {
+				grid-template-columns: repeat(4, minmax(280px, 340px));
+				max-width: 1500px;
+				margin-left: auto;
+				margin-right: auto;
+				gap: 2.5em;
+				justify-content: center;
+			}
 
-            .image-slide img {
-                max-height: 70vh;
-            }
-        }
+			.shop-card {
+				max-width: 340px;
+			}
+		}
 
-        @media (max-width: 640px) {
-            .modal-content {
-                margin: 2vh auto;
-                width: 95%;
-                max-height: 96vh;
-            }
+		/* ============================ */
+		/* PRODUCT PREVIEW MODAL STRUCT */
+		/* ============================ */
+		#previewModal {
+			display: none;
+			position: fixed;
+			z-index: 10000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.92);
+			overflow: hidden;
+		}
 
-            .image-slide img {
-                max-height: 35vh;
-            }
-        }
-    </style>
+		.modal-content {
+			background: #fff;
+			margin: 4vh auto;
+			width: 92%;
+			max-width: 960px;
+			max-height: 92vh;
+			border-radius: 1.25em;
+			overflow-x: hidden;
+			overflow-y: auto;
+			display: flex;
+			flex-direction: column;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+			position: relative;
+		}
+
+		body.dark-mode .modal-content {
+			background: #1a1a2e;
+			color: #e2e8f0;
+		}
+
+		.modal-header {
+			padding: 1em 1.5em 0.5em;
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		.close-modal {
+			font-size: 2.2rem;
+			font-weight: 300;
+			color: #666;
+			cursor: pointer;
+			line-height: 1;
+		}
+
+		body.dark-mode .close-modal {
+			color: #c084fc;
+		}
+
+		.modal-scroll-area {
+			flex: none;
+			overflow: visible;
+			padding: 0 1.5em 1em;
+			position: relative;
+			z-index: 3;
+		}
+
+		.image-scroll {
+			display: flex;
+			gap: 1.5em;
+			overflow-x: auto;
+			scroll-snap-type: x mandatory;
+			-webkit-overflow-scrolling: touch;
+			padding-bottom: 1em;
+			scrollbar-width: thin;
+			scrollbar-color: #a855f7 #f1f1f1;
+			height: 100%;
+		}
+
+		body.dark-mode .image-scroll {
+			scrollbar-color: #c084fc #2d2d44;
+		}
+
+		.image-slide {
+			flex: 0 0 100%;
+			scroll-snap-align: center;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.image-slide img {
+			width: auto;
+			max-height: 68vh;
+			object-fit: contain;
+			border-radius: 1em;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+			cursor: crosshair;
+		}
+
+		.variable-text {
+			margin-top: 1.25em;
+			text-align: center;
+			font-size: 1.05em;
+			line-height: 1.5;
+			max-width: 90%;
+			font-style: italic;
+			color: #555;
+		}
+
+		body.dark-mode .variable-text {
+			color: #cbd5e1;
+		}
+
+		.fixed-desc {
+			padding: 1.1em 1.5em;
+			background: #f8f8f8;
+			border-top: 1px solid #e5e5e5;
+			position: relative;
+			z-index: 1;
+		}
+
+		body.dark-mode .fixed-desc {
+			background: #16213e;
+			border-top-color: #334155;
+		}
+
+		.fixed-desc h2 {
+			margin: 0 0 0.4em;
+			font-size: 1.35em;
+		}
+
+		.fixed-desc .price {
+			font-size: 1.25em;
+			color: #a855f7;
+			margin-bottom: 0.9em;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.4em;
+		}
+
+		body.dark-mode .fixed-desc .price {
+			color: #c084fc;
+		}
+
+		.fixed-desc p {
+			margin-bottom: 1.1em;
+			line-height: 1.55;
+			font-size: 0.94em;
+		}
+
+		/* ====================== MAGNIFYING LENS (5x) ====================== */
+		.magnifier-lens {
+			position: fixed;
+			width: 180px;
+			height: 180px;
+			border: 4px solid #a855f7;
+			border-radius: 50%;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+			background: #fff;
+			pointer-events: none;
+			display: none;
+			z-index: 10001;
+			overflow: hidden;
+		}
+
+		body.dark-mode .magnifier-lens {
+			border-color: #c084fc;
+		}
+
+		@media (min-width: 641px) {
+			.fixed-desc {
+				padding: 0.85em 1.5em 1.05em;
+			}
+
+			.image-slide img {
+				max-height: 70vh;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.modal-content {
+				margin: 2vh auto;
+				width: 95%;
+				max-height: 96vh;
+			}
+
+			.image-slide img {
+				max-height: 35vh;
+			}
+		}
+	</style>
 </head>
 
 <body class="is-preload">
@@ -876,75 +1082,75 @@
 
 				<div class="shop-grid">
 
-    <!-- Product 1 -->
-    <div class="shop-card" data-product-id="1">
-        <div class="image-container" style="cursor: pointer;">
-            <img src="/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp"
-                alt="Chapter Book: The Ball of One Billion Wonders">
-        </div>
-        <button class="cart-btn card-add-to-cart">
-            <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-            <i class="fab fa-amazon"></i> Buy on Amazon
-        </a>
-        <h3>Chapter Book: Giddy Tales</h3>
-        <div class="price"> $25.00 CAD / GIDDY</div>
-    </div>
+					<!-- Product 1 -->
+					<div class="shop-card" data-product-id="1">
+						<div class="image-container" style="cursor: pointer;">
+							<img src="/assets/images/webp/products/product-chpt-bk-Ball-Wonders-8-10.webp"
+								alt="Chapter Book: The Ball of One Billion Wonders">
+						</div>
+						<button class="cart-btn card-add-to-cart">
+							<i class="fas fa-shopping-cart"></i> Add to Cart
+						</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
+						<h3>Chapter Book: Giddy Tales</h3>
+						<div class="price"> $25.00 CAD / GIDDY</div>
+					</div>
 
-    <!-- Product 2 -->
-    <div class="shop-card" data-product-id="2">
-        <div class="image-container" style="cursor: pointer;">
-            <img src="/assets/images/webp/products/product-bb-st-e1.webp"
-                alt="Bouncy Balls: Space First Edition">
-        </div>
-        <button class="cart-btn card-add-to-cart">
-            <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-            <i class="fab fa-amazon"></i> Buy on Amazon
-        </a>
-        <h3>Bouncy Balls: Space First Edition</h3>
-        <div class="price"> $15.00 CAD / GIDDY</div>
-    </div>
+					<!-- Product 2 -->
+					<div class="shop-card" data-product-id="2">
+						<div class="image-container" style="cursor: pointer;">
+							<img src="/assets/images/webp/products/product-bb-st-e1.webp"
+								alt="Bouncy Balls: Space First Edition">
+						</div>
+						<button class="cart-btn card-add-to-cart">
+							<i class="fas fa-shopping-cart"></i> Add to Cart
+						</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
+						<h3>Bouncy Balls: Space First Edition</h3>
+						<div class="price"> $15.00 CAD / GIDDY</div>
+					</div>
 
-    <!-- Product 3 -->
-    <div class="shop-card" data-product-id="3">
-        <div class="image-container" style="cursor: pointer;">
-            <img src="/assets/images/webp/products/product-giddy-tee-teleport-1.webp"
-                alt="Giddy Tee: Teleport">
-        </div>
-        <button class="cart-btn card-add-to-cart">
-            <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-            <i class="fab fa-amazon"></i> Buy on Amazon
-        </a>
-        <h3>Giddy Tee: Teleport</h3>
-        <div class="price"> $30.00 CAD / GIDDY</div>
-    </div>
+					<!-- Product 3 -->
+					<div class="shop-card" data-product-id="3">
+						<div class="image-container" style="cursor: pointer;">
+							<img src="/assets/images/webp/products/product-giddy-tee-teleport-1.webp"
+								alt="Giddy Tee: Teleport">
+						</div>
+						<button class="cart-btn card-add-to-cart">
+							<i class="fas fa-shopping-cart"></i> Add to Cart
+						</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
+						<h3>Giddy Tee: Teleport</h3>
+						<div class="price"> $30.00 CAD / GIDDY</div>
+					</div>
 
-    <!-- Product 4 -->
-    <div class="shop-card" data-product-id="4">
-        <div class="image-container" style="cursor: pointer;">
-            <img src="/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp"
-                alt="Colouring Book: Dinner Time">
-        </div>
-        <button class="cart-btn card-add-to-cart">
-            <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-        <a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
-            style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
-            <i class="fab fa-amazon"></i> Buy on Amazon
-        </a>
-        <h3>Colouring Book: Dinner Time</h3>
-        <div class="price"> $10.00 CAD / GIDDY</div>
-    </div>
+					<!-- Product 4 -->
+					<div class="shop-card" data-product-id="4">
+						<div class="image-container" style="cursor: pointer;">
+							<img src="/assets/images/webp/products/product-clr-bk-dinner-time-2-5.webp"
+								alt="Colouring Book: Dinner Time">
+						</div>
+						<button class="cart-btn card-add-to-cart">
+							<i class="fas fa-shopping-cart"></i> Add to Cart
+						</button>
+						<a href="https://www.amazon.com" target="_blank" class="cart-btn card-amazon-btn"
+							style="display: none; background: #ff9900; color: #000; border-color: #e48700;">
+							<i class="fab fa-amazon"></i> Buy on Amazon
+						</a>
+						<h3>Colouring Book: Dinner Time</h3>
+						<div class="price"> $10.00 CAD / GIDDY</div>
+					</div>
 
-</div>
+				</div>
 				<button class="buy-now" id="reviewCartBtn">Review Cart</button>
 
 				<div class="payment-summary">
@@ -1050,10 +1256,30 @@
 			</div>
 		</div>
 
+		<!-- MOBILE CART COMPONENT (AMENDED) -->
+		<!-- The cart bubble now closes automatically when clicked to open checkout -->
+		<!-- The number indicator is now an identical red-circle badge (top-right on the icon) matching the desktop Tailwind badge exactly -->
+		<div id="mobileCartBubble" onclick="openCheckoutGateway()" class="mobile-cart">
+			<span class="relative inline-flex">
+				<span class="text-2xl">🛒</span>
+				<span id="mobileCartCountBadge" class="mobile-cart-badge hidden">0</span>
+			</span>
+			<span class="font-semibold">My Cart</span>
+			<button onclick="event.stopPropagation(); dismissCartBubble();" class="close-btn">
+				&times;
+			</button>
+		</div>
+
 		<!-- Magnifying Lens -->
 		<div id="magnifier" class="magnifier-lens"></div>
 
 		<script>
+			// Expose layout engines globally to support native HTML inline 'onclick' directives
+			let openCheckoutGateway;
+			let dismissCartBubble;
+			// Added a manual tracking state for explicit close button behaviors
+			let isBubbleDismissedManually = false;
+
 			document.addEventListener('DOMContentLoaded', function () {
 
 				// ==================== PRODUCT DATA ====================
@@ -1112,7 +1338,7 @@
 					}
 				};
 
-				// Current Active Distributor Mode (local or amazon)
+				// Current Active Distributor Mode
 				let currentDistributorMode = "local";
 
 				// ==================== DISTRIBUTOR TOGGLE ENGINE ====================
@@ -1151,7 +1377,6 @@
 					if (dropdown) dropdown.style.display = 'none';
 				});
 
-
 				// ==================== STATE ENGINE ====================
 				let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
 
@@ -1162,7 +1387,12 @@
 
 				function addPromptToCart(productId, triggeringButton = null) {
 					if (currentDistributorMode === 'amazon') {
-						alert("Switch to local distribution to enable cart options.");
+						alert("🛒 Cart is only available in Local mode.\n\nOpening distributor selector so you can switch...");
+
+						if (dropdown) dropdown.style.display = 'block';
+						if (toggleBtn) {
+							toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+						}
 						return false;
 					}
 
@@ -1178,8 +1408,10 @@
 						} else {
 							cart.push({ id: prodId, quantity: qty });
 						}
+
+						// Allow bubble to surface again when a user intentionally adds an item
+						isBubbleDismissedManually = false;
 						saveCart();
-						alert('Item(s) added to cart!');
 
 						const badge = document.getElementById('cartCountBadge');
 						if (badge) {
@@ -1200,7 +1432,6 @@
 								triggeringButton.classList.remove('success-state');
 							}, 2000);
 						}
-
 						return true;
 					} else {
 						alert("Please enter a valid quantity.");
@@ -1240,25 +1471,47 @@
 				}
 
 				function updateCartUI() {
-					const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-					const badge = document.getElementById('cartCountBadge');
-
-					if (badge) {
-						if (totalItems > 0) {
-							badge.textContent = totalItems;
-							badge.classList.remove('hidden');
-						} else {
-							badge.classList.add('hidden');
-						}
-					}
-
+					let totalItems = 0;
 					let totalCAD = 0;
+
 					cart.forEach(item => {
+						totalItems += item.quantity;
 						const product = products[item.id];
 						if (product) {
 							totalCAD += (product.priceVal * item.quantity);
 						}
 					});
+
+					const mobileCartBubble = document.getElementById('mobileCartBubble');
+					const mobileBadge = document.getElementById('mobileCartCountBadge');
+					const desktopBadge = document.getElementById('cartCountBadge');
+
+					if (mobileCartBubble) {
+						// Keep hidden if completely empty or manually closed by clicking 'X'
+						if (totalItems > 0 && !isBubbleDismissedManually) {
+							mobileCartBubble.classList.add('show-bubble');
+						} else {
+							mobileCartBubble.classList.remove('show-bubble');
+						}
+					}
+
+					if (mobileBadge) {
+						if (totalItems > 0) {
+							mobileBadge.textContent = totalItems;
+							mobileBadge.classList.remove('hidden');
+						} else {
+							mobileBadge.classList.add('hidden');
+						}
+					}
+
+					if (desktopBadge) {
+						if (totalItems > 0) {
+							desktopBadge.textContent = totalItems;
+							desktopBadge.classList.remove('hidden');
+						} else {
+							desktopBadge.classList.add('hidden');
+						}
+					}
 
 					const selectedToken = (document.getElementById('token-select')?.value || 'eXPB').trim();
 					const computedTokenQty = totalCAD * 10000;
@@ -1274,6 +1527,15 @@
 					}
 				}
 
+				// Implementation of dismissal for custom mobile bubble container template UI
+				dismissCartBubble = function () {
+					isBubbleDismissedManually = true;
+					const bubble = document.getElementById('mobileCartBubble');
+					if (bubble) {
+						bubble.classList.remove('show-bubble');
+					}
+				};
+
 				// ==================== CHECKOUT GATEWAY ENGINE ====================
 				const checkoutModal = document.getElementById('checkoutModal');
 				const closeCheckoutBtn = document.getElementById('closeCheckoutModal');
@@ -1282,9 +1544,14 @@
 				const clearCartBtn = document.getElementById('clearCartBtn');
 				const gatewayProceedBtn = document.getElementById('gatewayProceedBtn');
 
-				function openCheckoutGateway() {
+				openCheckoutGateway = function () {
 					if (currentDistributorMode === 'amazon') {
-						alert("Switch to local distribution to enable cart options.");
+						alert("🛒 Cart is only available in Local mode.\n\nOpening distributor selector so you can switch...");
+
+						if (dropdown) dropdown.style.display = 'block';
+						if (toggleBtn) {
+							toggleBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+						}
 						return;
 					}
 
@@ -1303,14 +1570,14 @@
 							const lineTotal = product.priceVal * item.quantity;
 							totalCAD += lineTotal;
 							itemsHTML += `
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
-                                <span style="display: inline-block; vertical-align: middle;"><span style="font-weight: bold; color: #a78bfa;">${item.quantity}x</span> ${product.title}</span>
-                            </div>
-                            <div style="color: #e9d5ff;">$${lineTotal.toFixed(2)} CAD</div>
-                        </div>
-                    `;
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button class="checkout-del-btn" data-id="${item.id}" style="background: transparent; border: none; outline: none; box-shadow: none; padding: 0; margin: 0; color: #ef4444; cursor: pointer; font-size: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">🗑️</button>
+                        <span style="display: inline-block; vertical-align: middle;"><span style="font-weight: bold; color: #a78bfa;">${item.quantity}x</span> ${product.title}</span>
+                    </div>
+                    <div style="color: #e9d5ff;">$${lineTotal.toFixed(2)} CAD</div>
+                </div>
+            `;
 						}
 					});
 
@@ -1338,13 +1605,22 @@
 						checkoutModal.style.display = 'block';
 						document.body.style.overflow = 'hidden';
 					}
-				}
+
+					// NEW: Bubble closes automatically when clicked to open checkout (as requested)
+					const mobileCartBubbleEl = document.getElementById('mobileCartBubble');
+					if (mobileCartBubbleEl) {
+						mobileCartBubbleEl.classList.remove('show-bubble');
+					}
+				};
 
 				function closeCheckoutGateway() {
 					if (checkoutModal) {
 						checkoutModal.style.display = 'none';
 						document.body.style.overflow = '';
 					}
+
+					// NEW: Re-show mobile bubble (if cart still has items) when checkout modal is closed
+					updateCartUI();
 				}
 
 				if (reviewCartBtn) reviewCartBtn.addEventListener('click', openCheckoutGateway);
@@ -1373,7 +1649,6 @@
 					});
 				}
 
-
 				// ==================== MODAL + MAGNIFIER LOGIC ====================
 				const modal = document.getElementById('previewModal');
 				const closeBtn = document.getElementById('closeModal');
@@ -1392,36 +1667,36 @@
 					let slidesHTML = '';
 					product.previews.forEach(preview => {
 						slidesHTML += `
-                    <div class="image-slide">
-                        <img src="${preview.src}" alt="${product.title}">
-                        <div class="variable-text">${preview.text}</div>
-                    </div>
-                `;
+            <div class="image-slide">
+                <img src="${preview.src}" alt="${product.title}">
+                <div class="variable-text">${preview.text}</div>
+            </div>
+        `;
 					});
 					if (scrollContainer) scrollContainer.innerHTML = slidesHTML;
 
 					let modalActionHtml = '';
 					if (currentDistributorMode === 'amazon') {
 						modalActionHtml = `
-                    <a href="${product.amazonUrl || 'https://www.amazon.com'}" target="_blank" class="cart-btn" style="display:block; text-align:center; width:100%; max-width:none; margin-top:1em; background: #ff9900; color: #000; border-color: #e48700; margin-left: auto; margin-right: auto;">
-                        <i class="fab fa-amazon"></i> Buy on Amazon
-                    </a>
-                `;
+            <a href="${product.amazonUrl || 'https://www.amazon.com'}" target="_blank" class="cart-btn" style="display:block; text-align:center; width:100%; max-width:none; margin-top:1em; background: #ff9900; color: #000; border-color: #e48700; margin-left: auto; margin-right: auto;">
+                <i class="fab fa-amazon"></i> Buy on Amazon
+            </a>
+        `;
 					} else {
 						modalActionHtml = `
-                    <button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%; max-width:none; margin-top:1em; margin-left: auto; margin-right: auto;">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </button>
-                `;
+            <button class="cart-btn modal-add-to-cart" data-id="${productId}" style="width:100%; max-width:none; margin-top:1em; margin-left: auto; margin-right: auto;">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+        `;
 					}
 
 					if (fixedDescContainer) {
 						fixedDescContainer.innerHTML = `
-                    <h2>${product.title}</h2>
-                    <div class="price"> ${product.price}</div>
-                    <p>${product.fixedDesc}</p>
-                    ${modalActionHtml}
-                `;
+            <h2>${product.title}</h2>
+            <div class="price"> ${product.price}</div>
+            <p>${product.fixedDesc}</p>
+            ${modalActionHtml}
+        `;
 
 						const localAddBtn = fixedDescContainer.querySelector('.modal-add-to-cart');
 						if (localAddBtn) {
@@ -1431,9 +1706,7 @@
 						}
 					}
 
-					setTimeout(() => {
-						if (scrollContainer) scrollContainer.scrollLeft = 0;
-					}, 10);
+					setTimeout(() => { if (scrollContainer) scrollContainer.scrollLeft = 0; }, 10);
 
 					setTimeout(() => {
 						if (!scrollContainer) return;
@@ -1507,10 +1780,9 @@
 					}
 				});
 
-				// ==================== UPDATED SETUP CATALOG CARDS ====================
+				// ==================== SETUP CATALOG CARDS ====================
 				const cards = document.querySelectorAll('.shop-card');
 				cards.forEach(card => {
-					// Look for the image container instead of the old overlay wrapper
 					const imgContainer = card.querySelector('.image-container');
 					if (imgContainer) {
 						imgContainer.addEventListener('click', (e) => {

@@ -79,8 +79,15 @@
         <link rel="stylesheet" href="/assets/css/noscript.css">
     </noscript>
 
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind - GLOBAL but SAFE -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false   // ← This is the key fix (prevents breaking your custom styles)
+            }
+        }
+    </script>
 
     <meta http-equiv='content-language' content='en-gb'>
 
@@ -140,6 +147,7 @@
             padding-right: 12px;
         }
 
+        /* ====================== UNIFIED MOBILE FLOATING BUBBLE ====================== */
         .mobile-claim {
             display: none;
             position: fixed;
@@ -147,23 +155,46 @@
             right: 14px;
             bottom: calc(67px + env(safe-area-inset-bottom));
             z-index: 9999;
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
+            background: linear-gradient(to right, #9333ea, #ec4899);
+            color: #ffffff;
+            font-size: 0.875rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 24px;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         @media (max-width: 767px) {
             .mobile-claim {
-                display: flex;
+                display: flex !important;
             }
         }
 
-        #mobileClaimBubble .close-btn {
-            border: none;
-            outline: none;
-            background: transparent;
-            box-shadow: none;
-            -webkit-tap-highlight-color: transparent;
+        /* Close button - aggressive reset to kill any circle */
+        .mobile-claim .close-btn {
+            border: none !important;
+            outline: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            margin: 0 0 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.6rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 1.6rem;
+            width: 1.6rem;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s ease;
+            border-radius: 0 !important;
+        }
+
+        .mobile-claim .close-btn:hover {
+            color: #ffffff;
         }
 
         #community-header {
@@ -348,7 +379,7 @@
         <!-- MAIN CONTENT AREA -->
         <div id="main">
 
-            <!-- WALLET SUB-HEADER / TOP BAR -->
+            <!-- WALLET TOP BAR -->
             <div
                 class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black mb-6">
                 <div class="flex items-center gap-4 z-10">
@@ -380,7 +411,7 @@
             <div class="px-4 pb-12">
 
                 <!-- ACTION BUTTONS SECTION -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="grid grid-cols-2 gap-4 mb-2"> <!-- Changed from mb-6 to mb-2 (much tighter) -->
                     <button onclick="createWalletPlaceholder()"
                         class="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-zinc-300 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all">
                         <span>ADD WALLET</span>
@@ -711,7 +742,7 @@
                 </div>
 
                 <!-- USDC TOKEN CARD SECTION -->
-                <div class="card p-5 cursor-pointer token-card fade-in mb-6">
+                <div class="card p-5 cursor-pointer token-card fade-in mb-10">
                     <div class="flex items-start justify-between gap-2">
                         <div class="card-content flex-1">
                             <span
@@ -786,14 +817,14 @@
         </div>
     </div>
 
-    <!-- MOBILE CLAIM BUBBLE -->
-    <div id="mobileClaimBubble" onclick="claimBonus()"
-        class="mobile-claim bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-3 rounded-3xl shadow-2xl cursor-pointer items-center gap-2">
-        <span>🎁</span>
-        Claim $GIDDY
-        <button onclick="event.stopPropagation(); dismissClaimBubble();"
-            class="ml-auto text-white/90 hover:text-white text-2xl leading-none bg-transparent p-0 close-btn">
-            ×
+    <!-- MOBILE CLAIM BUBBLE - MATCHES CART BUBBLE PERFECTLY -->
+    <div id="mobileClaimBubble" onclick="claimBonus()" class="mobile-claim">
+        <span class="relative inline-flex">
+            <span class="text-2xl">🎁</span>
+        </span>
+        <span class="font-semibold">Claim $GIDDY</span>
+        <button onclick="event.stopPropagation(); dismissClaimBubble();" class="close-btn">
+            &times;
         </button>
     </div>
 
