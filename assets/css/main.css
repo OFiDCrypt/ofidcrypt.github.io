@@ -6263,17 +6263,66 @@ section.livestream {
 	}
 }
 
-/* YouTube Embed Styling */
+/* ==========================================
+   YouTube Embed Styling
+   ========================================== */
+
+/* Desktop/Default Base Sizing Styles */
 section.youtube-iframe {
-	padding: 0 0 0 0;
-	overflow: auto;
+    width: 100%;
+    max-width: 850px; /* Large desktop profile */
+    margin: 2.5em auto; /* Centers layout cleanly */
 }
 
-/* Mobile Styles */
-@media screen and (max-width: 600px) {
-	#main>section.youtube-iframe {
-		padding: 2rem;
-	}
+.stream.video.main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* Modern native sizing engine */
+    background: #000;
+    overflow: hidden;
+    border: 2px solid #a200ff; /* Purple border */
+    border-radius: 8px; /* Smooth desktop corner profile */
+}
+
+/* Cleanly position elements internally via standard layers */
+.stream.video.main iframe,
+.stream.video.main #player,
+.stream.video.main #poster-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Borderless Edge-to-Edge Mobile Override */
+@media screen and (max-width: 768px) {
+    /* Uses high-specificity selector matching to override standard wrapper padding naturally */
+    #main > section.youtube-iframe,
+    section.youtube-iframe {
+        padding: 0;
+        width: 100vw;
+        max-width: 100vw;
+        /* Break completely out of parent container tracking bounds horizontally */
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        overflow: hidden;
+    }
+    
+    #main > section.youtube-iframe .stream.video.main,
+    section.youtube-iframe .stream.video.main {
+        border-radius: 0px; /* Drops rounded borders for edge-to-edge display on mobile */
+        border: none;
+        box-shadow: none;
+    }
+    
+    /* Protect tracking containers from generating tiny horizontal micro-scrolling tracking bugs */
+    html, body {
+        overflow-x: hidden;
+    }
 }
 
 #main>*:first-child {
@@ -7474,7 +7523,7 @@ body.dark-mode .giddys-quick-card {
 		width: 100%;
 		max-width: 250px;
 		/* Optional: prevent button from being too wide */
-		margin: 0 auto;
+		margin: 0 auto 2rem auto;
 	}
 }
 
@@ -9007,7 +9056,7 @@ body:not(.dark-mode) .footer-extended h1.left-aligned .smaller-heading {
 	padding-bottom: 54.6%;
 	/* 16:9 aspect ratio */
 	overflow: hidden;
-	margin: 2.5rem auto 2rem auto;
+	margin: 2rem auto 2rem auto;
 	/* Center horizontally and adjust margin */
 	border: 2px solid #a200ff;
 	/* Example: red border */

@@ -926,20 +926,22 @@
 		}
 
 		/* BOTTOM NAV SPACING FIX */
-#main .shop-section {
-    padding-bottom: 120px;   /* Extra safe space above bottom-nav */
-}
+		#main .shop-section {
+			padding-bottom: 120px;
+			/* Extra safe space above bottom-nav */
+		}
 
-@media (max-width: 767px) {
-    #main .shop-section {
-        padding-bottom: 80px;   /* Even more space on mobile */
-    }
-}
+		@media (max-width: 767px) {
+			#main .shop-section {
+				padding-bottom: 80px;
+				/* Even more space on mobile */
+			}
+		}
 
-/* Optional: extra breathing room after the last payment row */
-.payment-summary {
-    margin-bottom: 2.5em;
-}
+		/* Optional: extra breathing room after the last payment row */
+		.payment-summary {
+			margin-bottom: 2.5em;
+		}
 	</style>
 </head>
 
@@ -1106,9 +1108,91 @@
 
 					<h1>Giddy's Magical</br> Gifts & Toys</h1>
 					<p><a href="/ofidtales.html">Giddy's Home</a> > <b>Giddy's Shop</b></p>
-					<p>Browse and buy kids toys and collectibles using your debit/credit card or community tokens.
-						Explore magical worlds and family-fun adventures!</p>
+					<p>Shop kids’ toys and collectibles and receive a digital gift.
+						Check out with debit, credit, or "Go Digital" with perks using community tokens.
+						Welcome to the future of shopping!</p>
 				</header>
+
+				<!-- YouTube Adaptation -->
+				<section class="youtube-iframe" id="latest-event">
+					<div class="stream video main">
+						<div id="player"></div>
+						<img id="poster-image" src="../assets/images/webp/giddys-shop-follow-poster.webp"
+							alt="Giddy's Shop Follow Poster Image" style="display: none;">
+					</div>
+				</section>
+
+				<script>
+					// Load YouTube IFrame Player API asynchronously
+					var tag = document.createElement('script');
+					tag.src = "https://www.youtube.com/iframe_api";
+					var firstScriptTag = document.getElementsByTagName('script')[0];
+					firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+					// Global variable for the YouTube player
+					var player;
+
+					// Reusable END handler
+					function onPlayerStateChange(event) {
+						if (event.data === YT.PlayerState.ENDED) {
+							// Remove iframe completely
+							const playerEl = document.getElementById('player');
+							playerEl.innerHTML = "";
+							playerEl.style.display = 'none';
+
+							// Show poster
+							const poster = document.getElementById('poster-image');
+							if (poster) poster.style.display = 'block';
+						}
+					}
+
+					// Called when YouTube API is loaded
+					function onYouTubeIframeAPIReady() {
+						player = new YT.Player('player', {
+							videoId: 'jbbqtuz0-zw', // Updated with your new video ID
+							playerVars: {
+								'playsinline': 1,
+								'rel': 0,
+								'controls': 1,
+								'modestbranding': 1, // Removes the standard center overlay logo watermark
+								'iv_load_policy': 3  // Disables interactive popups and video annotations completely
+							},
+							events: {
+								'onReady': function (event) {
+									// Sizing ratios are calculated dynamically by native CSS aspect ratio engines
+								},
+								'onStateChange': onPlayerStateChange
+							}
+						});
+					}
+
+					// Ensure poster properties sync up cleanly on initial page generation
+					document.addEventListener('DOMContentLoaded', function () {
+						const posterImage = document.getElementById('poster-image');
+						if (posterImage) {
+							posterImage.style.display = 'none';
+						}
+					});
+
+					// Replay handler — cleans layout parameters up and reconstructs player safely
+					document.getElementById('poster-image').addEventListener('click', function () {
+						this.style.display = 'none';
+
+						player = new YT.Player('player', {
+							videoId: 'jbbqtuz0-zw', // Updated with your new video ID for replay functionality
+							playerVars: {
+								'playsinline': 1,
+								'rel': 0,
+								'controls': 1,
+								'modestbranding': 1,
+								'iv_load_policy': 3
+							},
+							events: { 'onStateChange': onPlayerStateChange }
+						});
+
+						document.getElementById('player').style.display = 'block';
+					});
+				</script>
 
 				<h2>Signature Catalogue: Debut Items</h2>
 
@@ -1430,12 +1514,10 @@
 					<label
 						style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Country</label>
 					<select id="country-select"
-						style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
+						style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box;">
 						<option value="CA" selected>🇨🇦 Canada</option>
 						<option value="US">🇺🇸 United States</option>
 						<option value="MX">🇲🇽 Mexico</option>
-						<option value="GB">🇬🇧 United Kingdom</option>
-						<option value="OTHER">🌍 Other</option>
 					</select>
 				</div>
 				<div>
@@ -1443,15 +1525,70 @@
 						style="display: block; font-size: 13px; color: #c084fc; margin-bottom: 6px; font-weight: 500;">Province
 						/ State</label>
 					<select id="province-select"
-						style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box; vertical-align: middle;">
-						<option value="BC" selected>British Columbia</option>
-						<option value="AB">Alberta</option>
-						<option value="ON">Ontario</option>
-						<option value="QC">Quebec</option>
-						<option value="OTHER">Other / N/A</option>
+						style="width: 100%; background: #1e1b4b; border: 1px solid #4c1d95; color: #fff; padding: 11px 12px !important; line-height: 1 !important; height: 45px; border-radius: 8px; font-size: 15px; box-sizing: border-box;">
+						<!-- populated by JS -->
 					</select>
 				</div>
 			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					const countrySelect = document.getElementById('country-select');
+					const provinceSelect = document.getElementById('province-select');
+
+					fetch('locations.json')
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(`HTTP error! Status: ${response.status} - Check if file exists and path is correct`);
+							}
+							return response.json();
+						})
+						.then(data => {
+							console.log("✅ locations.json loaded successfully!", data); // For debugging
+							window.locationData = data; // Make it globally available
+
+							// Set default to Canada
+							countrySelect.value = 'CA';
+							updateRegionDropdown();
+
+							// Listen for country change
+							countrySelect.addEventListener('change', updateRegionDropdown);
+						})
+						.catch(error => {
+							console.error("❌ Failed to load locations.json:", error);
+							provinceSelect.innerHTML = `<option>Error loading locations: ${error.message}</option>`;
+						});
+
+					function updateRegionDropdown() {
+						const data = window.locationData;
+						if (!data) return;
+
+						const selectedCountry = countrySelect.value;
+						provinceSelect.innerHTML = '';
+
+						if (!data[selectedCountry]) {
+							provinceSelect.innerHTML = '<option>No regions found</option>';
+							return;
+						}
+
+						const countryConfig = data[selectedCountry];
+						const optgroup = document.createElement('optgroup');
+						optgroup.label = countryConfig.label;
+
+						let defaultCode = null;
+
+						countryConfig.regions.forEach(region => {
+							const option = new Option(region.name, region.code);
+							optgroup.appendChild(option);
+							if (region.default) defaultCode = region.code;
+						});
+
+						provinceSelect.appendChild(optgroup);
+
+						if (defaultCode) provinceSelect.value = defaultCode;
+					}
+				});
+			</script>
 
 			<div
 				style="background: rgba(124, 58, 237, 0.1); padding: 18px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(124, 58, 237, 0.3);">
@@ -2239,8 +2376,8 @@
 		<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
 			<i class="fas fa-comment-dots"></i>Ask Giddy
 		</div>
-		<div class="nav-item" onclick="window.location.href='/kincommunity.html'">
-			<i class="fas fa-users"></i>Connect
+		<div class="nav-item active" onclick="window.location.href='/shop.html'">
+			<i class="fas fa-shopping-bag"></i>Shop
 		</div>
 		<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
 			<i class="fas fa-gamepad"></i>Play Blinko!
