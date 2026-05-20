@@ -268,11 +268,10 @@
 
             try {
                 // 1. Point the URL to your locally running Node.js server
-                const response = await fetch("http://localhost:5000/api/secure-redeem", {
+                const response = await fetch("http://127.0.0.1:5000/api/secure-redeem", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
-                        // 2. The dangerous API key header has been completely stripped out of here!
                     },
                     body: JSON.stringify({ linkId, destinationWallet })
                 });
