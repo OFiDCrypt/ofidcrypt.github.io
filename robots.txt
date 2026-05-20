@@ -1,6 +1,8 @@
 User-agent: *
 Disallow: /wallet
 Disallow: /cashlinks-updater
+Disallow: /redeem
+Disallow: /redeem-backup
 Disallow: /explore/app-featured-hvr
 Disallow: /pages/vipwithcode
 Disallow: /404
