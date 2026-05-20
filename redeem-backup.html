@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kinnected Redemption Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 24px;
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+        }
+
+        .success {
+            background: #e8f5e9;
+            border: 1px solid #4CAF50;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #ffebee;
+            border: 1px solid #e53935;
+            color: #b71c1c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Kinnected Redemption Test</h2>
+
+    <label>Link ID</label>
+    <input type="text" id="linkId" placeholder="Paste your payment link ID here" />
+
+    <label>Destination Wallet</label>
+    <input type="text" id="wallet" placeholder="Paste a Solana wallet address here" />
+
+    <button id="btn" onclick="redeem()">Redeem</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function redeem() {
+            const linkId = document.getElementById("linkId").value.trim();
+            const destinationWallet = document.getElementById("wallet").value.trim();
+            const btn = document.getElementById("btn");
+            const result = document.getElementById("result");
+
+            if (!linkId || !destinationWallet) {
+                showResult("Please fill in both fields.", false);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Redeeming...";
+            result.style.display = "none";
+
+            try {
+                // 1. Point the URL to your locally running Node.js server
+                const response = await fetch("http://localhost:5000/api/secure-redeem", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                        // 2. The dangerous API key header has been completely stripped out of here!
+                    },
+                    body: JSON.stringify({ linkId, destinationWallet })
+                });
+
+                const data = await response.json();
+                showResult(JSON.stringify(data, null, 2), data.success);
+
+            } catch (err) {
+                showResult("Network error: " + err.message, false);
+            }
+
+            btn.disabled = false;
+            btn.textContent = "Redeem";
+        }
+
+        function showResult(text, success) {
+            const result = document.getElementById("result");
+            result.textContent = text;
+            result.className = success ? "success" : "error";
+            result.style.display = "block";
+        }
+    </script>
+
+</body>
+
+</html>

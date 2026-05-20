@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html lang="en-GB">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3KX9VK5CCH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-3KX9VK5CCH');
+    </script>
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Giddy Key Redemption",
+      "url": "https://www.ofidcrypt.com/redeem.html",
+      "description": "Redeem your Kinnected payment links instantly into your Solana wallet.",
+      "applicationCategory": "FinanceApplication"
+    }
+    </script>
+
+    <title>Giddy Key | Redemption</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description"
+        content="Redeem your Kinnected payment links instantly into your Solana wallet with Giddy Key.">
+    <meta name="keywords" content="redemption, Kinnected, Giddy Key, Solana, $GIDDY, $eXPB">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Giddy Key | Redemption">
+    <meta property="og:image" content="https://www.ofidcrypt.com/assets/images/webp/giddy-key-logo.webp">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1e0533, #000000);
+            color: white;
+        }
+
+        .card {
+            background: rgba(30, 5, 51, 0.95);
+            border: 1px solid #6b21a8;
+            border-radius: 1.5rem;
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #6b21a8;
+            color: white;
+            border-radius: 12px;
+            padding: 14px;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3);
+        }
+
+        button {
+            background: linear-gradient(to right, #9333ea, #ec4899);
+            color: white;
+            font-weight: bold;
+            padding: 16px;
+            border-radius: 9999px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(168 85 247);
+        }
+
+        #result {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 1rem;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .success {
+            background: #052e16;
+            border: 1px solid #4ade80;
+            color: #4ade80;
+        }
+
+        .error {
+            background: #450a0a;
+            border: 1px solid #f87171;
+            color: #f87171;
+        }
+
+        .back-btn {
+            color: #ffffff;
+            font-size: 2.25rem;
+            padding: 0 12px;
+        }
+    </style>
+</head>
+
+<body class="is-preload">
+
+    <div id="wrapper" class="fade-in">
+
+        <!-- Header -->
+        <header class="header-subpage">
+            <a href="/wallet.html">
+                <img src="/assets/images/webp/giddy-key-logo.webp" alt="Giddy Key Logo" class="logo">
+            </a>
+        </header>
+
+        <a href="#darkModePanel" id="darkModeToggle" class="alt">
+            <i class="fas fa-sun"></i>
+        </a>
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
+                <li><a href="wallet.html">Wallet</a></li>
+                <li><a href="bouncyball.html">Tokens</a></li>
+                <li><a href="cashlinks.html">Digital Gifts</a></li>
+            </ul>
+
+            <!-- Social Brands (Custom) -->
+            <ul class="icons top-icons">
+                <li class="top-toggle">
+                    <a href="#" aria-label="Dark-Light Desktop Toggle Button">
+                        <img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
+                            class="custom-site-icon">
+                    </a>
+                </li>
+
+                <li class="top-hvr">
+                    <a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+                        <img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
+                    </a>
+                </li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
+                </li>
+                <li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+                            class="label">YouTube</span></a>
+                </li>
+                <li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
+                            class="label">TikTok</span></a></li>
+                <li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+                            class="label">Facebook</span></a></li>
+                <li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+                            class="label">LinkedIn</span></a></li>
+            </ul>
+
+            <!-- Footer Links -->
+            <ul class="footer-links">
+                <li class="footer-info-link">
+                    <a href="/pages/about.html#copyright">Docs | About | Partners | Compliance</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="main">
+
+            <!-- Top Bar -->
+            <div
+                class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black min-h-[68px]">
+                <button onclick="history.back()" class="back-btn flex items-center justify-center !mb-0">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+
+                <h1 class="text-3xl font-bold tracking-tight text-white text-center flex-1 px-4 !mb-0">
+                    LINKS
+                </h1>
+
+                <div class="flex items-center gap-5 z-10">
+                    <i
+                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+                    <div onclick="showProfile()"
+                        class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-200 transition-colors overflow-hidden">
+                        <img src="/assets/images/webp/ofidcrypt-digitized-logo.webp" alt="OFIDCrypt Logo"
+                            class="w-full h-full object-cover" />
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="px-6 pb-20 md:pb-20"> <!-- Increased padding-bottom for mobile -->
+
+                <!-- Redemption Card -->
+                <div class="card p-8 mt-8">
+                    <h2 class="text-3xl font-black tracking-tighter text-center mb-12 text-white">Kinnected Redemption
+                    </h2>
+
+                    <label class="block text-sm font-semibold text-purple-300 mb-3">PAYMENT LINK ID</label>
+                    <!-- Update your form inputs to match your CSS class -->
+                    <input type="text" id="linkId" placeholder="Paste your 13-digit link ID here" class="input-field">
+
+
+                    <label class="block text-sm font-semibold text-purple-300 mb-3 mt-6">DESTINATION WALLET</label>
+                    <input type="text" id="wallet" placeholder="Paste your Solana wallet address" class="input-field">
+
+                    <button id="btn" onclick="redeem()" class="w-full py-4 text-center font-bold text-lg mt-8"
+                        style="height: auto !important; line-height: 1.4 !important; min-height: 56px !important;">
+                        REDEEM NOW
+                    </button>
+
+                    <div id="result" class="hidden mt-8 mb-24"></div>
+                </div>
+
+                <p class="text-center text-zinc-400 text-sm mt-8">
+                    Powered by Kinnected • Secure • Instant
+                </p>
+            </div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'"><i
+                    class="fas fa-comment-dots"></i>Ask Giddy</div>
+            <div class="nav-item" onclick="window.location.href='/shop.html'"><i class="fas fa-shopping-bag"></i>Shop
+            </div>
+            <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i
+                    class="fas fa-gamepad"></i>Play Blinko!</div>
+            <div class="nav-item"><i class="fas fa-wallet"></i>Wallet</div>
+            <div class="nav-item" id="navPanelTrigger"><i class="fas fa-bars"></i> Menu</div>
+        </nav>
+    </div>
+
+    <script>
+        async function redeem() {
+            const linkId = document.getElementById("linkId").value.trim();
+            const destinationWallet = document.getElementById("wallet").value.trim();
+            const btn = document.getElementById("btn");
+            const result = document.getElementById("result");
+
+            if (!linkId || !destinationWallet) {
+                showResult("⚠️ Please fill in both fields.", false);
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redeeming...`;
+            result.style.display = "none";
+
+            try {
+                // 1. Point the URL to your locally running Node.js server
+                const response = await fetch("http://localhost:5000/api/secure-redeem", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                        // 2. The dangerous API key header has been completely stripped out of here!
+                    },
+                    body: JSON.stringify({ linkId, destinationWallet })
+                });
+
+                const data = await response.json();
+                showResult(JSON.stringify(data, null, 2), data.success);
+
+            } catch (err) {
+                showResult("Network error: " + err.message, false);
+            }
+
+            btn.disabled = false;
+            btn.textContent = "REDEEM NOW";
+        }
+
+        function showResult(text, success) {
+            const result = document.getElementById("result");
+            result.textContent = text;
+            result.className = success ? "success" : "error";
+            result.style.display = "block";
+        }
+    </script>
+
+    <script>
+        function showProfile() {
+            alert("Profile functionality coming soon!");
+        }
+    </script>
+
+    <!-- Your existing scripts -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/ofid-main.js"></script>
+
+</body>
+
+</html>
