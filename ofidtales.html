@@ -185,135 +185,119 @@
 			</div>
 
 			<!-- Section Title -->
-			<section class="post">
-				<header class="major">
+<section class="post">
+    <header class="major">
 
-					<!-- Smaller Sub-Heading B-W -->
-					<h1 class="center-aligned header-tight classy-font">
-						<span class="smaller-heading-bw">Giddy's Series & Shop</span>
-					</h1>
+        <!-- Smaller Sub-Heading B-W -->
+        <h1 class="center-aligned header-tight classy-font">
+            <span class="smaller-heading-bw">Giddy's Series & Shop</span>
+        </h1>
 
-					<!-- Status Message -->
-					<div id="statusMessage" class="status-message">
-						<div class="status-inner">
-							<button id="statusClose" class="status-close">×</button>
+        <!-- Status Message -->
+        <div id="statusMessage" class="status-message">
+            <div class="status-inner">
+                <button id="statusClose" class="status-close">×</button>
 
-							<p class="status-text">
-								Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
-								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
-								We encourage you to read our
-								<a href="/discover.html#article-featured" class="status-link">Solana
-									article</a>
-								for a sneak peek at the future of money — thanks for your patience!
-							</p>
+                <p class="status-text">
+                    Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
+                    <a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
+                    We encourage you to read our
+                    <a href="/discover.html#article-featured" class="status-link">Solana article</a>
+                    for a sneak peek at the future of money — thanks for your patience!
+                </p>
 
-							<label class="status-optout">
-								<input type="checkbox" id="statusOptOut">
-								<span>Do not show again</span>
-							</label>
-						</div>
-					</div>
+                <label class="status-optout">
+                    <input type="checkbox" id="statusOptOut">
+                    <span>Do not show again</span>
+                </label>
+            </div>
+        </div>
 
-					<h1>Toys & Tales <br />Connecting Families</h1>
-					<p><a href="/index.html#home">Home</a> > <b>Giddy's</b></p>
-					<p>Welcome to her world — the first of its kind, a bright new star where imagination, play, tech, shopping, and family fun come together!</p>
+        <h1>Toys & Tales <br />Connecting Families</h1>
+        <p><a href="/index.html#home">Home</a> > <b>Giddy's</b></p>
+        <p>Welcome to her world — the first of its kind, a bright new star where imagination, play, tech, shopping, and family fun come together!</p>
 
-					<!-- YouTube Adaptation -->
-					<section class="youtube-iframe" id="latest-event">
-						<div class="stream video main">
-							<div id="player"></div>
-							<img id="poster-image" src="../assets/images/giddys-vignettes-poster.jpg"
-								alt="Giddy's Vignetes Poster Image"
-								style="display: none; width: 100%; height: auto; max-width: 560px; aspect-ratio: 16/9;">
-						</div>
-					</section>
+        <!-- YouTube Adaptation -->
+        <section class="youtube-iframe" id="latest-event">
+            <div class="stream video main">
+                <div id="player"></div>
+                <img id="poster-image" src="../assets/images/giddys-vignettes-poster.jpg"
+                    alt="Giddy's Vignetes Poster Image"
+                    style="display: none;">
+            </div>
+        </section>
 
-					<script>
-						// Load YouTube IFrame Player API asynchronously
-						var tag = document.createElement('script');
-						tag.src = "https://www.youtube.com/iframe_api";
-						var firstScriptTag = document.getElementsByTagName('script')[0];
-						firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        <script>
+            // Load YouTube IFrame Player API asynchronously
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-						// Global variable for the YouTube player
-						var player;
+            // Global variable for the YouTube player
+            var player;
 
-						// Reusable END handler
-						function onPlayerStateChange(event) {
-							if (event.data === YT.PlayerState.ENDED) {
+            // Reusable END handler
+            function onPlayerStateChange(event) {
+                if (event.data === YT.PlayerState.ENDED) {
+                    // Remove iframe completely
+                    const playerEl = document.getElementById('player');
+                    playerEl.innerHTML = "";
+                    playerEl.style.display = 'none';
 
-								// Remove iframe completely
-								const playerEl = document.getElementById('player');
-								playerEl.innerHTML = "";
-								playerEl.style.display = 'none';
+                    // Show poster
+                    const poster = document.getElementById('poster-image');
+                    if (poster) poster.style.display = 'block';
+                }
+            }
 
-								// Show poster
-								const poster = document.getElementById('poster-image');
-								poster.style.display = 'block';
-							}
-						}
+            // Called when YouTube API is loaded
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    videoId: 'jPERhPYWC7Q',
+                    playerVars: {
+                        'playsinline': 1,
+                        'rel': 0,
+                        'controls': 1,
+                        'modestbranding': 1, // Removes the standard center overlay logo watermark
+                        'iv_load_policy': 3  // Disables interactive popups and video annotations completely
+                    },
+                    events: {
+                        'onReady': function (event) {
+                            // Sizing ratios are calculated dynamically by native CSS aspect ratio engines
+                        },
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
 
-						// Called when YouTube API is loaded
-						function onYouTubeIframeAPIReady() {
-							player = new YT.Player('player', {
-								height: '315',
-								width: '560',
-								videoId: 'jPERhPYWC7Q',
-								playerVars: {
-									'playsinline': 1,
-									'rel': 0,
-									'showinfo': 0,
-									'ecver': 2
-								},
-								events: {
-									'onReady': function (event) {
-										syncPosterSize();
-									},
-									'onStateChange': onPlayerStateChange
-								}
-							});
-						}
+            // Ensure poster properties sync up cleanly on initial page generation
+            document.addEventListener('DOMContentLoaded', function () {
+                const posterImage = document.getElementById('poster-image');
+                if (posterImage) {
+                    posterImage.style.display = 'none';
+                }
+            });
 
-						// Function to sync poster image size with player
-						function syncPosterSize() {
-							const playerElement = document.getElementById('player');
-							const posterImage = document.getElementById('poster-image');
-							if (playerElement && posterImage) {
-								const playerWidth = playerElement.offsetWidth;
-								const playerHeight = playerElement.offsetHeight;
-								posterImage.style.width = playerWidth + 'px';
-								posterImage.style.height = playerHeight + 'px';
-								posterImage.style.maxWidth = '100%';
-							}
-						}
+            // Replay handler — cleans layout parameters up and reconstructs player safely
+            document.getElementById('poster-image').addEventListener('click', function () {
+                this.style.display = 'none';
 
-						// Ensure poster is hidden initially and sync size on load
-						document.addEventListener('DOMContentLoaded', function () {
-							const posterImage = document.getElementById('poster-image');
-							if (posterImage) {
-								posterImage.style.display = 'none';
-								syncPosterSize();
-							}
-						});
+                player = new YT.Player('player', {
+                    videoId: 'jPERhPYWC7Q',
+                    playerVars: { 
+                        'playsinline': 1, 
+                        'rel': 0, 
+                        'controls': 1, 
+                        'modestbranding': 1, 
+                        'iv_load_policy': 3 
+                    },
+                    events: { 'onStateChange': onPlayerStateChange }
+                });
 
-						// Update poster size on window resize
-						window.addEventListener('resize', syncPosterSize);
-
-						// Replay handler — rebuilds the player cleanly
-						document.getElementById('poster-image').addEventListener('click', function () {
-							this.style.display = 'none';
-
-							player = new YT.Player('player', {
-								height: '315',
-								width: '560',
-								videoId: 'jPERhPYWC7Q',
-								playerVars: { playsinline: 1, rel: 0, showinfo: 0, ecver: 2 },
-								events: { 'onStateChange': onPlayerStateChange }
-							});
-
-							document.getElementById('player').style.display = 'block';
-						});
-					</script>
+                document.getElementById('player').style.display = 'block';
+            });
+        </script>
 
 					<p>Enjoy short videos including our Giddy Tales Series; real world and mythical adventures combine,
 						featuring <a href=" /ofidkid.html"> Tokin Junior</a> — plus branded goods for kids from
