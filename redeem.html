@@ -208,7 +208,7 @@
                 </div>
             </div>
 
-            <div class="px-6 pb-20 md:pb-20"> <!-- Increased padding-bottom for mobile -->
+            <div class="px-6 pb-20 md:pb-20">
 
                 <!-- Redemption Card -->
                 <div class="card p-8 mt-8">
@@ -216,9 +216,7 @@
                     </h2>
 
                     <label class="block text-sm font-semibold text-purple-300 mb-3">PAYMENT LINK ID</label>
-                    <!-- Update your form inputs to match your CSS class -->
                     <input type="text" id="linkId" placeholder="Paste your 13-digit link ID here" class="input-field">
-
 
                     <label class="block text-sm font-semibold text-purple-300 mb-3 mt-6">DESTINATION WALLET</label>
                     <input type="text" id="wallet" placeholder="Paste your Solana wallet address" class="input-field">
@@ -267,16 +265,36 @@
             result.style.display = "none";
 
             try {
-                // 1. Point the URL to your locally running Node.js server
-                const response = await fetch("http://127.0.0.1:5000/api/secure-redeem", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ linkId, destinationWallet })
-                });
+                // Smart local testing: tries multiple possible WSL IPs automatically
+                const possibleUrls = [
+                    "http://127.0.0.1:5000/api/secure-redeem",
+                    "http://localhost:5000/api/secure-redeem",
+                    "http://172.17.60.140:5000/api/secure-redeem"   // ← your current WSL IP
+                ];
 
-                const data = await response.json();
+                let data;
+                let lastError;
+
+                for (const url of possibleUrls) {
+                    try {
+                        console.log("🔄 Trying backend:", url);
+                        const response = await fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ linkId, destinationWallet })
+                        });
+
+                        data = await response.json();
+                        console.log("✅ Success with:", url);
+                        break; // stop once one works
+                    } catch (e) {
+                        lastError = e;
+                        console.log("❌ Failed:", url, e.message);
+                    }
+                }
+
+                if (!data) throw lastError || new Error("All local backends failed");
+
                 showResult(JSON.stringify(data, null, 2), data.success);
 
             } catch (err) {
@@ -312,5 +330,4 @@
     <script src="/assets/js/ofid-main.js"></script>
 
 </body>
-
 </html>
