@@ -54,7 +54,7 @@
         }
 
         .card {
-            background: rgba(30, 5, 51, 0.95);
+            background-color: var(--card-bg-color, rgba(30, 5, 51, 0.95));
             border: 1px solid #6b21a8;
             border-radius: 1.5rem;
         }
@@ -62,7 +62,10 @@
         .input-field {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid #6b21a8;
-            color: white;
+
+            /* FIXED: Corrected the syntax typo so it safely reads your main css variable */
+            color: var(--text-color);
+
             border-radius: 12px;
             padding: 14px;
             width: 100%;
@@ -193,7 +196,7 @@
                 </button>
 
                 <h1 class="text-3xl font-bold tracking-tight text-white text-center flex-1 px-4 !mb-0">
-                    LINKS
+                    K-LINKS
                 </h1>
 
                 <div class="flex items-center gap-5 z-10">
@@ -212,18 +215,21 @@
 
                 <!-- Redemption Card -->
                 <div class="card p-8 mt-8">
-                    <h2 class="text-3xl font-black tracking-tighter text-center mb-12 text-white">Kinnected Redemption
-                    </h2>
+                    <h2 class="text-3xl font-black tracking-tighter text-center mb-12">REDEEM CODE</h2>
 
                     <label class="block text-sm font-semibold text-purple-300 mb-3">PAYMENT LINK ID</label>
-                    <input type="text" id="linkId" placeholder="Paste your 13-digit link ID here" class="input-field">
+                    <input type="text" id="linkId" placeholder="Paste your 13-digit link ID here"
+                        class="input-field text-center rounded-xl"
+                        style="color: var(--text-color) !important; border-radius: 12px !important;">
 
                     <label class="block text-sm font-semibold text-purple-300 mb-3 mt-6">DESTINATION WALLET</label>
-                    <input type="text" id="wallet" placeholder="Paste your Solana wallet address" class="input-field">
+                    <input type="text" id="wallet" placeholder="Paste your Solana wallet address"
+                        class="input-field text-center rounded-xl"
+                        style="color: var(--text-color) !important; border-radius: 12px !important;">
 
                     <button id="btn" onclick="redeem()" class="w-full py-4 text-center font-bold text-lg mt-8"
                         style="height: auto !important; line-height: 1.4 !important; min-height: 56px !important;">
-                        REDEEM NOW
+                        REDEEM
                     </button>
 
                     <div id="result" class="hidden mt-8 mb-24"></div>
@@ -243,7 +249,8 @@
             </div>
             <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i
                     class="fas fa-gamepad"></i>Play Blinko!</div>
-            <div class="nav-item"><i class="fas fa-wallet"></i>Wallet</div>
+            <div class="nav-item" onclick="window.location.href='/wallet.html'"><i class="fas fa-wallet"></i>Wallet
+            </div>
             <div class="nav-item" id="navPanelTrigger"><i class="fas fa-bars"></i> Menu</div>
         </nav>
     </div>
@@ -330,4 +337,5 @@
     <script src="/assets/js/ofid-main.js"></script>
 
 </body>
+
 </html>
