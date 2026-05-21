@@ -467,37 +467,39 @@
                     <!-- ADD WALLET with Dropdown -->
                     <div class="relative">
                         <button id="addWalletBtn"
-                            class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all active:bg-purple-600"
-                            style="color: var(--text-color, #ffffff) !important;">
-                            <span id="walletBtnText">ADD WALLET</span>
+                            class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all active:bg-purple-600 text-white"
+                            style="color: #ffffff !important;">
+
+                            <span id="walletBtnText" class="text-white" style="color: #ffffff !important;">ADD
+                                WALLET</span>
+
                             <i class="fas fa-chevron-down text-base transition-transform" id="chevron"
-                                style="color: var(--text-color, #ffffff) !important;"></i>
+                                style="color: #ffffff !important;"></i>
                         </button>
 
-                        <!-- Dropdown Menu Wrapper - Positioned over elements below it, box shadows and background removed -->
+                        <!-- Dropdown Menu -->
                         <div id="walletDropdown"
                             class="wallet-dropdown hidden absolute left-0 top-full mt-2 z-50 min-w-[240px] w-full border border-purple-900/50 rounded-xl overflow-hidden">
 
                             <!-- Connect Phantom Button -->
-                            <button onclick="handlePhantomConnect()"
-                                class="block w-full text-left px-5 py-4 bg-purple-600 hover:bg-purple-700 flex items-center gap-3 text-white transition-colors">
+                            <button onclick="handlePhantomConnect()" id="connectOption"
+                                class="block w-full text-left px-5 py-4 bg-purple-600 hover:bg-purple-700 flex items-center gap-3 text-white font-semibold transition-colors">
                                 <i class="fas fa-plug text-zinc-200"></i>
-                                <div class="font-semibold">Connect Phantom</div>
+                                <div>Connect Phantom</div>
                             </button>
 
-                            <!-- Disconnect Wallet Button - Set to Solid Red with White Text -->
+                            <!-- Disconnect Wallet Button -->
                             <button onclick="disconnectWallet()" id="disconnectOption"
-                                class="hidden w-full text-left px-5 py-4 bg-red-600 hover:bg-red-700 flex items-center gap-3 text-white transition-colors">
+                                class="hidden w-full text-left px-5 py-4 bg-red-600 hover:bg-red-700 flex items-center gap-3 text-white font-semibold transition-colors">
                                 <i class="fas fa-power-off text-white"></i>
-                                <div class="font-semibold text-white">Disconnect Wallet</div>
+                                <div>Disconnect Wallet</div>
                             </button>
                         </div>
                     </div>
 
-                    <!-- REDEEM CODE BUTTON -->
+                    <!-- REDEEM CODE BUTTON - Force white text -->
                     <button onclick="openModal('redeem')"
-                        class="w-full flex items-center justify-center bg-purple-600 hover:bg-purple-700 active:bg-purple-600 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all"
-                        style="color: var(--text-color, #ffffff) !important;">
+                        class="w-full flex items-center justify-center bg-purple-600 hover:bg-purple-700 active:bg-purple-600 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all text-white">
                         <span>REDEEM CODE</span>
                     </button>
                 </div>
@@ -1247,8 +1249,11 @@
             document.getElementById('connectedAddress').innerText = short;
             document.getElementById('connectedStatus').classList.remove('hidden');
 
-            // Show Disconnect, hide Connect
-            document.getElementById('disconnectOption').classList.remove('hidden');
+            // === IMPORTANT: Hide Connect, Show Disconnect ===
+            const connectOption = document.getElementById('connectOption');
+            const disconnectOption = document.getElementById('disconnectOption');
+            if (connectOption) connectOption.classList.add('hidden');
+            if (disconnectOption) disconnectOption.classList.remove('hidden');
         }
 
         function showDisconnectedState() {
@@ -1259,7 +1264,12 @@
             if (chevron) chevron.style.display = 'inline-block';
 
             document.getElementById('connectedStatus').classList.add('hidden');
-            document.getElementById('disconnectOption').classList.add('hidden');
+
+            // === IMPORTANT: Show Connect, Hide Disconnect ===
+            const connectOption = document.getElementById('connectOption');
+            const disconnectOption = document.getElementById('disconnectOption');
+            if (connectOption) connectOption.classList.remove('hidden');
+            if (disconnectOption) disconnectOption.classList.add('hidden');
         }
 
         // ====================== BALANCES + QUANTITY FIX ======================
