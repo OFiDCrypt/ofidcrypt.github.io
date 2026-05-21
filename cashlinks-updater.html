@@ -4,6 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            important: '.tailwind-banner',   // ← Isolates everything
+            corePlugins: {
+                preflight: false               // Prevents margin/padding resets
+            }
+        }
+    </script>
     <title>Cash Links Updater • OFiDCrypt</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
@@ -79,7 +88,8 @@
         /* --- MAIN UI --- */
         header {
             background: linear-gradient(90deg, #1a1a22, #2a0033);
-            padding: 2rem 5%;
+            padding: 0;
+            /* Clear container spacing for full-bleed banner background tracking */
             text-align: center;
             border-bottom: 4px solid var(--accent);
         }
@@ -97,6 +107,8 @@
             max-width: 1200px;
             margin: 2rem auto;
             padding: 0 20px;
+            box-sizing: border-box;
+            /* Secures edge margin limits across fluid viewports */
         }
 
         .card {
@@ -106,6 +118,8 @@
             margin-bottom: 2rem;
             box-shadow: 0 10px 30px rgba(160, 0, 255, 0.1);
             overflow: hidden;
+            box-sizing: border-box;
+            /* Forces layout tracking inside structural edges safely */
         }
 
         .section-header {
@@ -158,6 +172,7 @@
             padding: 1.5rem;
             border: 1px solid var(--border);
             position: relative;
+            box-sizing: border-box;
         }
 
         .delete-btn {
@@ -237,7 +252,6 @@
             transform: scale(0.98);
         }
 
-        /* Disabled / Greyed out button */
         button:disabled,
         button.disabled {
             background: #3a3a44 !important;
@@ -271,7 +285,6 @@
             border: 1px solid #ff0066;
         }
 
-        /* Clipboard UI Styling */
         .id-input-wrapper {
             position: relative;
             display: flex;
@@ -316,9 +329,41 @@
         </div>
     </div>
 
-    <header>
-        <h1>Cash Links Updater</h1>
-        <p style="margin:10px 0 0; opacity:0.9; font-size: 0.9rem;">Secure Admin Portal</p>
+    <header style="padding: 0; background: none;">
+        <div class="tailwind-banner">
+            <div
+                class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black">
+
+                <div class="flex items-center gap-4 z-10">
+                    <div onclick="window.location.href='/redeem.html'"
+                        class="flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
+                        <span class="text-xl">🔐</span>
+                        iOS Redeem
+                    </div>
+                </div>
+
+                <h1 class="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold tracking-tight text-white pointer-events-none"
+                    style="margin: 0; padding: 0; border: none; background: none; letter-spacing: normal;">
+                    Cash Links Updater
+                </h1>
+
+                <div class="flex items-center gap-5 z-10">
+                    <i
+                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+                    <div onclick="showProfile()"
+                        class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-200 transition-colors overflow-hidden">
+                        <img src="/assets/images/webp/ofidcrypt-digitized-logo.webp" alt="OFIDCrypt Logo"
+                            class="w-full h-full object-cover" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="md:hidden" style="padding: 15px 20px 0; text-align: center;">
+            <h1 style="font-size: 1.8rem; margin: 0;">Cash Links Updater</h1>
+        </div>
+        <p style="margin: 10px 0 20px; opacity: 0.8; font-size: 0.9rem; text-align: center;">Secure Admin Portal</p>
     </header>
 
     <div class="container">
@@ -392,7 +437,7 @@
         })();
 
         let tokensData = [];
-        let dataLoaded = false;   // ← NEW: track if data has been loaded
+        let dataLoaded = false;
 
         // 3. RENDER LOGIC
         function renderTokens() {
@@ -408,13 +453,13 @@
                 <strong style="color:#a000ff;">${token.ticker || 'NEW'}</strong>
                 <button onclick="deleteToken(${index})" class="delete-btn">×</button>
                 <div class="form-row">
-    <div>
-    <label>ID</label>
-    <div class="id-input-wrapper">
-        <input value="${token.id || ''}" onchange="updateField(${index}, 'id', this.value)">
-        <button class="copy-link-btn" title="Copy Jump Link" onclick="copyJumpLink('${token.id}', this)">📋</button>
-    </div>
-</div>
+                    <div>
+                        <label>ID</label>
+                        <div class="id-input-wrapper">
+                            <input value="${token.id || ''}" onchange="updateField(${index}, 'id', this.value)">
+                            <button class="copy-link-btn" title="Copy Jump Link" onclick="copyJumpLink('${token.id}', this)">📋</button>
+                        </div>
+                    </div>
                     <div><label>Ticker</label><input value="${token.ticker || ''}" onchange="updateField(${index}, 'ticker', this.value)"></div>
                 </div>
                 <label>Title</label><input value="${token.title || ''}" onchange="updateField(${index}, 'title', this.value)">
@@ -439,7 +484,6 @@
         function addNewToken() {
             if (!dataLoaded) return;
 
-            // 1. Add the new blank token
             tokensData.push({
                 id: "new",
                 ticker: "NEW",
@@ -449,36 +493,30 @@
                 cashLink: ""
             });
 
-            // 2. Re-render the UI
             renderTokens();
 
-            // 3. Smooth scroll and focus
             setTimeout(() => {
                 const containers = document.querySelectorAll('.token-card');
                 const lastCard = containers[containers.length - 1];
 
                 if (lastCard) {
-                    // SMOOTH SCROLL: center the new card in the window
                     lastCard.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
 
-                    // Visual feedback: brief purple glow
                     lastCard.style.transition = "box-shadow 0.5s ease";
                     lastCard.style.boxShadow = "0 0 20px rgba(160, 0, 255, 0.6)";
 
-                    // Focus the ID input field after a split second
                     setTimeout(() => {
                         const firstInput = lastCard.querySelector('input');
                         if (firstInput) firstInput.focus();
-                        lastCard.style.boxShadow = "none"; // Remove glow after focus
+                        lastCard.style.boxShadow = "none";
                     }, 600);
                 }
             }, 100);
         }
 
-        // NEW: Button state control
         function updateAddButtonState() {
             const addBtn = document.getElementById('add-token-btn');
             if (dataLoaded) {
@@ -529,8 +567,8 @@
                 if (!res.ok) throw new Error('Failed to fetch');
 
                 tokensData = await res.json();
-                dataLoaded = true;           // ← Mark as loaded
-                updateAddButtonState();      // ← Enable button
+                dataLoaded = true;
+                updateAddButtonState();
                 renderTokens();
                 showStatus('✅ Latest data pulled from GitHub', 'success');
             } catch (e) {
@@ -562,21 +600,15 @@
             }
         }
 
-        // ID CLipboard Function
         async function copyJumpLink(id, btn) {
-            // This builds the link based on your current domain
             const baseUrl = window.location.origin + "/cashlinks.html#";
             const fullLink = baseUrl + id;
 
             try {
                 await navigator.clipboard.writeText(fullLink);
-
-                // Visual feedback
                 const originalIcon = btn.innerHTML;
                 btn.innerHTML = '✅';
-                setTimeout(() => {
-                    btn.innerHTML = originalIcon;
-                }, 1500);
+                setTimeout(() => { btn.innerHTML = originalIcon; }, 1500);
             } catch (err) {
                 console.error('Failed to copy', err);
             }
@@ -629,8 +661,11 @@
         window.onload = () => {
             loadConfig();
             renderTokens();
-            updateAddButtonState(); // initially disabled
+            updateAddButtonState();
         };
+
+        // Profile button placeholder
+        function showProfile() { alert("Profile coming soon"); }
     </script>
 </body>
 
