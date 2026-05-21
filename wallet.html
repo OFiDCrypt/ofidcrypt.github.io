@@ -467,10 +467,11 @@
                     <!-- ADD WALLET with Dropdown -->
                     <div class="relative">
                         <button id="addWalletBtn"
-                            class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-zinc-300 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all">
+                            class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all active:bg-purple-600"
+                            style="color: var(--text-color, #ffffff) !important;">
                             <span id="walletBtnText">ADD WALLET</span>
-                            <i class="fas fa-chevron-down text-zinc-300 text-base transition-transform"
-                                id="chevron"></i>
+                            <i class="fas fa-chevron-down text-base transition-transform" id="chevron"
+                                style="color: var(--text-color, #ffffff) !important;"></i>
                         </button>
 
                         <!-- Dropdown Menu Wrapper - Positioned over elements below it, box shadows and background removed -->
@@ -493,9 +494,10 @@
                         </div>
                     </div>
 
-                    <!-- Redeem Code Button -->
+                    <!-- REDEEM CODE BUTTON -->
                     <button onclick="openModal('redeem')"
-                        class="flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-zinc-300 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all">
+                        class="w-full flex items-center justify-center bg-purple-600 hover:bg-purple-700 active:bg-purple-600 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all"
+                        style="color: var(--text-color, #ffffff) !important;">
                         <span>REDEEM CODE</span>
                     </button>
                 </div>
@@ -1183,6 +1185,7 @@
             if (chevron) chevron.classList.toggle('rotate-180');
         }
 
+        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             const btn = document.getElementById('addWalletBtn');
             const dropdown = document.getElementById('walletDropdown');
@@ -1194,8 +1197,13 @@
         });
 
         async function handlePhantomConnect() {
-            const dappUrl = encodeURIComponent("https://www.ofidcrypt.com/wallet.html");
+            const dappUrl = "https://www.ofidcrypt.com/wallet.html";
 
+            // Always close dropdown first
+            const dropdown = document.getElementById('walletDropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+
+            // Desktop / Extension
             if (window.solana && window.solana.isPhantom) {
                 try {
                     const resp = await window.solana.connect();
@@ -1208,8 +1216,10 @@
                 return;
             }
 
+            // Mobile - Best Phantom Deep Link
             if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-                window.location.href = `https://phantom.app/ul/v1/connect?uri=${dappUrl}&redirect=${dappUrl}`;
+                const encodedUrl = encodeURIComponent(dappUrl);
+                window.location.href = `https://phantom.app/ul/v1/connect?uri=${encodedUrl}&redirect=${encodedUrl}`;
                 return;
             }
 
@@ -1217,6 +1227,9 @@
         }
 
         function disconnectWallet() {
+            const dropdown = document.getElementById('walletDropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+
             if (window.solana) window.solana.disconnect();
             connectedWallet = null;
             showDisconnectedState();
@@ -1227,19 +1240,21 @@
 
             document.getElementById('walletBtnText').innerText = "CONNECTED";
             document.getElementById('addWalletBtn').classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
+
             const chevron = document.getElementById('chevron');
             if (chevron) chevron.style.display = 'none';
 
             document.getElementById('connectedAddress').innerText = short;
             document.getElementById('connectedStatus').classList.remove('hidden');
-            document.getElementById('disconnectOption').classList.remove('hidden');
 
-            updateWalletBalances();
+            // Show Disconnect, hide Connect
+            document.getElementById('disconnectOption').classList.remove('hidden');
         }
 
         function showDisconnectedState() {
             document.getElementById('walletBtnText').innerText = "ADD WALLET";
             document.getElementById('addWalletBtn').classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
+
             const chevron = document.getElementById('chevron');
             if (chevron) chevron.style.display = 'inline-block';
 
@@ -1404,7 +1419,7 @@
                     showDisconnectedState();
                 });
 
-                window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
+                window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
             }
 
             // Start live updates
