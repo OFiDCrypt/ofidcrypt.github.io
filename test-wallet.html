@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dapp Token & Wallet Testbed</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1.95.2/lib/index.iife.min.js"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen p-8 font-sans">
+
+    <div class="max-w-4xl mx-auto">
+    <header class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center border-b border-zinc-800 pb-6 mb-8">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight">Swap Engine Testbed</h1>
+            <p class="text-sm text-zinc-400">Testing Phantom Connect & Jupiter Price Pulls</p>
+        </div>
+        
+        <div class="flex flex-col items-start sm:flex-row sm:items-center gap-3 sm:gap-4 relative">
+            
+            <div id="walletBadge" class="hidden flex items-center gap-2 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-xl order-2 sm:order-1">
+                <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                <span id="walletAddressDisplay" class="font-mono text-xs text-purple-400"></span>
+            </div>
+
+            <div class="relative inline-block text-left order-1 sm:order-2">
+                <button id="connectBtn" onclick="toggleDropdown()" class="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-500 font-bold rounded-xl transition-all cursor-pointer">
+                    <span id="btnText">Add Wallet</span>
+                    <svg class="w-4 h-4 text-zinc-100 transition-transform duration-200" id="arrowIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <div id="dropdownMenu" class="hidden absolute left-0 sm:right-0 sm:left-auto mt-2 w-48 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 overflow-hidden transform origin-top-left sm:origin-top-right transition-all">
+                    <button id="phantomAction" onclick="handlePhantomAction()" class="w-full text-left px-4 py-3 text-sm font-semibold hover:bg-zinc-800/80 text-zinc-300 hover:text-purple-400 transition-colors flex items-center gap-2.5 cursor-pointer">
+                        <span class="w-2 h-2 rounded-full bg-zinc-600" id="statusDot"></span>
+                        <span id="actionLabel">Connect Phantom</span>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </header>
+
+        <section id="walletInfo" class="hidden mb-8 p-6 bg-zinc-900 border border-zinc-800 rounded-2xl animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-sm font-bold text-zinc-300 uppercase tracking-wider">Your Live Wallet Balances</h3>
+                <button onclick="fetchWalletBalances()" class="text-xs bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200">
+                    <span>🔄</span> Refresh Balances
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
+                    <span class="text-xs text-zinc-500 block font-semibold">SOL Balance</span>
+                    <span id="bal-SOL" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
+                    <span class="text-xs text-zinc-500 block font-semibold">EXPB Balance</span>
+                    <span id="bal-EXPB" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
+                    <span class="text-xs text-zinc-500 block font-semibold">GIDDY Balance</span>
+                    <span id="bal-GIDDY" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
+                </div>
+            </div>
+        </section>
+
+        <h2 class="text-xl font-bold mb-4">Tracked Assets (Community)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">DUNO Token</div>
+                <div id="price-DUNO" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-DUNO" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">Captain Trench (CPT)</div>
+                <div id="price-CPT" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-CPT" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">Sock Inu (SINU)</div>
+                <div id="price-SINU" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-SINU" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+        </div>
+
+        <h2 class="text-xl font-bold mb-4">Core Assets</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex justify-between items-center">
+                <div>
+                    <span class="text-xs text-purple-400 font-bold block">SOLANA</span>
+                    <span class="text-2xl font-black">SOL</span>
+                </div>
+                <div id="price-SOL" class="text-2xl font-mono font-bold text-zinc-300">Fetching...</div>
+            </div>
+            <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex justify-between items-center">
+                <div>
+                    <span class="text-xs text-purple-400 font-bold block">US DOLLAR COIN</span>
+                    <span class="text-2xl font-black">USDC</span>
+                </div>
+                <div id="price-USDC" class="text-2xl font-mono font-bold text-zinc-300">Fetching...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let walletAddress = null;
+        const TARGET_SYMBOLS = ['SOL', 'USDC', 'DUNO', 'CPT', 'SINU'];
+        const LOCAL_API_URL = "http://localhost:3000/api/prices";
+
+        // Toggle custom drop-down menu overlay state
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            const arrow = document.getElementById('arrowIcon');
+            if (menu) menu.classList.toggle('hidden');
+            if (arrow) arrow.classList.toggle('rotate-180');
+        }
+
+        // FIX 1: Defend window listener against missing element instances or extensions events
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('dropdownMenu');
+            const btn = document.getElementById('connectBtn');
+            if (menu && btn && !menu.classList.contains('hidden')) {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.add('hidden');
+                    document.getElementById('arrowIcon').classList.remove('rotate-180');
+                }
+            }
+        });
+
+        // Main subcontext interaction point handles login/logout loops
+        async function handlePhantomAction() {
+            const menu = document.getElementById('dropdownMenu');
+            if (menu) menu.classList.add('hidden');
+            
+            const arrow = document.getElementById('arrowIcon');
+            if (arrow) arrow.classList.remove('rotate-180');
+
+            const isPhantomInstalled = window.solana && window.solana.isPhantom;
+            if (!isPhantomInstalled) {
+                alert("Phantom Wallet extension was not detected.");
+                return;
+            }
+
+            try {
+                if (walletAddress) {
+                    await window.solana.disconnect();
+                } else {
+                    await window.solana.connect();
+                }
+            } catch (err) {
+                console.warn("User canceled connection or message channel aborted gracefully:", err.message);
+            }
+        }
+
+        // Central state handling engine syncs everything perfectly
+        function updateUIConnectedState(publicKeyStr) {
+            walletAddress = publicKeyStr;
+            const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+
+            // 1. Update Core Navigation Buttons
+            document.getElementById('btnText').innerText = "Wallet Menu";
+            document.getElementById('actionLabel').innerText = "Disconnect";
+            document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-emerald-500";
+
+            // 2. Map Address Meta Badge adjacent to button
+            document.getElementById('walletAddressDisplay').innerText = shortAddress;
+            document.getElementById('walletBadge').classList.remove('hidden');
+
+            // 3. Reveal Balance Workspace
+            document.getElementById('walletInfo').classList.remove('hidden');
+            fetchWalletBalances();
+        }
+
+        function updateUIDisconnectedState() {
+            walletAddress = null;
+
+            // Reset navbar tracking nodes
+            document.getElementById('btnText').innerText = "Add Wallet";
+            document.getElementById('actionLabel').innerText = "Connect Phantom";
+            document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-zinc-600";
+            
+            // Clean components
+            document.getElementById('walletBadge').classList.add('hidden');
+            document.getElementById('walletInfo').classList.add('hidden');
+        }
+
+        // Active Application Listeners
+        window.addEventListener('load', async () => {
+            if (window.solana && window.solana.isPhantom) {
+                window.solana.on('connect', (publicKey) => {
+                    updateUIConnectedState(publicKey.toString());
+                });
+
+                window.solana.on('disconnect', () => {
+                    updateUIDisconnectedState();
+                });
+
+                // FIX 2: Gracefully catch non-trusted session auto-connect rejections
+                window.solana.connect({ onlyIfTrusted: true }).catch((e) => {
+                    console.log("No pre-approved session active. Awaiting user click trigger.");
+                });
+            }
+
+            fetchTokenPrices();
+            setInterval(fetchTokenPrices, 15000);
+            setInterval(fetchWalletBalances, 25000);
+        });
+
+        // Hits local integrated server endpoints to populate balance data matrix
+        async function fetchWalletBalances() {
+            if (!walletAddress) return;
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/balances/${walletAddress}`);
+                const balances = await response.json();
+
+                if (balances.error) return;
+
+                document.getElementById('bal-SOL').innerText = `${balances.SOL} SOL`;
+                document.getElementById('bal-EXPB').innerText = `${balances.EXPB} EXPB`;
+                document.getElementById('bal-GIDDY').innerText = `${balances.GIDDY} GIDDY`;
+            } catch (error) {
+                console.error("Failed executing automated balance update query:", error);
+            }
+        }
+
+        // Price mapping loops match your precise backend layout identifiers
+        async function fetchTokenPrices() {
+            try {
+                const response = await fetch(LOCAL_API_URL);
+                const dataMatrix = await response.json();
+
+                TARGET_SYMBOLS.forEach(symbol => {
+                    const targetPriceElement = document.getElementById(`price-${symbol}`);
+                    const targetMintElement = document.getElementById(`mint-${symbol}`);
+                    const tokenData = dataMatrix[symbol];
+
+                    if (tokenData) {
+                        if (targetMintElement && tokenData.mint) {
+                            targetMintElement.innerText = `Mint: ${tokenData.mint.slice(0, 6)}...${tokenData.mint.slice(-4)}`;
+                        }
+
+                        if (targetPriceElement && tokenData.price !== null) {
+                            const precisePrice = tokenData.price;
+                            if (precisePrice >= 1) {
+                                targetPriceElement.innerText = `$${precisePrice.toFixed(2)} USD`;
+                            } else if (precisePrice > 0.0001) {
+                                targetPriceElement.innerText = `$${precisePrice.toFixed(4)} USD`;
+                            } else {
+                                targetPriceElement.innerText = `$${precisePrice.toFixed(8)} USD`;
+                            }
+                        } else if (targetPriceElement) {
+                            targetPriceElement.innerText = "No Pool";
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Failed pulling pricing metrics:", error);
+            }
+        }
+    </script>
+</body>
+</html>
