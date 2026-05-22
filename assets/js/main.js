@@ -247,40 +247,5 @@
             });
 
         });
-
-        // Featured Dynamic Image
-        /*
-        document.addEventListener("DOMContentLoaded", function () {
-            const proxyUrl = 'https://api.allorigins.win/get?url=';
-            const articleUrl = proxyUrl + encodeURIComponent('https://pennypost.co/p/676825480/01-a-beginners-introduction-to-cryptocurrency');
-
-            async function fetchOpenGraphImage(url) {
-                try {
-                    const response = await fetch(url);
-                    const json = await response.json();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(json.contents, 'text/html');
-                    const imageUrl = doc.querySelector('meta[property="og:image"]').getAttribute('content');
-                    console.log('Fetched Image URL:', imageUrl); // Log the URL for debugging
-                    return imageUrl;
-                } catch (error) {
-                    console.error('Error fetching the article:', error);
-                    return null;
-                }
-            }
-
-            fetchOpenGraphImage(articleUrl).then(imageUrl => {
-                console.log('Image URL to be set:', imageUrl); // Debug: Ensure URL to be set
-                const dynamicImage = document.querySelector(".post.featured .image.main img");
-                if (imageUrl) {
-                    dynamicImage.src = imageUrl;
-                    console.log('Image source updated successfully');
-                } else {
-                    dynamicImage.src = 'assets/images/pic05.jpg'; // Fallback image
-                    console.log('Fallback image used');
-                }
-            });
-        });
-        */
     }
 })(jQuery);

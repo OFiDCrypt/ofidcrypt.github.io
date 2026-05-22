@@ -92,14 +92,17 @@
     <meta http-equiv='content-language' content='en-gb'>
 
     <style>
-        body {
-            background: linear-gradient(to bottom, #1e0533, #000000);
-            color: var(--text-color, white);
-        }
+        /* ================================================
+   === WEBAPP / WALLET STYLES ===
+   ================================================
+   All styles specific to the wallet page 
+   (cards, modals, community tokens, mobile claim bubble, etc.)
+   Last updated: May 2026
+   ================================================ */
 
+        /* ====================== BASE CARD STYLES ====================== */
         .card {
-            /* Dynamics: Safely switches with your theme config variable */
-            background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;
+            background: var(--card-bg-color, rgba(30, 5, 51, 0.95));
             border: 1px solid #6b21a8;
             border-radius: 1.5rem;
             color: var(--text-color, #ffffff);
@@ -114,24 +117,12 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
-        /* Ensure the dividing line between prices adapts or remains subtle */
-        .card-content.border-t {
-            border-color: rgba(107, 33, 168, 0.25) !important;
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .card-content {
             text-align: left;
+        }
+
+        .card-content.border-t {
+            border-color: rgba(107, 33, 168, 0.25);
         }
 
         .token-icon {
@@ -145,21 +136,22 @@
                 width: 84px;
                 height: 84px;
             }
+        }
 
-            #mobileClaimBubble {
-                display: none !important;
+        @media (min-width: 768px) {
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .back-btn {
-            color: #ffffff;
-            font-size: 2.25rem;
-            padding-left: 12px;
-            padding-right: 12px;
-            margin-bottom: 0;
-        }
-
-        /* ====================== UNIFIED MOBILE FLOATING BUBBLE ====================== */
+        /* ====================== MOBILE CLAIM BUBBLE ====================== */
         .mobile-claim {
             display: none;
             position: fixed;
@@ -181,16 +173,15 @@
 
         @media (max-width: 767px) {
             .mobile-claim {
-                display: flex !important;
+                display: flex;
             }
         }
 
-        /* Close button - aggressive reset to kill any circle */
         .mobile-claim .close-btn {
-            border: none !important;
-            outline: none !important;
-            background: transparent !important;
-            box-shadow: none !important;
+            border: none;
+            outline: none;
+            background: transparent;
+            box-shadow: none;
             margin: 0 0 0 auto;
             color: rgba(255, 255, 255, 0.9);
             font-size: 1.6rem;
@@ -202,13 +193,14 @@
             padding: 0;
             line-height: 1;
             transition: color 0.2s ease;
-            border-radius: 0 !important;
+            border-radius: 0;
         }
 
         .mobile-claim .close-btn:hover {
             color: #ffffff;
         }
 
+        /* ====================== COMMUNITY SECTION ====================== */
         #community-header {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -230,10 +222,7 @@
             box-shadow: 0 4px 12px rgb(34 211 238 / 0.15);
         }
 
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-
+        /* ====================== MODAL STYLES ====================== */
         .modal {
             display: none;
             position: fixed;
@@ -314,28 +303,48 @@
         }
 
         .modal-content button[type="submit"] {
-            /* Apply matching gradient, white text, and sizing defaults */
             background: linear-gradient(to right, #9333ea, #ec4899);
             color: white;
             font-weight: bold;
             border-radius: 9999px;
-            /* Smooth rounded shape matching main page */
             font-size: 1.1rem;
             cursor: pointer;
             border: none;
             transition: all 0.3s ease;
-            /* Handles smooth shifting on hover */
         }
 
         .modal-content button[type="submit"]:hover {
-            /* Lift up cleanly and project shadow matching main page buttons */
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgb(168 85 247);
         }
 
         .modal-content button[type="submit"].failure {
-            /* Preserves your dynamic failure handling background state */
-            background: #ef4444 !important;
+            background: #ef4444;
+        }
+
+        /* ====================== UTILITIES ====================== */
+        .back-btn {
+            color: #ffffff;
+            font-size: 2.25rem;
+            padding-left: 12px;
+            padding-right: 12px;
+            margin-bottom: 0;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ====================== PULL TO REFRESH (Inline styles moved here) ====================== */
+        #pullToRefresh {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(-40px);
+        }
+
+        #pullToRefresh.active {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 
@@ -468,13 +477,13 @@
                     <div class="relative">
                         <button id="addWalletBtn"
                             class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all active:bg-purple-600 text-white"
-                            style="color: #ffffff !important;">
+                            style="color: #ffffff ;">
 
-                            <span id="walletBtnText" class="text-white" style="color: #ffffff !important;">ADD
+                            <span id="walletBtnText" class="text-white" style="color: #ffffff ;">ADD
                                 WALLET</span>
 
                             <i class="fas fa-chevron-down text-base transition-transform" id="chevron"
-                                style="color: #ffffff !important;"></i>
+                                style="color: #ffffff ;"></i>
                         </button>
 
                         <!-- Dropdown Menu -->
@@ -508,8 +517,7 @@
                 <div id="connectedStatus"
                     class="hidden mb-6 px-4 py-3 bg-emerald-900/30 border border-emerald-500/30 rounded-2xl flex items-center gap-3">
                     <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-                    <span id="connectedAddress" class="font-mono text-sm"
-                        style="color: var(--text-color, #ffffff) !important;">
+                    <span id="connectedAddress" class="font-mono text-sm" style="color: var(--text-color, #ffffff) ;">
                         H5BFAK...FXqc
                     </span>
                 </div>
@@ -533,7 +541,7 @@
 
                 <!-- Added normal-case to break any parent styles -->
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
-                    style="color: var(--text-color) !important;">Local Currencies</h1>
+                    style="color: var(--text-color) ;">Local Currencies</h1>
 
                 <!-- MY TOKENS GRID SECTION (eXPB + GIDDY) -->
                 <div class="grid grid-cols-2 gap-4 mb-6">
@@ -546,8 +554,8 @@
                                     class="uppercase text-[9px] sm:text-xs tracking-widest text-zinc-400 block font-semibold leading-tight">
                                     DYNAMIC TOKEN
                                 </span>
-                                <div class="text-2xl sm:text-3xl font-bold mt-1"
-                                    style="color: var(--text-color) !important;">e𝕏PB</div>
+                                <div class="text-2xl sm:text-3xl font-bold mt-1" style="color: var(--text-color) ;">
+                                    e𝕏PB</div>
                                 <div
                                     class="text-[11px] sm:text-sm tracking-wide text-zinc-400 font-medium uppercase leading-tight">
                                     BOUNCY BALL
@@ -567,12 +575,12 @@
                             <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR QUANTITY
                             </div>
                             <div id="qty-EXPB" class="text-base font-bold font-mono mb-2"
-                                style="color: var(--text-color) !important; opacity: 0.9;">—</div>
+                                style="color: var(--text-color) ; opacity: 0.9;">—</div>
 
                             <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
                             </div>
                             <div id="value-EXPB" class="text-2xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                style="color: var(--text-color) !important;">$0.00 CAD</div>
+                                style="color: var(--text-color) ;">$0.00 CAD</div>
                             <div class="text-green-400 text-xs font-medium">+0.05% Today</div>
                         </div>
 
@@ -592,8 +600,8 @@
                                     class="uppercase text-[9px] sm:text-xs tracking-widest text-zinc-400 block font-semibold leading-tight">
                                     STABLE TOKEN
                                 </span>
-                                <div class="text-2xl sm:text-3xl font-bold mt-1"
-                                    style="color: var(--text-color) !important;">GIDDY</div>
+                                <div class="text-2xl sm:text-3xl font-bold mt-1" style="color: var(--text-color) ;">
+                                    GIDDY</div>
                                 <div
                                     class="text-[11px] sm:text-sm tracking-wide text-zinc-400 font-medium uppercase leading-tight">
                                     GIDDY DOLLAR
@@ -614,12 +622,12 @@
                             <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR QUANTITY
                             </div>
                             <div id="qty-GIDDY" class="text-base font-bold font-mono mb-2"
-                                style="color: var(--text-color) !important; opacity: 0.9;">—</div>
+                                style="color: var(--text-color) ; opacity: 0.9;">—</div>
 
                             <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
                             </div>
                             <div id="value-GIDDY" class="text-2xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                style="color: var(--text-color) !important;">$0.00 CAD</div>
+                                style="color: var(--text-color) ;">$0.00 CAD</div>
                             <div class="text-zinc-500 text-xs font-medium">0.00% Today</div>
                         </div>
 
@@ -634,7 +642,7 @@
 
                 <!-- LOCATION BANNER SECTION -->
                 <div class="card flex items-center justify-between px-6 py-3 text-sm mb-6">
-                    <span class="font-medium" style="color: var(--text-color, #111111) !important;">
+                    <span class="font-medium" style="color: var(--text-color, #111111) ;">
                         British Columbia | Canada
                     </span>
                     <img src="https://flagcdn.com/w40/ca.png" alt="Canada" class="h-5">
@@ -656,7 +664,9 @@
                 <div class="mb-6">
                     <!-- THEME DYNAMIC HEADLINE TILE -->
                     <div id="community-header" onclick="toggleCommunityTokens()"
-                        class="card p-6 cursor-pointer flex items-center justify-between border-2 border-yellow-400 bg-zinc-100 dark:bg-[#0e051a] rounded-3xl">
+                        class="card p-6 cursor-pointer flex items-center justify-between border-2 border-yellow-400 rounded-3xl"
+                        style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
+
                         <div class="flex items-center gap-5 w-full justify-start">
                             <div
                                 class="w-14 h-14 bg-gradient-to-br from-yellow-300 to-cyan-300 rounded-2xl flex items-center justify-center text-4xl shadow-inner ring-2 ring-offset-2 ring-offset-purple-950 ring-cyan-400 flex-shrink-0">
@@ -667,7 +677,7 @@
                                     ONE KIN
                                 </span>
                                 <h3 class="text-3xl font-black tracking-tighter leading-tight text-zinc-900 dark:text-white"
-                                    style="color: var(--text-color, #18181b) !important;">
+                                    style="color: var(--text-color, #18181b) ;">
                                     Community Tokens
                                 </h3>
                                 <!-- REMOVED LIGHT MODE COLOR STYLING: Inherits naturally, activates cyan only in dark mode -->
@@ -687,7 +697,7 @@
                     <!-- EXPANDED WRAPPER WITH DYNAMIC THEME VARIABLE BACKGROUND -->
                     <div id="community-content"
                         class="max-h-0 overflow-hidden border border-purple-500/20 rounded-3xl mt-3 shadow-xl transition-all duration-300"
-                        style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                        style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                         <div class="px-6 py-6 overflow-visible">
                             <div
                                 class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 pt-4 overflow-visible">
@@ -695,15 +705,15 @@
                                 <!-- ONE TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-one.JPG" alt="ONE"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">ONE</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">ONE
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">ONE</div>
                                         <div class="mt-6 w-full">
                                             <div
@@ -723,15 +733,15 @@
                                 <!-- KIN TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-kin.JPG" alt="KIN"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">KIN</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">KIN
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">KIN</div>
                                         <div class="mt-6 w-full">
                                             <div
@@ -751,22 +761,22 @@
                                 <!-- DOBBY TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-dobby.JPG" alt="DOBBY"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">DOBBY</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">DOBBY
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">DOBBY</div>
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
                                                 TOKEN PRICE</div>
                                             <div id="price-DOBBY" class="text-2xl font-black"
-                                                style="color: var(--text-color) !important;">Fetching...</div>
+                                                style="color: var(--text-color) ;">Fetching...</div>
                                             <div
                                                 class="text-amber-600 dark:text-amber-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 -0.4% <span class="text-[10px] opacity-70">24h</span>
@@ -778,15 +788,15 @@
                                 <!-- MYLO TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-mylo.JPG" alt="MYLO"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">MYLO</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">MYLO
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">MYLOCAT</div>
                                         <div class="mt-6 w-full">
                                             <div
@@ -806,15 +816,15 @@
                                 <!-- DUNO TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-duno.JPG" alt="DUNO"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">DUNO</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">DUNO
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">DUNO</div>
                                         <div class="mt-6 w-full">
                                             <div
@@ -834,15 +844,15 @@
                                 <!-- CPT TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-cpt.JPG" alt="CPT"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">CPT</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">CPT
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">CAPTAIN TRENCH
                                         </div>
                                         <div class="mt-6 w-full">
@@ -863,22 +873,22 @@
                                 <!-- SINU TOKEN CARD -->
                                 <div onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
-                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) !important;">
+                                    style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
                                         <img src="/assets/images/dgcl-sinu.JPG" alt="SINU"
                                             class="token-icon w-16 h-16 rounded-2xl shadow-md mb-4">
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1"
-                                            style="color: var(--text-color) !important;">SINU</div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">SINU
+                                        </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">SOCK INU</div>
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
                                                 TOKEN PRICE</div>
                                             <div id="price-SINU" class="text-2xl font-black"
-                                                style="color: var(--text-color) !important;">Fetching...</div>
+                                                style="color: var(--text-color) ;">Fetching...</div>
                                             <div
                                                 class="text-amber-600 dark:text-amber-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 -0.2% <span class="text-[10px] opacity-70">24h</span>
@@ -893,7 +903,7 @@
 
                 <!-- HEADING -->
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
-                    style="color: var(--text-color) !important;">Top Currencies</h1>
+                    style="color: var(--text-color) ;">Top Currencies</h1>
 
                 <!-- SOLANA TOKEN CARD SECTION -->
                 <div class="card p-5 cursor-pointer token-card fade-in mb-6">
@@ -902,8 +912,7 @@
                             <span
                                 class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">SOLANA</span>
                             <div class="flex items-center gap-3 mt-1">
-                                <div class="text-3xl sm:text-4xl font-bold"
-                                    style="color: var(--text-color) !important;">SOL</div>
+                                <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">SOL</div>
                                 <div class="flex gap-1.5 ml-2">
                                     <button onclick="buyToken(); event.stopPropagation();"
                                         class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
@@ -918,12 +927,12 @@
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
                                 </div>
                                 <div id="value-SOL" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                    style="color: var(--text-color) !important;">$0.00 CAD</div>
+                                    style="color: var(--text-color) ;">$0.00 CAD</div>
 
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
                                     QUANTITY</div>
                                 <div id="qty-SOL" class="text-base font-bold font-mono"
-                                    style="color: var(--text-color) !important; opacity: 0.9;">—</div>
+                                    style="color: var(--text-color) ; opacity: 0.9;">—</div>
                             </div>
                         </div>
                         <div class="flex-shrink-0">
@@ -947,8 +956,8 @@
                                 class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">US
                                 DOLLAR COIN</span>
                             <div class="flex items-center gap-3 mt-1">
-                                <div class="text-3xl sm:text-4xl font-bold"
-                                    style="color: var(--text-color) !important;">USDC</div>
+                                <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">USDC
+                                </div>
                                 <div class="flex gap-1.5 ml-2">
                                     <button onclick="buyToken(); event.stopPropagation();"
                                         class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
@@ -963,12 +972,12 @@
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
                                 </div>
                                 <div id="value-USDC" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                    style="color: var(--text-color) !important;">$0.00 CAD</div>
+                                    style="color: var(--text-color) ;">$0.00 CAD</div>
 
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
                                     QUANTITY</div>
                                 <div id="qty-USDC" class="text-base font-bold font-mono"
-                                    style="color: var(--text-color) !important; opacity: 0.9;">—</div>
+                                    style="color: var(--text-color) ; opacity: 0.9;">—</div>
                             </div>
                         </div>
                         <div class="flex-shrink-0">
@@ -1015,7 +1024,7 @@
 
                 <!-- Beautiful Gradient Button Applied Instantly -->
                 <button type="submit" class="w-full py-4 text-center font-bold text-lg mt-8"
-                    style="height: auto !important; line-height: 1.4 !important; min-height: 56px !important;">
+                    style="height: auto ; line-height: 1.4 ; min-height: 56px ;">
                     Redeem
                 </button>
             </form>
@@ -1033,454 +1042,6 @@
         </button>
     </div>
 
-    <script>
-        function goToToken(token) {
-            if (token === 'expb') window.location.href = '/bouncyball.html';
-            else if (token === 'giddy') window.location.href = '/onegiddy.html';
-        }
-        function goToShop() { window.location.href = '/shop.html'; }
-        function claimBonus() { window.location.href = "/cashlinks.html#giddy"; }
-        function buyToken() { alert("Buy Interface Loading..."); }
-        function sellToken() { alert("Sell Interface Loading..."); }
-        function showProfile() { alert("Profile coming soon"); }
-        function createWalletPlaceholder() { alert("Wallet connection and creation coming soon"); }
-
-        function openModal(modalId) {
-            if (modalId === 'redeem') {
-                document.getElementById('redeem-modal').style.display = 'flex';
-                resetRedeemForm();
-            }
-        }
-
-        function closeModal(modalId) {
-            if (modalId === 'redeem') {
-                document.getElementById('redeem-modal').style.display = 'none';
-                resetRedeemForm();
-            }
-        }
-
-        function resetRedeemForm() {
-            document.getElementById('redeem-input').value = '';
-            const msg = document.getElementById('redeem-message');
-            if (msg) {
-                msg.textContent = '';
-                msg.style.color = '';
-            }
-            const btn = document.querySelector('#redeem-form button');
-            if (btn) {
-                btn.classList.remove('success', 'failure');
-                btn.textContent = 'Redeem';
-                btn.disabled = false;
-            }
-        }
-
-        function dismissClaimBubble() {
-            const bubble = document.getElementById('mobileClaimBubble');
-            if (bubble) {
-                bubble.style.setProperty('display', 'none', 'important');
-            }
-            localStorage.setItem('claimBubbleDismissed', 'true');
-        }
-
-        function toggleCommunityTokens() {
-            const content = document.getElementById('community-content');
-            const icon = document.getElementById('expand-icon');
-
-            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-                content.style.maxHeight = '0px';
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                content.style.maxHeight = (content.scrollHeight + 32) + 'px';
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const redeemForm = document.getElementById('redeem-form');
-            if (redeemForm) {
-                redeemForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const input = document.getElementById('redeem-input').value.trim();
-                    const messageDiv = document.getElementById('redeem-message');
-                    const button = redeemForm.querySelector('button');
-
-                    messageDiv.textContent = '';
-                    messageDiv.style.color = '#2ecc71';
-                    button.classList.remove('success', 'failure');
-
-                    if (!input) {
-                        messageDiv.textContent = 'Please enter a code.';
-                        messageDiv.style.color = '#e74c3c';
-                        button.classList.add('failure');
-                        return;
-                    }
-
-                    if (!/^\d{13}$/.test(input)) {
-                        messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
-                        messageDiv.style.color = '#e74c3c';
-                        button.classList.add('failure');
-                        button.textContent = 'INVALID';
-                        return;
-                    }
-
-                    messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
-                    button.textContent = 'Checking...';
-                    button.disabled = true;
-
-                    setTimeout(() => {
-                        window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
-                    }, 800);
-                });
-            }
-        });
-    </script>
-
-    <script>
-        let connectedWallet = null;
-        let latestPrices = {};   // Stores latest prices for value calculation
-
-        // ====================== BASIC PAGE FUNCTIONS ======================
-        function goToToken(token) {
-            if (token === 'expb') window.location.href = '/bouncyball.html';
-            else if (token === 'giddy') window.location.href = '/onegiddy.html';
-        }
-        function claimBonus() { window.location.href = "/cashlinks.html#giddy"; }
-        function buyToken() { alert("Buy Interface Loading..."); }
-        function sellToken() { alert("Sell Interface Loading..."); }
-        function showProfile() { alert("Profile coming soon"); }
-
-        function openModal(modalId) {
-            if (modalId === 'redeem') {
-                document.getElementById('redeem-modal').style.display = 'flex';
-                resetRedeemForm();
-            }
-        }
-
-        function closeModal(modalId) {
-            if (modalId === 'redeem') {
-                document.getElementById('redeem-modal').style.display = 'none';
-                resetRedeemForm();
-            }
-        }
-
-        function resetRedeemForm() {
-            document.getElementById('redeem-input').value = '';
-            const msg = document.getElementById('redeem-message');
-            if (msg) {
-                msg.textContent = '';
-                msg.style.color = '';
-            }
-            const btn = document.querySelector('#redeem-form button');
-            if (btn) {
-                btn.classList.remove('success', 'failure');
-                btn.textContent = 'Redeem';
-                btn.disabled = false;
-            }
-        }
-
-        function dismissClaimBubble() {
-            const bubble = document.getElementById('mobileClaimBubble');
-            if (bubble) {
-                bubble.style.setProperty('display', 'none', 'important');
-            }
-            localStorage.setItem('claimBubbleDismissed', 'true');
-        }
-
-        function toggleCommunityTokens() {
-            const content = document.getElementById('community-content');
-            const icon = document.getElementById('expand-icon');
-
-            if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-                content.style.maxHeight = '0px';
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                content.style.maxHeight = (content.scrollHeight + 32) + 'px';
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
-
-        // ====================== PHANTOM WALLET INTEGRATION ======================
-        function toggleWalletDropdown() {
-            const dropdown = document.getElementById('walletDropdown');
-            const chevron = document.getElementById('chevron');
-            if (dropdown) dropdown.classList.toggle('hidden');
-            if (chevron) chevron.classList.toggle('rotate-180');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            const btn = document.getElementById('addWalletBtn');
-            const dropdown = document.getElementById('walletDropdown');
-            if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-                const chevron = document.getElementById('chevron');
-                if (chevron) chevron.classList.remove('rotate-180');
-            }
-        });
-
-        async function handlePhantomConnect() {
-            const dappUrl = "https://www.ofidcrypt.com/wallet.html";
-
-            // Always close dropdown first
-            const dropdown = document.getElementById('walletDropdown');
-            if (dropdown) dropdown.classList.add('hidden');
-
-            // 1. Check for injected provider (Handles Desktop Extension AND Phantom Mobile In-App Browser)
-            const provider = window.phantom?.solana || window.solana;
-
-            if (provider && provider.isPhantom) {
-                try {
-                    const resp = await provider.connect();
-                    connectedWallet = resp.publicKey.toString();
-                    showConnectedState();
-
-                    // Automatically pull balances once connected successfully
-                    if (typeof updateWalletBalances === "function") {
-                        updateWalletBalances();
-                    }
-                } catch (err) {
-                    console.error(err);
-                    alert("Connection cancelled.");
-                }
-                return;
-            }
-
-            // 2. Mobile Deep Linking (Runs ONLY if provider is missing AND user is on mobile browser)
-            if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-                const encodedUrl = encodeURIComponent(dappUrl);
-                // ✅ CORRECT PATH WAYPOINT
-                window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
-                return;
-            }
-
-            alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
-        }
-
-        function disconnectWallet() {
-            const dropdown = document.getElementById('walletDropdown');
-            if (dropdown) dropdown.classList.add('hidden');
-
-            const provider = window.phantom?.solana || window.solana;
-            if (provider) provider.disconnect();
-
-            connectedWallet = null;
-            showDisconnectedState();
-        }
-
-        function showConnectedState() {
-            const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
-
-            document.getElementById('walletBtnText').innerText = "CONNECTED";
-            document.getElementById('addWalletBtn').classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
-
-            const chevron = document.getElementById('chevron');
-            if (chevron) chevron.style.display = 'none';
-
-            document.getElementById('connectedAddress').innerText = short;
-            document.getElementById('connectedStatus').classList.remove('hidden');
-
-            // === IMPORTANT: Hide Connect, Show Disconnect ===
-            const connectOption = document.getElementById('connectOption');
-            const disconnectOption = document.getElementById('disconnectOption');
-            if (connectOption) connectOption.classList.add('hidden');
-            if (disconnectOption) disconnectOption.classList.remove('hidden');
-        }
-
-        function showDisconnectedState() {
-            document.getElementById('walletBtnText').innerText = "ADD WALLET";
-            document.getElementById('addWalletBtn').classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
-
-            const chevron = document.getElementById('chevron');
-            if (chevron) chevron.style.display = 'inline-block';
-
-            document.getElementById('connectedStatus').classList.add('hidden');
-
-            // === IMPORTANT: Show Connect, Hide Disconnect ===
-            const connectOption = document.getElementById('connectOption');
-            const disconnectOption = document.getElementById('disconnectOption');
-            if (connectOption) connectOption.classList.remove('hidden');
-            if (disconnectOption) disconnectOption.classList.add('hidden');
-        }
-
-        // ====================== BALANCES + QUANTITY FIX ======================
-        async function updateWalletBalances() {
-            if (!connectedWallet) return;
-
-            try {
-                const response = await fetch(`http://localhost:3000/api/balances/${connectedWallet}`);
-                const balances = await response.json();
-
-                const tokens = ['SOL', 'USDC', 'EXPB', 'GIDDY'];
-
-                tokens.forEach(sym => {
-                    const qtyEl = document.getElementById(`qty-${sym}`);
-                    const valueEl = document.getElementById(`value-${sym}`);
-                    let rawQty = parseFloat(balances[sym] || 0);
-
-                    if (sym === 'EXPB') rawQty *= 1000;
-
-                    const price = latestPrices[sym] || 0;
-
-                    if (qtyEl) qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
-                    if (valueEl) {
-                        const valueCAD = rawQty * price;
-                        valueEl.textContent = `$${(valueCAD).toFixed(2)} CAD`;
-                    }
-                });
-            } catch (e) {
-                console.error("Balance fetch failed", e);
-            }
-        }
-
-        // ====================== PRICE FETCH ======================
-        const TARGET_SYMBOLS = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
-        const LOCAL_API_URL = "http://localhost:3000/api/prices";
-
-        async function fetchTokenPrices() {
-            try {
-                const response = await fetch(LOCAL_API_URL);
-                const dataMatrix = await response.json();
-
-                TARGET_SYMBOLS.forEach(symbol => {
-                    const priceEl = document.getElementById(`price-${symbol}`);
-                    const tokenData = dataMatrix[symbol];
-
-                    if (tokenData && tokenData.price !== null) {
-                        latestPrices[symbol] = tokenData.price;
-
-                        let priceStr = (symbol === 'ONE' || symbol === 'GIDDY')
-                            ? `$${tokenData.price.toFixed(2)} CAD`
-                            : `$${tokenData.price.toFixed(6)} CAD`;
-
-                        if (priceEl) priceEl.innerText = priceStr;
-                    } else if (priceEl) {
-                        priceEl.innerText = "No Pool";
-                    }
-                });
-
-                if (connectedWallet) updateWalletBalances();
-            } catch (error) {
-                console.error("Failed pulling pricing metrics:", error);
-            }
-        }
-
-        // ====================== PULL TO REFRESH ======================
-        let touchStartY = 0;
-        let isPulling = false;
-
-        function initPullToRefresh() {
-            const pullToRefresh = document.getElementById('pullToRefresh');
-            if (!pullToRefresh) return;
-
-            const mainContent = document.getElementById('main');
-
-            mainContent.addEventListener('touchstart', (e) => {
-                if (window.scrollY <= 10) {
-                    touchStartY = e.touches[0].clientY;
-                    isPulling = true;
-                }
-            }, { passive: true });
-
-            mainContent.addEventListener('touchmove', (e) => {
-                if (!isPulling) return;
-                const distance = e.touches[0].clientY - touchStartY;
-                if (distance > 70) {
-                    pullToRefresh.classList.add('active');
-                }
-            }, { passive: true });
-
-            mainContent.addEventListener('touchend', () => {
-                if (!isPulling) return;
-                isPulling = false;
-
-                const pullEl = document.getElementById('pullToRefresh');
-                if (!pullEl) return;
-
-                if (pullEl.classList.contains('active')) {
-                    fetchTokenPrices();
-                    if (connectedWallet) updateWalletBalances();
-                }
-
-                pullEl.classList.remove('active');
-            });
-        }
-
-        // ====================== INITIALIZE EVERYTHING ======================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Redeem form handler
-            const redeemForm = document.getElementById('redeem-form');
-            if (redeemForm) {
-                redeemForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const input = document.getElementById('redeem-input').value.trim();
-                    const messageDiv = document.getElementById('redeem-message');
-                    const button = redeemForm.querySelector('button');
-
-                    messageDiv.textContent = '';
-                    messageDiv.style.color = '#2ecc71';
-                    button.classList.remove('success', 'failure');
-
-                    if (!input) {
-                        messageDiv.textContent = 'Please enter a code.';
-                        messageDiv.style.color = '#e74c3c';
-                        button.classList.add('failure');
-                        return;
-                    }
-                    if (!/^\d{13}$/.test(input)) {
-                        messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
-                        messageDiv.style.color = '#e74c3c';
-                        button.classList.add('failure');
-                        button.textContent = 'INVALID';
-                        return;
-                    }
-
-                    messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
-                    button.textContent = 'Checking...';
-                    button.disabled = true;
-
-                    setTimeout(() => {
-                        window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
-                    }, 800);
-                });
-            }
-
-            // Add Wallet Button
-            const addBtn = document.getElementById('addWalletBtn');
-            if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
-
-            // Phantom Listeners
-            if (window.solana && window.solana.isPhantom) {
-                window.solana.on('connect', (publicKey) => {
-                    connectedWallet = publicKey.toString();
-                    showConnectedState();
-                });
-
-                window.solana.on('disconnect', () => {
-                    showDisconnectedState();
-                });
-
-                window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
-            }
-
-            // Start live updates
-            fetchTokenPrices();
-            setInterval(fetchTokenPrices, 15000);
-            setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
-
-            // Pull to Refresh
-            initPullToRefresh();
-
-            // Fade-in observer
-            const fallbackObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('visible');
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
-        });
-    </script>
-
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery.scrollex.min.js"></script>
     <script src="/assets/js/jquery.scrolly.min.js"></script>
@@ -1489,6 +1050,7 @@
     <script src="/assets/js/util.js"></script>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/ofid-main.js"></script>
+    <script src="/assets/js/webapp/wallet.js"></script>
 
 </body>
 
