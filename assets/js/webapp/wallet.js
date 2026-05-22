@@ -1,0 +1,367 @@
+// ================================================
+// assets/js/webapp/wallet.js
+// ================================================
+
+// ====================== GLOBAL VARIABLES ======================
+let connectedWallet = null;
+let latestPrices = {};   // Stores latest prices for value calculation
+
+// ====================== BASIC PAGE FUNCTIONS ======================
+function goToToken(token) {
+    if (token === 'expb') window.location.href = '/bouncyball.html';
+    else if (token === 'giddy') window.location.href = '/onegiddy.html';
+}
+
+function goToShop() { 
+    window.location.href = '/shop.html'; 
+}
+
+function claimBonus() { 
+    window.location.href = "/cashlinks.html#giddy"; 
+}
+
+function buyToken() { 
+    alert("Buy Interface Loading..."); 
+}
+
+function sellToken() { 
+    alert("Sell Interface Loading..."); 
+}
+
+function showProfile() { 
+    alert("Profile coming soon"); 
+}
+
+function createWalletPlaceholder() { 
+    alert("Wallet connection and creation coming soon"); 
+}
+
+// ====================== MODAL & REDEEM FUNCTIONS ======================
+function openModal(modalId) {
+    if (modalId === 'redeem') {
+        document.getElementById('redeem-modal').style.display = 'flex';
+        resetRedeemForm();
+    }
+}
+
+function closeModal(modalId) {
+    if (modalId === 'redeem') {
+        document.getElementById('redeem-modal').style.display = 'none';
+        resetRedeemForm();
+    }
+}
+
+function resetRedeemForm() {
+    document.getElementById('redeem-input').value = '';
+    const msg = document.getElementById('redeem-message');
+    if (msg) {
+        msg.textContent = '';
+        msg.style.color = '';
+    }
+    const btn = document.querySelector('#redeem-form button');
+    if (btn) {
+        btn.classList.remove('success', 'failure');
+        btn.textContent = 'Redeem';
+        btn.disabled = false;
+    }
+}
+
+// ====================== UI HELPER FUNCTIONS ======================
+function dismissClaimBubble() {
+    const bubble = document.getElementById('mobileClaimBubble');
+    if (bubble) {
+        bubble.style.setProperty('display', 'none', 'important');
+    }
+    localStorage.setItem('claimBubbleDismissed', 'true');
+}
+
+function toggleCommunityTokens() {
+    const content = document.getElementById('community-content');
+    const icon = document.getElementById('expand-icon');
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        content.style.maxHeight = (content.scrollHeight + 32) + 'px';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// ====================== PHANTOM WALLET INTEGRATION ======================
+function toggleWalletDropdown() {
+    const dropdown = document.getElementById('walletDropdown');
+    const chevron = document.getElementById('chevron');
+    if (dropdown) dropdown.classList.toggle('hidden');
+    if (chevron) chevron.classList.toggle('rotate-180');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    const btn = document.getElementById('addWalletBtn');
+    const dropdown = document.getElementById('walletDropdown');
+    if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.add('hidden');
+        const chevron = document.getElementById('chevron');
+        if (chevron) chevron.classList.remove('rotate-180');
+    }
+});
+
+async function handlePhantomConnect() {
+    const dappUrl = "https://www.ofidcrypt.com/wallet.html";
+
+    // Always close dropdown first
+    const dropdown = document.getElementById('walletDropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+
+    // 1. Check for injected provider
+    const provider = window.phantom?.solana || window.solana;
+
+    if (provider && provider.isPhantom) {
+        try {
+            const resp = await provider.connect();
+            connectedWallet = resp.publicKey.toString();
+            showConnectedState();
+
+            if (typeof updateWalletBalances === "function") {
+                updateWalletBalances();
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Connection cancelled.");
+        }
+        return;
+    }
+
+    // 2. Mobile Deep Linking
+    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+        const encodedUrl = encodeURIComponent(dappUrl);
+        window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
+        return;
+    }
+
+    alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
+}
+
+function disconnectWallet() {
+    const dropdown = document.getElementById('walletDropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+
+    const provider = window.phantom?.solana || window.solana;
+    if (provider) provider.disconnect();
+
+    connectedWallet = null;
+    showDisconnectedState();
+}
+
+function showConnectedState() {
+    const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
+
+    document.getElementById('walletBtnText').innerText = "CONNECTED";
+    document.getElementById('addWalletBtn').classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
+
+    const chevron = document.getElementById('chevron');
+    if (chevron) chevron.style.display = 'none';
+
+    document.getElementById('connectedAddress').innerText = short;
+    document.getElementById('connectedStatus').classList.remove('hidden');
+
+    const connectOption = document.getElementById('connectOption');
+    const disconnectOption = document.getElementById('disconnectOption');
+    if (connectOption) connectOption.classList.add('hidden');
+    if (disconnectOption) disconnectOption.classList.remove('hidden');
+}
+
+function showDisconnectedState() {
+    document.getElementById('walletBtnText').innerText = "ADD WALLET";
+    document.getElementById('addWalletBtn').classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
+
+    const chevron = document.getElementById('chevron');
+    if (chevron) chevron.style.display = 'inline-block';
+
+    document.getElementById('connectedStatus').classList.add('hidden');
+
+    const connectOption = document.getElementById('connectOption');
+    const disconnectOption = document.getElementById('disconnectOption');
+    if (connectOption) connectOption.classList.remove('hidden');
+    if (disconnectOption) disconnectOption.classList.add('hidden');
+}
+
+// ====================== BALANCES + PRICE FUNCTIONS ======================
+async function updateWalletBalances() {
+    if (!connectedWallet) return;
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/balances/${connectedWallet}`);
+        const balances = await response.json();
+
+        const tokens = ['SOL', 'USDC', 'EXPB', 'GIDDY'];
+
+        tokens.forEach(sym => {
+            const qtyEl = document.getElementById(`qty-${sym}`);
+            const valueEl = document.getElementById(`value-${sym}`);
+            let rawQty = parseFloat(balances[sym] || 0);
+
+            if (sym === 'EXPB') rawQty *= 1000;
+
+            const price = latestPrices[sym] || 0;
+
+            if (qtyEl) qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
+            if (valueEl) {
+                const valueCAD = rawQty * price;
+                valueEl.textContent = `$${(valueCAD).toFixed(2)} CAD`;
+            }
+        });
+    } catch (e) {
+        console.error("Balance fetch failed", e);
+    }
+}
+
+// ====================== PRICE FETCH ======================
+const TARGET_SYMBOLS = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+const LOCAL_API_URL = "http://localhost:3000/api/prices";
+
+async function fetchTokenPrices() {
+    try {
+        const response = await fetch(LOCAL_API_URL);
+        const dataMatrix = await response.json();
+
+        TARGET_SYMBOLS.forEach(symbol => {
+            const priceEl = document.getElementById(`price-${symbol}`);
+            const tokenData = dataMatrix[symbol];
+
+            if (tokenData && tokenData.price !== null) {
+                latestPrices[symbol] = tokenData.price;
+
+                let priceStr = (symbol === 'ONE' || symbol === 'GIDDY')
+                    ? `$${tokenData.price.toFixed(2)} CAD`
+                    : `$${tokenData.price.toFixed(6)} CAD`;
+
+                if (priceEl) priceEl.innerText = priceStr;
+            } else if (priceEl) {
+                priceEl.innerText = "No Pool";
+            }
+        });
+
+        if (connectedWallet) updateWalletBalances();
+    } catch (error) {
+        console.error("Failed pulling pricing metrics:", error);
+    }
+}
+
+// ====================== PULL TO REFRESH ======================
+let touchStartY = 0;
+let isPulling = false;
+
+function initPullToRefresh() {
+    const pullToRefresh = document.getElementById('pullToRefresh');
+    if (!pullToRefresh) return;
+
+    const mainContent = document.getElementById('main');
+
+    mainContent.addEventListener('touchstart', (e) => {
+        if (window.scrollY <= 10) {
+            touchStartY = e.touches[0].clientY;
+            isPulling = true;
+        }
+    }, { passive: true });
+
+    mainContent.addEventListener('touchmove', (e) => {
+        if (!isPulling) return;
+        const distance = e.touches[0].clientY - touchStartY;
+        if (distance > 70) {
+            pullToRefresh.classList.add('active');
+        }
+    }, { passive: true });
+
+    mainContent.addEventListener('touchend', () => {
+        if (!isPulling) return;
+        isPulling = false;
+
+        const pullEl = document.getElementById('pullToRefresh');
+        if (!pullEl) return;
+
+        if (pullEl.classList.contains('active')) {
+            fetchTokenPrices();
+            if (connectedWallet) updateWalletBalances();
+        }
+
+        pullEl.classList.remove('active');
+    });
+}
+
+// ====================== INITIALIZE EVERYTHING ======================
+document.addEventListener('DOMContentLoaded', () => {
+    // Redeem form handler
+    const redeemForm = document.getElementById('redeem-form');
+    if (redeemForm) {
+        redeemForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('redeem-input').value.trim();
+            const messageDiv = document.getElementById('redeem-message');
+            const button = redeemForm.querySelector('button');
+
+            messageDiv.textContent = '';
+            messageDiv.style.color = '#2ecc71';
+            button.classList.remove('success', 'failure');
+
+            if (!input) {
+                messageDiv.textContent = 'Please enter a code.';
+                messageDiv.style.color = '#e74c3c';
+                button.classList.add('failure');
+                return;
+            }
+
+            if (!/^\d{13}$/.test(input)) {
+                messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+                messageDiv.style.color = '#e74c3c';
+                button.classList.add('failure');
+                button.textContent = 'INVALID';
+                return;
+            }
+
+            messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
+            button.textContent = 'Checking...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
+            }, 800);
+        });
+    }
+
+    // Add Wallet Button
+    const addBtn = document.getElementById('addWalletBtn');
+    if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
+
+    // Phantom Listeners
+    if (window.solana && window.solana.isPhantom) {
+        window.solana.on('connect', (publicKey) => {
+            connectedWallet = publicKey.toString();
+            showConnectedState();
+        });
+
+        window.solana.on('disconnect', () => {
+            showDisconnectedState();
+        });
+
+        window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
+    }
+
+    // Start live updates
+    fetchTokenPrices();
+    setInterval(fetchTokenPrices, 15000);
+    setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
+
+    // Pull to Refresh
+    initPullToRefresh();
+
+    // Fade-in observer
+    const fallbackObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
+});
