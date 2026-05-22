@@ -1225,12 +1225,19 @@
             const dropdown = document.getElementById('walletDropdown');
             if (dropdown) dropdown.classList.add('hidden');
 
-            // Desktop / Extension
-            if (window.solana && window.solana.isPhantom) {
+            // 1. Check for injected provider (Handles Desktop Extension AND Phantom Mobile In-App Browser)
+            const provider = window.phantom?.solana || window.solana;
+
+            if (provider && provider.isPhantom) {
                 try {
-                    const resp = await window.solana.connect();
+                    const resp = await provider.connect();
                     connectedWallet = resp.publicKey.toString();
                     showConnectedState();
+
+                    // Automatically pull balances once connected successfully
+                    if (typeof updateWalletBalances === "function") {
+                        updateWalletBalances();
+                    }
                 } catch (err) {
                     console.error(err);
                     alert("Connection cancelled.");
@@ -1238,10 +1245,11 @@
                 return;
             }
 
-            // Mobile - Best Phantom Deep Link
+            // 2. Mobile Deep Linking (Runs ONLY if provider is missing AND user is on mobile browser)
             if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
                 const encodedUrl = encodeURIComponent(dappUrl);
-                window.location.href = `https://phantom.app/ul/v1/connect?uri=${encodedUrl}&redirect=${encodedUrl}`;
+                // ✅ CORRECT PATH WAYPOINT
+                window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
                 return;
             }
 
@@ -1252,7 +1260,9 @@
             const dropdown = document.getElementById('walletDropdown');
             if (dropdown) dropdown.classList.add('hidden');
 
-            if (window.solana) window.solana.disconnect();
+            const provider = window.phantom?.solana || window.solana;
+            if (provider) provider.disconnect();
+
             connectedWallet = null;
             showDisconnectedState();
         }
