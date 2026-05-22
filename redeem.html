@@ -139,17 +139,29 @@
             <i class="fas fa-sun"></i>
         </a>
 
-        <!-- Nav -->
         <nav id="nav">
             <ul class="links">
+                <li style="text-align: center; margin-bottom: 20px; display: block;">
+                    <style>
+                        @media (min-width: 768px) {
+                            .mobile-browse-only {
+                                display: none !important;
+                            }
+                        }
+                    </style>
+                    <a href="https://www.ofidcrypt.com" target="_blank" class="mobile-browse-only"
+                        style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; color: #a855f7; text-decoration: none;">
+                        <i class="fas fa-globe"></i> Browse OFiDCrypt.com
+                    </a>
+                </li>
+
                 <li><a href="index.html">Home</a></li>
                 <li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
                 <li><a href="wallet.html">Wallet</a></li>
                 <li><a href="bouncyball.html">Tokens</a></li>
-                <li><a href="cashlinks.html">Digital Gifts</a></li>
+                <li><a href="/pages/about.html">About Us</a></li>
             </ul>
 
-            <!-- Social Brands (Custom) -->
             <ul class="icons top-icons">
                 <li class="top-toggle">
                     <a href="#" aria-label="Dark-Light Desktop Toggle Button">
@@ -164,12 +176,12 @@
                     </a>
                 </li>
             </ul>
+
             <ul class="icons">
                 <li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
                 </li>
                 <li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
-                            class="label">YouTube</span></a>
-                </li>
+                            class="label">YouTube</span></a></li>
                 <li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
                             class="label">TikTok</span></a></li>
                 <li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
@@ -178,7 +190,6 @@
                             class="label">LinkedIn</span></a></li>
             </ul>
 
-            <!-- Footer Links -->
             <ul class="footer-links">
                 <li class="footer-info-link">
                     <a href="/pages/about.html#copyright">Docs | About | Partners | Compliance</a>
@@ -201,13 +212,16 @@
 
                 <div class="flex items-center gap-5 z-10">
                     <i
-                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors hidden md:block"></i>
+
+                    <i id="navPanelTrigger"
+                        class="fa-solid fa-bars text-2xl text-white/80 hover:text-white cursor-pointer transition-colors md:hidden"></i>
+
                     <div onclick="showProfile()"
                         class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-200 transition-colors overflow-hidden">
                         <img src="/assets/images/webp/ofidcrypt-digitized-logo.webp" alt="OFIDCrypt Logo"
                             class="w-full h-full object-cover" />
                     </div>
-
                 </div>
             </div>
 
@@ -251,7 +265,9 @@
                     class="fas fa-gamepad"></i>Play Blinko!</div>
             <div class="nav-item" onclick="window.location.href='/wallet.html'"><i class="fas fa-wallet"></i>Wallet
             </div>
-            <div class="nav-item" id="navPanelTrigger"><i class="fas fa-bars"></i> Menu</div>
+            <div class="nav-item" onclick="window.location.href='/cashlinks.html'"><i
+                    class="fas fa-circle-notch"></i>Wheel
+            </div>
         </nav>
     </div>
 
