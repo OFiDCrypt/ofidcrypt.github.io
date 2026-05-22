@@ -368,11 +368,25 @@
         <!-- MAIN NAVIGATION -->
         <nav id="nav">
             <ul class="links">
+                <li style="text-align: center; margin-bottom: 20px; display: block;">
+                    <style>
+                        @media (min-width: 768px) {
+                            .mobile-browse-only {
+                                display: none !important;
+                            }
+                        }
+                    </style>
+                    <a href="https://www.ofidcrypt.com" target="_blank" class="mobile-browse-only"
+                        style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 400; color: #a855f7; text-decoration: none;">
+                        <i class="fas fa-globe"></i> Browse OFiDCrypt.com
+                    </a>
+                </li>
+
                 <li><a href="index.html">Home</a></li>
                 <li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
-                <li class="active"><a href="wallet.html">Wallet</a></li>
+                <li><a href="wallet.html">Wallet</a></li>
                 <li><a href="bouncyball.html">Tokens</a></li>
-                <li><a href="cashlinks.html">Digital Gifts</a></li>
+                <li><a href="/pages/about.html">About Us</a></li>
             </ul>
 
             <ul class="icons top-icons">
@@ -382,6 +396,7 @@
                             class="custom-site-icon">
                     </a>
                 </li>
+
                 <li class="top-hvr">
                     <a href="https://www.ofidcrypt.ca" aria-label="Hvr">
                         <img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
@@ -402,7 +417,6 @@
                             class="label">LinkedIn</span></a></li>
             </ul>
 
-            <!-- Footer Links -->
             <ul class="footer-links">
                 <li class="footer-info-link">
                     <a href="/pages/about.html#copyright">Docs | About | Partners | Compliance</a>
@@ -439,9 +453,9 @@
 
             <!-- WALLET TOP BAR -->
             <div
-                class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black mb-6">
+                class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black mb-6 min-h-[68px]">
+
                 <div class="flex items-center gap-4 z-10">
-                    <!-- Added flex, items-center, and justify-center to the button -->
                     <button onclick="history.back()" class="back-btn flex items-center justify-center">
                         <i class="fas fa-arrow-left"></i>
                     </button>
@@ -459,7 +473,11 @@
 
                 <div class="flex items-center gap-5 z-10">
                     <i
-                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors"></i>
+                        class="fa-solid fa-bell text-2xl text-white/80 hover:text-white cursor-pointer transition-colors hidden md:block"></i>
+
+                    <i id="navPanelTrigger"
+                        class="fa-solid fa-bars text-2xl text-white/80 hover:text-white cursor-pointer transition-colors md:hidden"></i>
+
                     <div onclick="showProfile()"
                         class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-200 transition-colors overflow-hidden">
                         <img src="/assets/images/webp/ofidcrypt-digitized-logo.webp" alt="OFIDCrypt Logo"
@@ -997,7 +1015,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
+    <!-- Bottom Nav -->
     <nav class="bottom-nav">
         <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'"><i
                 class="fas fa-comment-dots"></i>Ask Giddy</div>
@@ -1005,9 +1023,12 @@
         </div>
         <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i class="fas fa-gamepad"></i>Play
             Blinko!</div>
-        <div class="nav-item active"><i class="fas fa-wallet"></i>Wallet</div>
-        <div class="nav-item" id="navPanelTrigger"><i class="fas fa-bars"></i> Menu</div>
+        <div class="nav-item active" onclick="window.location.href='/wallet.html'"><i class="fas fa-wallet"></i>Wallet
+        </div>
+        <div class="nav-item" onclick="window.location.href='/cashlinks.html'"><i class="fas fa-circle-notch"></i>Wheel
+        </div>
     </nav>
+    </div>
 
     <!-- REDEEM MODAL -->
     <div id="redeem-modal" class="modal">
