@@ -138,19 +138,6 @@
             }
         }
 
-        @media (min-width: 768px) {
-            .fade-in {
-                opacity: 0;
-                transform: translateY(20px);
-                transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
-            }
-
-            .fade-in.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* ====================== MOBILE CLAIM BUBBLE ====================== */
         .mobile-claim {
             display: none;
@@ -350,9 +337,12 @@
 
 </head>
 
-<body class="is-preload">
+<body>
 
     <div id="wrapper" class="fade-in">
+
+        <!-- Background Layer -->
+        <div class="bg fixed"></div>
 
         <!-- PAGE HEADER -->
         <header class="header-subpage">
@@ -1063,16 +1053,9 @@
         </button>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/jquery.scrollex.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script>
+    <!-- Scripts-->
     <script src="/assets/js/ofid-main.js"></script>
     <script src="/assets/js/webapp/wallet.js"></script>
 
 </body>
-
 </html>
