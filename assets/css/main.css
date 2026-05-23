@@ -9315,3 +9315,70 @@ footer {
 		margin: 15px auto 30px;
 	}
 }
+
+/* ==========================================================================
+   TOKEN DIRECTORY MODAL - HEADER & CLOSE BUTTON THEME RULES
+   ========================================================================== */
+
+/* --- CONTAINER BASE ANCHOR (AUTOMATIC VARIABLES) --- */
+.modal-content {
+    position: relative; /* CRITICAL: Anchor for absolute positioned close button */
+    
+    /* Using your site's native variables to shift automatically with the toggle */
+    background: var(--main-bg-color); 
+    color: var(--text-color);
+    border: 1px solid var(--quick-start-border-color);
+    
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 
+                inset 0 0 20px rgba(168, 85, 247, 0.08); /* Ambient depth */
+    padding: 35px 25px 25px 25px;
+    border-radius: 20px;
+    max-width: 480px;
+    margin: 0 auto;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* --- THEMED HEADING (ADAPTIVE WITH THEME SWITCH) --- */
+.modal-content h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    
+    /* Keeps a dynamic gradient matching your dark profile, but falls back gracefully in light mode */
+    background: linear-gradient(135deg, var(--text-color) 40%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- FIXED TOP-RIGHT CLOSE BUTTON --- */
+.modal-content .close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 32px;
+    font-weight: 200; /* Sleek lightweight look */
+    color: var(--text-color); /* Inherits theme color base */
+    opacity: 0.6; /* Softened by default */
+    cursor: pointer;
+    line-height: 0.7;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    padding: 5px;
+}
+
+/* Close Hover/Interaction States (Universal Theme Actions) --- */
+.modal-content .close:hover {
+    opacity: 1;
+    color: #f43f5e; /* Vivid alert coral red on hover across both light/dark themes */
+    text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
+    transform: scale(1.1);
+}
+
+.modal-content .close:active {
+    transform: scale(0.95);
+}
