@@ -6167,7 +6167,6 @@ body.dark-mode #darkModeToggle.dark i::before { content: '\f185'; }
 	line-height: 1;
 	width: 1em;
 	height: 1em;
-	font-size: 1em !important;
 	/* Matches width/height for icon scaling */
 	display: flex !important;
 	align-items: center !important;
