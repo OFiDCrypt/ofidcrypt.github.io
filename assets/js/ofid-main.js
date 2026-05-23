@@ -195,99 +195,76 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoScroll();
 });
 
-// ====================== STANDALONE MOBILE NAV PANEL (Fixed) ======================
+// ====================== STANDALONE MOBILE NAV PANEL ======================
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const nav = document.getElementById('nav');
     const trigger = document.getElementById('navPanelTrigger');
 
-    if (!nav || !trigger) {
-        console.warn('Mobile nav elements not found');
-        return;
-    }
+    if (!nav || !trigger) return;
 
-    // Remove any existing panel
-    let existing = document.getElementById('navPanel');
-    if (existing) existing.remove();
-
-    // Create panel with SINGLE close button
-    const navPanel = document.createElement('div');
-    navPanel.id = 'navPanel';
-    navPanel.innerHTML = `
-        <nav></nav>
-        <a href="#" class="close"></a>
-    `;
-    body.appendChild(navPanel);
+    // Create/Reuse Panel and Overlay
+    let navPanel = document.getElementById('navPanel') || (function() {
+        const div = document.createElement('div');
+        div.id = 'navPanel';
+        div.innerHTML = `<nav></nav><a href="#" class="close"></a>`;
+        body.appendChild(div);
+        return div;
+    })();
+    
+    let overlay = document.getElementById('navPanelOverlay') || (function() {
+        const div = document.createElement('div');
+        div.id = 'navPanelOverlay';
+        body.appendChild(div);
+        return div;
+    })();
 
     const navPanelInner = navPanel.querySelector('nav');
     const closeBtn = navPanel.querySelector('.close');
 
-    // Clone sections while preserving original classes for styling
-    const sections = [
-        nav.querySelector('ul.links'),
-        nav.querySelector('ul.top-icons'),
-        nav.querySelector('ul.icons:not(.top-icons)'),
-        nav.querySelector('ul.footer-links')
-    ];
-
-    sections.forEach(section => {
-        if (section) {
-            const clone = section.cloneNode(true);
-            // Ensure social icons keep their styling classes
-            if (section.classList.contains('icons')) {
-                clone.classList.add('icons');
-            }
-            navPanelInner.appendChild(clone);
-        }
-    });
-
-    // Add Dark Mode Toggle
+    // Add Dark Mode Toggle (Restored Original Size)
     const toggleLi = document.createElement('li');
     toggleLi.className = 'dark-mode-item';
-    toggleLi.innerHTML = `
-        <a href="#" class="icon dark-mode-toggle">
-            <i class="fas fa-sun"></i>
-        </a>
-    `;
-    navPanelInner.prepend(toggleLi);
+    toggleLi.innerHTML = `<a href="#" class="icon dark-mode-toggle"><i class="fas fa-sun fa-2x"></i></a>`;
+    const customList = document.createElement('ul');
+    customList.className = 'links';
+    customList.appendChild(toggleLi);
+    navPanelInner.appendChild(customList);
 
     toggleLi.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
-        window.toggleDarkMode();
+        body.classList.toggle('dark-mode');
     });
 
-    function toggleNavPanel() {
-        body.classList.toggle('is-navPanel-visible');
-    }
+    // Clone sections
+    const sections = [nav.querySelector('ul.links'), nav.querySelector('ul.top-icons'), nav.querySelector('ul.icons:not(.top-icons)'), nav.querySelector('ul.footer-links')];
+    sections.forEach(s => { if (s) navPanelInner.appendChild(s.cloneNode(true)); });
 
-    trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        toggleNavPanel();
-    });
+    // Close logic
+    const closeNav = () => body.classList.remove('is-navPanel-visible');
+    trigger.addEventListener('click', (e) => { e.preventDefault(); body.classList.add('is-navPanel-visible'); });
+    closeBtn.addEventListener('click', (e) => { e.preventDefault(); closeNav(); });
+    overlay.addEventListener('click', closeNav);
 
-    closeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        body.classList.remove('is-navPanel-visible');
-    });
-
+    // Link handling
     navPanel.addEventListener('click', (e) => {
-        if (e.target === navPanel) {
-            body.classList.remove('is-navPanel-visible');
-        }
-    });
+        const link = e.target.closest('a');
+        if (!link) return;
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === "Escape" && body.classList.contains('is-navPanel-visible')) {
-            body.classList.remove('is-navPanel-visible');
-        }
-    });
+        const href = link.getAttribute('href');
 
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 980) {
-            body.classList.remove('is-navPanel-visible');
-        }
+        // Logic: ONLY close if it's an internal jump link, the close button, or the overlay
+        if (href && href.startsWith('#') && href.length > 1) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            
+            // Trigger scroll first, then close panel slightly after to avoid layout twitch
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                // Small delay ensures the "jump" initiates while panel is still visible, 
+                // preventing the page height recalculation mid-scroll.
+                setTimeout(closeNav, 400); 
+            }
+        } 
     });
-
-    console.log('✅ Mobile Nav Panel fixed (single close + restored social borders)');
 });
