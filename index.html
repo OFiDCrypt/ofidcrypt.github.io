@@ -13,26 +13,26 @@
 
 	<!-- JSON-LD Structured Data -->
 	<script type="application/ld+json">
-	{
-	  "@context": "https://schema.org",
-	  "@type": "Organization",
-	  "name": "OFiDCrypt",
-	  "url": "https://www.ofidcrypt.com",
-	  "logo": [
-	    "https://www.ofidcrypt.com/assets/images/ofid-logo-saturn01.png",
-	    "https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp"
-	  ],
-	  "sameAs": [
-	    "https://x.com/OFiDCrypt",
-		"https://x.com/Giddys_CA",
-	    "https://youtube.com/@OFiDCrypt",
-	    "https://www.tiktok.com/@Giddys_CA",
-	    "https://www.facebook.com/OFiDCrypt",
-	    "https://linkedin.com/company/OFiDCrypt",
-	    "https://www.instagram.com/OFiDCrypt"
-	  ]
-	}
-	</script>
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "OFiDCrypt",
+      "url": "https://www.ofidcrypt.com",
+      "logo": [
+        "https://www.ofidcrypt.com/assets/images/ofid-logo-saturn01.png",
+        "https://www.ofidcrypt.com/assets/images/webp/bg-ofid-giddys.webp"
+      ],
+      "sameAs": [
+        "https://x.com/OFiDCrypt",
+        "https://x.com/Giddys_CA",
+        "https://youtube.com/@OFiDCrypt",
+        "https://www.tiktok.com/@Giddys_CA",
+        "https://www.facebook.com/OFiDCrypt",
+        "https://linkedin.com/company/OFiDCrypt",
+        "https://www.instagram.com/OFiDCrypt"
+      ]
+    }
+    </script>
 
 	<!-- Meta SEO & Viewport Setup -->
 	<title>OFiDCrypt | Family Products with Digital Gifts</title>
@@ -73,7 +73,7 @@
 	<!-- Canonical Link -->
 	<link rel="canonical" href="https://www.ofidcrypt.com">
 
-	<!-- Production Stylesheet (Stripped of layout blockages) -->
+	<!-- Production Stylesheet -->
 	<link rel="stylesheet" href="/assets/css/main.css">
 
 	<!-- Google reCAPTCHA -->
@@ -81,36 +81,14 @@
 	<meta http-equiv='content-language' content='en-gb'>
 </head>
 
-<style>
-	.site-bg {
-		/* Rules from your #wrapper>.bg.fixed configuration */
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		z-index: -1;
-		/* Pushes the background behind your text, navigation, and tokens */
+<body>
 
-		/* Rules from your #wrapper>.bg configuration */
-		background-image: url('/assets/images/bg.png');
-		background-size: auto 175%;
-		background-position: center top;
-		/* Centers horizontal axis, anchors top vertical scaling */
-		background-repeat: no-repeat;
-
-		/* Global layout resets */
-		margin: 0;
-		padding: 0;
-	}
-</style>
-
-<body class="site.bg">
-
-	<!-- Content Container (Stripped of fade-in delays) -->
+	<!-- Content Container -->
 	<div id="wrapper">
 
-		<!-- Intro Container -->
+		<!-- Background Layer - Restored -->
+		<div class="bg fixed"></div>
+
 		<div id="intro">
 			<div class="images-with-plus">
 				<a href="/ofidtales.html" class="top-no-style-link">
@@ -118,20 +96,38 @@
 				</a>
 			</div>
 			<div>
-
 				<h1 class="left-aligned">Universe<br />
 					<span class="smaller-heading-bottom">Character Series<br />By OFiDCrypt</span>
 				</h1>
 			</div>
 
-			<div id="custom-subheading" style="margin-top:12px;">
+			<div id="custom-subheading">
 				<a href="https://twitter.com/OFiDCrypt?ref_src=twsrc%5Etfw" class="twitter-follow-button"
 					data-size="large" data-show-count="false">
 					Follow @OFiDCrypt
 				</a>
-				<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 			</div>
 		</div>
+
+		<style>
+			/* Hide the placeholder until Twitter is ready */
+			#custom-subheading a.twitter-follow-button {
+				visibility: hidden;
+			}
+
+			/* Once Twitter replaces it with their iframe/button, show it */
+			#custom-subheading .twitter-follow-button-rendered {
+				visibility: visible;
+			}
+
+			/* Reserve space to prevent the jump/stutter */
+			#custom-subheading {
+				min-height: 28px;
+				display: block;
+			}
+		</style>
+
+		<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 		<!-- Your Dark Mode Toggle Button -->
 		<a href="#" id="darkModeToggle" class="alt">
@@ -162,8 +158,6 @@
 						<img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
 					</a>
 				</li>
-
-				<!-- Social Brands (Standard) -->
 			</ul>
 			<ul class="icons">
 				<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
@@ -241,13 +235,6 @@
 								2) Click <a href="https://play.google.com/apps/internaltest/4700831657731436961"
 									class="status-link">here</a> to download.
 							</p>
-
-							<!--
-							<label class="status-optout">
-								<input type="checkbox" id="statusOptOutGreen">
-								<span>Do not show again</span>
-							</label>
-							-->
 						</div>
 					</div>
 
@@ -280,7 +267,6 @@
 					<!-- Get Started: Explore & Promote -->
 					<section class="featured-service">
 						<div class="featured-service-items">
-
 
 							<!-- Tile 1: Giddy's Universe -->
 							<article class="featured-service-item--featured">
@@ -391,7 +377,6 @@
 							// Only show poster again if it actually ended
 							video.addEventListener('pause', function () {
 								if (!video.ended) {
-									// Still playing content visible if paused mid-video
 									container.classList.add('playing');
 								}
 							});
@@ -622,19 +607,10 @@
 			</section>
 		</div>
 
-		<!-- Link to non-critical JavaScript files -->
-		<script src="/assets/js/jquery.min.js"></script>
-		<script src="/assets/js/jquery.scrolly.min.js"></script>
-
-		<!-- REQUIRED for HTML5UP main.js -->
-		<script src="/assets/js/browser.min.js"></script>
-		<script src="/assets/js/breakpoints.min.js"></script>
-		<script src="/assets/js/util.js"></script>
-
-		<!-- Your custom logic must be LAST -->
-		<script src="/assets/js/main.js"></script>
+		<!-- Scripts -->
 		<script src="/assets/js/ofid-main.js"></script>
 
+	</div>
 </body>
 
 </html>
