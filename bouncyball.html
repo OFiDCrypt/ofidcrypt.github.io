@@ -107,7 +107,7 @@
 				<li><a href="index.html">Home</a></li>
 				<li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
 				<li><a href="explore.html">Wallets & Apps</a></li>
-				<li class="active"><a href="bouncyball.html">Tokens</a></li>
+				<li class="active"><a href="onegiddy.html">Tokens</a></li>
 				<li><a href="cashlinks.html">Digital Gifts</a></li>
 			</ul>
 
@@ -257,41 +257,29 @@
 			</style>
 
 			<script>
-				(() => {
+    (() => {
+        function updateGeckoWidgetTheme() {
+            const widget = document.querySelector('gecko-coin-ticker-widget');
+            if (!widget) return;
 
-					function updateGeckoWidgetTheme() {
-						const widget = document.querySelector('gecko-coin-ticker-widget');
-						if (!widget) return;
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            if (isDark) {
+                widget.setAttribute('dark-mode', 'true');
+            } else {
+                widget.removeAttribute('dark-mode');
+            }
+        }
 
-						const isDark = document.body.classList.contains('dark-mode');
+        // 1. Run on load
+        updateGeckoWidgetTheme();
 
-						if (isDark) {
-							widget.setAttribute('dark-mode', 'true');
-						} else {
-							widget.removeAttribute('dark-mode');
-						}
-					}
-
-					// Initial update
-					document.addEventListener('DOMContentLoaded', updateGeckoWidgetTheme);
-
-					// ⭐ Renamed observer to avoid collision
-					const geckoObserver = new MutationObserver((mutations) => {
-						mutations.forEach((mutation) => {
-							if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-								updateGeckoWidgetTheme();
-							}
-						});
-					});
-
-					geckoObserver.observe(document.body, { attributes: true });
-
-					// System theme changes
-					window.matchMedia('(prefers-color-scheme: dark)')
-						.addEventListener('change', updateGeckoWidgetTheme);
-
-				})();
-			</script>
+        // 2. Listen for the global event dispatched in ofid-main.js
+        document.addEventListener('darkModeToggled', (e) => {
+            updateGeckoWidgetTheme();
+        });
+    })();
+</script>
 
 			</section>
 
@@ -1002,11 +990,11 @@
 			<div class="nav-item" onclick="window.location.href='/shop.html'">
 				<i class="fas fa-shopping-bag"></i>Shop
 			</div>
-			<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
-			</div>
-			<div class="nav-item" onclick="window.location.href='/onegiddy.html'">
+			<div class="nav-item active" onclick="window.location.href='/onegiddy.html'">
 				<i class="fas fa-sync-alt"></i>Switch
+			</div>
+			<div class="nav-item" onclick="window.location.href='/wallet.html'">
+				<i class="fas fa-wallet"></i>Wallet
 			</div>
 			<div class="nav-item" id="navPanelTrigger">
 				<i class="fas fa-bars"></i> Menu
