@@ -1,17 +1,3 @@
-// GLOBAL: Scroll-To Logic (Handles data-scroll attributes)
-document.addEventListener('DOMContentLoaded', () => {
-    document.body.addEventListener('click', function (e) {
-        const button = e.target.closest('[data-scroll]');
-        if (button) {
-            const targetId = button.getAttribute('data-scroll');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-    });
-});
-
 // GLOBAL: Status Message Logic (multi-message safe)
 const observer = new MutationObserver(() => {
     const statusMessages = document.querySelectorAll(".status-message, .status-message-green");
@@ -209,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoScroll();
 });
 
-// GLOBAL: STANDALONE MOBILE NAV PANEL
+// ====================== STANDALONE MOBILE NAV PANEL ======================
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const nav = document.getElementById('nav');
@@ -217,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!nav || !trigger) return;
 
+    // Create/Reuse Panel and Overlay
     let navPanel = document.getElementById('navPanel') || (function() {
         const div = document.createElement('div');
         div.id = 'navPanel';
@@ -235,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navPanelInner = navPanel.querySelector('nav');
     const closeBtn = navPanel.querySelector('.close');
 
+    // Add Dark Mode Toggle (Restored Original Size)
     const toggleLi = document.createElement('li');
     toggleLi.className = 'dark-mode-item';
     toggleLi.innerHTML = `<a href="#" class="icon dark-mode-toggle"><i class="fas fa-sun fa-2x"></i></a>`;
@@ -248,23 +236,33 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.toggle('dark-mode');
     });
 
+    // Clone sections
     const sections = [nav.querySelector('ul.links'), nav.querySelector('ul.top-icons'), nav.querySelector('ul.icons:not(.top-icons)'), nav.querySelector('ul.footer-links')];
     sections.forEach(s => { if (s) navPanelInner.appendChild(s.cloneNode(true)); });
 
+    // Close logic
     const closeNav = () => body.classList.remove('is-navPanel-visible');
     trigger.addEventListener('click', (e) => { e.preventDefault(); body.classList.add('is-navPanel-visible'); });
     closeBtn.addEventListener('click', (e) => { e.preventDefault(); closeNav(); });
     overlay.addEventListener('click', closeNav);
 
+    // Link handling
     navPanel.addEventListener('click', (e) => {
         const link = e.target.closest('a');
         if (!link) return;
+
         const href = link.getAttribute('href');
+
+        // Logic: ONLY close if it's an internal jump link, the close button, or the overlay
         if (href && href.startsWith('#') && href.length > 1) {
             e.preventDefault();
             const target = document.querySelector(href);
+            
+            // Trigger scroll first, then close panel slightly after to avoid layout twitch
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
+                // Small delay ensures the "jump" initiates while panel is still visible, 
+                // preventing the page height recalculation mid-scroll.
                 setTimeout(closeNav, 400); 
             }
         } 

@@ -108,7 +108,7 @@
 				<li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
 				<li><a href="explore.html">Wallets & Apps</a></li>
 				<li class="active"><a href="onegiddy.html">Tokens</a></li>
-				<li><a href="cashlinks.html">Digital Gifts</a></li>
+				<li><a href="/pages/about.html">About Us</a></li>
 			</ul>
 
 			<!-- Social Brands (Custom) -->
@@ -257,29 +257,41 @@
 			</style>
 
 			<script>
-    (() => {
-        function updateGeckoWidgetTheme() {
-            const widget = document.querySelector('gecko-coin-ticker-widget');
-            if (!widget) return;
+				(() => {
 
-            const isDark = document.body.classList.contains('dark-mode');
-            
-            if (isDark) {
-                widget.setAttribute('dark-mode', 'true');
-            } else {
-                widget.removeAttribute('dark-mode');
-            }
-        }
+					function updateGeckoWidgetTheme() {
+						const widget = document.querySelector('gecko-coin-ticker-widget');
+						if (!widget) return;
 
-        // 1. Run on load
-        updateGeckoWidgetTheme();
+						const isDark = document.body.classList.contains('dark-mode');
 
-        // 2. Listen for the global event dispatched in ofid-main.js
-        document.addEventListener('darkModeToggled', (e) => {
-            updateGeckoWidgetTheme();
-        });
-    })();
-</script>
+						if (isDark) {
+							widget.setAttribute('dark-mode', 'true');
+						} else {
+							widget.removeAttribute('dark-mode');
+						}
+					}
+
+					// Initial update
+					document.addEventListener('DOMContentLoaded', updateGeckoWidgetTheme);
+
+					// ⭐ Renamed observer to avoid collision
+					const geckoObserver = new MutationObserver((mutations) => {
+						mutations.forEach((mutation) => {
+							if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+								updateGeckoWidgetTheme();
+							}
+						});
+					});
+
+					geckoObserver.observe(document.body, { attributes: true });
+
+					// System theme changes
+					window.matchMedia('(prefers-color-scheme: dark)')
+						.addEventListener('change', updateGeckoWidgetTheme);
+
+				})();
+			</script>
 
 			</section>
 
@@ -298,7 +310,8 @@
 
 							<p class="status-text">
 								Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
-								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
+								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet
+								Giddy!
 								We encourage you to read our
 								<a href="/discover.html#article-featured" class="status-link">Solana
 									article</a>
