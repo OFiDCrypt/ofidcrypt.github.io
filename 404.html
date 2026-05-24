@@ -86,6 +86,17 @@
 
 <body class="is-preload">
 
+    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+    <script>
+        (function() {
+            // Apply dark mode BEFORE the page paints
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.documentElement.classList.add('dark-mode');
+                document.body.classList.add('dark-mode');
+            }
+        })();
+    </script>
+
     <!-- Wrapper -->
     <div id="wrapper" class="fade-in">
 

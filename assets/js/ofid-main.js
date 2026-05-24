@@ -1,3 +1,31 @@
+// GLOBAL: Scroll-To Logic (Handles data-scroll attributes)
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', function (e) {
+        const button = e.target.closest('[data-scroll]');
+        if (button) {
+            const targetId = button.getAttribute('data-scroll');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+});
+
+// GLOBAL: Scroll-To Logic (Handles data-scroll attributes)
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', function (e) {
+        const button = e.target.closest('[data-scroll]');
+        if (button) {
+            const targetId = button.getAttribute('data-scroll');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+});
+
 // GLOBAL: Status Message Logic (multi-message safe)
 const observer = new MutationObserver(() => {
     const statusMessages = document.querySelectorAll(".status-message, .status-message-green");
@@ -66,44 +94,67 @@ observer.observe(document.documentElement, {
     subtree: true
 });
 
-// GLOBAL: Dark Mode Toggle (Desktop + Mobile)
+// ====================== FIXED DARK MODE v2 - ICON TIMING FIXED ======================
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Central dark mode initialized');
+    console.log('✅ Dark mode initialized (icon timing fixed)');
+
+    const body = document.body;
 
     function toggleDarkMode() {
-        const isDark = !document.body.classList.contains('dark-mode');
-        document.body.classList.toggle('dark-mode', isDark);
+        const isDark = !body.classList.contains('dark-mode');
+        body.classList.toggle('dark-mode', isDark);
         localStorage.setItem('dark-mode', isDark);
 
         updateAllIcons(isDark);
-
-        document.dispatchEvent(new CustomEvent('darkModeToggled', {
-            detail: { isDark }
-        }));
-
-        console.log(`Mode switched to: ${isDark ? 'dark' : 'light'}`);
+        console.log(`🌗 Mode switched to: ${isDark ? 'dark' : 'light'}`);
     }
 
     function updateAllIcons(isDark) {
-        const desktopImg = document.querySelector('ul.icons li a img.custom-site-icon');
+        // Desktop SVG
+        const desktopImg = document.querySelector('ul.icons li.top-toggle a img.custom-site-icon');
         if (desktopImg) {
             desktopImg.parentElement.classList.toggle('dark', isDark);
         }
 
+        // Main FA toggle
+        const faToggle = document.getElementById('darkModeToggle');
+        if (faToggle) {
+            const icon = faToggle.querySelector('i');
+            if (icon) icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Mobile nav panel toggle
         document.querySelectorAll('#navPanel .dark-mode-toggle i').forEach(i => {
             i.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
         });
     }
 
+    // Load saved theme
     const savedDark = localStorage.getItem('dark-mode') === 'true';
     if (savedDark) {
-        document.body.classList.add('dark-mode');
+        body.classList.add('dark-mode');
     }
-    updateAllIcons(savedDark);
 
-    const desktopLink = document.querySelector('ul.icons li a[href="#"]');
+    // Update immediately + delayed retry (fixes timing issue)
+    updateAllIcons(savedDark);
+    
+    // Extra safety: re-check after a tiny delay and when panel is created
+    setTimeout(() => updateAllIcons(savedDark), 300);
+    setTimeout(() => updateAllIcons(savedDark), 800);
+
+    // Desktop toggle
+    const desktopLink = document.querySelector('ul.icons li.top-toggle a');
     if (desktopLink) {
         desktopLink.addEventListener('click', e => {
+            e.preventDefault();
+            toggleDarkMode();
+        });
+    }
+
+    // Main FA toggle
+    const faMain = document.getElementById('darkModeToggle');
+    if (faMain) {
+        faMain.addEventListener('click', e => {
             e.preventDefault();
             toggleDarkMode();
         });
@@ -195,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startAutoScroll();
 });
 
-// ====================== STANDALONE MOBILE NAV PANEL ======================
+// ====================== STANDALONE MOBILE NAV PANEL (Updated) ======================
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const nav = document.getElementById('nav');
@@ -222,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navPanelInner = navPanel.querySelector('nav');
     const closeBtn = navPanel.querySelector('.close');
 
-    // Add Dark Mode Toggle (Restored Original Size)
+    // Add Dark Mode Toggle in Mobile Panel
     const toggleLi = document.createElement('li');
     toggleLi.className = 'dark-mode-item';
     toggleLi.innerHTML = `<a href="#" class="icon dark-mode-toggle"><i class="fas fa-sun fa-2x"></i></a>`;
@@ -231,13 +282,24 @@ document.addEventListener('DOMContentLoaded', () => {
     customList.appendChild(toggleLi);
     navPanelInner.appendChild(customList);
 
+    // Use the global toggle function (much cleaner)
     toggleLi.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
-        body.classList.toggle('dark-mode');
+        if (window.toggleDarkMode) {
+            window.toggleDarkMode();
+        } else {
+            // fallback
+            body.classList.toggle('dark-mode');
+        }
     });
 
     // Clone sections
-    const sections = [nav.querySelector('ul.links'), nav.querySelector('ul.top-icons'), nav.querySelector('ul.icons:not(.top-icons)'), nav.querySelector('ul.footer-links')];
+    const sections = [
+        nav.querySelector('ul.links'),
+        nav.querySelector('ul.top-icons'),
+        nav.querySelector('ul.icons:not(.top-icons)'),
+        nav.querySelector('ul.footer-links')
+    ];
     sections.forEach(s => { if (s) navPanelInner.appendChild(s.cloneNode(true)); });
 
     // Close logic
@@ -253,18 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const href = link.getAttribute('href');
 
-        // Logic: ONLY close if it's an internal jump link, the close button, or the overlay
         if (href && href.startsWith('#') && href.length > 1) {
             e.preventDefault();
             const target = document.querySelector(href);
-            
-            // Trigger scroll first, then close panel slightly after to avoid layout twitch
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
-                // Small delay ensures the "jump" initiates while panel is still visible, 
-                // preventing the page height recalculation mid-scroll.
-                setTimeout(closeNav, 400); 
+                setTimeout(closeNav, 400);
             }
-        } 
+        }
     });
 });
