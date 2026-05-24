@@ -1137,7 +1137,22 @@
 					</div>
 				</section>
 
-				<h2>Signature Catalogue: Debut Items</h2>
+				<div class="distributor-wrapper">
+					<button id="distributorToggleBtn" class="distributor-toggle-btn">
+						<span>📦 Select your distributor</span>
+						<span style="font-size: 15px;">▼</span>
+					</button>
+
+					<div id="distributorDropdown" class="distributor-dropdown-menu" style="display: none;">
+						<div class="distributor-option" data-value="local">
+							🏪 Buy Local with Debit / Credit / Tokens
+						</div>
+						<div class="distributor-option distributor-option-amazon" data-value="amazon">
+							<i class="fab fa-amazon" style="color: #ff9900; font-size: 19px;"></i>
+							Buy on Amazon
+						</div>
+					</div>
+				</div>
 
 				<!-- DISTRIBUTOR TOGGLE DROPDOWN SYSTEM -->
 				<style>
@@ -1239,23 +1254,6 @@
 					}
 				</style>
 
-				<div class="distributor-wrapper">
-					<button id="distributorToggleBtn" class="distributor-toggle-btn">
-						<span>📦 Select your distributor</span>
-						<span style="font-size: 15px;">▼</span>
-					</button>
-
-					<div id="distributorDropdown" class="distributor-dropdown-menu" style="display: none;">
-						<div class="distributor-option" data-value="local">
-							🏪 Buy Local with Debit / Credit / Tokens
-						</div>
-						<div class="distributor-option distributor-option-amazon" data-value="amazon">
-							<i class="fab fa-amazon" style="color: #ff9900; font-size: 19px;"></i>
-							Buy on Amazon
-						</div>
-					</div>
-				</div>
-
 				<!-- Active Mode Display -->
 				<div class="active-mode-card" style="margin-bottom: 2.5em;">
 					<span class="active-mode-label">Active Mode: </span>
@@ -1263,6 +1261,8 @@
 						🏪 Buy Local with Debit / Credit / Tokens
 					</span>
 				</div>
+
+				<h2>Signature Catalogue: Debut Items</h2>
 
 				<div class="shop-grid">
 
@@ -1366,7 +1366,7 @@
 						<div class="tile-header">Pay with Tokens</div>
 						<div class="solana-icon" style="display: flex; justify-content: center; padding: 10px 0;">
 							<img src="/assets/images/webp/kinnected-pay.webp" alt="Solana"
-								style="width: 270px; height: auto; max-width: 100%; object-fit: contain;">
+								style="width: 210px; height: auto; max-width: 100%; object-fit: contain;">
 						</div>
 					</div>
 
