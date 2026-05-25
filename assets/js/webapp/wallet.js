@@ -28,10 +28,6 @@ function sellToken() {
     alert("Sell Interface Loading...");
 }
 
-function showProfile() {
-    alert("Profile coming soon");
-}
-
 function createWalletPlaceholder() {
     alert("Wallet connection and creation coming soon");
 }
@@ -109,12 +105,9 @@ document.addEventListener('click', (e) => {
 
 async function handlePhantomConnect() {
     const dappUrl = "https://www.ofidcrypt.com/wallet.html";
-
-    // Always close dropdown first
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    // 1. Check for injected provider
     const provider = window.phantom?.solana || window.solana;
 
     if (provider && provider.isPhantom) {
@@ -122,10 +115,7 @@ async function handlePhantomConnect() {
             const resp = await provider.connect();
             connectedWallet = resp.publicKey.toString();
             showConnectedState();
-
-            if (typeof updateWalletBalances === "function") {
-                updateWalletBalances();
-            }
+            if (typeof updateWalletBalances === "function") updateWalletBalances();
         } catch (err) {
             console.error(err);
             alert("Connection cancelled.");
@@ -133,58 +123,90 @@ async function handlePhantomConnect() {
         return;
     }
 
-    // 2. Mobile Deep Linking
     if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
         const encodedUrl = encodeURIComponent(dappUrl);
         window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
         return;
     }
-
     alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
 }
 
 function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
-
     const provider = window.phantom?.solana || window.solana;
     if (provider) provider.disconnect();
-
     connectedWallet = null;
     showDisconnectedState();
 }
 
 function showConnectedState() {
-    const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
-
-    document.getElementById('walletBtnText').innerText = "CONNECTED";
-    document.getElementById('addWalletBtn').classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
-
+    // Nav Button Logic
+    const short = connectedWallet ? `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}` : "";
+    const navText = document.getElementById('walletBtnText');
+    const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
+    const addr = document.getElementById('connectedAddress');
+    const status = document.getElementById('connectedStatus');
+    const cOpt = document.getElementById('connectOption');
+    const dOpt = document.getElementById('disconnectOption');
+
+    if (navText) navText.innerText = "CONNECTED";
+    if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
     if (chevron) chevron.style.display = 'none';
+    if (addr) addr.innerText = short;
+    if (status) status.classList.remove('hidden');
+    if (cOpt) cOpt.classList.add('hidden');
+    if (dOpt) dOpt.classList.remove('hidden');
 
-    document.getElementById('connectedAddress').innerText = short;
-    document.getElementById('connectedStatus').classList.remove('hidden');
-
-    const connectOption = document.getElementById('connectOption');
-    const disconnectOption = document.getElementById('disconnectOption');
-    if (connectOption) connectOption.classList.add('hidden');
-    if (disconnectOption) disconnectOption.classList.remove('hidden');
+    // Status Box Logic
+    const dot = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    const btn = document.getElementById('connect-btn');
+    if (dot) dot.style.backgroundColor = "#10b981";
+    if (text) text.innerText = "Wallet Connected";
+    if (btn) {
+        btn.innerText = "Disconnect";
+        btn.style.borderColor = "#ef4444";
+        btn.style.color = "#ef4444";
+        btn.style.cursor = "pointer";
+        btn.removeEventListener('click', handlePhantomConnect);
+        btn.removeEventListener('click', disconnectWallet);
+        btn.addEventListener('click', disconnectWallet);
+    }
 }
 
 function showDisconnectedState() {
-    document.getElementById('walletBtnText').innerText = "ADD WALLET";
-    document.getElementById('addWalletBtn').classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
-
+    // Nav Button Logic
+    const navText = document.getElementById('walletBtnText');
+    const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
+    const status = document.getElementById('connectedStatus');
+    const cOpt = document.getElementById('connectOption');
+    const dOpt = document.getElementById('disconnectOption');
+
+    if (navText) navText.innerText = "ADD WALLET";
+    if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
     if (chevron) chevron.style.display = 'inline-block';
+    if (status) status.classList.add('hidden');
+    if (cOpt) cOpt.classList.remove('hidden');
+    if (dOpt) dOpt.classList.add('hidden');
 
-    document.getElementById('connectedStatus').classList.add('hidden');
-
-    const connectOption = document.getElementById('connectOption');
-    const disconnectOption = document.getElementById('disconnectOption');
-    if (connectOption) connectOption.classList.remove('hidden');
-    if (disconnectOption) disconnectOption.classList.add('hidden');
+    // Status Box Logic
+    const dot = document.getElementById('status-dot');
+    const text = document.getElementById('status-text');
+    const btn = document.getElementById('connect-btn');
+    if (dot) dot.style.backgroundColor = "#71717a";
+    if (text) text.innerText = "Wallet Disconnected";
+    if (btn) {
+        btn.innerText = "Connect";
+        btn.style.borderColor = "#8b5cf6";
+        btn.style.color = "#8b5cf6";
+        btn.style.cursor = "pointer";
+        btn.removeEventListener('click', disconnectWallet);
+        btn.removeEventListener('click', handlePhantomConnect);
+        btn.addEventListener('click', handlePhantomConnect);
+    }
 }
 
 // ====================== BALANCES + PRICE FUNCTIONS ======================

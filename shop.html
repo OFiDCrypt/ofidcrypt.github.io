@@ -755,7 +755,7 @@
 
 		.modal-content {
 			max-width: 960px;
-			background: var(--main-bg-color); 
+			background: var(--main-bg-color);
 			border-radius: 1.25em;
 			overflow-x: hidden;
 			overflow-y: auto;
@@ -944,16 +944,16 @@
 
 <body>
 
-    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
-    <script>
-        (function() {
-            // Apply dark mode BEFORE the page paints
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-            }
-        })();
-    </script>
+	<!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+	<script>
+			(function () {
+				// Apply dark mode BEFORE the page paints
+				if (localStorage.getItem('dark-mode') === 'true') {
+					document.documentElement.classList.add('dark-mode');
+					document.body.classList.add('dark-mode');
+				}
+			})();
+	</script>
 
 	<div id="wrapper" class="fade-in">
 
@@ -1375,30 +1375,32 @@
             margin: 8px 0; 
             box-sizing: border-box;
             min-height: 34px;">
+
 						<div style="display: flex; align-items: center; gap: 8px;">
-							<div
+							<div id="status-dot"
 								style="width: 8px; height: 8px; background-color: #71717a; border-radius: 50%; flex-shrink: 0;">
 							</div>
-							<span
+
+							<span id="status-text"
 								style="font-weight: 500; font-size: 0.75rem; color: var(--text-color, #374151); white-space: nowrap;">
 								Wallet Disconnected
 							</span>
 						</div>
 
 						<div style="display: flex; align-items: center; height: 100%;">
-							<button onclick="connectWallet()" style="background: transparent; 
-                       border: 1px solid #8b5cf6; 
-                       color: #8b5cf6; 
-                       padding: 2px 10px;
-                       border-radius: 6px; 
-                       font-size: 0.7rem; 
-                       font-weight: 700; 
-                       cursor: pointer; 
-                       display: flex;
-                       align-items: center;
-                       justify-content: center;
-                       height: 22px; /* Set to exactly half-height relative to container */
-                       margin: 0;">
+							<button id="connect-btn" style="background: transparent; 
+            border: 1px solid #8b5cf6; 
+            color: #8b5cf6; 
+            padding: 2px 10px;
+            border-radius: 6px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 22px; 
+            margin: 0;">
 								Connect
 							</button>
 						</div>
@@ -1615,6 +1617,7 @@
 	<!-- Scripts -->
 	<script src="/assets/js/ofid-main.js"></script>
 	<script src="/assets/js/webapp/shop.js"></script>
+	<script src="/assets/js/webapp/wallet.js"></script>
 
 </body>
 
