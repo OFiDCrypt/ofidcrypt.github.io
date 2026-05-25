@@ -112,37 +112,48 @@ async function handlePhantomConnect() {
 
     if (provider && provider.isPhantom) {
         try {
-            const resp = await provider.connect();
+            const resp = await provider.connect();   // Full prompt on first time
             connectedWallet = resp.publicKey.toString();
             showConnectedState();
             if (typeof updateWalletBalances === "function") updateWalletBalances();
         } catch (err) {
             console.error(err);
-            alert("Connection cancelled.");
+            if (err.code === 4001) {
+                alert("Connection cancelled by user.");
+            } else {
+                alert("Failed to connect to Phantom.");
+            }
         }
         return;
     }
 
+    // Mobile Deep Link
     if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
         const encodedUrl = encodeURIComponent(dappUrl);
         window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
         return;
     }
+
     alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
 }
 
 function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
+
     const provider = window.phantom?.solana || window.solana;
     if (provider) provider.disconnect();
+
     connectedWallet = null;
     showDisconnectedState();
 }
 
 function showConnectedState() {
-    // Nav Button Logic
+    connectedWallet = connectedWallet || window.solana?.publicKey?.toString();
+
     const short = connectedWallet ? `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}` : "";
+
+    // Wallet.html nav elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -159,10 +170,11 @@ function showConnectedState() {
     if (cOpt) cOpt.classList.add('hidden');
     if (dOpt) dOpt.classList.remove('hidden');
 
-    // Status Box Logic
+    // Shop.html status box
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
+
     if (dot) dot.style.backgroundColor = "#10b981";
     if (text) text.innerText = "Wallet Connected";
     if (btn) {
@@ -177,7 +189,7 @@ function showConnectedState() {
 }
 
 function showDisconnectedState() {
-    // Nav Button Logic
+    // Wallet.html nav elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -192,10 +204,11 @@ function showDisconnectedState() {
     if (cOpt) cOpt.classList.remove('hidden');
     if (dOpt) dOpt.classList.add('hidden');
 
-    // Status Box Logic
+    // Shop.html status box
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
+
     if (dot) dot.style.backgroundColor = "#71717a";
     if (text) text.innerText = "Wallet Disconnected";
     if (btn) {
@@ -356,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('addWalletBtn');
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
-    // Phantom Listeners
+    // Phantom Listeners + Auto-connect logic
     if (window.solana && window.solana.isPhantom) {
         window.solana.on('connect', (publicKey) => {
             connectedWallet = publicKey.toString();
@@ -367,16 +380,24 @@ document.addEventListener('DOMContentLoaded', () => {
             showDisconnectedState();
         });
 
-        // Initialize state based on current connection
+        // Improved auto-connect after deep link
+        const isInPhantomBrowser = /Phantom/i.test(navigator.userAgent);
+
         if (window.solana.isConnected) {
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
+        } else if (isInPhantomBrowser) {
+            // After deep link → give Phantom a moment then force prompt
+            setTimeout(() => {
+                window.solana.connect({ onlyIfTrusted: false }).catch(() => {});
+            }, 800);
         } else {
+            // Normal case (Chrome extension, etc.)
             showDisconnectedState();
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
+            window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
         }
     } else {
-        // Fallback for no provider
+        // No provider detected
         showDisconnectedState();
     }
 
@@ -400,7 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // === AUTO-OPEN + SCROLL FOR ALL TOKEN CARDS ===
     const currentHash = window.location.hash;
     if (currentHash && currentHash.startsWith('#card-')) {
-        // 1. Clear hash to prevent native browser behavior fighting our JS
         history.replaceState(null, null, ' ');
 
         const content = document.getElementById('community-content');
@@ -411,14 +431,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const cleanHash = currentHash.substring(1);
             const isCommunityToken = !['card-EXPB', 'card-GIDDY'].includes(cleanHash);
 
-            // 2. Expand accordion if it's a community token
             if (isCommunityToken && content && icon) {
-                content.style.transition = 'none'; // No animation for immediate expansion
+                content.style.transition = 'none';
                 content.style.maxHeight = (content.scrollHeight + 100) + 'px';
                 icon.style.transform = 'rotate(180deg)';
             }
 
-            // 3. Define the scrolling/glow function
             const performScroll = () => {
                 targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 targetCard.style.transition = "all 0.9s ease-in-out";
@@ -431,10 +449,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2400);
             };
 
-            // 4. Trigger scroll after ensuring layout is rendered
             requestAnimationFrame(() => {
                 if (isCommunityToken && content) {
-                    // Wait for the DOM to process the new height
                     setTimeout(performScroll, 100);
                 } else {
                     performScroll();
