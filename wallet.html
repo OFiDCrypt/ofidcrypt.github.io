@@ -327,12 +327,12 @@
     <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
         (function() {
-            // Apply dark mode BEFORE the page paints
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-            }
-        })();
+                // Apply dark mode BEFORE the page paints
+                if (localStorage.getItem('dark-mode') === 'true') {
+                    document.documentElement.classList.add('dark-mode');
+                    document.body.classList.add('dark-mode');
+                }
+            })();
     </script>
 
     <div id="wrapper" class="fade-in">
@@ -558,7 +558,7 @@
                 <div class="grid grid-cols-2 gap-4 mb-6">
 
                     <!-- eXPB TOKEN CARD -->
-                    <div onclick="goToToken('expb')" class="card p-5 cursor-pointer token-card fade-in">
+                    <div id="card-EXPB" onclick="goToToken('expb')" class="card p-5 cursor-pointer token-card fade-in">
                         <div class="flex items-center justify-between gap-2">
                             <div class="card-content w-1/2 flex flex-col justify-center">
                                 <span
@@ -609,7 +609,8 @@
                     </div>
 
                     <!-- GIDDY TOKEN CARD -->
-                    <div onclick="goToToken('giddy')" class="card p-5 cursor-pointer token-card fade-in">
+                    <div id="card-GIDDY" onclick="goToToken('giddy')"
+                        class="card p-5 cursor-pointer token-card fade-in">
                         <div class="flex items-center justify-between gap-2">
                             <div class="card-content w-1/2 flex flex-col justify-center">
                                 <span
@@ -725,7 +726,7 @@
                                 class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 pt-4 overflow-visible">
 
                                 <!-- ONE TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
+                                <div id="card-ONE" onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -753,7 +754,7 @@
                                 </div>
 
                                 <!-- KIN TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
+                                <div id="card-KIN" onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -781,7 +782,7 @@
                                 </div>
 
                                 <!-- DOBBY TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')"
+                                <div id="card-DOBBY" onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -808,7 +809,7 @@
                                 </div>
 
                                 <!-- MYLO TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')"
+                                <div id="card-MYLO" onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -836,7 +837,7 @@
                                 </div>
 
                                 <!-- DUNO TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')"
+                                <div id="card-DUNO" onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -864,7 +865,7 @@
                                 </div>
 
                                 <!-- CPT TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')"
+                                <div id="card-CPT" onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -893,7 +894,7 @@
                                 </div>
 
                                 <!-- SINU TOKEN CARD -->
-                                <div onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')"
+                                <div id="card-SINU" onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                                     <div class="flex flex-col items-center text-center">
@@ -918,6 +919,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

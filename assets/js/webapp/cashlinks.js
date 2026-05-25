@@ -1,6 +1,5 @@
 // ================================================
 // assets/js/webapp/cashlinks.js
-// Spinning Wheel / Cash Links Page Logic
 // ================================================
 
 async function renderCashLinks() {
@@ -14,13 +13,26 @@ async function renderCashLinks() {
         const cashLinksData = await response.json();
         container.innerHTML = '';
 
-        // Render items in rows of 3
         for (let i = 0; i < cashLinksData.length; i += 3) {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'cashlinks-items';
             const rowItems = cashLinksData.slice(i, i + 3);
 
             rowItems.forEach(token => {
+                const tokenSymbol = (token.id || token.title || '').toString().toUpperCase().trim();
+                
+                let cardId;
+                if (tokenSymbol === 'EXPB' || tokenSymbol === 'E𝕏PB') {
+                    cardId = 'card-EXPB';
+                } else if (tokenSymbol === 'GIDDY') {
+                    cardId = 'card-GIDDY';
+                } else {
+                    // Community tokens (ONE, KIN, DOBBY, etc.)
+                    cardId = tokenSymbol.startsWith('CARD-') ? tokenSymbol : `card-${tokenSymbol}`;
+                }
+
+                const walletLink = `/wallet.html#${cardId}`;
+
                 const itemHTML = `
                     <article class="cashlinks-item ${token.extraClass || ''}" id="${token.id}">
                         <a href="${token.imageHref}" class="image left" 
@@ -34,6 +46,17 @@ async function renderCashLinks() {
                                 onclick="return verifyRecaptchaForLinks(this);">
                                 Claim Cash
                             </button>
+                            
+                            <p class="align-center" style="margin-top: 18px; font-size: 0.9rem; opacity: 0.9;">
+                                <span style="display: inline-flex; align-items: center; gap: 6px;">
+                                    <span style="font-weight: 500;">Check Balance</span>
+                                    <span style="font-size: 1rem; opacity: 0.7;">➜</span>
+                                    <a href="${walletLink}" class="status-link"
+                                        style="text-decoration: none; font-weight: 600;">
+                                        My Wallet
+                                    </a>
+                                </span>
+                            </p>
                         </div>
                     </article>`;
                 rowDiv.innerHTML += itemHTML;
@@ -48,13 +71,10 @@ async function renderCashLinks() {
                 const targetElement = document.querySelector(currentHash);
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // Apply Soft Purple Face Glow
                     targetElement.style.transition = "all 0.8s ease-in-out";
                     targetElement.style.backgroundColor = "rgba(168, 85, 247, 0.25)";
                     targetElement.style.boxShadow = "inset 0 0 30px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)";
-
-                    // Fade out after 2.5 seconds
+                    
                     setTimeout(() => {
                         targetElement.style.backgroundColor = "";
                         targetElement.style.boxShadow = "none";
@@ -68,6 +88,7 @@ async function renderCashLinks() {
         container.innerHTML = `<p style="text-align:center; padding:40px; color:#ff6688;">⚠️ Error loading links.</p>`;
     }
 }
+
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', renderCashLinks);
