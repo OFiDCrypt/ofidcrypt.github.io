@@ -367,7 +367,17 @@ document.addEventListener('DOMContentLoaded', () => {
             showDisconnectedState();
         });
 
-        window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
+        // Initialize state based on current connection
+        if (window.solana.isConnected) {
+            connectedWallet = window.solana.publicKey.toString();
+            showConnectedState();
+        } else {
+            showDisconnectedState();
+            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
+        }
+    } else {
+        // Fallback for no provider
+        showDisconnectedState();
     }
 
     // Start live updates
@@ -411,7 +421,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // 3. Define the scrolling/glow function
             const performScroll = () => {
                 targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
                 targetCard.style.transition = "all 0.9s ease-in-out";
                 targetCard.style.backgroundColor = "rgba(168, 85, 247, 0.22)";
                 targetCard.style.boxShadow = "inset 0 0 25px rgba(168, 85, 247, 0.4), 0 0 15px rgba(168, 85, 247, 0.25)";
