@@ -12,28 +12,28 @@ function goToToken(token) {
     else if (token === 'giddy') window.location.href = '/onegiddy.html';
 }
 
-function goToShop() { 
-    window.location.href = '/shop.html'; 
+function goToShop() {
+    window.location.href = '/shop.html';
 }
 
-function claimBonus() { 
-    window.location.href = "/cashlinks.html#giddy"; 
+function claimBonus() {
+    window.location.href = "/cashlinks.html#giddy";
 }
 
-function buyToken() { 
-    alert("Buy Interface Loading..."); 
+function buyToken() {
+    alert("Buy Interface Loading...");
 }
 
-function sellToken() { 
-    alert("Sell Interface Loading..."); 
+function sellToken() {
+    alert("Sell Interface Loading...");
 }
 
-function showProfile() { 
-    alert("Profile coming soon"); 
+function showProfile() {
+    alert("Profile coming soon");
 }
 
-function createWalletPlaceholder() { 
-    alert("Wallet connection and creation coming soon"); 
+function createWalletPlaceholder() {
+    alert("Wallet connection and creation coming soon");
 }
 
 // ====================== MODAL & REDEEM FUNCTIONS ======================
@@ -364,4 +364,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
+
+    // === AUTO-OPEN + SCROLL FOR ALL TOKEN CARDS ===
+    const currentHash = window.location.hash;
+    if (currentHash && currentHash.startsWith('#card-')) {
+        // 1. Clear hash to prevent native browser behavior fighting our JS
+        history.replaceState(null, null, ' ');
+
+        const content = document.getElementById('community-content');
+        const icon = document.getElementById('expand-icon');
+        const targetCard = document.querySelector(currentHash);
+
+        if (targetCard) {
+            const cleanHash = currentHash.substring(1);
+            const isCommunityToken = !['card-EXPB', 'card-GIDDY'].includes(cleanHash);
+
+            // 2. Expand accordion if it's a community token
+            if (isCommunityToken && content && icon) {
+                content.style.transition = 'none'; // No animation for immediate expansion
+                content.style.maxHeight = (content.scrollHeight + 100) + 'px';
+                icon.style.transform = 'rotate(180deg)';
+            }
+
+            // 3. Define the scrolling/glow function
+            const performScroll = () => {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                targetCard.style.transition = "all 0.9s ease-in-out";
+                targetCard.style.backgroundColor = "rgba(168, 85, 247, 0.22)";
+                targetCard.style.boxShadow = "inset 0 0 25px rgba(168, 85, 247, 0.4), 0 0 15px rgba(168, 85, 247, 0.25)";
+
+                setTimeout(() => {
+                    targetCard.style.backgroundColor = "";
+                    targetCard.style.boxShadow = "none";
+                }, 2400);
+            };
+
+            // 4. Trigger scroll after ensuring layout is rendered
+            requestAnimationFrame(() => {
+                if (isCommunityToken && content) {
+                    // Wait for the DOM to process the new height
+                    setTimeout(performScroll, 100);
+                } else {
+                    performScroll();
+                }
+            });
+        }
+    }
 });
