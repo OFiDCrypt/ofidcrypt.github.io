@@ -5,7 +5,7 @@
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 let latestPrices = {};   
-let hasAutoConnectedAfterDeepLink = false;
+let hasShownDeepLinkPrompt = false;   // Prevents repeated deep-link prompts
 
 // ====================== BASIC PAGE FUNCTIONS ======================
 function goToToken(token) {
@@ -128,6 +128,7 @@ async function handlePhantomConnect() {
         return;
     }
 
+    // Mobile Deep Link
     if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
         const encodedUrl = encodeURIComponent(dappUrl);
         window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
@@ -145,7 +146,7 @@ function disconnectWallet() {
     if (provider) provider.disconnect();
 
     connectedWallet = null;
-    hasAutoConnectedAfterDeepLink = false;
+    hasShownDeepLinkPrompt = false;
     showDisconnectedState();
 }
 
@@ -153,7 +154,7 @@ function showConnectedState() {
     connectedWallet = connectedWallet || window.solana?.publicKey?.toString();
     const short = connectedWallet ? `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}` : "";
 
-    // Wallet.html elements
+    // Wallet.html nav elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -182,6 +183,7 @@ function showConnectedState() {
         btn.style.borderColor = "#ef4444";
         btn.style.color = "#ef4444";
         btn.style.cursor = "pointer";
+        // Cleanup + re-attach (works alongside inline onclick)
         btn.removeEventListener('click', handlePhantomConnect);
         btn.removeEventListener('click', disconnectWallet);
         btn.addEventListener('click', disconnectWallet);
@@ -189,6 +191,7 @@ function showConnectedState() {
 }
 
 function showDisconnectedState() {
+    // Wallet.html nav elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -203,6 +206,7 @@ function showDisconnectedState() {
     if (cOpt) cOpt.classList.remove('hidden');
     if (dOpt) dOpt.classList.add('hidden');
 
+    // Shop.html status box
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
@@ -214,6 +218,7 @@ function showDisconnectedState() {
         btn.style.borderColor = "#8b5cf6";
         btn.style.color = "#8b5cf6";
         btn.style.cursor = "pointer";
+        // Cleanup + re-attach (works alongside inline onclick)
         btn.removeEventListener('click', disconnectWallet);
         btn.removeEventListener('click', handlePhantomConnect);
         btn.addEventListener('click', handlePhantomConnect);
@@ -348,6 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Add Wallet Button (wallet.html dropdown)
     const addBtn = document.getElementById('addWalletBtn');
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
@@ -365,22 +371,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const isInPhantomBrowser = /Phantom/i.test(navigator.userAgent);
 
         if (window.solana.isConnected) {
-            // Silent reconnect if already trusted
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
-        } 
-        else if (isInPhantomBrowser && !hasAutoConnectedAfterDeepLink) {
-            // Only auto-prompt after fresh deep link
-            hasAutoConnectedAfterDeepLink = true;
+        } else if (isInPhantomBrowser && !hasShownDeepLinkPrompt) {
+            hasShownDeepLinkPrompt = true;
             setTimeout(() => {
                 window.solana.connect({ onlyIfTrusted: false }).catch(() => {});
-            }, 700);
-        } 
-        else {
-            // Disconnected or normal visit → NO auto prompt
+            }, 800);
+        } else {
             showDisconnectedState();
-            // Only silent trusted attempt (won't show popup)
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
         }
     } else {
         showDisconnectedState();
@@ -391,9 +390,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(fetchTokenPrices, 15000);
     setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
 
+    // Pull to Refresh
     initPullToRefresh();
 
-    // Fade-in + hash scroll logic
+    // Fade-in observer
     const fallbackObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -402,6 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
 
+    // AUTO-OPEN + SCROLL FOR TOKEN CARDS
     const currentHash = window.location.hash;
     if (currentHash && currentHash.startsWith('#card-')) {
         history.replaceState(null, null, ' ');
