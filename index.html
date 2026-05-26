@@ -83,192 +83,189 @@
 
 <body>
 
-	<body>
+	<!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+	<script>
+		(function () {
+			// Apply dark mode BEFORE the page paints
+			if (localStorage.getItem('dark-mode') === 'true') {
+				document.documentElement.classList.add('dark-mode');
+				document.body.classList.add('dark-mode');
+			}
+		})();
+	</script>
 
-		<!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
-		<script>
-			(function () {
-				// Apply dark mode BEFORE the page paints
-				if (localStorage.getItem('dark-mode') === 'true') {
-					document.documentElement.classList.add('dark-mode');
-					document.body.classList.add('dark-mode');
-				}
-			})();
-		</script>
+	<!-- Content Container -->
+	<div id="wrapper">
 
-			<!-- Content Container -->
-			<div id="wrapper">
+		<!-- Background Layer - Restored -->
+		<div class="bg fixed"></div>
 
-				<!-- Background Layer - Restored -->
-				<div class="bg fixed"></div>
-
-				<div id="intro">
-					<div class="images-with-plus">
-						<a href="/ofidtales.html" class="top-no-style-link">
-							<img src="/assets/images/webp/giddys-intro-digitize.webp"
-								alt="OFiDCrypt & Giddy's Digitized Retail Logo" class="intro-image">
-						</a>
-					</div>
-					<div>
-						<h1 class="left-aligned">Universe<br />
-							<span class="smaller-heading-bottom">Digitized Retail<br />By OFiDCrypt</span>
-						</h1>
-					</div>
-
-					<div id="custom-subheading">
-						<a href="https://twitter.com/OFiDCrypt?ref_src=twsrc%5Etfw" class="twitter-follow-button"
-							data-size="large" data-show-count="false">
-							Follow @OFiDCrypt
-						</a>
-					</div>
-				</div>
-
-				<style>
-					/* Hide the placeholder until Twitter is ready */
-					#custom-subheading a.twitter-follow-button {
-						visibility: hidden;
-					}
-
-					/* Once Twitter replaces it with their iframe/button, show it */
-					#custom-subheading .twitter-follow-button-rendered {
-						visibility: visible;
-					}
-
-					/* Base setup for the container */
-					#custom-subheading {
-						min-height: 28px;
-						display: flex;
-						/* Keep this to maintain centering */
-						justify-content: center;
-						/* Ensures it stays centered */
-						width: 100%;
-						margin-top: 0;
-						/* Default mobile top margin */
-					}
-
-					/* Desktop-Only Adjustment */
-					@media (min-width: 768px) {
-						#custom-subheading {
-							margin-top: 1.5rem;
-							/* This lowers the button on desktop */
-						}
-					}
-				</style>
-
-				<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-				<!-- Your Dark Mode Toggle Button -->
-				<a href="#" id="darkModeToggle" class="alt">
-					<i class="fas fa-sun"></i>
+		<div id="intro">
+			<div class="images-with-plus">
+				<a href="/ofidtales.html" class="top-no-style-link">
+					<img src="/assets/images/webp/giddys-intro-digitize.webp"
+						alt="OFiDCrypt & Giddy's Digitized Retail Logo" class="intro-image">
 				</a>
+			</div>
+			<div>
+				<h1 class="left-aligned">Universe<br />
+					<span class="smaller-heading-bottom">Digitized Retail<br />By OFiDCrypt</span>
+				</h1>
+			</div>
 
-				<!-- Nav -->
-				<nav id="nav">
-					<ul class="links">
-						<li class="active"><a href="index.html">Home</a></li>
-						<li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
-						<li><a href="explore.html">Wallets & Apps</a></li>
-						<li><a href="bouncyball.html">Tokens</a></li>
-						<li><a href="/pages/about.html">About Us</a></li>
-					</ul>
+			<div id="custom-subheading">
+				<a href="https://twitter.com/OFiDCrypt?ref_src=twsrc%5Etfw" class="twitter-follow-button"
+					data-size="large" data-show-count="false">
+					Follow @OFiDCrypt
+				</a>
+			</div>
+		</div>
 
-					<!-- Social Brands (Custom) -->
-					<ul class="icons top-icons">
-						<li class="top-toggle">
-							<a href="#" aria-label="Dark-Light Desktop Toggle Button">
-								<img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
-									class="custom-site-icon">
-							</a>
-						</li>
+		<style>
+			/* Hide the placeholder until Twitter is ready */
+			#custom-subheading a.twitter-follow-button {
+				visibility: hidden;
+			}
 
-						<li class="top-hvr">
-							<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
-								<img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
-							</a>
-						</li>
-					</ul>
-					<ul class="icons">
-						<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span
-									class="label">X</span></a>
-						</li>
-						<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
-									class="label">YouTube</span></a>
-						</li>
-						<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
-									class="label">TikTok</span></a></li>
-						<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
-									class="label">Facebook</span></a></li>
-						<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
-									class="label">LinkedIn</span></a></li>
-					</ul>
+			/* Once Twitter replaces it with their iframe/button, show it */
+			#custom-subheading .twitter-follow-button-rendered {
+				visibility: visible;
+			}
 
-					<!-- Footer Links -->
-					<ul class="footer-links">
-						<li class="footer-info-link">
-							<a href="#copyright">Docs | About | Partners | Compliance</a>
-						</li>
-					</ul>
-				</nav>
+			/* Base setup for the container */
+			#custom-subheading {
+				min-height: 28px;
+				display: flex;
+				/* Keep this to maintain centering */
+				justify-content: center;
+				/* Ensures it stays centered */
+				width: 100%;
+				margin-top: 0;
+				/* Default mobile top margin */
+			}
 
-				<!-- Main -->
-				<div id="main">
+			/* Desktop-Only Adjustment */
+			@media (min-width: 768px) {
+				#custom-subheading {
+					margin-top: 1.5rem;
+					/* This lowers the button on desktop */
+				}
+			}
+		</style>
 
-					<!-- Scrolling Ad Banner -->
-					<div id="expb-ball" class="ad-banner-wrapper">
-						<div class="ad-scroll-container">
-							<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
-								class="ad-slide" style="border-bottom: none;">
-								<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
-									style="max-width: 100%; height: auto;">
-							</a>
-							<a href="https://kraken.pxf.io/xLox1A" class="ad-slide" style="border-bottom: none;">
-								<img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2"
-									style="max-width: 100%; height: auto;">
-							</a>
-							<a href="https://freeproducer.ca/" class="ad-slide" style="border-bottom: none;">
-								<img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3"
-									style="max-width: 100%; height: auto;">
-							</a>
-							<a href="/bouncyball.html#buy-expb" class="ad-slide" style="border-bottom: none;">
-								<img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4"
-									style="max-width: 100%; height: auto;">
-							</a>
-							<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
-								<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5"
-									style="max-width: 100%; height: auto;">
-							</a>
+		<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+		<!-- Your Dark Mode Toggle Button -->
+		<a href="#" id="darkModeToggle" class="alt">
+			<i class="fas fa-sun"></i>
+		</a>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul class="links">
+				<li class="active"><a href="index.html">Home</a></li>
+				<li><a href="ofidtales.html">Giddy's TV & Toys</a></li>
+				<li><a href="explore.html">Wallets & Apps</a></li>
+				<li><a href="bouncyball.html">Tokens</a></li>
+				<li><a href="/pages/about.html">About Us</a></li>
+			</ul>
+
+			<!-- Social Brands (Custom) -->
+			<ul class="icons top-icons">
+				<li class="top-toggle">
+					<a href="#" aria-label="Dark-Light Desktop Toggle Button">
+						<img src="/assets/images/darklight-toggle01.svg" alt="Dark-Light Desktop Toggle Button"
+							class="custom-site-icon">
+					</a>
+				</li>
+
+				<li class="top-hvr">
+					<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+						<img src="/assets/images/hvr-logo01.svg" alt="Hvr Logo" class="custom-site-icon">
+					</a>
+				</li>
+			</ul>
+			<ul class="icons">
+				<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
+				</li>
+				<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+							class="label">YouTube</span></a>
+				</li>
+				<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
+							class="label">TikTok</span></a></li>
+				<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+							class="label">Facebook</span></a></li>
+				<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+							class="label">LinkedIn</span></a></li>
+			</ul>
+
+			<!-- Footer Links -->
+			<ul class="footer-links">
+				<li class="footer-info-link">
+					<a href="#copyright">Docs | About | Partners | Compliance</a>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Scrolling Ad Banner -->
+			<div id="expb-ball" class="ad-banner-wrapper">
+				<div class="ad-scroll-container">
+					<a href="https://shop.ledger.com/pages/ledger-nano-s-plus/?r=aa8d4fce2d9a&tracker=ofid_banner_index"
+						class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/ledger-nano-s-plus.png" alt="Ad Banner 1"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://kraken.pxf.io/xLox1A" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/kraken-banner-01.PNG" alt="Ad Banner 2"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://freeproducer.ca/" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/banner-free-producer.PNG" alt="Ad Banner 3"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="/bouncyball.html#buy-expb" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/expb-banner-01.png" alt="Ad Banner 4"
+							style="max-width: 100%; height: auto;">
+					</a>
+					<a href="https://t.co/gQBLmw20Qp" class="ad-slide" style="border-bottom: none;">
+						<img src="/assets/images/dobby-banner-01.png" alt="Ad Banner 5"
+							style="max-width: 100%; height: auto;">
+					</a>
+				</div>
+			</div>
+
+			<!-- Welcome & Intro -->
+			<article class="post">
+				<header class="major" id="home">
+
+					<!-- Smaller Sub-Heading B-W -->
+					<h1 class="center-aligned header-tight classy-font">
+						<span class="smaller-heading-bw">OFiDCrypt & Giddy’s</span>
+					</h1>
+
+					<!-- Status Messages -->
+					<!-- Message 1 - Green -->
+					<div id="statusMessageGreen" class="status-message-green">
+						<div class="status-inner">
+							<button id="statusCloseGreen" class="status-close">×</button>
+
+							<p class="status-text">
+								Available Now: Kinnected! Messenger / Wallet Early Access Beta.
+								Unlock Digital Gifting in two simple steps —
+								1) <a href="../pages/kinnected.html#footer" class="status-link">Submit</a> your
+								Google
+								Play Email to enroll
+								as a tester.
+								2) Click <a href="https://play.google.com/apps/internaltest/4700831657731436961"
+									class="status-link">here</a> to download.
+							</p>
 						</div>
 					</div>
 
-					<!-- Welcome & Intro -->
-					<article class="post">
-						<header class="major" id="home">
-
-							<!-- Smaller Sub-Heading B-W -->
-							<h1 class="center-aligned header-tight classy-font">
-								<span class="smaller-heading-bw">OFiDCrypt & Giddy’s</span>
-							</h1>
-
-							<!-- Status Messages -->
-							<!-- Message 1 - Green -->
-							<div id="statusMessageGreen" class="status-message-green">
-								<div class="status-inner">
-									<button id="statusCloseGreen" class="status-close">×</button>
-
-									<p class="status-text">
-										Available Now: Kinnected! Messenger / Wallet Early Access Beta.
-										Unlock Digital Gifting in two simple steps —
-										1) <a href="../pages/kinnected.html#footer" class="status-link">Submit</a> your
-										Google
-										Play Email to enroll
-										as a tester.
-										2) Click <a href="https://play.google.com/apps/internaltest/4700831657731436961"
-											class="status-link">here</a> to download.
-									</p>
-								</div>
-							</div>
-
-							<!-- Message 2 - Yellow 
+					<!-- Message 2 - Yellow 
 							<div id="statusMessageYellow" class="status-message">
 								<div class="status-inner">
 									<button id="statusCloseYellow" class="status-close">×</button>
@@ -291,393 +288,383 @@
 							</div>
 							-->
 
-							<h1>A Star is Born<br /> Giddy's Family Gifts</h1>
-							<p class="align-center">The
-								things your kids adore now return cash‑backed value — a meaningful thank‑you for
-								supporting
-								Giddy's Shop and Digital Gifting!</p>
+					<h1>A Star is Born<br /> Giddy's Family Gifts</h1>
+					<p class="align-center">The
+						things your kids adore now return cash‑backed value — a meaningful thank‑you for
+						supporting
+						Giddy's Shop and Digital Gifting!</p>
 
-							<!-- Get Started: Explore & Promote -->
-							<section class="featured-service">
-								<div class="featured-service-items">
+					<!-- Get Started: Explore & Promote -->
+					<section class="featured-service">
+						<div class="featured-service-items">
 
-									<!-- Tile 1: Giddy's Universe -->
-									<article class="featured-service-item--featured">
-										<span class="image centered">
-											<img src="/assets/images/giddys-card-4x3.jpeg"
-												alt="e𝕏PB Business Promote Icon">
-										</span>
+							<!-- Tile 1: Giddy's Universe -->
+							<article class="featured-service-item--featured">
+								<span class="image centered">
+									<img src="/assets/images/giddys-card-4x3.jpeg" alt="e𝕏PB Business Promote Icon">
+								</span>
 
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">Giddy's TV & Toys</h3>
-											<p class="align-center">Family Gifts · Kids Goods · Collectibles · Animated
-												Series
-											</p>
-											<button class="round-button" onclick="location.href='/ofidtales.html'">
-												Visit Now
-											</button>
-										</div>
-									</article>
-
-									<!-- Tile 2: Giddy Key Wallet -->
-									<article class="featured-service-item--featured">
-										<span class="image centered">
-											<img src="/assets/images/webp/giddy-key-wallet-digitize.webp"
-												alt="Giddy Key Wallet Card">
-										</span>
-
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">Start Collecting!</h3>
-											<p class="align-center">Get Your First Wallet · Unlock Smart Spending ·
-												Dynamic Cash
-												Tokens</p>
-											<button class="round-button" onclick="location.href='/wallet.html'">
-												My Money
-											</button>
-										</div>
-									</article>
-
-									<!-- Tile 3: Get Started: Partners -->
-									<article class="featured-service-item--featured">
-										<span class="image centered">
-											<img src="/assets/images/giddys-kinnected.JPG"
-												alt="Kinnected Messenger Card">
-										</span>
-
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">The Social Wallet</h3>
-											<p class="align-center">Explore Communities · Manage Tokens ·
-												Gift & Spend with Friends</p>
-											<button class="round-button" data-scroll="#jump-ahead">
-												Get Started
-											</button>
-										</div>
-									</article>
-
-									<!-- Tile 4: Explore Services -->
-									<article class="featured-service-item--featured">
-										<span class="image centered">
-											<img src="assets/images/get-started-partners-4x3.PNG"
-												alt="Partners Card">
-										</span>
-
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">Explore More Apps</h3>
-											<p class="align-center">Chose A Wallet · New Messengers · All-In-One Friends
-												+
-												Money!</p>
-											<button class="round-button" onclick="location.href='/explore.html'">
-												Explore Now
-											</button>
-										</div>
-									</article>
-
-									<!-- Tile 4: Learn -->
-									<article class="featured-service-item--featured">
-										<span class="image centered">
-											<img src="/assets/images/expb-learn-card-4x3.png"
-												alt="e𝕏PB Business Promote Icon">
-										</span>
-
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">Learn About New Money</h3>
-											<p class="align-center">Early Benefits · Access · Free Tips · Safety</p>
-											<button class="round-button"
-												onclick="location.href='/discover.html#article-featured'">
-												Go to Articles
-											</button>
-										</div>
-									</article>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Giddy's TV & Toys</h3>
+									<p class="align-center">Family Gifts · Kids Goods · Collectibles · Animated
+										Series
+									</p>
+									<button class="round-button" onclick="location.href='/ofidtales.html'">
+										Visit Now
+									</button>
 								</div>
-							</section>
+							</article>
+
+							<!-- Tile 2: Giddy Key Wallet -->
+							<article class="featured-service-item--featured">
+								<span class="image centered">
+									<img src="/assets/images/webp/giddy-key-wallet-digitize.webp"
+										alt="Giddy Key Wallet Card">
+								</span>
+
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Start Collecting!</h3>
+									<p class="align-center">Get Your First Wallet · Unlock Smart Spending ·
+										Dynamic Cash
+										Tokens</p>
+									<button class="round-button" onclick="location.href='/wallet.html'">
+										My Money
+									</button>
+								</div>
+							</article>
+
+							<!-- Tile 3: Get Started: Partners -->
+							<article class="featured-service-item--featured">
+								<span class="image centered">
+									<img src="/assets/images/giddys-kinnected.JPG" alt="Kinnected Messenger Card">
+								</span>
+
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">The Social Wallet</h3>
+									<p class="align-center">Explore Communities · Manage Tokens ·
+										Gift & Spend with Friends</p>
+									<button class="round-button" data-scroll="#jump-ahead">
+										Get Started
+									</button>
+								</div>
+							</article>
+
+							<!-- Tile 4: Explore Services -->
+							<article class="featured-service-item--featured">
+								<span class="image centered">
+									<img src="assets/images/get-started-partners-4x3.PNG" alt="Partners Card">
+								</span>
+
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Explore More Apps</h3>
+									<p class="align-center">Chose A Wallet · New Messengers · All-In-One Friends
+										+
+										Money!</p>
+									<button class="round-button" onclick="location.href='/explore.html'">
+										Explore Now
+									</button>
+								</div>
+							</article>
+
+							<!-- Tile 4: Learn -->
+							<article class="featured-service-item--featured">
+								<span class="image centered">
+									<img src="/assets/images/expb-learn-card-4x3.png" alt="e𝕏PB Business Promote Icon">
+								</span>
+
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Learn About New Money</h3>
+									<p class="align-center">Early Benefits · Access · Free Tips · Safety</p>
+									<button class="round-button"
+										onclick="location.href='/discover.html#article-featured'">
+										Go to Articles
+									</button>
+								</div>
+							</article>
+						</div>
+					</section>
+				</header>
+
+				<!-- Quick Start Section -->
+				<section class="quick-start-section">
+					<header id="intro-video">
+						<h2>Introduction: What We Do</h2>
+						<p>OFiDCrypt is one of the first of its kind; <b>where innovation meets
+								affordability</b> —
+							unlock exclusive savings on Giddy’s Goods and unlock digital gifting when you set up
+							your
+							first digital
+							wallet.</p>
+						<!-- Video container with poster overlay -->
+						<div class="video-main video-hosted-portrait">
+							<video id="myVideo" controls playsinline preload="metadata">
+								<source src="../assets/videos/ofidcrypt-intro.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+							<!-- Poster overlay (visible before play and after video ends) -->
+							<img class="video-poster-overlay" src="../assets/images/bg-poster-ofid-colour.JPG"
+								alt="OFiDCrypt Intro Video Poster">
+						</div>
+					</header>
+
+					<!-- JavaScript to control poster visibility -->
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							const video = document.getElementById('myVideo');
+							const container = video.parentElement; // .video-hosted-portrait
+
+							// Hide poster when video starts playing
+							video.addEventListener('play', function () {
+								container.classList.add('playing');
+							});
+
+							// Show poster again when video ends
+							video.addEventListener('ended', function () {
+								video.currentTime = 0; // Rewind to start (optional)
+								container.classList.remove('playing');
+							});
+
+							// Optional: If user pauses mid-video, keep video visible (don't show poster)
+							// Only show poster again if it actually ended
+							video.addEventListener('pause', function () {
+								if (!video.ended) {
+									container.classList.add('playing');
+								}
+							});
+						});
+					</script>
+
+					<!-- Quick Start Section -->
+					<section class="quick-start-section">
+						<header id="jump-ahead">
+							<h2>New Digital Wallets: Unlock More than Money</h2>
+
+							<p>Dive in and download your first digital wallet — completely free, no obligations,
+								just
+								possibilities.
+								Unlock the future of smart spending with a 2‑in‑1 companion that slips
+								effortlessly into
+								your pocket!
+							</p>
 						</header>
 
-						<!-- Quick Start Section -->
-						<section class="quick-start-section">
-							<header id="intro-video">
-								<h2>Introduction: What We Do</h2>
-								<p>OFiDCrypt is one of the first of its kind; <b>where innovation meets
-										affordability</b> —
-									unlock exclusive savings on Giddy’s Goods and unlock digital gifting when you set up
-									your
-									first digital
-									wallet.</p>
-								<!-- Video container with poster overlay -->
-								<div class="video-main video-hosted-portrait">
-									<video id="myVideo" controls playsinline preload="metadata">
-										<source src="../assets/videos/ofidcrypt-intro.mp4" type="video/mp4">
-										Your browser does not support the video tag.
-									</video>
-									<!-- Poster overlay (visible before play and after video ends) -->
-									<img class="video-poster-overlay" src="../assets/images/bg-poster-ofid-colour.JPG"
-										alt="OFiDCrypt Intro Video Poster">
-								</div>
-							</header>
+						<div class="quick-start-items">
 
-							<!-- JavaScript to control poster visibility -->
-							<script>
-								document.addEventListener('DOMContentLoaded', function () {
-									const video = document.getElementById('myVideo');
-									const container = video.parentElement; // .video-hosted-portrait
-
-									// Hide poster when video starts playing
-									video.addEventListener('play', function () {
-										container.classList.add('playing');
-									});
-
-									// Show poster again when video ends
-									video.addEventListener('ended', function () {
-										video.currentTime = 0; // Rewind to start (optional)
-										container.classList.remove('playing');
-									});
-
-									// Optional: If user pauses mid-video, keep video visible (don't show poster)
-									// Only show poster again if it actually ended
-									video.addEventListener('pause', function () {
-										if (!video.ended) {
-											container.classList.add('playing');
-										}
-									});
-								});
-							</script>
-
-							<!-- Quick Start Section -->
-							<section class="quick-start-section">
-								<header id="jump-ahead">
-									<h2>New Digital Wallets: Unlock More than Money</h2>
-
-									<p>Dive in and download your first digital wallet — completely free, no obligations,
-										just
-										possibilities.
-										Unlock the future of smart spending with a 2‑in‑1 companion that slips
-										effortlessly into
-										your pocket!
+							<article class="quick-start-item">
+								<span class="image left">
+									<img src="/assets/images/expb-people.PNG" alt="e𝕏PB People">
+								</span>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Your New Wallet</h3>
+									<p class="align-center">Kinnected Messenger · Chat · Groups · Games ·
+										Digital Cash
 									</p>
-								</header>
-
-								<div class="quick-start-items">
-
-									<article class="quick-start-item">
-										<span class="image left">
-											<img src="/assets/images/expb-people.PNG" alt="e𝕏PB People">
-										</span>
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">Your New Wallet</h3>
-											<p class="align-center">Kinnected Messenger · Chat · Groups · Games ·
-												Digital Cash
-											</p>
-											<button class="round-button"
-												onclick="location.href='/pages/kinnected.html'">
-												Early Access
-											</button>
-										</div>
-									</article>
-
-									<article class="quick-start-item">
-										<span class="image left">
-											<img src="/assets/images/expb-dreams.PNG" alt="e𝕏PB Dreams">
-										</span>
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">Collect Tokens</h3>
-											<p class="align-center">Claim · Redeem · Grow · Dynamic Digital Cash</p>
-											<button class="round-button"
-												onclick="location.href='/bouncyball.html#guide'">
-												Learn More
-											</button>
-										</div>
-									</article>
-
-									<article class="quick-start-item">
-										<span class="image left">
-											<img src="/assets/images/giddy-stablecoin-promo.PNG"
-												alt="Giddy Stablecoin Promo">
-										</span>
-										<div class="quick-start-content">
-											<h3 class="quick-start-title">The GIDDY Dollar</h3>
-											<p class="align-center">Canadian Stablecoin · Swap · Send · Spend · Gift</p>
-											<button class="round-button"
-												onclick="location.href='/onegiddy.html#giddy-guide'">
-												Explore GIDDY
-											</button>
-										</div>
-									</article>
-
+									<button class="round-button" onclick="location.href='/pages/kinnected.html'">
+										Early Access
+									</button>
 								</div>
-							</section>
-						</section>
-					</article>
-				</div>
+							</article>
 
-				<!-- Bottom Nav -->
-				<nav class="bottom-nav">
-					<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
-						<i class="fas fa-comment-dots"></i>Ask Giddy
-					</div>
-					<div class="nav-item" onclick="window.location.href='/shop.html'">
-						<i class="fas fa-shopping-bag"></i>Shop
-					</div>
-					<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
-						<i class="fas fa-gamepad"></i>Play Blinko!
-					</div>
-					<div class="nav-item" onclick="window.location.href='/wallet.html'">
-						<i class="fas fa-wallet"></i>Wallet
-					</div>
-					<div class="nav-item" id="navPanelTrigger">
-						<i class="fas fa-bars"></i> Menu
-					</div>
-				</nav>
-
-				<!-- Footer -->
-				<footer id="footer">
-					<section>
-						<form method="post" action="https://formspree.io/f/mzzbzojq"
-							onsubmit="return verifyRecaptcha()">
-							<h2 class="centered-heading">Contact Us</h2>
-							<div class="fields">
-								<div class="field">
-									<label for="name">Name</label>
-									<input type="text" name="name" id="name" required>
+							<article class="quick-start-item">
+								<span class="image left">
+									<img src="/assets/images/expb-dreams.PNG" alt="e𝕏PB Dreams">
+								</span>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">Collect Tokens</h3>
+									<p class="align-center">Claim · Redeem · Grow · Dynamic Digital Cash</p>
+									<button class="round-button" onclick="location.href='/bouncyball.html#guide'">
+										Learn More
+									</button>
 								</div>
-								<div class="field">
-									<label for="email">Email</label>
-									<input type="email" name="email" id="email" required>
+							</article>
+
+							<article class="quick-start-item">
+								<span class="image left">
+									<img src="/assets/images/giddy-stablecoin-promo.PNG" alt="Giddy Stablecoin Promo">
+								</span>
+								<div class="quick-start-content">
+									<h3 class="quick-start-title">The GIDDY Dollar</h3>
+									<p class="align-center">Canadian Stablecoin · Swap · Send · Spend · Gift</p>
+									<button class="round-button" onclick="location.href='/onegiddy.html#giddy-guide'">
+										Explore GIDDY
+									</button>
 								</div>
-								<div class="field">
-									<label for="message">Message</label>
-									<textarea name="message" id="message" rows="3" required></textarea>
-								</div>
-							</div>
-							<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
-							<ul class="actions">
-								<li><input type="submit" value="Send Message"></li>
-							</ul>
-						</form>
-						<script>
-							function verifyRecaptcha() {
-								var response = grecaptcha.getResponse();
-								if (response.length == 0) {
-									alert("Please complete the reCAPTCHA.");
-									return false;
-								} else {
-									return true;
-								}
-							}
-						</script>
+							</article>
+
+						</div>
 					</section>
+				</section>
+			</article>
+		</div>
 
-					<!-- Footer Social Location, Links & Other Contact -->
-					<section class="split contact">
-						<section>
-							<h3>Location</h3>
-							<p>British Columbia, Canada</p>
-						</section>
-						<section>
-							<h3>Email</h3>
-							<p><a href="mailto:me@ofidcrypt.com">me@ofidcrypt.com</a></p>
-						</section>
-						<section>
-							<h3>Telegram</h3>
-							<p><a href="https://t.me/OFiDBall">OFiDCrypt e𝕏P Web3™</a></p>
-						</section>
-
-						<!-- Hvr -->
-						<section>
-							<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
-								<img src="/assets/images/hvr-logo02.svg" alt="Hvr Logo" id="contact-img"
-									class="custom-site-icon-contact">
-							</a>
-							<p><a href="https://www.ofidcrypt.ca">OFiDCrypt.ca</a></p>
-						</section>
-						<section>
-							<ul class="icons alt">
-								<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span
-											class="label">X</span></a></li>
-								<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
-											class="label">YouTube</span></a></li>
-								<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
-											class="label">TikTok</span></a></li>
-								<li><a href="https://www.facebook.com/OFiDCrypt"
-										class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a>
-								</li>
-								<li><a href="https://linkedin.com/company/OFiDCrypt"
-										class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
-							</ul>
-						</section>
-					</section>
-				</footer>
-
-				<!-- Copyright -->
-				<div id="copyright">
-					<ul>
-						<li><a href="/docs/main.html">Docs</a></li>
-						<li><a href="/discover.html">News & PR</a></li>
-						<li><a href="/pages/affiliate.html">Partners</a></li>
-						<li><a href="/pages/about.html">About</a></li>
+		<!-- Footer -->
+		<footer id="footer">
+			<section>
+				<form method="post" action="https://formspree.io/f/mzzbzojq" onsubmit="return verifyRecaptcha()">
+					<h2 class="centered-heading">Contact Us</h2>
+					<div class="fields">
+						<div class="field">
+							<label for="name">Name</label>
+							<input type="text" name="name" id="name" required>
+						</div>
+						<div class="field">
+							<label for="email">Email</label>
+							<input type="email" name="email" id="email" required>
+						</div>
+						<div class="field">
+							<label for="message">Message</label>
+							<textarea name="message" id="message" rows="3" required></textarea>
+						</div>
+					</div>
+					<div class="g-recaptcha" data-sitekey="6LeHSWsqAAAAABWNk60dgafwA26pWZiQoNi8ZUTa"></div>
+					<ul class="actions">
+						<li><input type="submit" value="Send Message"></li>
 					</ul>
-					<ul>
-						<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
+				</form>
+				<script>
+					function verifyRecaptcha() {
+						var response = grecaptcha.getResponse();
+						if (response.length == 0) {
+							alert("Please complete the reCAPTCHA.");
+							return false;
+						} else {
+							return true;
+						}
+					}
+				</script>
+			</section>
+
+			<!-- Footer Social Location, Links & Other Contact -->
+			<section class="split contact">
+				<section>
+					<h3>Location</h3>
+					<p>British Columbia, Canada</p>
+				</section>
+				<section>
+					<h3>Email</h3>
+					<p><a href="mailto:me@ofidcrypt.com">me@ofidcrypt.com</a></p>
+				</section>
+				<section>
+					<h3>Telegram</h3>
+					<p><a href="https://t.me/OFiDBall">OFiDCrypt e𝕏P Web3™</a></p>
+				</section>
+
+				<!-- Hvr -->
+				<section>
+					<a href="https://www.ofidcrypt.ca" aria-label="Hvr">
+						<img src="/assets/images/hvr-logo02.svg" alt="Hvr Logo" id="contact-img"
+							class="custom-site-icon-contact">
+					</a>
+					<p><a href="https://www.ofidcrypt.ca">OFiDCrypt.ca</a></p>
+				</section>
+				<section>
+					<ul class="icons alt">
+						<li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span
+									class="label">X</span></a></li>
+						<li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
+									class="label">YouTube</span></a></li>
+						<li><a href="https://www.tiktok.com/@Giddys_CA" class="icon brands alt fa-tiktok"><span
+									class="label">TikTok</span></a></li>
+						<li><a href="https://www.facebook.com/OFiDCrypt" class="icon brands alt fa-facebook-f"><span
+									class="label">Facebook</span></a>
+						</li>
+						<li><a href="https://linkedin.com/company/OFiDCrypt" class="icon brands alt fa-linkedin"><span
+									class="label">LinkedIn</span></a></li>
 					</ul>
-					<ul>
-						<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-					</ul>
-					<ul>
-						<li><a href="/docs/privacy-policy.html">Privacy</a></li>
-					</ul>
-				</div>
+				</section>
+			</section>
+		</footer>
 
-				<!-- Footer Extended Links Container -->
-				<div class="footer-extended-container">
-					<section class="footer-extended">
-						<h1 class="footer-left-aligned">
-							<span class="footer-small-heading">Partner Token Projects</span><br />
-						</h1>
-						<ul>
-							<li><a href="kincommunity.html#one-kin">$ONE</a></li>
-							<li><a href="kincommunity.html#one-kin">$KIN</a></li>
-							<li><a href="kincommunity.html#token-partners">$DOBBY</a></li>
-							<li><a href="kincommunity.html#token-partners">$DUNO</a></li>
-							<li><a href="kincommunity.html#token-partners">$MYLO</a></li>
-							<li><a href="kincommunity.html#token-partners">$CPT</a></li>
-							<li><a href="kincommunity.html#token-partners">$SINU</a></li>
-						</ul>
-					</section>
+		<!-- Copyright -->
+		<div id="copyright">
+			<ul>
+				<li><a href="/docs/main.html">Docs</a></li>
+				<li><a href="/discover.html">News & PR</a></li>
+				<li><a href="/pages/affiliate.html">Partners</a></li>
+				<li><a href="/pages/about.html">About</a></li>
+			</ul>
+			<ul>
+				<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
+			</ul>
+			<ul>
+				<li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+			</ul>
+			<ul>
+				<li><a href="/docs/privacy-policy.html">Privacy</a></li>
+			</ul>
+		</div>
 
-					<section class="footer-extended">
-						<h1 class="footer-left-aligned">
-							<span class="footer-small-heading">Affiliate Partnerships</span><br />
-						</h1>
-						<ul>
-							<li><a href="pages/affiliate.html#kraken">Kraken</a></li>
-							<li><a href="pages/affiliate.html#ledger">Ledger</a></li>
-						</ul>
-					</section>
+		<!-- Footer Extended Links Container -->
+		<div class="footer-extended-container">
+			<section class="footer-extended">
+				<h1 class="footer-left-aligned">
+					<span class="footer-small-heading">Partner Token Projects</span><br />
+				</h1>
+				<ul>
+					<li><a href="kincommunity.html#one-kin">$ONE</a></li>
+					<li><a href="kincommunity.html#one-kin">$KIN</a></li>
+					<li><a href="kincommunity.html#token-partners">$DOBBY</a></li>
+					<li><a href="kincommunity.html#token-partners">$DUNO</a></li>
+					<li><a href="kincommunity.html#token-partners">$MYLO</a></li>
+					<li><a href="kincommunity.html#token-partners">$CPT</a></li>
+					<li><a href="kincommunity.html#token-partners">$SINU</a></li>
+				</ul>
+			</section>
 
-					<section class="footer-extended">
-						<h1 class="footer-left-aligned">
-							<span class="footer-small-heading">Tech Collab & Site Partners</span><br />
-						</h1>
-						<ul>
-							<li><a href="pages/kinnected.html">GFDevSoft's Kinnected!</a></li>
-							<li><a href="pages/affiliate.html#hvr">HVR Technologies</a></li>
-						</ul>
-					</section>
+			<section class="footer-extended">
+				<h1 class="footer-left-aligned">
+					<span class="footer-small-heading">Affiliate Partnerships</span><br />
+				</h1>
+				<ul>
+					<li><a href="pages/affiliate.html#kraken">Kraken</a></li>
+					<li><a href="pages/affiliate.html#ledger">Ledger</a></li>
+				</ul>
+			</section>
 
-					<section class="footer-extended">
-						<h1 class="footer-left-aligned">
-							<span class="footer-small-heading">Collab Communities</span><br />
-						</h1>
-						<ul>
-							<li><a href="kincommunity.html">ONE Kin</a></li>
-							<li><a href="https://x.com/_WEB3M_">WEB3M</a></li>
-							<li><a href="https://x.com/theweb3family">The Web3 Family</a></li>
-						</ul>
-					</section>
-				</div>
+			<section class="footer-extended">
+				<h1 class="footer-left-aligned">
+					<span class="footer-small-heading">Tech Collab & Site Partners</span><br />
+				</h1>
+				<ul>
+					<li><a href="pages/kinnected.html">GFDevSoft's Kinnected!</a></li>
+					<li><a href="pages/affiliate.html#hvr">HVR Technologies</a></li>
+				</ul>
+			</section>
 
-				<!-- Scripts -->
-				<script src="/assets/js/ofid-main.js"></script>
+			<section class="footer-extended">
+				<h1 class="footer-left-aligned">
+					<span class="footer-small-heading">Collab Communities</span><br />
+				</h1>
+				<ul>
+					<li><a href="kincommunity.html">ONE Kin</a></li>
+					<li><a href="https://x.com/_WEB3M_">WEB3M</a></li>
+					<li><a href="https://x.com/theweb3family">The Web3 Family</a></li>
+				</ul>
+			</section>
+		</div>
+	</div> <!-- End of wrapper -->
 
-			</div>
-	</body>
+	<!-- Bottom Nav -->
+	<nav class="bottom-nav">
+		<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
+			<i class="fas fa-comment-dots"></i>Ask Giddy
+		</div>
+		<div class="nav-item" onclick="window.location.href='/shop.html'">
+			<i class="fas fa-shopping-bag"></i>Shop
+		</div>
+		<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
+			<i class="fas fa-gamepad"></i>Play Blinko!
+		</div>
+		<div class="nav-item" onclick="window.location.href='/wallet.html'">
+			<i class="fas fa-wallet"></i>Wallet
+		</div>
+		<div class="nav-item" id="navPanelTrigger">
+			<i class="fas fa-bars"></i> Menu
+		</div>
+	</nav>
+
+	<!-- Scripts -->
+	<script src="/assets/js/ofid-main.js"></script>
+</body>
 
 </html>
