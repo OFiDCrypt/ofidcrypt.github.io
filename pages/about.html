@@ -90,21 +90,24 @@
 
 </head>
 
-<body class="is-preload">
+<body>
 
-    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
-    <script>
-        (function() {
-            // Apply dark mode BEFORE the page paints
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-            }
-        })();
-    </script>
+	<!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+	<script>
+		(function () {
+			// Apply dark mode BEFORE the page paints
+			if (localStorage.getItem('dark-mode') === 'true') {
+				document.documentElement.classList.add('dark-mode');
+				document.body.classList.add('dark-mode');
+			}
+		})();
+	</script>
 
-	<!-- Wrapper -->
-	<div id="wrapper" class="fade-in">
+	<!-- Content Container -->
+	<div id="wrapper">
+
+		<!-- Background Layer - Restored -->
+		<div class="bg fixed"></div>
 
 		<!-- Header Subpage-->
 		<header class="header-subpage">
@@ -340,7 +343,8 @@
 
 							<p class="status-text">
 								Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
-								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
+								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet
+								Giddy!
 								We encourage you to read our
 								<a href="/discover.html#article-featured" class="status-link">Solana
 									article</a>
@@ -356,7 +360,7 @@
 
 					<h1>We Gift Cash<br />
 						for Your Loyalty</h1>
-						<p><a href="../index.html#home">Home</a> > <b>About Us</b></p>
+					<p><a href="../index.html#home">Home</a> > <b>About Us</b></p>
 					<p>We are a registered Canadian <b>Web3 Family-First Brand</b> dedicated to giving value back to
 						consumers on each and every store purchase through joyful toys and digital gifts.</p>
 				</header>
@@ -458,7 +462,8 @@
 										<a href="https://ofidcrypt.ca/an-inevitable-prediction-the-perfect-loop"
 											class="no-style-link">
 											<span class="image">
-												<img src="../assets/images/webp/token-duality-2.webp" alt="MicroEconomies Tile">
+												<img src="../assets/images/webp/token-duality-2.webp"
+													alt="MicroEconomies Tile">
 											</span>
 										</a>
 										<h3>Our Method</h3>
@@ -582,7 +587,8 @@
 							<p style="margin-top: 1rem;">
 								<a href="../ofidtales.html#giddys-tv">
 									<span class="image right">
-										<img src="../assets/images/webp/toy-gifting-caption.webp" alt="Partnerships Tile">
+										<img src="../assets/images/webp/toy-gifting-caption.webp"
+											alt="Partnerships Tile">
 									</span>
 								</a>
 							</p>
@@ -601,52 +607,8 @@
 						</div>
 					</div>
 				</article>
-
-				<!--
-												<div class="video main">
-													<video id="myVideo" width="100%" controls poster="../assets/images/bglogo01.webp">
-													  <source src="../assets/videos/vidlogo01.MP4" type="video/mp4">
-													</video>
-												  </div>
-												-->
-
-				<!-- Revert video placeholder to poster image after video ends 
-												  <script>
-													document.addEventListener('DOMContentLoaded', function() {
-													  var video = document.getElementById('myVideo');
-													  
-													  // Ensure video loads before adding event listener
-													  video.addEventListener('loadedmetadata', function() {
-														video.addEventListener('ended', function() {
-														  this.currentTime = 0; // Reset video to start
-														  this.pause(); // Pause the video
-														  this.poster = '../assets/images/bglogo01.webp'; // Set the new poster image
-														});
-													  });
-													});
-												  </script>
-												-->
 			</section>
 		</div>
-
-		<!-- Bottom Nav -->
-		<nav class="bottom-nav">
-			<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
-				<i class="fas fa-comment-dots"></i>Ask Giddy
-			</div>
-			<div class="nav-item" onclick="window.location.href='../shop.html'">
-				<i class="fas fa-shopping-bag"></i>Shop
-			</div>
-			<div class="nav-item" onclick="window.location.href='../game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
-			</div>
-			<div class="nav-item" onclick="window.location.href='../wallet.html'">
-				<i class="fas fa-wallet"></i>Wallet
-			</div>
-			<div class="nav-item" id="navPanelTrigger">
-				<i class="fas fa-bars"></i> Menu
-			</div>
-		</nav>
 
 		<!-- Footer -->
 		<footer id="footer">
@@ -731,7 +693,7 @@
 				<li><a href="../docs/main.html">Docs</a></li>
 				<li><a href="../discover.html">News & PR</a></li>
 				<li><a href="../pages/affiliate.html">Partners</a></li>
-				<li><a href="../pages/about.html">About</a></li>
+				<li><a href="#">About</a></li>
 			</ul>
 			<ul>
 				<li>© OF<span class="i">i</span>DCrypt e𝕏P Web3™ 2026</li>
@@ -792,15 +754,29 @@
 				</ul>
 			</section>
 		</div>
+	</div><!-- End of wrapper -->
 
-		<!-- Link to non-critical JavaScript files -->
-		<script src="../assets/js/browser.min.js"></script>
-		<script src="../assets/js/jquery.scrollex.min.js"></script>
-		<script src="../assets/js/jquery.scrolly.min.js"></script>
-		<script src="../assets/js/util.js"></script>
-		<script src="../assets/js/breakpoints.min.js"></script>
-		<script src="../assets/js/main.js"></script>
-		<script src="../assets/js/ofid-main.js"></script>
+	<!-- Bottom Nav -->
+	<nav class="bottom-nav">
+		<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
+			<i class="fas fa-comment-dots"></i>Ask Giddy
+		</div>
+		<div class="nav-item" onclick="window.location.href='../shop.html'">
+			<i class="fas fa-shopping-bag"></i>Shop
+		</div>
+		<div class="nav-item" onclick="window.location.href='../game/app-play.html'">
+			<i class="fas fa-gamepad"></i>Play Blinko!
+		</div>
+		<div class="nav-item" onclick="window.location.href='../wallet.html'">
+			<i class="fas fa-wallet"></i>Wallet
+		</div>
+		<div class="nav-item" id="navPanelTrigger">
+			<i class="fas fa-bars"></i> Menu
+		</div>
+	</nav>
+
+	<!-- Scripts -->
+	<script src="../assets/js/ofid-main.js"></script>
 
 </body>
 
