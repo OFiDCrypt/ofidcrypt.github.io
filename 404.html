@@ -13,8 +13,8 @@
         gtag('config', 'G-3KX9VK5CCH');
     </script>
 
-<!-- JSON-LD Structured Data -->
-	<script type="application/ld+json">
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -84,11 +84,11 @@
 
 </head>
 
-<body class="is-preload">
+<body>
 
     <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
-        (function() {
+        (function () {
             // Apply dark mode BEFORE the page paints
             if (localStorage.getItem('dark-mode') === 'true') {
                 document.documentElement.classList.add('dark-mode');
@@ -97,8 +97,11 @@
         })();
     </script>
 
-    <!-- Wrapper -->
-    <div id="wrapper" class="fade-in">
+    <!-- Content Container -->
+    <div id="wrapper">
+
+        <!-- Background Layer - Restored -->
+        <div class="bg fixed"></div>
 
         <!-- Header Subpage-->
         <header class="header-subpage">
@@ -199,7 +202,7 @@
                         <span class="smaller-heading-bw">Whoops!</span>
                     </h1>
 
-                    <!-- Status Message -->
+                    <!-- Status Message 
                     <div id="statusMessage" class="status-message">
                         <div class="status-inner">
                             <button id="statusClose" class="status-close">×</button>
@@ -220,12 +223,15 @@
                             </label>
                         </div>
                     </div>
+                    -->
 
                     <div class="image-custom">
                         <a href="/index.html">
                             <img id="errorImage" src="/assets/images/404-light.PNG" alt="404: Page Not Found Art">
                         </a>
                     </div>
+                </header>
+            </section>
         </div>
 
         <style>
@@ -256,25 +262,6 @@
                     inset 0 2px 12px rgba(255, 255, 255, 0.12);
             }
         </style>
-
-        <!-- Bottom Nav -->
-		<nav class="bottom-nav">
-			<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
-				<i class="fas fa-comment-dots"></i>Ask Giddy
-			</div>
-			<div class="nav-item" onclick="window.location.href='/shop.html'">
-				<i class="fas fa-shopping-bag"></i>Shop
-			</div>
-			<div class="nav-item" onclick="window.location.href='/game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
-			</div>
-			<div class="nav-item" onclick="window.location.href='/wallet.html'">
-				<i class="fas fa-wallet"></i>Wallet
-			</div>
-			<div class="nav-item" id="navPanelTrigger">
-				<i class="fas fa-bars"></i> Menu
-			</div>
-		</nav>
 
         <!-- Footer -->
         <footer id="footer">
@@ -420,54 +407,63 @@
                 </ul>
             </section>
         </div>
+    </div> <!-- End of wrapper -->
 
-        <!-- 404 Page Specific – Dark Mode Image Handler -->
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('404-specific dark mode image handler initialized');
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
+            <i class="fas fa-comment-dots"></i>Ask Giddy
+        </div>
+        <div class="nav-item" onclick="window.location.href='/shop.html'">
+            <i class="fas fa-shopping-bag"></i>Shop
+        </div>
+        <div class="nav-item" onclick="window.location.href='/game/app-play.html'">
+            <i class="fas fa-gamepad"></i>Play Blinko!
+        </div>
+        <div class="nav-item" onclick="window.location.href='/wallet.html'">
+            <i class="fas fa-wallet"></i>Wallet
+        </div>
+        <div class="nav-item" id="navPanelTrigger">
+            <i class="fas fa-bars"></i> Menu
+        </div>
+    </nav>
 
-                const errorImage = document.getElementById('errorImage');
-                if (!errorImage) return;
+    <!-- 404 Page Specific – Dark Mode Image Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('404-specific dark mode image handler initialized');
 
-                function update404Image(isDark) {
-                    errorImage.src = isDark
-                        ? '/assets/images/404-dark.PNG'
-                        : '/assets/images/404-light.PNG';
-                }
+            const errorImage = document.getElementById('errorImage');
+            if (!errorImage) return;
 
-                // Initial load
-                const savedDark = localStorage.getItem('dark-mode') === 'true';
-                update404Image(savedDark);
+            function update404Image(isDark) {
+                errorImage.src = isDark
+                    ? '/assets/images/404-dark.PNG'
+                    : '/assets/images/404-light.PNG';
+            }
 
-                // Listen for dark mode changes from the central script
-                document.addEventListener('darkModeToggled', (e) => {
-                    update404Image(e.detail.isDark);
-                });
+            // Initial load
+            const savedDark = localStorage.getItem('dark-mode') === 'true';
+            update404Image(savedDark);
 
-                // Also support direct calls (in case someone calls window.toggleDarkMode)
-                if (typeof window.toggleDarkMode === 'function') {
-                    const originalToggle = window.toggleDarkMode;
-                    window.toggleDarkMode = function () {
-                        originalToggle();
-                        // The custom event will handle the image update
-                    };
-                }
+            // Listen for dark mode changes from the central script
+            document.addEventListener('darkModeToggled', (e) => {
+                update404Image(e.detail.isDark);
             });
-        </script>
 
-        <!-- Link to non-critical JavaScript files -->
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/js/jquery.scrollex.min.js"></script>
-        <script src="/assets/js/jquery.scrolly.min.js"></script>
+            // Also support direct calls (in case someone calls window.toggleDarkMode)
+            if (typeof window.toggleDarkMode === 'function') {
+                const originalToggle = window.toggleDarkMode;
+                window.toggleDarkMode = function () {
+                    originalToggle();
+                    // The custom event will handle the image update
+                };
+            }
+        });
+    </script>
 
-        <!-- REQUIRED for HTML5UP main.js -->
-        <script src="/assets/js/browser.min.js"></script>
-        <script src="/assets/js/breakpoints.min.js"></script>
-        <script src="/assets/js/util.js"></script>
-
-        <!-- Your custom logic must be LAST -->
-        <script src="/assets/js/main.js"></script>
-        <script src="/assets/js/ofid-main.js"></script>
+    <!-- Scripts -->
+    <script src="/assets/js/ofid-main.js"></script>
 
 </body>
 

@@ -11,8 +11,8 @@
     gtag('config', 'G-3KX9VK5CCH');
   </script>
 
-<!-- JSON-LD Structured Data -->
-	<script type="application/ld+json">
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -97,22 +97,22 @@
 
 <body>
 
- <div id="unity-container" class="unity-desktop">
-  <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
-  <div id="unity-loading-bar">
-    <div id="unity-logo"></div>
-    <div id="unity-progress-bar-empty">
-      <div id="unity-progress-bar-full"></div>
+  <div id="unity-container" class="unity-desktop">
+    <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-logo"></div>
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
     </div>
-  </div>
-  <div id="unity-warning"></div>
-  <div id="unity-footer">
-    <div id="unity-webgl-logo"></div>
-    <div id="unity-fullscreen-button"></div>
-    <div id="unity-build-title">Giddy's Blinko</div>
-  </div>
-  <!-- Bottom banner — shown on mobile/PWA -->
-  <div id="bottom-banner" style="
+    <div id="unity-warning"></div>
+    <div id="unity-footer">
+      <div id="unity-webgl-logo"></div>
+      <div id="unity-fullscreen-button"></div>
+      <div id="unity-build-title">Giddy's Blinko</div>
+    </div>
+    <!-- Bottom banner — shown on mobile/PWA -->
+    <div id="bottom-banner" style="
     display: none;
     height: 90px;
     width: 100%;
@@ -123,7 +123,7 @@
     z-index: 10;
     flex-shrink: 0;  /* Ensures banner stays visible */
   "></div>
-</div>
+  </div>
 
   <script>
 
@@ -234,26 +234,26 @@
 
   </script>
 
-<script>
-  const bottomBanner = document.getElementById('bottom-banner');
-  const isAndroid = /Android/i.test(navigator.userAgent);
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  <script>
+    const bottomBanner = document.getElementById('bottom-banner');
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-  if (bottomBanner && (isAndroid || isPWA)) {
-    bottomBanner.style.display = 'block';
-  }
+    if (bottomBanner && (isAndroid || isPWA)) {
+      bottomBanner.style.display = 'block';
+    }
 
-  // Make banner clickable (mouse + touch)
-  if (bottomBanner) {
-    const openLink = () => window.open('https://freeproducer.ca/', '_blank');
+    // Make banner clickable (mouse + touch)
+    if (bottomBanner) {
+      const openLink = () => window.open('https://freeproducer.ca/', '_blank');
 
-    bottomBanner.addEventListener('click', openLink);
-    bottomBanner.addEventListener('touchend', (e) => {
-      e.preventDefault();  // Prevent ghost click
-      openLink();
-    });
-  }
-</script>
+      bottomBanner.addEventListener('click', openLink);
+      bottomBanner.addEventListener('touchend', (e) => {
+        e.preventDefault();  // Prevent ghost click
+        openLink();
+      });
+    }
+  </script>
 
   <!-- Link to non-critical JavaScript files -->
   <script src="../assets/js/jquery.scrollex.min.js"></script>

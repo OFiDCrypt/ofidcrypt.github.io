@@ -13,8 +13,8 @@
         gtag('config', 'G-3KX9VK5CCH');
     </script>
 
-<!-- JSON-LD Structured Data -->
-	<script type="application/ld+json">
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -282,11 +282,11 @@
 
 </head>
 
-<body class="is-preload">
+<body>
 
     <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
-        (function() {
+        (function () {
             // Apply dark mode BEFORE the page paints
             if (localStorage.getItem('dark-mode') === 'true') {
                 document.documentElement.classList.add('dark-mode');
@@ -295,8 +295,11 @@
         })();
     </script>
 
-    <!-- Wrapper -->
-    <div id="wrapper" class="fade-in">
+    <!-- Content Container -->
+    <div id="wrapper">
+
+        <!-- Background Layer - Restored -->
+        <div class="bg fixed"></div>
 
         <!-- Header Subpage-->
         <header class="header-subpage">
@@ -615,25 +618,6 @@
             </section>
         </div>
 
-        <!-- Bottom Nav -->
-		<nav class="bottom-nav">
-			<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
-				<i class="fas fa-comment-dots"></i>Ask Giddy
-			</div>
-			<div class="nav-item" onclick="window.location.href='../shop.html'">
-				<i class="fas fa-shopping-bag"></i>Shop
-			</div>
-			<div class="nav-item" onclick="window.location.href='../game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
-			</div>
-			<div class="nav-item" onclick="window.location.href='../wallet.html'">
-				<i class="fas fa-wallet"></i>Wallet
-			</div>
-			<div class="nav-item" id="navPanelTrigger">
-				<i class="fas fa-bars"></i> Menu
-			</div>
-		</nav>
-
         <!-- Footer -->
         <footer id="footer">
             <section>
@@ -780,75 +764,95 @@
                 </ul>
             </section>
         </div>
+    </div><!-- End of wrapper -->
 
-        <!-- Page Specific Scripts -->
-        <script>
-            var container = document.querySelector("#unity-container");
-            var canvas = document.querySelector("#unity-canvas");
-            var loadingBar = document.querySelector("#unity-loading-bar");
-            var progressBarFull = document.querySelector("#unity-progress-bar-full");
-            var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-            var warningBanner = document.querySelector("#unity-warning");
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
+            <i class="fas fa-comment-dots"></i>Ask Giddy
+        </div>
+        <div class="nav-item" onclick="window.location.href='../shop.html'">
+            <i class="fas fa-shopping-bag"></i>Shop
+        </div>
+        <div class="nav-item" onclick="window.location.href='../game/app-play.html'">
+            <i class="fas fa-gamepad"></i>Play Blinko!
+        </div>
+        <div class="nav-item" onclick="window.location.href='../wallet.html'">
+            <i class="fas fa-wallet"></i>Wallet
+        </div>
+        <div class="nav-item" id="navPanelTrigger">
+            <i class="fas fa-bars"></i> Menu
+        </div>
+    </nav>
 
-            function unityShowBanner(msg, type) {
-                function updateBannerVisibility() {
-                    warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-                }
-                var div = document.createElement('div');
-                div.innerHTML = msg;
-                warningBanner.appendChild(div);
-                if (type == 'error') div.style = 'background: red; padding: 10px;';
-                else {
-                    if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-                    setTimeout(function () {
-                        warningBanner.removeChild(div);
-                        updateBannerVisibility();
-                    }, 5000);
-                }
-                updateBannerVisibility();
+    <!-- Page Specific Scripts -->
+    <script>
+        var container = document.querySelector("#unity-container");
+        var canvas = document.querySelector("#unity-canvas");
+        var loadingBar = document.querySelector("#unity-loading-bar");
+        var progressBarFull = document.querySelector("#unity-progress-bar-full");
+        var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+        var warningBanner = document.querySelector("#unity-warning");
+
+        function unityShowBanner(msg, type) {
+            function updateBannerVisibility() {
+                warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
             }
+            var div = document.createElement('div');
+            div.innerHTML = msg;
+            warningBanner.appendChild(div);
+            if (type == 'error') div.style = 'background: red; padding: 10px;';
+            else {
+                if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+                setTimeout(function () {
+                    warningBanner.removeChild(div);
+                    updateBannerVisibility();
+                }, 5000);
+            }
+            updateBannerVisibility();
+        }
 
-            var buildUrl = "Build";
-            var loaderUrl = buildUrl + "/GiddGameWeb.loader.js";
-            var config = {
-                dataUrl: buildUrl + "/GiddGameWeb.data.unityweb",
-                frameworkUrl: buildUrl + "/GiddGameWeb.framework.js.unityweb",
-                codeUrl: buildUrl + "/GiddGameWeb.wasm.unityweb",
-                streamingAssetsUrl: "StreamingAssets",
-                companyName: "DefaultCompany",
-                productName: "giddy",
-                productVersion: "1.0",
-                showBanner: unityShowBanner,
-            };
+        var buildUrl = "Build";
+        var loaderUrl = buildUrl + "/GiddGameWeb.loader.js";
+        var config = {
+            dataUrl: buildUrl + "/GiddGameWeb.data.unityweb",
+            frameworkUrl: buildUrl + "/GiddGameWeb.framework.js.unityweb",
+            codeUrl: buildUrl + "/GiddGameWeb.wasm.unityweb",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "DefaultCompany",
+            productName: "giddy",
+            productVersion: "1.0",
+            showBanner: unityShowBanner,
+        };
 
-            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                // Mobile device style: fill the whole browser client area with the game canvas
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            // Mobile device style: fill the whole browser client area with the game canvas
 
-                var meta = document.createElement('meta');
-                meta.name = 'viewport';
-                meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-                document.getElementsByTagName('head')[0].appendChild(meta);
-                container.className = "unity-mobile";
-                canvas.className = "unity-mobile";
+            var meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+            document.getElementsByTagName('head')[0].appendChild(meta);
+            container.className = "unity-mobile";
+            canvas.className = "unity-mobile";
 
-                // === iOS PWA / Fullscreen Improvements ===
-                // Enable fullscreen when added to Home Screen
-                var appleCapable = document.createElement('meta');
-                appleCapable.name = 'apple-mobile-web-app-capable';
-                appleCapable.content = 'yes';
-                document.getElementsByTagName('head')[0].appendChild(appleCapable);
+            // === iOS PWA / Fullscreen Improvements ===
+            // Enable fullscreen when added to Home Screen
+            var appleCapable = document.createElement('meta');
+            appleCapable.name = 'apple-mobile-web-app-capable';
+            appleCapable.content = 'yes';
+            document.getElementsByTagName('head')[0].appendChild(appleCapable);
 
-                var appleStatusBar = document.createElement('meta');
-                appleStatusBar.name = 'apple-mobile-web-app-status-bar-style';
-                appleStatusBar.content = 'black-translucent';
-                document.getElementsByTagName('head')[0].appendChild(appleStatusBar);
+            var appleStatusBar = document.createElement('meta');
+            appleStatusBar.name = 'apple-mobile-web-app-status-bar-style';
+            appleStatusBar.content = 'black-translucent';
+            document.getElementsByTagName('head')[0].appendChild(appleStatusBar);
 
-                // Optional: Gentle prompt for iOS users to add to Home Screen (only shows if not already installed)
-                if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
-                    var pwaPrompt = document.createElement('div');
-                    pwaPrompt.id = 'pwa-prompt';
-                    pwaPrompt.innerHTML = 'For the best experience (including fullscreen), tap Share → Add to Home Screen';
-                    pwaPrompt.style.cssText = `
+            // Optional: Gentle prompt for iOS users to add to Home Screen (only shows if not already installed)
+            if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
+                var pwaPrompt = document.createElement('div');
+                pwaPrompt.id = 'pwa-prompt';
+                pwaPrompt.innerHTML = 'For the best experience (including fullscreen), tap Share → Add to Home Screen';
+                pwaPrompt.style.cssText = `
                 position: fixed;
                 bottom: 0;
                 left: 0;
@@ -861,58 +865,52 @@
                 z-index: 1000;
                 box-sizing: border-box;
             `;
-                    document.body.appendChild(pwaPrompt);
+                document.body.appendChild(pwaPrompt);
 
-                    // Auto-hide after 8 seconds
-                    setTimeout(() => {
-                        if (pwaPrompt && pwaPrompt.parentNode) {
-                            pwaPrompt.style.transition = 'opacity 0.5s';
-                            pwaPrompt.style.opacity = '0';
-                            setTimeout(() => pwaPrompt.remove(), 500);
-                        }
-                    }, 8000);
-                }
-                // === End iOS Improvements ===
-
-                // To lower canvas resolution on mobile devices to gain some performance, uncomment the following line:
-                // config.devicePixelRatio = 1;
-            } else {
-                canvas.style.width = "960px";
-                canvas.style.height = "600px";
+                // Auto-hide after 8 seconds
+                setTimeout(() => {
+                    if (pwaPrompt && pwaPrompt.parentNode) {
+                        pwaPrompt.style.transition = 'opacity 0.5s';
+                        pwaPrompt.style.opacity = '0';
+                        setTimeout(() => pwaPrompt.remove(), 500);
+                    }
+                }, 8000);
             }
+            // === End iOS Improvements ===
 
-            loadingBar.style.display = "block";
+            // To lower canvas resolution on mobile devices to gain some performance, uncomment the following line:
+            // config.devicePixelRatio = 1;
+        } else {
+            canvas.style.width = "960px";
+            canvas.style.height = "600px";
+        }
 
-            var script = document.createElement("script");
-            script.src = loaderUrl;
-            script.onload = () => {
-                createUnityInstance(canvas, config, (progress) => {
-                    progressBarFull.style.width = 100 * progress + "%";
-                }).then((unityInstance) => {
-                    loadingBar.style.display = "none";
-                    fullscreenButton.onclick = () => {
-                        unityInstance.SetFullscreen(1);
-                    };
-                    fullscreenButton.addEventListener('touchend', (e) => {
-                        e.preventDefault();
-                        unityInstance.SetFullscreen(1);
-                    });
-                }).catch((message) => {
-                    alert(message);
+        loadingBar.style.display = "block";
+
+        var script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+            createUnityInstance(canvas, config, (progress) => {
+                progressBarFull.style.width = 100 * progress + "%";
+            }).then((unityInstance) => {
+                loadingBar.style.display = "none";
+                fullscreenButton.onclick = () => {
+                    unityInstance.SetFullscreen(1);
+                };
+                fullscreenButton.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    unityInstance.SetFullscreen(1);
                 });
-            };
+            }).catch((message) => {
+                alert(message);
+            });
+        };
 
-            document.body.appendChild(script);
-        </script>
+        document.body.appendChild(script);
+    </script>
 
-        <!-- Link to non-critical JavaScript files -->
-        <script src="../assets/js/browser.min.js"></script>
-        <script src="../assets/js/jquery.scrollex.min.js"></script>
-        <script src="../assets/js/jquery.scrolly.min.js"></script>
-        <script src="../assets/js/util.js"></script>
-        <script src="../assets/js/breakpoints.min.js"></script>
-        <script src="../assets/js/main.js"></script>
-        <script src="../assets/js/ofid-main.js"></script>
+    <!-- Scripts -->
+    <script src="../assets/js/ofid-main.js"></script>
 
 </body>
 
