@@ -5,6 +5,7 @@
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 let latestPrices = {};   
+let hasTriggeredDeepLinkPrompt = false;   // ← Controls deep link auto-prompt
 
 // ====================== BASIC PAGE FUNCTIONS ======================
 function goToToken(token) {
@@ -180,7 +181,7 @@ function showConnectedState() {
         btn.style.borderColor = "#ef4444";
         btn.style.color = "#ef4444";
         btn.style.cursor = "pointer";
-        btn.onclick = disconnectWallet;   // Force disconnect
+        btn.onclick = disconnectWallet;
     }
 }
 
@@ -212,7 +213,7 @@ function showDisconnectedState() {
         btn.style.borderColor = "#8b5cf6";
         btn.style.color = "#8b5cf6";
         btn.style.cursor = "pointer";
-        btn.onclick = handlePhantomConnect;   // Force connect
+        btn.onclick = handlePhantomConnect;
     }
 }
 
@@ -358,11 +359,20 @@ document.addEventListener('DOMContentLoaded', () => {
             showDisconnectedState();
         });
 
-        // Conservative: only silent reconnect if already trusted
+        const isInPhantomBrowser = /Phantom/i.test(navigator.userAgent);
+
         if (window.solana.isConnected) {
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
-        } else {
+        } 
+        else if (isInPhantomBrowser && !hasTriggeredDeepLinkPrompt) {
+            // ← This restores the beautiful deep link behavior
+            hasTriggeredDeepLinkPrompt = true;
+            setTimeout(() => {
+                window.solana.connect({ onlyIfTrusted: false }).catch(() => {});
+            }, 800);
+        } 
+        else {
             showDisconnectedState();
             window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
         }
