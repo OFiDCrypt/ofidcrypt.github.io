@@ -180,7 +180,7 @@ function showConnectedState() {
         btn.style.borderColor = "#ef4444";
         btn.style.color = "#ef4444";
         btn.style.cursor = "pointer";
-        btn.onclick = disconnectWallet;   // Critical for disconnect
+        btn.onclick = disconnectWallet;   // Force disconnect
     }
 }
 
@@ -212,7 +212,7 @@ function showDisconnectedState() {
         btn.style.borderColor = "#8b5cf6";
         btn.style.color = "#8b5cf6";
         btn.style.cursor = "pointer";
-        btn.onclick = handlePhantomConnect;   // Critical for connect
+        btn.onclick = handlePhantomConnect;   // Force connect
     }
 }
 
@@ -358,6 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showDisconnectedState();
         });
 
+        // Conservative: only silent reconnect if already trusted
         if (window.solana.isConnected) {
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
