@@ -5,7 +5,6 @@
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 let latestPrices = {};   
-let hasTriggeredDeepLinkPrompt = false;   // ← Controls deep link auto-prompt
 
 // ====================== BASIC PAGE FUNCTIONS ======================
 function goToToken(token) {
@@ -360,19 +359,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const isInPhantomBrowser = /Phantom/i.test(navigator.userAgent);
+        const alreadyPrompted = sessionStorage.getItem('deepLinkPromptShown') === 'true';
 
         if (window.solana.isConnected) {
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
         } 
-        else if (isInPhantomBrowser && !hasTriggeredDeepLinkPrompt) {
-            // ← This restores the beautiful deep link behavior
-            hasTriggeredDeepLinkPrompt = true;
+        else if (isInPhantomBrowser && !alreadyPrompted) {
+            // Deep link auto-prompt - only once per Phantom session
+            sessionStorage.setItem('deepLinkPromptShown', 'true');
             setTimeout(() => {
                 window.solana.connect({ onlyIfTrusted: false }).catch(() => {});
             }, 800);
         } 
         else {
+            // Normal navigation or after manual disconnect → no auto prompt
             showDisconnectedState();
             window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
         }

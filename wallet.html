@@ -326,7 +326,7 @@
 
     <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
-        (function() {
+            (function () {
                 // Apply dark mode BEFORE the page paints
                 if (localStorage.getItem('dark-mode') === 'true') {
                     document.documentElement.classList.add('dark-mode');
@@ -944,19 +944,21 @@
                                         class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
                                 </div>
                             </div>
-                            <div id="price-SOL" class="text-xs mt-2 font-mono text-zinc-400">Fetching...</div>
-                            <div class="text-xs text-green-400 font-medium">24 hr: +3.12%</div>
+                            <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
+                                <div id="price-SOL" class="text-sm text-zinc-400 font-mono">Fetching...</div>
+                                <div class="text-sm text-green-400 font-medium">24 hr: +3.12%</div>
+                            </div>
 
                             <div class="mt-6">
-                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
-                                </div>
-                                <div id="value-SOL" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                    style="color: var(--text-color) ;">$0.00 CAD</div>
-
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
                                     QUANTITY</div>
                                 <div id="qty-SOL" class="text-base font-bold font-mono"
                                     style="color: var(--text-color) ; opacity: 0.9;">—</div>
+
+                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
+                                </div>
+                                <div id="value-SOL" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
+                                    style="color: var(--text-color) ;">$0.00 CAD</div>
                             </div>
                         </div>
                         <div class="flex-shrink-0">
@@ -989,19 +991,22 @@
                                         class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
                                 </div>
                             </div>
-                            <div id="price-USDC" class="text-xs mt-2 font-mono text-zinc-400">Fetching...</div>
-                            <div class="text-xs text-zinc-500 font-medium">24 hr: 0.00%</div>
+                            <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
+                                <div id="price-USDC" class="text-sm text-zinc-400 font-mono">Fetching...</div>
+                                <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
+                            </div>
 
                             <div class="mt-6">
+                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
+                                    QUANTITY</div>
+                                <div id="qty-USDC" class="text-base font-bold font-mono"
+                                    style="color: var(--text-color) ; opacity: 0.9;">—</div>
+
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
                                 </div>
                                 <div id="value-USDC" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
                                     style="color: var(--text-color) ;">$0.00 CAD</div>
 
-                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
-                                    QUANTITY</div>
-                                <div id="qty-USDC" class="text-base font-bold font-mono"
-                                    style="color: var(--text-color) ; opacity: 0.9;">—</div>
                             </div>
                         </div>
                         <div class="flex-shrink-0">
