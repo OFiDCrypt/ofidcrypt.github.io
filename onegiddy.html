@@ -88,21 +88,24 @@
 
 </head>
 
-<body class="is-preload">
+<body>
 
-    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
-    <script>
-        (function() {
-            // Apply dark mode BEFORE the page paints
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-            }
-        })();
-    </script>
+	<!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+	<script>
+		(function () {
+			// Apply dark mode BEFORE the page paints
+			if (localStorage.getItem('dark-mode') === 'true') {
+				document.documentElement.classList.add('dark-mode');
+				document.body.classList.add('dark-mode');
+			}
+		})();
+	</script>
 
-	<!-- Wrapper -->
-	<div id="wrapper" class="fade-in">
+	<!-- Content Container -->
+	<div id="wrapper">
+
+		<!-- Background Layer - Restored -->
+		<div class="bg fixed"></div>
 
 		<!-- Header Subpage -->
 		<header class="header-subpage">
@@ -371,7 +374,8 @@
 
 							<p class="status-text">
 								Welcome! We're new — and Giddy’s Shop is in development. Meanwhile, watch our
-								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet Giddy!
+								<a href="/ofidtales.html#giddys-tv" class="status-link">animated adventures</a> and meet
+								Giddy!
 								We encourage you to read our
 								<a href="/discover.html#article-featured" class="status-link">Solana
 									article</a>
@@ -1207,20 +1211,10 @@
 				</ul>
 			</section>
 		</div>
-
-		<!-- Link to non-critical JavaScript files -->
-		<script src="/assets/js/jquery.min.js"></script>
-		<script src="/assets/js/jquery.scrollex.min.js"></script>
-		<script src="/assets/js/jquery.scrolly.min.js"></script>
-
-		<!-- REQUIRED for HTML5UP main.js -->
-		<script src="/assets/js/browser.min.js"></script>
-		<script src="/assets/js/breakpoints.min.js"></script>
-		<script src="/assets/js/util.js"></script>
-
-		<!-- Your custom logic must be LAST -->
-		<script src="/assets/js/main.js"></script>
-		<script src="/assets/js/ofid-main.js"></script>
+	</div>
+	
+	<!-- Scripts -->
+	<script src="/assets/js/ofid-main.js"></script>
 
 </body>
 
