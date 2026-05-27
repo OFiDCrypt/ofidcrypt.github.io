@@ -82,7 +82,6 @@
 	</noscript>
 
 	<!-- Essential JS libraries if used by other scripts -->
-	<script src="../assets/js/jquery.min.js"></script>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 	<!-- Meta Language -->
@@ -90,21 +89,24 @@
 
 </head>
 
-<body class="is-preload">
+<body>
 
-    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
-    <script>
-        (function() {
-            // Apply dark mode BEFORE the page paints
-            if (localStorage.getItem('dark-mode') === 'true') {
-                document.documentElement.classList.add('dark-mode');
-                document.body.classList.add('dark-mode');
-            }
-        })();
-    </script>
+	<!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+	<script>
+		(function () {
+			// Apply dark mode BEFORE the page paints
+			if (localStorage.getItem('dark-mode') === 'true') {
+				document.documentElement.classList.add('dark-mode');
+				document.body.classList.add('dark-mode');
+			}
+		})();
+	</script>
 
-	<!-- Wrapper -->
-	<div id="wrapper" class="fade-in">
+	<!-- Content Container -->
+	<div id="wrapper">
+
+		<!-- Background Layer - Restored -->
+		<div class="bg fixed"></div>
 
 		<!-- Header Subpage-->
 		<header class="header-subpage">
@@ -254,25 +256,6 @@
 			</section>
 		</div>
 
-		<!-- Bottom Nav -->
-		<nav class="bottom-nav">
-			<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
-				<i class="fas fa-comment-dots"></i>Ask Giddy
-			</div>
-			<div class="nav-item" onclick="window.location.href='../shop.html'">
-				<i class="fas fa-shopping-bag"></i>Shop
-			</div>
-			<div class="nav-item" onclick="window.location.href='../game/app-play.html'">
-				<i class="fas fa-gamepad"></i>Play Blinko!
-			</div>
-			<div class="nav-item" onclick="window.location.href='../wallet.html'">
-				<i class="fas fa-wallet"></i>Wallet
-			</div>
-			<div class="nav-item" id="navPanelTrigger">
-				<i class="fas fa-bars"></i> Menu
-			</div>
-		</nav>
-
 		<!-- Footer -->
 		<footer id="footer">
 			<section>
@@ -417,16 +400,30 @@
 				</ul>
 			</section>
 		</div>
-		
-		<!-- Link to non-critical JavaScript files -->
-		<script src="../assets/js/browser.min.js"></script>
-		<script src="../assets/js/jquery.scrollex.min.js"></script>
-		<script src="../assets/js/jquery.scrolly.min.js"></script>
-		<script src="../assets/js/util.js"></script>
-		<script src="../assets/js/breakpoints.min.js"></script>
-		<script src="../assets/js/main.js"></script>
-		<script src="../assets/js/ofid-main.js"></script>
-		
+	</div><!-- End of wrapper -->
+
+	<!-- Bottom Nav -->
+	<nav class="bottom-nav">
+		<div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'">
+			<i class="fas fa-comment-dots"></i>Ask Giddy
+		</div>
+		<div class="nav-item" onclick="window.location.href='../shop.html'">
+			<i class="fas fa-shopping-bag"></i>Shop
+		</div>
+		<div class="nav-item" onclick="window.location.href='../game/app-play.html'">
+			<i class="fas fa-gamepad"></i>Play Blinko!
+		</div>
+		<div class="nav-item" onclick="window.location.href='../wallet.html'">
+			<i class="fas fa-wallet"></i>Wallet
+		</div>
+		<div class="nav-item" id="navPanelTrigger">
+			<i class="fas fa-bars"></i> Menu
+		</div>
+	</nav>
+
+	<!-- Scripts -->
+	<script src="../assets/js/ofid-main.js"></script>
+
 </body>
 
 </html>
