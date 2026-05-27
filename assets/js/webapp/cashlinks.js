@@ -252,10 +252,6 @@ function verifyRecaptcha() {
     return true;
 }
 
-// Profile button placeholder
-function showProfile() { alert("Profile coming soon"); }
-
-
 // WHEEL SPINNING ENGINE - FULLY CUSTOM, NO LIBRARIES, BUILT FROM SCRATCH FOR MAXIMUM CONTROL AND PERFORMANCE
 document.addEventListener('DOMContentLoaded', function () {
     const wheel = document.getElementById('wheel');
