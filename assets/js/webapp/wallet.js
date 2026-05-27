@@ -4,7 +4,7 @@
 
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
-let latestPrices = {};   
+let latestPrices = {};
 
 // ====================== BASIC PAGE FUNCTIONS ======================
 function goToToken(token) {
@@ -28,8 +28,9 @@ function sellToken() {
     alert("Sell Interface Loading...");
 }
 
-function createWalletPlaceholder() {
-    alert("Wallet connection and creation coming soon");
+// ====================== PROFILE FUNCTION ======================
+function showProfile() {
+     alert("Wallet connection and creation coming soon");
 }
 
 // ====================== MODAL & REDEEM FUNCTIONS ======================
@@ -48,13 +49,15 @@ function closeModal(modalId) {
 }
 
 function resetRedeemForm() {
-    document.getElementById('redeem-input').value = '';
+    const input = document.getElementById('redeem-input');
     const msg = document.getElementById('redeem-message');
+    const btn = document.querySelector('#redeem-form button');
+
+    if (input) input.value = '';
     if (msg) {
         msg.textContent = '';
         msg.style.color = '';
     }
-    const btn = document.querySelector('#redeem-form button');
     if (btn) {
         btn.classList.remove('success', 'failure');
         btn.textContent = 'Redeem';
@@ -185,7 +188,6 @@ function showConnectedState() {
 }
 
 function showDisconnectedState() {
-    // wallet.html elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -364,18 +366,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.solana.isConnected) {
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
-        } 
+        }
         else if (isInPhantomBrowser && !alreadyPrompted) {
-            // Deep link auto-prompt - only once per Phantom session
             sessionStorage.setItem('deepLinkPromptShown', 'true');
             setTimeout(() => {
-                window.solana.connect({ onlyIfTrusted: false }).catch(() => {});
+                window.solana.connect({ onlyIfTrusted: false }).catch(() => { });
             }, 800);
-        } 
+        }
         else {
-            // Normal navigation or after manual disconnect → no auto prompt
             showDisconnectedState();
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
+            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
         }
     } else {
         showDisconnectedState();
@@ -436,4 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    console.log('✅ Wallet.js fully loaded | showProfile ready');
 });
