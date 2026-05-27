@@ -182,6 +182,7 @@ function showConnectedState() {
         btn.innerText = "Disconnect";
         btn.style.borderColor = "#ef4444";
         btn.style.color = "#ef4444";
+        btn.style.cursor = "pointer";
         btn.onclick = disconnectWallet;
     }
 }
@@ -212,6 +213,7 @@ function showDisconnectedState() {
         btn.innerText = "Connect";
         btn.style.borderColor = "#8b5cf6";
         btn.style.color = "#8b5cf6";
+        btn.style.cursor = "pointer";
         btn.onclick = handlePhantomConnect;
     }
 }
