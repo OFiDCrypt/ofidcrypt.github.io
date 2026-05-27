@@ -296,11 +296,18 @@
 
         /* ====================== UTILITIES ====================== */
         .back-btn {
-            color: #ffffff;
+            background: linear-gradient(to right, #9333ea, #ec4899);
+            color: white;
+            font-weight: bold;
             font-size: 2.25rem;
-            padding-left: 12px;
-            padding-right: 12px;
+            padding: 16px;
             margin-bottom: 0;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(168 85 247);
         }
 
         .scrollbar-hide::-webkit-scrollbar {
@@ -442,7 +449,7 @@
                 class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black mb-6 min-h-[68px]">
 
                 <div class="flex items-center gap-4 z-10">
-                    <button onclick="history.back()" class="back-btn flex items-center justify-center">
+                    <button onclick="history.back()" class="back-btn flex items-center justify-center !mb-0">
                         <i class="fas fa-arrow-left"></i>
                     </button>
 

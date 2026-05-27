@@ -1,0 +1,81 @@
+{
+  "name": "GIDDY",
+  "symbol": "GIDDY",
+  "description": "Canada’s first commerce-backed Stablecoin (Stabletoken). Minted to mirror $119.247B CAD held in cash as of January 31, 2025 (Source: Bank of Canada – Selected Monetary Aggregates). Anchoring gifting, redemption, and #MicroEconomies by OFiDCrypt, GIDDY models stablecoin/crypto parity with Bouncy Ball’s kinetic flow. Not legal tender at time of mint. Whimsical, practical, and proudly ours.",
+  "image": "https://ofidcrypt.github.io/giddy-logo.png",
+  "external_url": "https://ofidcrypt.github.io",
+  "seller_fee_basis_points": 500,
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Stablecoin"
+    },
+    {
+      "trait_type": "Backing 1:1 Exchange",
+      "value": "CAD $119.247B (Bank of Canada, Jan 31, 2025)"
+    },
+    {
+      "trait_type": "Decimals",
+      "value": "6"
+    },
+    {
+      "trait_type": "Purpose",
+      "value": "Gifting, Redemption, #MicroEconomies"
+    },
+    {
+      "trait_type": "GIDDY Theme",
+      "value": "Stability in swaps and locking value"
+    },
+    {
+      "trait_type": "BOUNCY BALL Theme",
+      "value": "Kinetic flow, loyalty, discounts and sales driven value"
+    },
+    {
+      "trait_type": "Legal Tender",
+      "value": "No"
+    }
+  ],
+  "collection": [
+    {
+      "name": "OFiDCrypt $GIDDY Stabletoken",
+      "family": "GIDDY'S Universe: Series & Shop"
+    },
+    {
+      "name": "OFiDCrypt $e𝕏PB Dynamic token",
+      "family": "GIDDY'S Universe: Series & Shop"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://ofidcrypt.github.io/giddy-logo.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "H5BFAKChmjddYr7GpV2AE7cg4nGWcg2CoVVpecaLFXqc",
+        "verified": 1,
+        "share": 100
+      }
+    ],
+    "socials": {
+      "twitter": [
+        "https://twitter.com/OFiDCrypt",
+        "https://twitter.com/Giddys_CA"
+      ],
+      "tiktok": "https://tiktok.com/@Giddys_CA",
+      "youtube": "https://youtube.com/@OFiDCrypt",
+      "github": "https://github.com/OFiDCrypt",
+      "facebook": "https://facebook.com/OFiDCrypt",
+      "instagram": "https://instagram.com/OFiDCrypt",
+      "linkedin": "https://linkedin.com/company/OFiDCrypt",
+      "telegram": [
+        "https://t.me/ONEgiddy",
+        "https://t.me/OFiDBall"
+      ]
+    }
+  },
+  "animation_url": "https://youtube.com/@OFiDCrypt"
+}
