@@ -88,6 +88,13 @@ const observer = new MutationObserver(() => {
     });
 });
 
+// GLOBAL: Profile Function (placeholder until implemented)
+if (typeof window.showProfile === 'undefined') {
+    window.showProfile = function () {
+        alert("👤 Profile & Account features coming soon!");
+    };
+}
+
 // Start observing
 observer.observe(document.documentElement, {
     childList: true,

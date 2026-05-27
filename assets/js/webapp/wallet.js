@@ -28,11 +28,6 @@ function sellToken() {
     alert("Sell Interface Loading...");
 }
 
-// ====================== PROFILE FUNCTION ======================
-function showProfile() {
-     alert("Wallet connection and creation coming soon");
-}
-
 // ====================== MODAL & REDEEM FUNCTIONS ======================
 function openModal(modalId) {
     if (modalId === 'redeem') {

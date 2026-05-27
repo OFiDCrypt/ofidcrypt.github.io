@@ -146,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function () {
 // Expose layout engines globally to support native HTML inline 'onclick' directives
 let openCheckoutGateway;
 let dismissCartBubble;
-let showProfile;
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -204,10 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let cart = JSON.parse(localStorage.getItem('ofid_cart')) || [];
     let isBubbleDismissedManually = false;
     let isInitialPageLoad = true;
-
-    showProfile = function () {
-        alert("👤 Profile & Account features coming soon!");
-    };
 
     // ==================== DISTRIBUTOR TOGGLE ====================
     const toggleBtn = document.getElementById('distributorToggleBtn');
