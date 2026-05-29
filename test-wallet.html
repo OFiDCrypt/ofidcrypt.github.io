@@ -17,7 +17,6 @@
         </div>
         
         <div class="flex flex-col items-start sm:flex-row sm:items-center gap-3 sm:gap-4 relative">
-            
             <div id="walletBadge" class="hidden flex items-center gap-2 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-xl order-2 sm:order-1">
                 <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
                 <span id="walletAddressDisplay" class="font-mono text-xs text-purple-400"></span>
@@ -38,10 +37,10 @@
                     </button>
                 </div>
             </div>
-            
         </div>
     </header>
 
+        <!-- ==================== LIVE WALLET BALANCES ==================== -->
         <section id="walletInfo" class="hidden mb-8 p-6 bg-zinc-900 border border-zinc-800 rounded-2xl animate-fade-in">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-sm font-bold text-zinc-300 uppercase tracking-wider">Your Live Wallet Balances</h3>
@@ -50,10 +49,14 @@
                 </button>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
                     <span class="text-xs text-zinc-500 block font-semibold">SOL Balance</span>
                     <span id="bal-SOL" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
+                    <span class="text-xs text-zinc-500 block font-semibold">USDC Balance</span>
+                    <span id="bal-USDC" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
                 </div>
                 <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80">
                     <span class="text-xs text-zinc-500 block font-semibold">EXPB Balance</span>
@@ -63,11 +66,63 @@
                     <span class="text-xs text-zinc-500 block font-semibold">GIDDY Balance</span>
                     <span id="bal-GIDDY" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
                 </div>
+
+                <!-- Community Tokens -->
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">ONE Balance</span>
+                    <span id="bal-ONE" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">KIN Balance</span>
+                    <span id="bal-KIN" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">DOBBY Balance</span>
+                    <span id="bal-DOBBY" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">MYLO Balance</span>
+                    <span id="bal-MYLO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">DUNO Balance</span>
+                    <span id="bal-DUNO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">CPT Balance</span>
+                    <span id="bal-CPT" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
+                <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30">
+                    <span class="text-xs text-yellow-400 block font-semibold">SINU Balance</span>
+                    <span id="bal-SINU" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                </div>
             </div>
         </section>
 
-        <h2 class="text-xl font-bold mb-4">Tracked Assets (Community)</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <!-- ==================== TRACKED ASSET PRICES (COMMUNITY) ==================== -->
+        <h2 class="text-xl font-bold mb-4">Tracked Asset Prices (Community)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+            <!-- Community Tokens -->
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">ONE Kin</div>
+                <div id="price-ONE" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-ONE" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">KIN Token</div>
+                <div id="price-KIN" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-KIN" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">Dobby Coin</div>
+                <div id="price-DOBBY" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-DOBBY" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">Mylo Cat</div>
+                <div id="price-MYLO" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-MYLO" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
             <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
                 <div class="text-sm font-semibold text-zinc-400">DUNO Token</div>
                 <div id="price-DUNO" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
@@ -83,9 +138,22 @@
                 <div id="price-SINU" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
                 <div id="mint-SINU" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
             </div>
+
+            <!-- Newly Added: EXPB and GIDDY -->
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">eXPB (Bouncy Ball)</div>
+                <div id="price-EXPB" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-EXPB" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
+            <div class="bg-zinc-900/50 p-5 rounded-2xl border border-zinc-800">
+                <div class="text-sm font-semibold text-zinc-400">GIDDY Dollar</div>
+                <div id="price-GIDDY" class="text-2xl font-black text-emerald-400 mt-2">Fetching...</div>
+                <div id="mint-GIDDY" class="text-[9px] text-zinc-500 font-mono mt-1 truncate"></div>
+            </div>
         </div>
 
-        <h2 class="text-xl font-bold mb-4">Core Assets</h2>
+        <!-- ==================== CORE ASSET PRICES ==================== -->
+        <h2 class="text-xl font-bold mb-4">Core Asset Prices</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 flex justify-between items-center">
                 <div>
@@ -106,10 +174,11 @@
 
     <script>
         let walletAddress = null;
-        const TARGET_SYMBOLS = ['SOL', 'USDC', 'DUNO', 'CPT', 'SINU'];
+        // Updated with all tokens including EXPB & GIDDY
+        const TARGET_SYMBOLS = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'DUNO', 'CPT', 'SINU', 'ONE', 'KIN', 'DOBBY', 'MYLO'];
+
         const LOCAL_API_URL = "http://localhost:3000/api/prices";
 
-        // Toggle custom drop-down menu overlay state
         function toggleDropdown() {
             const menu = document.getElementById('dropdownMenu');
             const arrow = document.getElementById('arrowIcon');
@@ -117,7 +186,6 @@
             if (arrow) arrow.classList.toggle('rotate-180');
         }
 
-        // FIX 1: Defend window listener against missing element instances or extensions events
         window.addEventListener('click', function(e) {
             const menu = document.getElementById('dropdownMenu');
             const btn = document.getElementById('connectBtn');
@@ -129,16 +197,13 @@
             }
         });
 
-        // Main subcontext interaction point handles login/logout loops
         async function handlePhantomAction() {
             const menu = document.getElementById('dropdownMenu');
             if (menu) menu.classList.add('hidden');
-            
             const arrow = document.getElementById('arrowIcon');
             if (arrow) arrow.classList.remove('rotate-180');
 
-            const isPhantomInstalled = window.solana && window.solana.isPhantom;
-            if (!isPhantomInstalled) {
+            if (!window.solana?.isPhantom) {
                 alert("Phantom Wallet extension was not detected.");
                 return;
             }
@@ -150,57 +215,38 @@
                     await window.solana.connect();
                 }
             } catch (err) {
-                console.warn("User canceled connection or message channel aborted gracefully:", err.message);
+                console.warn("Connection cancelled:", err.message);
             }
         }
 
-        // Central state handling engine syncs everything perfectly
         function updateUIConnectedState(publicKeyStr) {
             walletAddress = publicKeyStr;
             const shortAddress = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
 
-            // 1. Update Core Navigation Buttons
             document.getElementById('btnText').innerText = "Wallet Menu";
             document.getElementById('actionLabel').innerText = "Disconnect";
             document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-emerald-500";
 
-            // 2. Map Address Meta Badge adjacent to button
             document.getElementById('walletAddressDisplay').innerText = shortAddress;
             document.getElementById('walletBadge').classList.remove('hidden');
-
-            // 3. Reveal Balance Workspace
             document.getElementById('walletInfo').classList.remove('hidden');
             fetchWalletBalances();
         }
 
         function updateUIDisconnectedState() {
             walletAddress = null;
-
-            // Reset navbar tracking nodes
             document.getElementById('btnText').innerText = "Add Wallet";
             document.getElementById('actionLabel').innerText = "Connect Phantom";
             document.getElementById('statusDot').className = "w-2 h-2 rounded-full bg-zinc-600";
-            
-            // Clean components
             document.getElementById('walletBadge').classList.add('hidden');
             document.getElementById('walletInfo').classList.add('hidden');
         }
 
-        // Active Application Listeners
         window.addEventListener('load', async () => {
             if (window.solana && window.solana.isPhantom) {
-                window.solana.on('connect', (publicKey) => {
-                    updateUIConnectedState(publicKey.toString());
-                });
-
-                window.solana.on('disconnect', () => {
-                    updateUIDisconnectedState();
-                });
-
-                // FIX 2: Gracefully catch non-trusted session auto-connect rejections
-                window.solana.connect({ onlyIfTrusted: true }).catch((e) => {
-                    console.log("No pre-approved session active. Awaiting user click trigger.");
-                });
+                window.solana.on('connect', (publicKey) => updateUIConnectedState(publicKey.toString()));
+                window.solana.on('disconnect', updateUIDisconnectedState);
+                window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
             }
 
             fetchTokenPrices();
@@ -208,56 +254,44 @@
             setInterval(fetchWalletBalances, 25000);
         });
 
-        // Hits local integrated server endpoints to populate balance data matrix
         async function fetchWalletBalances() {
             if (!walletAddress) return;
-            
             try {
-                const response = await fetch(`http://localhost:3000/api/balances/${walletAddress}`);
-                const balances = await response.json();
+                const res = await fetch(`http://localhost:3000/api/balances/${walletAddress}`);
+                const balances = await res.json();
 
-                if (balances.error) return;
-
-                document.getElementById('bal-SOL').innerText = `${balances.SOL} SOL`;
-                document.getElementById('bal-EXPB').innerText = `${balances.EXPB} EXPB`;
-                document.getElementById('bal-GIDDY').innerText = `${balances.GIDDY} GIDDY`;
-            } catch (error) {
-                console.error("Failed executing automated balance update query:", error);
+                const tokens = ['SOL','USDC','EXPB','GIDDY','ONE','KIN','DOBBY','MYLO','DUNO','CPT','SINU'];
+                tokens.forEach(t => {
+                    const el = document.getElementById(`bal-${t}`);
+                    if (el) el.innerText = `${balances[t] || 0} ${t}`;
+                });
+            } catch (e) {
+                console.error(e);
             }
         }
 
-        // Price mapping loops match your precise backend layout identifiers
         async function fetchTokenPrices() {
             try {
                 const response = await fetch(LOCAL_API_URL);
                 const dataMatrix = await response.json();
 
                 TARGET_SYMBOLS.forEach(symbol => {
-                    const targetPriceElement = document.getElementById(`price-${symbol}`);
-                    const targetMintElement = document.getElementById(`mint-${symbol}`);
+                    const priceEl = document.getElementById(`price-${symbol}`);
+                    const mintEl = document.getElementById(`mint-${symbol}`);
                     const tokenData = dataMatrix[symbol];
 
                     if (tokenData) {
-                        if (targetMintElement && tokenData.mint) {
-                            targetMintElement.innerText = `Mint: ${tokenData.mint.slice(0, 6)}...${tokenData.mint.slice(-4)}`;
+                        if (mintEl && tokenData.mint) {
+                            mintEl.innerText = `Mint: ${tokenData.mint.slice(0,6)}...${tokenData.mint.slice(-4)}`;
                         }
-
-                        if (targetPriceElement && tokenData.price !== null) {
-                            const precisePrice = tokenData.price;
-                            if (precisePrice >= 1) {
-                                targetPriceElement.innerText = `$${precisePrice.toFixed(2)} USD`;
-                            } else if (precisePrice > 0.0001) {
-                                targetPriceElement.innerText = `$${precisePrice.toFixed(4)} USD`;
-                            } else {
-                                targetPriceElement.innerText = `$${precisePrice.toFixed(8)} USD`;
-                            }
-                        } else if (targetPriceElement) {
-                            targetPriceElement.innerText = "No Pool";
+                        if (priceEl) {
+                            const p = tokenData.price;
+                            priceEl.innerText = p ? (p >= 1 ? `$${p.toFixed(2)}` : `$${p.toFixed(6)}`) : "No Pool";
                         }
                     }
                 });
             } catch (error) {
-                console.error("Failed pulling pricing metrics:", error);
+                console.error("Failed pulling prices:", error);
             }
         }
     </script>

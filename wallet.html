@@ -534,29 +534,34 @@
                 </div>
 
                 <!-- TOTAL BALANCE CARD SECTION -->
-                <div id="walletTotalCard" class="card p-5 fade-in mb-6">
-                    <div class="flex justify-between items-center">
-                        <div class="flex flex-col items-start">
-                            <div class="text-4xl">💰</div>
-                            <div class="font-bold text-2xl mt-1 leading-tight">TOTAL</div>
-                            <div class="text-sm text-zinc-400 mt-0.5 font-medium uppercase tracking-wider">IN MY WALLET
-                            </div>
-                        </div>
+<div id="walletTotalCard" class="card p-5 fade-in mb-6">
+    <div class="flex justify-between items-center">
+        <div class="flex flex-col items-start">
+            <div class="text-4xl">💰</div>
+            <div class="font-bold text-2xl mt-1 leading-tight">TOTAL</div>
+            <div class="text-sm text-zinc-400 mt-0.5 font-medium uppercase tracking-wider">IN MY WALLET</div>
+        </div>
 
-                        <div class="text-right">
-                            <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+        <div class="text-right">
+            <div class="flex items-center justify-end gap-2 mb-1">
+                <div class="text-xs uppercase text-zinc-400">YOUR VALUE</div>
+                <select onchange="changeCurrency(this.value)" 
+                        class="bg-[var(--card-bg-color)] border border-zinc-300 dark:border-zinc-700 text-xs px-3 py-1.5 rounded-lg focus:outline-none focus:border-purple-500 min-w-[88px] transition-colors"
+                        style="color: var(--text-color);">
+                    <option value="CAD" style="background: var(--card-bg-color); color: var(--text-color);">🇨🇦 CAD</option>
+                    <option value="USD" style="background: var(--card-bg-color); color: var(--text-color);">🇺🇸 USD</option>
+                </select>
+            </div>
 
-                            <div
-                                class="text-4xl font-bold flex flex-col md:flex-row md:justify-end md:items-baseline md:gap-2">
-                                <span>$44.15</span>
-                                <span class="text-2xl md:text-4xl">CAD</span>
-                            </div>
+            <div class="text-4xl font-bold flex flex-col md:flex-row md:justify-end md:items-baseline md:gap-2">
+                <span id="totalValue" class="text-zinc-400 text-3xl">Calculating...</span>
+                <span id="totalCurrency" class="text-2xl md:text-4xl text-emerald-400/70">CAD</span>
+            </div>
 
-                            <div class="text-green-400 text-sm font-medium">+0.05% Today</div>
-                        </div>
-                    </div>
-                </div>
-
+            <div id="totalChange" class="text-green-400 text-sm font-medium">+0.00% Today</div>
+        </div>
+    </div>
+</div>
                 <!-- Added normal-case to break any parent styles -->
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
                     style="color: var(--text-color) ;">Local Currencies</h1>
@@ -726,13 +731,13 @@
 
                     <!-- EXPANDED WRAPPER WITH DYNAMIC THEME VARIABLE BACKGROUND -->
                     <div id="community-content"
-                        class="max-h-0 overflow-hidden border border-purple-500/20 rounded-3xl mt-3 shadow-xl transition-all duration-300"
+                        class="max-h-0 overflow-hidden border border-purple-500/20 rounded-3xl mt-3 mb-8 shadow-xl transition-all duration-300"
                         style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
                         <div class="px-6 py-6 overflow-visible">
                             <div
                                 class="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 pt-4 overflow-visible">
 
-                                <!-- ONE TOKEN CARD -->
+                                <!-- ONE -->
                                 <div id="card-ONE" onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -742,9 +747,9 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">ONE
-                                        </div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">ONE</div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">ONE</div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
@@ -752,15 +757,35 @@
                                             <div id="price-ONE"
                                                 class="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                                                 Fetching...</div>
+                                            <div id="price-currency-ONE" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 +1.2% <span class="text-[10px] opacity-70">24h</span>
                                             </div>
                                         </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-ONE" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-ONE" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- KIN TOKEN CARD -->
+                                <!-- KIN -->
                                 <div id="card-KIN" onclick="window.open('https://x.com/OneKinCommunity?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -770,9 +795,9 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">KIN
-                                        </div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">KIN</div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">KIN</div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
@@ -780,15 +805,35 @@
                                             <div id="price-KIN"
                                                 class="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                                                 Fetching...</div>
+                                            <div id="price-currency-KIN" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 +0.9% <span class="text-[10px] opacity-70">24h</span>
                                             </div>
                                         </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-KIN" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-KIN" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- DOBBY TOKEN CARD -->
+                                <!-- DOBBY -->
                                 <div id="card-DOBBY" onclick="window.open('https://x.com/Dobby_Coin?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -798,24 +843,45 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">DOBBY
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">DOBBY
                                         </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">DOBBY</div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
                                                 TOKEN PRICE</div>
                                             <div id="price-DOBBY" class="text-2xl font-black"
-                                                style="color: var(--text-color) ;">Fetching...</div>
+                                                style="color: var(--text-color);">Fetching...</div>
+                                            <div id="price-currency-DOBBY" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-amber-600 dark:text-amber-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 -0.4% <span class="text-[10px] opacity-70">24h</span>
                                             </div>
                                         </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-DOBBY" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-DOBBY" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- MYLO TOKEN CARD -->
+                                <!-- MYLO -->
                                 <div id="card-MYLO" onclick="window.open('https://x.com/MYLOCAT_?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -825,9 +891,10 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">MYLO
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">MYLO
                                         </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">MYLOCAT</div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
@@ -835,15 +902,35 @@
                                             <div id="price-MYLO"
                                                 class="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                                                 Fetching...</div>
+                                            <div id="price-currency-MYLO" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 +2.3% <span class="text-[10px] opacity-70">24h</span>
                                             </div>
                                         </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-MYLO" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-MYLO" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- DUNO TOKEN CARD -->
+                                <!-- DUNO -->
                                 <div id="card-DUNO" onclick="window.open('https://x.com/dunoglobal?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -853,9 +940,10 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">DUNO
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">DUNO
                                         </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">DUNO</div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
@@ -863,15 +951,35 @@
                                             <div id="price-DUNO"
                                                 class="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                                                 Fetching...</div>
+                                            <div id="price-currency-DUNO" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 +4.1% <span class="text-[10px] opacity-70">24h</span>
                                             </div>
                                         </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-DUNO" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-DUNO" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- CPT TOKEN CARD -->
+                                <!-- CPT -->
                                 <div id="card-CPT" onclick="window.open('https://x.com/CaptTrench?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -881,10 +989,10 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">CPT
-                                        </div>
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">CPT</div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">CAPTAIN TRENCH
                                         </div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
@@ -892,15 +1000,35 @@
                                             <div id="price-CPT"
                                                 class="text-2xl font-black text-emerald-600 dark:text-emerald-400">
                                                 Fetching...</div>
+                                            <div id="price-currency-CPT" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 +0.7% <span class="text-[10px] opacity-70">24h</span>
                                             </div>
                                         </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-CPT" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-CPT" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- SINU TOKEN CARD -->
+                                <!-- SINU -->
                                 <div id="card-SINU" onclick="window.open('https://x.com/Sock_Inu?s=20', '_blank')"
                                     class="mini-community-card flex-shrink-0 w-44 card p-4 rounded-3xl cursor-pointer border border-purple-500/10 shadow-md"
                                     style="background: var(--card-bg-color, rgba(30, 5, 51, 0.95)) ;">
@@ -910,18 +1038,39 @@
                                         <span
                                             class="uppercase text-[9px] tracking-widest text-purple-600 dark:text-purple-400 font-bold">ONE
                                             KIN • COMMUNITY</span>
-                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color) ;">SINU
+                                        <div class="text-2xl font-bold mt-1" style="color: var(--text-color);">SINU
                                         </div>
                                         <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium">SOCK INU</div>
+
                                         <div class="mt-6 w-full">
                                             <div
                                                 class="text-[10px] uppercase text-zinc-400 dark:text-zinc-500 font-bold tracking-wider">
                                                 TOKEN PRICE</div>
                                             <div id="price-SINU" class="text-2xl font-black"
-                                                style="color: var(--text-color) ;">Fetching...</div>
+                                                style="color: var(--text-color);">Fetching...</div>
+                                            <div id="price-currency-SINU" class="text-xs text-emerald-400/70">CAD</div>
                                             <div
                                                 class="text-amber-600 dark:text-amber-400 text-xs font-semibold flex items-center justify-center gap-1">
                                                 -0.2% <span class="text-[10px] opacity-70">24h</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-5 pt-3 border-t border-purple-500/30 w-full">
+                                            <div
+                                                class="text-[10px] uppercase text-zinc-400 font-semibold tracking-wider mb-2 text-center">
+                                                YOUR BALANCES</div>
+                                            <div class="grid grid-cols-2 gap-3 text-center">
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">QTY</div>
+                                                    <div id="qty-SINU" class="font-bold text-lg"
+                                                        style="color: var(--text-color);">0.00</div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[9px] text-zinc-400">VALUE</div>
+                                                    <div id="value-SINU" class="font-black text-lg leading-tight"
+                                                        style="color: var(--text-color);">$0.00<br><span
+                                                            class="text-xs text-emerald-400/70">CAD</span></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -930,122 +1079,129 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- HEADING -->
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
+                        style="color: var(--text-color) ;">Top Currencies</h1>
+
+                    <!-- SOLANA TOKEN CARD SECTION -->
+                    <div class="card p-5 cursor-pointer token-card fade-in mb-6">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="card-content flex-1">
+                                <span
+                                    class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">SOLANA</span>
+                                <div class="flex items-center gap-3 mt-1">
+                                    <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">SOL
+                                    </div>
+                                    <div class="flex gap-1.5 ml-2">
+                                        <button onclick="buyToken(); event.stopPropagation();"
+                                            class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
+                                        <button onclick="sellToken(); event.stopPropagation();"
+                                            class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
+                                    </div>
+                                </div>
+                                <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
+                                    <div id="price-SOL" class="text-sm text-zinc-400 font-mono">Fetching...</div>
+                                    <div class="text-sm text-green-400 font-medium">24 hr: +3.12%</div>
+                                </div>
+
+                                <div class="mt-6">
+                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">
+                                        YOUR
+                                        QUANTITY</div>
+                                    <div id="qty-SOL" class="text-base font-bold font-mono"
+                                        style="color: var(--text-color) ; opacity: 0.9;">—</div>
+
+                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR
+                                        VALUE
+                                    </div>
+                                    <div id="value-SOL" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
+                                        style="color: var(--text-color) ;">$0.00 CAD</div>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <img src="/assets/images/webp/sol-case.webp" alt="SOL" class="token-icon">
+                            </div>
+                        </div>
+                        <div class="mt-6 text-left">
+                            <a href="https://www.coingecko.com/en/coins/solana" target="_blank"
+                                onclick="event.stopPropagation();"
+                                class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                Token Price Details →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- USDC TOKEN CARD SECTION -->
+                    <div class="card p-5 cursor-pointer token-card fade-in mb-10">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="card-content flex-1">
+                                <span
+                                    class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">US
+                                    DOLLAR COIN</span>
+                                <div class="flex items-center gap-3 mt-1">
+                                    <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">USDC
+                                    </div>
+                                    <div class="flex gap-1.5 ml-2">
+                                        <button onclick="buyToken(); event.stopPropagation();"
+                                            class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
+                                        <button onclick="sellToken(); event.stopPropagation();"
+                                            class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
+                                    </div>
+                                </div>
+                                <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
+                                    <div id="price-USDC" class="text-sm text-zinc-400 font-mono">Fetching...</div>
+                                    <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
+                                </div>
+
+                                <div class="mt-6">
+                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">
+                                        YOUR
+                                        QUANTITY</div>
+                                    <div id="qty-USDC" class="text-base font-bold font-mono"
+                                        style="color: var(--text-color) ; opacity: 0.9;">—</div>
+
+                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR
+                                        VALUE
+                                    </div>
+                                    <div id="value-USDC" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
+                                        style="color: var(--text-color) ;">$0.00 CAD</div>
+
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <img src="/assets/images/webp/usdc-case.webp" alt="USDC" class="token-icon">
+                            </div>
+                        </div>
+                        <div class="mt-6 text-left">
+                            <a href="https://www.coingecko.com/en/coins/usd-coin" target="_blank"
+                                onclick="event.stopPropagation();"
+                                class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                Token Price Details →
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- HEADING -->
-                <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
-                    style="color: var(--text-color) ;">Top Currencies</h1>
-
-                <!-- SOLANA TOKEN CARD SECTION -->
-                <div class="card p-5 cursor-pointer token-card fade-in mb-6">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="card-content flex-1">
-                            <span
-                                class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">SOLANA</span>
-                            <div class="flex items-center gap-3 mt-1">
-                                <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">SOL</div>
-                                <div class="flex gap-1.5 ml-2">
-                                    <button onclick="buyToken(); event.stopPropagation();"
-                                        class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
-                                    <button onclick="sellToken(); event.stopPropagation();"
-                                        class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
-                                </div>
-                            </div>
-                            <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
-                                <div id="price-SOL" class="text-sm text-zinc-400 font-mono">Fetching...</div>
-                                <div class="text-sm text-green-400 font-medium">24 hr: +3.12%</div>
-                            </div>
-
-                            <div class="mt-6">
-                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
-                                    QUANTITY</div>
-                                <div id="qty-SOL" class="text-base font-bold font-mono"
-                                    style="color: var(--text-color) ; opacity: 0.9;">—</div>
-
-                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
-                                </div>
-                                <div id="value-SOL" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                    style="color: var(--text-color) ;">$0.00 CAD</div>
-                            </div>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <img src="/assets/images/webp/sol-case.webp" alt="SOL" class="token-icon">
-                        </div>
-                    </div>
-                    <div class="mt-6 text-left">
-                        <a href="https://www.coingecko.com/en/coins/solana" target="_blank"
-                            onclick="event.stopPropagation();"
-                            class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
-                            Token Price Details →
-                        </a>
-                    </div>
-                </div>
-
-                <!-- USDC TOKEN CARD SECTION -->
-                <div class="card p-5 cursor-pointer token-card fade-in mb-10">
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="card-content flex-1">
-                            <span
-                                class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">US
-                                DOLLAR COIN</span>
-                            <div class="flex items-center gap-3 mt-1">
-                                <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">USDC
-                                </div>
-                                <div class="flex gap-1.5 ml-2">
-                                    <button onclick="buyToken(); event.stopPropagation();"
-                                        class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
-                                    <button onclick="sellToken(); event.stopPropagation();"
-                                        class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
-                                </div>
-                            </div>
-                            <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
-                                <div id="price-USDC" class="text-sm text-zinc-400 font-mono">Fetching...</div>
-                                <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
-                            </div>
-
-                            <div class="mt-6">
-                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">YOUR
-                                    QUANTITY</div>
-                                <div id="qty-USDC" class="text-base font-bold font-mono"
-                                    style="color: var(--text-color) ; opacity: 0.9;">—</div>
-
-                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">YOUR VALUE
-                                </div>
-                                <div id="value-USDC" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                    style="color: var(--text-color) ;">$0.00 CAD</div>
-
-                            </div>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <img src="/assets/images/webp/usdc-case.webp" alt="USDC" class="token-icon">
-                        </div>
-                    </div>
-                    <div class="mt-6 text-left">
-                        <a href="https://www.coingecko.com/en/coins/usd-coin" target="_blank"
-                            onclick="event.stopPropagation();"
-                            class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
-                            Token Price Details →
-                        </a>
-                    </div>
-                </div>
-
             </div>
-        </div>
-    </div> <!-- End of wrapper -->
+        </div> <!-- End of wrapper -->
 
-    <!-- Bottom Nav -->
-    <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'"><i
-                class="fas fa-comment-dots"></i>Ask Giddy</div>
-        <div class="nav-item" onclick="window.location.href='/shop.html'"><i class="fas fa-shopping-bag"></i>Shop
-        </div>
-        <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i class="fas fa-gamepad"></i>Play
-            Blinko!</div>
-        <div class="nav-item active" onclick="window.location.href='/wallet.html'"><i class="fas fa-wallet"></i>Wallet
-        </div>
-        <div class="nav-item" onclick="window.location.href='/cashlinks.html'"><i class="fas fa-circle-notch"></i>Wheel
-        </div>
-    </nav>
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="window.location.href='https://t.me/oneGIDDY'"><i
+                    class="fas fa-comment-dots"></i>Ask Giddy</div>
+            <div class="nav-item" onclick="window.location.href='/shop.html'"><i class="fas fa-shopping-bag"></i>Shop
+            </div>
+            <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i
+                    class="fas fa-gamepad"></i>Play
+                Blinko!</div>
+            <div class="nav-item active" onclick="window.location.href='/wallet.html'"><i
+                    class="fas fa-wallet"></i>Wallet
+            </div>
+            <div class="nav-item" onclick="window.location.href='/cashlinks.html'"><i
+                    class="fas fa-circle-notch"></i>Wheel
+            </div>
+        </nav>
     </div>
 
     <!-- REDEEM MODAL -->
