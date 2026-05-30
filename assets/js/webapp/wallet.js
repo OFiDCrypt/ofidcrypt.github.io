@@ -5,6 +5,7 @@
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 let latestPrices = {};
+let currentLockBaseQuantity = 0;   // ← New: stores base qty for percentage calculation
 
 // ====================== CURRENCY SYSTEM ======================
 let lastTotalValue = 0;
@@ -295,7 +296,7 @@ async function fetchTokenPrices() {
             const priceEl = document.getElementById(`price-${symbol}`);
             const tokenData = dataMatrix[symbol];
 
-            if (tokenData && tokenData.price !== null) {
+            if (tokenData && tokenData.price !== null && tokenData.price !== undefined) {
                 latestPrices[symbol] = tokenData.price;
 
                 let priceStr = (symbol === 'ONE' || symbol === 'GIDDY' || symbol === 'SOL')
@@ -309,12 +310,130 @@ async function fetchTokenPrices() {
         });
 
         if (connectedWallet) updateWalletBalances();
-        updateCommunityCurrencyLabels();   // ← This makes the dropdown update the labels
+        updateCommunityCurrencyLabels();
 
     } catch (error) {
         console.error("Failed pulling pricing metrics:", error);
     }
 }
+
+// ====================== VALUE LOCK MODAL FUNCTIONS ======================
+let currentLockBaseQty = 0;
+let currentLockBaseValue = 0;
+let currentLockToken = '';
+
+function openValueLockModal(mode = 'lock') {
+    const modal = document.getElementById('value-lock-modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+
+    const lockSection = document.getElementById('lock-section');
+    const switchSection = document.getElementById('switch-section');
+    const rightLabel = document.getElementById('right-panel-label');
+    const qtyDisplay = document.getElementById('dynamic-quantity-display');
+    const valueDisplay = document.getElementById('current-value-display');
+
+    // Reset
+    document.querySelectorAll('.lock-percent-btn, .switch-percent-btn').forEach(btn => btn.classList.remove('active'));
+    lockSection.classList.remove('dimmed');
+    switchSection.classList.remove('dimmed');
+
+    if (mode === 'lock' || mode === 'dynamic') {
+        // eXPB Mode
+        currentLockToken = 'expb';
+        lockSection.classList.remove('dimmed');
+        switchSection.classList.add('dimmed');
+
+        document.getElementById('lock-heading').textContent = "Lock value in Giddy";
+        rightLabel.innerHTML = "DYNAMIC<br>QUANTITY TO LOCK";
+
+        currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '1126');
+
+        const valueEl = document.getElementById('value-EXPB');
+        currentLockBaseValue = parseFloat(valueEl?.textContent?.replace(/[^0-9.]/g, '') || '0');
+
+    } else if (mode === 'giddy') {
+        // GIDDY Mode
+        currentLockToken = 'giddy';
+        lockSection.classList.add('dimmed');
+        switchSection.classList.remove('dimmed');
+
+        document.getElementById('switch-heading').textContent = "Move to dynamic value";
+        rightLabel.innerHTML = "LOCKED<br>QUANTITY TO MOVE";
+
+        currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '1');
+
+        const valueEl = document.getElementById('value-GIDDY');
+        currentLockBaseValue = parseFloat(valueEl?.textContent?.replace(/[^0-9.]/g, '') || '0');
+    }
+
+    // Default 50%
+    const percentBtns = mode === 'giddy' ? '.switch-percent-btn' : '.lock-percent-btn';
+    const fiftyBtn = Array.from(document.querySelectorAll(percentBtns))[1];
+    if (fiftyBtn) {
+        document.querySelectorAll('.lock-percent-btn, .switch-percent-btn').forEach(b => b.classList.remove('active'));
+        fiftyBtn.classList.add('active');
+    }
+
+    updateSelectedQuantity(50);
+}
+
+function updateSelectedQuantity(percent) {
+    const qtyDisplay = document.getElementById('dynamic-quantity-display');
+    const valueDisplay = document.getElementById('current-value-display');
+
+    const calculatedQty = currentLockBaseQty * (percent / 100);
+    const calculatedValue = currentLockBaseValue * (percent / 100);
+
+    // Quantity display
+    if (currentLockToken === 'giddy') {
+        qtyDisplay.textContent = calculatedQty.toFixed(2);
+    } else {
+        qtyDisplay.textContent = Math.round(calculatedQty).toLocaleString();
+    }
+
+    // Value display - respects global currentCurrency
+    if (valueDisplay) {
+        const currencySymbol = currentCurrency === 'USD' ? 'USD' : 'CAD';
+        valueDisplay.textContent = '$' + calculatedValue.toFixed(2) + ' ' + currencySymbol;
+    }
+}
+
+function closeValueLockModal() {
+    const modal = document.getElementById('value-lock-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function selectPercent(btn, group) {
+    const siblings = btn.parentElement.querySelectorAll('button');
+    siblings.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const percent = parseInt(btn.textContent);
+    updateSelectedQuantity(percent);
+}
+
+function confirmValueLock() {
+    const activeLock = document.querySelector('.lock-percent-btn.active');
+    const activeSwitch = document.querySelector('.switch-percent-btn.active');
+    
+    let percent = 50;
+    if (activeLock) percent = parseInt(activeLock.textContent);
+    else if (activeSwitch) percent = parseInt(activeSwitch.textContent);
+
+    const finalQty = currentLockBaseQty * (percent / 100);
+    const finalValue = currentLockBaseValue * (percent / 100);
+
+    const qtyFormatted = currentLockToken === 'giddy' ? finalQty.toFixed(2) : Math.round(finalQty).toLocaleString();
+    const currencySymbol = currentCurrency === 'USD' ? 'USD' : 'CAD';
+
+    alert(`✅ Confirmed ${percent}% of ${currentLockToken.toUpperCase()}\nQuantity: ${qtyFormatted}\nValue: $${finalValue.toFixed(2)} ${currencySymbol}`);
+    closeValueLockModal();
+}
+
+// Make functions globally available
+window.openValueLockModal = openValueLockModal;
+window.closeValueLockModal = closeValueLockModal;
 
 // ====================== PULL TO REFRESH ======================
 let touchStartY = 0;
@@ -353,7 +472,8 @@ function initPullToRefresh() {
 
 // ====================== INITIALIZE ======================
 document.addEventListener('DOMContentLoaded', () => {
-    // FULL REDEEM FORM (your original)
+    // ... [All your existing DOMContentLoaded code remains unchanged] ...
+
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
         redeemForm.addEventListener('submit', (e) => {
@@ -394,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('addWalletBtn');
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
-    // Phantom init (untouched)
+    // Phantom init (unchanged)
     if (window.solana && window.solana.isPhantom) {
         window.solana.on('connect', (publicKey) => {
             connectedWallet = publicKey.toString();
@@ -429,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initPullToRefresh();
 
-    // HASH LINK SUPPORT (your original)
+    // HASH LINK SUPPORT (unchanged)
     const fallbackObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -478,5 +598,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js loaded with dynamic currency + full redeem form');
+    console.log('✅ Wallet.js loaded with dynamic currency + full redeem form + Value Lock Modal');
 });
