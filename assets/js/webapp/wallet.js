@@ -6,6 +6,29 @@
 let connectedWallet = null;
 let latestPrices = {};
 
+// ====================== CURRENCY SYSTEM ======================
+let lastTotalValue = 0;
+let currentCurrency = 'CAD';
+
+const CURRENCY_RATES = {
+    'CAD': 1.35,
+    'USD': 1
+};
+
+function changeCurrency(newCurrency) {
+    currentCurrency = newCurrency;
+    updateWalletBalances();
+    updateCommunityCurrencyLabels();
+}
+
+function updateCommunityCurrencyLabels() {
+    const symbols = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+    symbols.forEach(sym => {
+        const el = document.getElementById(`price-currency-${sym}`);
+        if (el) el.textContent = currentCurrency;
+    });
+}
+
 // ====================== BASIC PAGE FUNCTIONS ======================
 function goToToken(token) {
     if (token === 'expb') window.location.href = '/bouncyball.html';
@@ -90,7 +113,6 @@ function toggleWalletDropdown() {
     if (chevron) chevron.classList.toggle('rotate-180');
 }
 
-// Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
     const btn = document.getElementById('addWalletBtn');
     const dropdown = document.getElementById('walletDropdown');
@@ -149,7 +171,6 @@ function showConnectedState() {
     connectedWallet = connectedWallet || window.solana?.publicKey?.toString();
     const short = connectedWallet ? `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}` : "";
 
-    // wallet.html elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -166,18 +187,15 @@ function showConnectedState() {
     if (cOpt) cOpt.classList.add('hidden');
     if (dOpt) dOpt.classList.remove('hidden');
 
-    // shop.html status box
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
-
     if (dot) dot.style.backgroundColor = "#10b981";
     if (text) text.innerText = "Wallet Connected";
     if (btn) {
         btn.innerText = "Disconnect";
         btn.style.borderColor = "#ef4444";
         btn.style.color = "#ef4444";
-        btn.style.cursor = "pointer";
         btn.onclick = disconnectWallet;
     }
 }
@@ -197,42 +215,70 @@ function showDisconnectedState() {
     if (cOpt) cOpt.classList.remove('hidden');
     if (dOpt) dOpt.classList.add('hidden');
 
-    // shop.html status box
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
-
     if (dot) dot.style.backgroundColor = "#71717a";
     if (text) text.innerText = "Wallet Disconnected";
     if (btn) {
         btn.innerText = "Connect";
         btn.style.borderColor = "#8b5cf6";
         btn.style.color = "#8b5cf6";
-        btn.style.cursor = "pointer";
         btn.onclick = handlePhantomConnect;
     }
 }
 
-// ====================== BALANCES + PRICE FUNCTIONS ======================
+// ====================== BALANCES + TOTAL ======================
 async function updateWalletBalances() {
     if (!connectedWallet) return;
+
+    const totalValueEl = document.getElementById('totalValue');
+    const currencySpan = document.getElementById('totalCurrency');
+
+    if (!lastTotalValue && totalValueEl) {
+        totalValueEl.textContent = "Calculating...";
+    }
+
     try {
         const response = await fetch(`http://localhost:3000/api/balances/${connectedWallet}`);
         const balances = await response.json();
 
-        const tokens = ['SOL', 'USDC', 'EXPB', 'GIDDY'];
-        tokens.forEach(sym => {
+        const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+        let totalValueUSD = 0;
+
+        allTokens.forEach(sym => {
             const qtyEl = document.getElementById(`qty-${sym}`);
             const valueEl = document.getElementById(`value-${sym}`);
+
             let rawQty = parseFloat(balances[sym] || 0);
             if (sym === 'EXPB') rawQty *= 1000;
 
-            const price = latestPrices[sym] || 0;
+            const priceUSD = latestPrices[sym] || 0;
+            const usdValue = rawQty * priceUSD;
+            const displayValue = usdValue * CURRENCY_RATES[currentCurrency];
+
             if (qtyEl) qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
-            if (valueEl) valueEl.textContent = `$${(rawQty * price).toFixed(2)} CAD`;
+            if (valueEl) valueEl.innerHTML = `$${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
+
+            totalValueUSD += usdValue;
         });
+
+        lastTotalValue = totalValueUSD;
+
+        if (totalValueEl) {
+            const displayTotal = (totalValueUSD * CURRENCY_RATES[currentCurrency]).toFixed(2);
+            totalValueEl.textContent = '$' + displayTotal;
+            totalValueEl.style.color = 'var(--text-color, #ffffff)';
+        }
+
+        if (currencySpan) currencySpan.textContent = currentCurrency;
+
     } catch (e) {
         console.error("Balance fetch failed", e);
+        if (totalValueEl && !lastTotalValue) {
+            totalValueEl.textContent = "$0.00";
+            totalValueEl.style.color = 'var(--text-color, #ffffff)';
+        }
     }
 }
 
@@ -251,9 +297,11 @@ async function fetchTokenPrices() {
 
             if (tokenData && tokenData.price !== null) {
                 latestPrices[symbol] = tokenData.price;
-                let priceStr = (symbol === 'ONE' || symbol === 'GIDDY')
-                    ? `$${tokenData.price.toFixed(2)} CAD`
-                    : `$${tokenData.price.toFixed(6)} CAD`;
+
+                let priceStr = (symbol === 'ONE' || symbol === 'GIDDY' || symbol === 'SOL')
+                    ? `$${tokenData.price.toFixed(2)}`
+                    : `$${tokenData.price.toFixed(6)}`;
+
                 if (priceEl) priceEl.innerText = priceStr;
             } else if (priceEl) {
                 priceEl.innerText = "No Pool";
@@ -261,6 +309,8 @@ async function fetchTokenPrices() {
         });
 
         if (connectedWallet) updateWalletBalances();
+        updateCommunityCurrencyLabels();   // ← This makes the dropdown update the labels
+
     } catch (error) {
         console.error("Failed pulling pricing metrics:", error);
     }
@@ -301,9 +351,9 @@ function initPullToRefresh() {
     });
 }
 
-// ====================== INITIALIZE EVERYTHING ======================
+// ====================== INITIALIZE ======================
 document.addEventListener('DOMContentLoaded', () => {
-    // Redeem form handler
+    // FULL REDEEM FORM (your original)
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
         redeemForm.addEventListener('submit', (e) => {
@@ -344,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('addWalletBtn');
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
-    // ====================== PHANTOM INITIALIZATION ======================
+    // Phantom init (untouched)
     if (window.solana && window.solana.isPhantom) {
         window.solana.on('connect', (publicKey) => {
             connectedWallet = publicKey.toString();
@@ -361,16 +411,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.solana.isConnected) {
             connectedWallet = window.solana.publicKey.toString();
             showConnectedState();
-        }
-        else if (isInPhantomBrowser && !alreadyPrompted) {
+        } else if (isInPhantomBrowser && !alreadyPrompted) {
             sessionStorage.setItem('deepLinkPromptShown', 'true');
-            setTimeout(() => {
-                window.solana.connect({ onlyIfTrusted: false }).catch(() => { });
-            }, 800);
-        }
-        else {
+            setTimeout(() => window.solana.connect({ onlyIfTrusted: false }).catch(() => {}), 800);
+        } else {
             showDisconnectedState();
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
+            window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
         }
     } else {
         showDisconnectedState();
@@ -383,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initPullToRefresh();
 
-    // Fade-in observer + hash scroll
+    // HASH LINK SUPPORT (your original)
     const fallbackObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -432,5 +478,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js fully loaded | showProfile ready');
+    console.log('✅ Wallet.js loaded with dynamic currency + full redeem form');
 });
