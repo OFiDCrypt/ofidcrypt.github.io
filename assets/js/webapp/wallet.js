@@ -7,21 +7,20 @@ let connectedWallet = null;
 let latestPrices = {};
 
 // ====================== CURRENCY SYSTEM ======================
-let lastTotalValue = 0;           // Cache for total value
-let currentCurrency = 'CAD';      // Default currency
+let lastTotalValue = 0;
+let currentCurrency = 'CAD';
 
 const CURRENCY_RATES = {
-    'CAD': 1.35,   // 1 USD ≈ 1.35 CAD
+    'CAD': 1.35,
     'USD': 1
 };
 
 function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
-    updateWalletBalances();           // Refresh balances & total
-    updateCommunityCurrencyLabels();  // Update community price labels
+    updateWalletBalances();
+    updateCommunityCurrencyLabels();
 }
 
-// Update all community price currency labels
 function updateCommunityCurrencyLabels() {
     const symbols = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
     symbols.forEach(sym => {
@@ -106,7 +105,7 @@ function toggleCommunityTokens() {
     }
 }
 
-// ====================== PHANTOM WALLET INTEGRATION (UNTOUCHED) ======================
+// ====================== PHANTOM WALLET INTEGRATION ======================
 function toggleWalletDropdown() {
     const dropdown = document.getElementById('walletDropdown');
     const chevron = document.getElementById('chevron');
@@ -188,7 +187,6 @@ function showConnectedState() {
     if (cOpt) cOpt.classList.add('hidden');
     if (dOpt) dOpt.classList.remove('hidden');
 
-    // Shop page support
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
@@ -217,7 +215,6 @@ function showDisconnectedState() {
     if (cOpt) cOpt.classList.remove('hidden');
     if (dOpt) dOpt.classList.add('hidden');
 
-    // Shop page support
     const dot = document.getElementById('status-dot');
     const text = document.getElementById('status-text');
     const btn = document.getElementById('connect-btn');
@@ -238,7 +235,6 @@ async function updateWalletBalances() {
     const totalValueEl = document.getElementById('totalValue');
     const currencySpan = document.getElementById('totalCurrency');
 
-    // Only show "Calculating..." on first load
     if (!lastTotalValue && totalValueEl) {
         totalValueEl.textContent = "Calculating...";
     }
@@ -267,16 +263,14 @@ async function updateWalletBalances() {
             totalValueUSD += usdValue;
         });
 
-        lastTotalValue = totalValueUSD; // Cache
+        lastTotalValue = totalValueUSD;
 
-        // Update Total Card
         if (totalValueEl) {
             const displayTotal = (totalValueUSD * CURRENCY_RATES[currentCurrency]).toFixed(2);
             totalValueEl.textContent = '$' + displayTotal;
             totalValueEl.style.color = 'var(--text-color, #ffffff)';
         }
 
-        // Update currency label
         if (currencySpan) currencySpan.textContent = currentCurrency;
 
     } catch (e) {
@@ -315,10 +309,8 @@ async function fetchTokenPrices() {
         });
 
         if (connectedWallet) updateWalletBalances();
+        updateCommunityCurrencyLabels();   // ← This makes the dropdown update the labels
 
-        // ADD THIS LINE:
-        updateCommunityCurrencyLabels();
-        
     } catch (error) {
         console.error("Failed pulling pricing metrics:", error);
     }
@@ -361,10 +353,41 @@ function initPullToRefresh() {
 
 // ====================== INITIALIZE ======================
 document.addEventListener('DOMContentLoaded', () => {
+    // FULL REDEEM FORM (your original)
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
         redeemForm.addEventListener('submit', (e) => {
-            // your original redeem code here
+            e.preventDefault();
+            const input = document.getElementById('redeem-input').value.trim();
+            const messageDiv = document.getElementById('redeem-message');
+            const button = redeemForm.querySelector('button');
+
+            messageDiv.textContent = '';
+            messageDiv.style.color = '#2ecc71';
+            button.classList.remove('success', 'failure');
+
+            if (!input) {
+                messageDiv.textContent = 'Please enter a code.';
+                messageDiv.style.color = '#e74c3c';
+                button.classList.add('failure');
+                return;
+            }
+
+            if (!/^\d{13}$/.test(input)) {
+                messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+                messageDiv.style.color = '#e74c3c';
+                button.classList.add('failure');
+                button.textContent = 'INVALID';
+                return;
+            }
+
+            messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
+            button.textContent = 'Checking...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
+            }, 800);
         });
     }
 
@@ -406,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initPullToRefresh();
 
-    // ====================== HASH LINK SUPPORT (Auto-expand + Highlight) ======================
+    // HASH LINK SUPPORT (your original)
     const fallbackObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -455,5 +478,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js loaded with cached balances + dynamic currency support');
+    console.log('✅ Wallet.js loaded with dynamic currency + full redeem form');
 });
