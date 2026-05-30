@@ -325,6 +325,128 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Button styling - matches logo width on all screen sizes */
+        .dynamic-lock-btn {
+            width: 100%;
+            max-width: 84px;
+            /* matches desktop token icon */
+            aspect-ratio: 1 / 1;
+            /* makes button square */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 767px) {
+            .dynamic-lock-btn {
+                max-width: 72px;
+                /* matches mobile token icon size */
+            }
+
+            .token-icon {
+                margin-bottom: 1rem;
+                /* extra breathing room on mobile */
+            }
+        }
+
+        /* ====================== VALUE LOCK MODAL STYLES ====================== */
+        .mode-section {
+            transition: all 0.3s ease;
+        }
+
+        .mode-section.dimmed {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        /* Percentage Buttons */
+        .lock-percent-btn,
+        .switch-percent-btn {
+            width: 100%;
+            padding: 9px 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            background: rgba(107, 33, 168, 0.3);
+            color: white;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            line-height: 1;
+        }
+
+        .lock-percent-btn:hover,
+        .switch-percent-btn:hover {
+            background: rgba(107, 33, 168, 0.6);
+            border-color: rgba(236, 72, 153, 0.6);
+            transform: scale(1.04);
+        }
+
+        .lock-percent-btn.active,
+        .switch-percent-btn.active {
+            background: #ec4899 !important;
+            border-color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Confirm Button */
+        .confirm-btn {
+            padding: 18px 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 68px;
+            line-height: 1;
+        }
+
+        /* ====================== RESPONSIVE IMPROVEMENTS ====================== */
+        @media (min-width: 768px) {
+            .modal-content {
+                width: 460px !important;
+                /* Wider on desktop */
+                max-width: 480px !important;
+                padding: 24px 28px !important;
+            }
+
+            .flex.gap-4 {
+                gap: 24px;
+            }
+
+            .w-36 {
+                width: 160px !important;
+                /* Wider right panel */
+            }
+
+            .lock-percent-btn,
+            .switch-percent-btn {
+                padding: 11px 8px;
+                font-size: 0.95rem;
+                min-height: 46px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .modal-content {
+                padding: 16px 14px !important;
+            }
+
+            .lock-percent-btn,
+            .switch-percent-btn {
+                padding: 8px 4px;
+                font-size: 0.82rem;
+                min-height: 37px;
+            }
+
+            .confirm-btn {
+                min-height: 62px;
+                padding: 16px 0 !important;
+            }
+        }
     </style>
 
 </head>
@@ -572,110 +694,138 @@
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
                     style="color: var(--text-color) ;">Local Currencies</h1>
 
-                <!-- MY TOKENS GRID SECTION (eXPB + GIDDY) -->
+                <!-- MY TOKENS GRID SECTION (eXPB + GIDDY) - FINAL CANOPY STYLE -->
                 <div class="grid grid-cols-2 gap-4 mb-6">
 
-                    <!-- eXPB TOKEN CARD -->
-                    <div id="card-EXPB" onclick="goToToken('expb')" class="card p-5 cursor-pointer token-card fade-in">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="card-content w-1/2 flex flex-col justify-center">
-                                <span
-                                    class="uppercase text-[9px] sm:text-xs tracking-widest text-zinc-400 block font-semibold leading-tight">
-                                    DYNAMIC TOKEN
-                                </span>
-                                <div class="text-2xl sm:text-3xl font-bold mt-1" style="color: var(--text-color) ;">
-                                    e𝕏PB
+                    <!-- eXPB CARD -->
+                    <div class="relative">
+                        <!-- Centered Canopy Header -->
+                        <div
+                            class="h-11 bg-gradient-to-r from-purple-600 to-violet-600 rounded-t-3xl flex items-center justify-center">
+                            <span class="text-white text-sm font-bold tracking-widest">Dynamic Money</span>
+                        </div>
+
+                        <div id="card-EXPB" onclick="goToToken('expb')"
+                            class="card p-5 cursor-pointer token-card fade-in -mt-1 rounded-t-none">
+
+                            <div class="flex items-start justify-between gap-3">
+                                <!-- Left: Token Info - Moved up and bigger subtitle -->
+                                <div class="card-content w-1/2 flex flex-col">
+                                    <div class="text-2xl sm:text-3xl font-bold" style="color: var(--text-color);">e𝕏PB
+                                    </div>
+                                    <div
+                                        class="text-base sm:text-lg tracking-wide text-zinc-300 font-semibold uppercase leading-tight mt-1">
+                                        BOUNCY BALL
+                                    </div>
                                 </div>
-                                <div
-                                    class="text-[11px] sm:text-sm tracking-wide text-zinc-400 font-medium uppercase leading-tight">
-                                    BOUNCY BALL
+
+                                <!-- Right: Logo + Button -->
+                                <div class="w-1/2 flex flex-col items-end">
+                                    <img src="/assets/images/webp/expb-case.webp" alt="eXPB"
+                                        class="token-icon max-w-full mb-4">
+
+                                    <!-- DYNAMIC BUTTON -->
+                                    <button onclick="event.stopPropagation(); openValueLockModal('dynamic');"
+                                        class="dynamic-lock-btn bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white py-3 flex items-center justify-center rounded-2xl shadow-lg transition-all active:scale-95">
+                                        <i class="fas fa-exchange-alt text-xl"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="w-1/2 flex justify-end">
-                                <img src="/assets/images/webp/expb-case.webp" alt="eXPB" class="token-icon max-w-full">
-                            </div>
-                        </div>
 
-                        <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
-                            <div id="price-EXPB" class="text-sm text-zinc-400 font-mono">Fetching...</div>
-                            <div class="text-sm text-green-400 font-medium">24 hr: +0.24%</div>
-                        </div>
-
-                        <div class="mt-5 card-content">
-                            <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY QUANTITY
+                            <div class="mt-4 card-content border-t border-purple-950/40 pt-3">
+                                <div id="price-EXPB" class="text-sm text-zinc-400 font-mono">Fetching...</div>
+                                <div class="text-sm text-green-400 font-medium">24 hr: +0.24%</div>
                             </div>
-                            <div id="qty-EXPB" class="text-xl font-bold font-mono mb-2"
-                                style="color: var(--text-color) ; opacity: 0.9;">—</div>
 
-                            <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY VALUE
-                            </div>
-                            <div id="value-EXPB"
-                                class="flex flex-col items-start text-4xl sm:text-6xl font-black tracking-tight mb-0.5"
-                                style="color: var(--text-color) ;">
-                                <span>$0.00</span>
-                                <span class="text-base sm:text-lg">CAD</span>
-                            </div>
-                            <div class="text-green-400 text-sm font-medium">+0.05% Today</div>
-                        </div>
+                            <div class="mt-5 card-content">
+                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
+                                    QUANTITY</div>
+                                <div id="qty-EXPB" class="text-xl font-bold font-mono mb-2"
+                                    style="color: var(--text-color); opacity: 0.9;">—</div>
 
-                        <div class="mt-6 text-left">
-                            <a href="/bouncyball.html" onclick="event.stopPropagation();"
-                                class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
-                                Token Price Details →
-                            </a>
+                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY VALUE
+                                </div>
+                                <div id="value-EXPB"
+                                    class="flex flex-col items-start text-4xl sm:text-6xl font-black tracking-tight mb-0.5"
+                                    style="color: var(--text-color);">
+                                    <span>$0.00</span>
+                                    <span class="text-base sm:text-lg">CAD</span>
+                                </div>
+                                <div class="text-green-400 text-sm font-medium">+0.05% Today</div>
+                            </div>
+
+                            <div class="mt-6 text-left">
+                                <a href="/bouncyball.html" onclick="event.stopPropagation();"
+                                    class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                    Token Price Details →
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- GIDDY TOKEN CARD -->
-                    <div id="card-GIDDY" onclick="goToToken('giddy')"
-                        class="card p-5 cursor-pointer token-card fade-in">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="card-content w-1/2 flex flex-col justify-center">
-                                <span
-                                    class="uppercase text-[9px] sm:text-xs tracking-widest text-zinc-400 block font-semibold leading-tight">
-                                    STABLE TOKEN
-                                </span>
-                                <div class="text-2xl sm:text-3xl font-bold mt-1" style="color: var(--text-color) ;">
-                                    GIDDY
+                    <!-- GIDDY CARD -->
+                    <div class="relative">
+                        <!-- Centered Canopy Header -->
+                        <div
+                            class="h-11 bg-gradient-to-r from-purple-600 to-pink-600 rounded-t-3xl flex items-center justify-center">
+                            <span class="text-white text-sm font-bold tracking-widest">Stable Money</span>
+                        </div>
+
+                        <div id="card-GIDDY" onclick="goToToken('giddy')"
+                            class="card p-5 cursor-pointer token-card fade-in -mt-1 rounded-t-none">
+
+                            <div class="flex items-start justify-between gap-3">
+                                <!-- Left: Token Info - Moved up and bigger subtitle -->
+                                <div class="card-content w-1/2 flex flex-col">
+                                    <div class="text-2xl sm:text-3xl font-bold" style="color: var(--text-color);">GIDDY
+                                    </div>
+                                    <div
+                                        class="text-base sm:text-lg tracking-wide text-zinc-300 font-semibold uppercase leading-tight mt-1">
+                                        GIDDY DOLLAR
+                                    </div>
                                 </div>
-                                <div
-                                    class="text-[11px] sm:text-sm tracking-wide text-zinc-400 font-medium uppercase leading-tight">
-                                    GIDDY DOLLAR
+
+                                <!-- Right: Logo + Button -->
+                                <div class="w-1/2 flex flex-col items-end">
+                                    <img src="/assets/images/webp/giddy-case.webp" alt="GIDDY"
+                                        class="token-icon max-w-full mb-4">
+
+                                    <!-- LOCK BUTTON -->
+                                    <button onclick="event.stopPropagation(); openValueLockModal('giddy');"
+                                        class="dynamic-lock-btn bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 flex items-center justify-center rounded-2xl shadow-lg transition-all active:scale-95">
+                                        <i class="fas fa-lock text-xl"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="w-1/2 flex justify-end">
-                                <img src="/assets/images/webp/giddy-case.webp" alt="GIDDY"
-                                    class="token-icon max-w-full">
-                            </div>
-                        </div>
 
-                        <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
-                            <div id="price-GIDDY" class="text-sm text-zinc-400 font-mono">Fetching...</div>
-                            <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
-                        </div>
-
-                        <div class="mt-5 card-content">
-                            <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY QUANTITY
+                            <div class="mt-4 card-content border-t border-purple-950/40 pt-3">
+                                <div id="price-GIDDY" class="text-sm text-zinc-400 font-mono">Fetching...</div>
+                                <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
                             </div>
-                            <div id="qty-GIDDY" class="text-xl font-bold font-mono mb-2"
-                                style="color: var(--text-color) ; opacity: 0.9;">—</div>
 
-                            <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY VALUE
-                            </div>
-                            <div id="value-GIDDY"
-                                class="flex flex-col items-start text-4xl sm:text-6xl font-black tracking-tight mb-0.5"
-                                style="color: var(--text-color) ;">
-                                <span>$0.00</span>
-                                <span class="text-base sm:text-lg">CAD</span>
-                            </div>
-                            <div class="text-zinc-500 text-sm font-medium">0.00% Today</div>
-                        </div>
+                            <div class="mt-5 card-content">
+                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
+                                    QUANTITY</div>
+                                <div id="qty-GIDDY" class="text-xl font-bold font-mono mb-2"
+                                    style="color: var(--text-color); opacity: 0.9;">—</div>
 
-                        <div class="mt-6 text-left">
-                            <a href="/onegiddy.html" onclick="event.stopPropagation();"
-                                class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
-                                Token Price Details →
-                            </a>
+                                <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY VALUE
+                                </div>
+                                <div id="value-GIDDY"
+                                    class="flex flex-col items-start text-4xl sm:text-6xl font-black tracking-tight mb-0.5"
+                                    style="color: var(--text-color);">
+                                    <span>$0.00</span>
+                                    <span class="text-base sm:text-lg">CAD</span>
+                                </div>
+                                <div class="text-zinc-500 text-sm font-medium">0.00% Today</div>
+                            </div>
+
+                            <div class="mt-6 text-left">
+                                <a href="/onegiddy.html" onclick="event.stopPropagation();"
+                                    class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                    Token Price Details →
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -688,17 +838,57 @@
                     <img src="https://flagcdn.com/w40/ca.png" alt="Canada" class="h-5">
                 </div>
 
-                <!-- GIDDY'S SHOP PROMO SECTION -->
-                <div onclick="goToShop()" class="relative rounded-3xl overflow-hidden mb-6 cursor-pointer fade-in">
-                    <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop"
-                        class="w-full h-52 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 right-6">
-                        <button
-                            class="mt-4 w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-2xl font-semibold text-lg text-center text-zinc-300">Visit
-                            Store</button>
+                <!-- GIDDY'S SHOP PROMO SECTION - Seamless Joined Button -->
+                <div onclick="goToShop()" class="fade-in mb-6 cursor-pointer">
+
+                    <!-- Image + Button Container -->
+                    <div class="relative rounded-t-3xl overflow-hidden">
+
+                        <!-- Image -->
+                        <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop"
+                            class="w-full h-52 object-cover object-center">
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+
+                        <!-- Overlay Text -->
+                        <div class="absolute bottom-6 left-6 text-white">
+                            <p class="text-xl font-bold tracking-tight">Giddy's Shop</p>
+                            <p class="text-sm opacity-90">Toys • Apparel • Collectibles</p>
+                        </div>
                     </div>
+
+                    <!-- Button - Joined to image, no top radius, shorter height -->
+                    <button onclick="event.stopPropagation(); goToShop();"
+                        class="joined-shop-btn w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 font-bold text-lg text-white shadow-lg transition-all active:scale-[0.98]">
+                        Shop Now
+                    </button>
                 </div>
+
+                <style>
+                    /* Seamless Shop Promo Button */
+                    .joined-shop-btn {
+                        border-radius: 0 0 20px 20px !important;
+                        /* Only bottom rounded */
+                        padding: 14px 0 !important;
+                        /* Less tall */
+                        min-height: 52px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-top: -4px;
+                        /* Join to image */
+                    }
+
+                    .joined-shop-btn:hover {
+                        filter: brightness(1.08);
+                    }
+
+                    /* Remove bottom radius from image container */
+                    .relative.rounded-t-3xl {
+                        border-bottom-left-radius: 0 !important;
+                        border-bottom-right-radius: 0 !important;
+                    }
+                </style>
 
                 <!-- COMMUNITY TOKENS SECTION (Accordion) -->
                 <div class="mb-6">
@@ -1081,115 +1271,136 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
+                </div><!-- End of Community Tokens Accordion -->
 
-                    <!-- HEADING -->
-                    <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
-                        style="color: var(--text-color) ;">Top Currencies</h1>
+                <!-- ====================== CANOPY STYLE HEADINGS ====================== -->
 
-                    <!-- SOLANA TOKEN CARD SECTION -->
-                    <div class="card p-5 cursor-pointer token-card fade-in mb-6">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="card-content flex-1">
-                                <span
-                                    class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">SOLANA</span>
-                                <div class="flex items-center gap-3 mt-1">
-                                    <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">SOL
-                                    </div>
-                                    <div class="flex gap-1.5 ml-2">
-                                        <button onclick="buyToken(); event.stopPropagation();"
-                                            class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
-                                        <button onclick="sellToken(); event.stopPropagation();"
-                                            class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
-                                    </div>
-                                </div>
-                                <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
-                                    <div id="price-SOL" class="text-sm text-zinc-400 font-mono">Fetching...</div>
-                                    <div class="text-sm text-green-400 font-medium">24 hr: +3.12%</div>
-                                </div>
-
-                                <div class="mt-6">
-                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">
-                                        MY
-                                        QUANTITY</div>
-                                    <div id="qty-SOL" class="text-base font-bold font-mono"
-                                        style="color: var(--text-color) ; opacity: 0.9;">—</div>
-
-                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
-                                        VALUE
-                                    </div>
-                                    <div id="value-SOL" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                        style="color: var(--text-color) ;">$0.00 CAD</div>
-                                </div>
-                            </div>
-                            <div class="flex-shrink-0">
-                                <img src="/assets/images/webp/sol-case.webp" alt="SOL" class="token-icon">
-                            </div>
+                <!-- SOLANA & USDC SECTION -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <!-- Canopy Header -->
+                        <div
+                            class="h-14 bg-gradient-to-r from-purple-600 via-fuchsia-500 to-cyan-400 rounded-t-3xl flex items-center px-6">
+                            <span class="text-white font-bold text-lg tracking-tight">Get Started with New
+                                Money.</span>
                         </div>
-                        <div class="mt-6 text-left">
-                            <a href="https://www.coingecko.com/en/coins/solana" target="_blank"
-                                onclick="event.stopPropagation();"
-                                class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
-                                Token Price Details →
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- USDC TOKEN CARD SECTION -->
-                    <div class="card p-5 cursor-pointer token-card fade-in mb-10">
-                        <div class="flex items-start justify-between gap-2">
-                            <div class="card-content flex-1">
-                                <span
-                                    class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">US
-                                    DOLLAR COIN</span>
-                                <div class="flex items-center gap-3 mt-1">
-                                    <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color) ;">USDC
+                        <!-- SOL Token Card - Joined to header -->
+                        <div class="card p-5 cursor-pointer token-card -mt-1 rounded-t-none">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="card-content flex-1">
+                                    <span
+                                        class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">SOLANA</span>
+                                    <div class="flex items-center gap-3 mt-1">
+                                        <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color);">
+                                            SOL</div>
+                                        <div class="flex gap-1.5 ml-2">
+                                            <button onclick="buyToken(); event.stopPropagation();"
+                                                class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
+                                            <button onclick="sellToken(); event.stopPropagation();"
+                                                class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
+                                        </div>
                                     </div>
-                                    <div class="flex gap-1.5 ml-2">
-                                        <button onclick="buyToken(); event.stopPropagation();"
-                                            class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
-                                        <button onclick="sellToken(); event.stopPropagation();"
-                                            class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
+                                    <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
+                                        <div id="price-SOL" class="text-sm text-zinc-400 font-mono">Fetching...
+                                        </div>
+                                        <div class="text-sm text-green-400 font-medium">24 hr: +3.12%</div>
+                                    </div>
+
+                                    <div class="mt-6">
+                                        <div
+                                            class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">
+                                            MY QUANTITY</div>
+                                        <div id="qty-SOL" class="text-base font-bold font-mono"
+                                            style="color: var(--text-color); opacity: 0.9;">—</div>
+
+                                        <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">
+                                            MY VALUE</div>
+                                        <div id="value-SOL"
+                                            class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
+                                            style="color: var(--text-color);">$0.00 CAD</div>
                                     </div>
                                 </div>
-                                <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
-                                    <div id="price-USDC" class="text-sm text-zinc-400 font-mono">Fetching...</div>
-                                    <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
-                                </div>
-
-                                <div class="mt-6">
-                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">
-                                        MY
-                                        QUANTITY</div>
-                                    <div id="qty-USDC" class="text-base font-bold font-mono"
-                                        style="color: var(--text-color) ; opacity: 0.9;">—</div>
-
-                                    <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
-                                        VALUE
-                                    </div>
-                                    <div id="value-USDC" class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
-                                        style="color: var(--text-color) ;">$0.00 CAD</div>
-
+                                <div class="flex-shrink-0">
+                                    <img src="/assets/images/webp/sol-case.webp" alt="SOL" class="token-icon">
                                 </div>
                             </div>
-                            <div class="flex-shrink-0">
-                                <img src="/assets/images/webp/usdc-case.webp" alt="USDC" class="token-icon">
+                            <div class="mt-6 text-left">
+                                <a href="https://www.coingecko.com/en/coins/solana" target="_blank"
+                                    onclick="event.stopPropagation();"
+                                    class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                    Token Price Details →
+                                </a>
                             </div>
-                        </div>
-                        <div class="mt-6 text-left">
-                            <a href="https://www.coingecko.com/en/coins/usd-coin" target="_blank"
-                                onclick="event.stopPropagation();"
-                                class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
-                                Token Price Details →
-                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+                <!-- USDC SECTION -->
+                <div class="mb-10">
+                    <div class="relative">
+                        <!-- Canopy Header -->
+                        <div
+                            class="h-14 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 rounded-t-3xl flex items-center px-6">
+                            <span class="text-white font-bold text-lg tracking-tight">Cash Out to Dollars.</span>
+                        </div>
+
+                        <!-- USDC Token Card - Joined to header -->
+                        <div class="card p-5 cursor-pointer token-card -mt-1 rounded-t-none">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="card-content flex-1">
+                                    <span
+                                        class="uppercase text-[10px] sm:text-xs tracking-widest text-purple-300 block font-semibold leading-tight">US
+                                        DOLLAR COIN</span>
+                                    <div class="flex items-center gap-3 mt-1">
+                                        <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color);">
+                                            USDC</div>
+                                        <div class="flex gap-1.5 ml-2">
+                                            <button onclick="buyToken(); event.stopPropagation();"
+                                                class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
+                                            <button onclick="sellToken(); event.stopPropagation();"
+                                                class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
+                                        <div id="price-USDC" class="text-sm text-zinc-400 font-mono">Fetching...
+                                        </div>
+                                        <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
+                                    </div>
+
+                                    <div class="mt-6">
+                                        <div
+                                            class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold mt-3">
+                                            MY QUANTITY</div>
+                                        <div id="qty-USDC" class="text-base font-bold font-mono"
+                                            style="color: var(--text-color); opacity: 0.9;">—</div>
+
+                                        <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">
+                                            MY VALUE</div>
+                                        <div id="value-USDC"
+                                            class="text-3xl sm:text-4xl font-black tracking-tight mb-0.5"
+                                            style="color: var(--text-color);">$0.00 CAD</div>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <img src="/assets/images/webp/usdc-case.webp" alt="USDC" class="token-icon">
+                                </div>
+                            </div>
+                            <div class="mt-6 text-left">
+                                <a href="https://www.coingecko.com/en/coins/usd-coin" target="_blank"
+                                    onclick="event.stopPropagation();"
+                                    class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                    Token Price Details →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End of USDC Section -->
+            </div><!-- End of Main Wallet Section -->
+        </div><!-- End of Main Content -->
     </div> <!-- End of wrapper -->
 
     <!-- Bottom Nav -->
@@ -1225,6 +1436,84 @@
                     Redeem
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- =============================================== SMART VALUE LOCK MODAL ================================================ -->
+    <div id="value-lock-modal" class="modal">
+        <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
+
+            <!-- Header -->
+            <div class="flex items-center justify-end mb-5">
+                <span onclick="closeValueLockModal()"
+                    class="text-4xl leading-none text-zinc-400 hover:text-white cursor-pointer transition-colors">&times;</span>
+            </div>
+
+            <div class="flex gap-4">
+
+                <!-- LEFT COLUMN -->
+                <div class="flex-1 min-w-0">
+
+                    <!-- LOCK SECTION (Upper - for eXPB) -->
+                    <div id="lock-section" class="mode-section mb-7">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-2xl">🔒</span>
+                            <span id="lock-heading" class="font-bold text-lg tracking-tight"
+                                style="color: var(--text-color);">Lock value in Giddy</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1">
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">25%</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">50%</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">75%</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">100%</button>
+                        </div>
+                    </div>
+
+                    <!-- DIVIDER -->
+                    <div class="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-6">
+                    </div>
+
+                    <!-- SWITCH SECTION (Lower - for GIDDY) -->
+                    <div id="switch-section" class="mode-section">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-2xl">🔄</span>
+                            <span id="switch-heading" class="font-bold text-lg tracking-tight"
+                                style="color: var(--text-color);">Move to dynamic value</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1">
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">25%</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">50%</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">75%</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">100%</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT INFO PANEL -->
+                <div
+                    class="w-36 flex-shrink-0 bg-[var(--card-bg-color,#1e0f33)] border border-purple-500/30 rounded-3xl p-4 flex flex-col text-center shadow-inner">
+                    <div id="right-panel-label"
+                        class="text-[10px] uppercase font-bold tracking-widest text-purple-300 mb-1">
+                        DYNAMIC<br>QUANTITY
+                        TO LOCK</div>
+                    <div id="dynamic-quantity-display" class="text-4xl font-black" style="color: var(--text-color);">
+                        1126</div>
+
+                    <div class="mt-auto">
+                        <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400">CURRENT VALUE
+                        </div>
+                        <div id="current-value-display" class="text-3xl font-black text-emerald-400">$0.50 CAD
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFIRM BUTTON -->
+            <button onclick="confirmValueLock()"
+                class="confirm-btn w-full mt-7 text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97]"
+                style="background: linear-gradient(to right, #9333ea, #ec4899);">
+                Confirm
+            </button>
         </div>
     </div>
 
