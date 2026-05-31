@@ -354,6 +354,11 @@
         /* ====================== VALUE LOCK MODAL STYLES ====================== */
         .mode-section {
             transition: all 0.3s ease;
+            background: var(--card-bg-color, rgba(30, 5, 51, 0.6));
+            border-radius: 16px;
+            padding: 14px 12px;
+            box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .mode-section.dimmed {
@@ -378,6 +383,8 @@
             justify-content: center;
             min-height: 40px;
             line-height: 1;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .lock-percent-btn:hover,
@@ -385,13 +392,31 @@
             background: rgba(107, 33, 168, 0.6);
             border-color: rgba(236, 72, 153, 0.6);
             transform: scale(1.04);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
         }
 
         .lock-percent-btn.active,
         .switch-percent-btn.active {
             background: #ec4899 !important;
             border-color: #ffffff !important;
-            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.4);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.45),
+                0 4px 12px rgba(236, 72, 153, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Right Panel */
+        #value-lock-modal .w-36.flex-shrink-0 {
+            box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Modal Content - Overall Card */
+        .modal-content {
+            background: var(--card-bg-color, #1a0f2e);
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.55),
+                0 2px 8px rgba(168, 85, 247, 0.15);
+            border-radius: 20px;
         }
 
         /* Confirm Button */
@@ -402,13 +427,13 @@
             justify-content: center !important;
             min-height: 68px;
             line-height: 1;
+            box-shadow: 0 8px 20px -4px rgba(236, 72, 153, 0.4);
         }
 
         /* ====================== RESPONSIVE IMPROVEMENTS ====================== */
         @media (min-width: 768px) {
             .modal-content {
                 width: 460px !important;
-                /* Wider on desktop */
                 max-width: 480px !important;
                 padding: 24px 28px !important;
             }
@@ -419,7 +444,6 @@
 
             .w-36 {
                 width: 160px !important;
-                /* Wider right panel */
             }
 
             .lock-percent-btn,
@@ -445,6 +469,25 @@
             .confirm-btn {
                 min-height: 62px;
                 padding: 16px 0 !important;
+            }
+        }
+
+        /* Button scaling fix */
+        .buy-btn,
+        .dynamic-lock-btn {
+            min-width: 0;
+        }
+
+        @media (max-width: 480px) {
+
+            .buy-btn,
+            .dynamic-lock-btn {
+                padding: 10px 6px;
+                font-size: 0.8rem;
+            }
+
+            .dynamic-lock-btn i {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -708,8 +751,9 @@
                         <div id="card-EXPB" onclick="goToToken('expb')"
                             class="card p-5 cursor-pointer token-card fade-in -mt-1 rounded-t-none">
 
+                            <!-- Main Content Row -->
                             <div class="flex items-start justify-between gap-3">
-                                <!-- Left: Token Info - Moved up and bigger subtitle -->
+                                <!-- Left: Token Info -->
                                 <div class="card-content w-1/2 flex flex-col">
                                     <div class="text-2xl sm:text-3xl font-bold" style="color: var(--text-color);">e𝕏PB
                                     </div>
@@ -719,24 +763,35 @@
                                     </div>
                                 </div>
 
-                                <!-- Right: Logo + Button -->
-                                <div class="w-1/2 flex flex-col items-end">
+                                <!-- Right: Logo Only -->
+                                <div class="w-1/2 flex justify-end">
                                     <img src="/assets/images/webp/expb-case.webp" alt="eXPB"
-                                        class="token-icon max-w-full mb-4">
-
-                                    <!-- DYNAMIC BUTTON -->
-                                    <button onclick="event.stopPropagation(); openValueLockModal('dynamic');"
-                                        class="dynamic-lock-btn bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white py-3 flex items-center justify-center rounded-2xl shadow-lg transition-all active:scale-95">
-                                        <i class="fas fa-exchange-alt text-xl"></i>
-                                    </button>
+                                        class="token-icon max-w-full">
                                 </div>
                             </div>
 
+                            <!-- Buttons Row -->
+                            <div class="flex gap-2 mt-5">
+                                <!-- Buy Button -->
+                                <button onclick="buyToken(); event.stopPropagation();"
+                                    class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-2xl transition-all active:scale-95 buy-btn">
+                                    Buy
+                                </button>
+
+                                <!-- Original Swap Button -->
+                                <button onclick="event.stopPropagation(); openValueLockModal('giddy');"
+                                    class="flex-1 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white rounded-2xl shadow-lg transition-all active:scale-95 dynamic-lock-btn">
+                                    <i class="fas fa-exchange-alt text-xl"></i>
+                                </button>
+                            </div>
+
+                            <!-- Price Section -->
                             <div class="mt-4 card-content border-t border-purple-950/40 pt-3">
                                 <div id="price-EXPB" class="text-sm text-zinc-400 font-mono">Fetching...</div>
                                 <div class="text-sm text-green-400 font-medium">24 hr: +0.24%</div>
                             </div>
 
+                            <!-- Quantity & Value -->
                             <div class="mt-5 card-content">
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
                                     QUANTITY</div>
@@ -774,8 +829,8 @@
                         <div id="card-GIDDY" onclick="goToToken('giddy')"
                             class="card p-5 cursor-pointer token-card fade-in -mt-1 rounded-t-none">
 
+                            <!-- Main Content Row -->
                             <div class="flex items-start justify-between gap-3">
-                                <!-- Left: Token Info - Moved up and bigger subtitle -->
                                 <div class="card-content w-1/2 flex flex-col">
                                     <div class="text-2xl sm:text-3xl font-bold" style="color: var(--text-color);">GIDDY
                                     </div>
@@ -785,24 +840,27 @@
                                     </div>
                                 </div>
 
-                                <!-- Right: Logo + Button -->
-                                <div class="w-1/2 flex flex-col items-end">
+                                <div class="w-1/2 flex justify-end">
                                     <img src="/assets/images/webp/giddy-case.webp" alt="GIDDY"
-                                        class="token-icon max-w-full mb-4">
-
-                                    <!-- LOCK BUTTON -->
-                                    <button onclick="event.stopPropagation(); openValueLockModal('giddy');"
-                                        class="dynamic-lock-btn bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 flex items-center justify-center rounded-2xl shadow-lg transition-all active:scale-95">
-                                        <i class="fas fa-lock text-xl"></i>
-                                    </button>
+                                        class="token-icon max-w-full">
                                 </div>
                             </div>
 
+                            <!-- Lock Button - Same wrapper as eXPB for consistent spacing -->
+                            <div class="flex gap-2 mt-5">
+                                <button onclick="event.stopPropagation(); openValueLockModal('dynamic');"
+                                    class="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center">
+                                    <i class="fas fa-lock text-xl"></i>
+                                </button>
+                            </div>
+
+                            <!-- Price Section -->
                             <div class="mt-4 card-content border-t border-purple-950/40 pt-3">
                                 <div id="price-GIDDY" class="text-sm text-zinc-400 font-mono">Fetching...</div>
                                 <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
                             </div>
 
+                            <!-- Quantity & Value -->
                             <div class="mt-5 card-content">
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
                                     QUANTITY</div>
@@ -1276,8 +1334,6 @@
                     </div>
                 </div><!-- End of Community Tokens Accordion -->
 
-                <!-- ====================== CANOPY STYLE HEADINGS ====================== -->
-
                 <!-- SOLANA & USDC SECTION -->
                 <div class="mb-6">
                     <div class="relative">
@@ -1439,12 +1495,16 @@
         </div>
     </div>
 
-    <!-- =============================================== SMART VALUE LOCK MODAL ================================================ -->
+    <!-- SMART VALUE LOCK MODAL -->
     <div id="value-lock-modal" class="modal">
         <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
 
-            <!-- Header -->
-            <div class="flex items-center justify-end mb-5">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-6">
+                <div id="modal-top-heading" class="text-lg font-semibold tracking-tight"
+                    style="color: var(--text-color); opacity: 0.85;">
+                    Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy
+                </div>
                 <span onclick="closeValueLockModal()"
                     class="text-4xl leading-none text-zinc-400 hover:text-white cursor-pointer transition-colors">&times;</span>
             </div>
@@ -1454,55 +1514,68 @@
                 <!-- LEFT COLUMN -->
                 <div class="flex-1 min-w-0">
 
-                    <!-- LOCK SECTION (Upper - for eXPB) -->
+                    <!-- LOCK SECTION -->
                     <div id="lock-section" class="mode-section mb-7">
-                        <div class="flex items-center gap-2 mb-4">
+                        <div class="flex items-center gap-2 mb-3">
                             <span class="text-2xl">🔒</span>
                             <span id="lock-heading" class="font-bold text-lg tracking-tight"
-                                style="color: var(--text-color);">Lock value in Giddy</span>
+                                style="color: var(--text-color);">Lock Value</span>
                         </div>
                         <div class="grid grid-cols-4 gap-1">
-                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">25%</button>
-                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">50%</button>
-                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">75%</button>
-                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">100%</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">25</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">50</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">75</button>
+                            <button onclick="selectPercent(this, 'lock')" class="lock-percent-btn">100</button>
+                        </div>
+                        <div class="text-center -mt-1 mb-1">
+                            <span class="text-[10px] uppercase font-semibold tracking-widest text-zinc-400">PERCENTAGE
+                                (%)</span>
                         </div>
                     </div>
 
                     <!-- DIVIDER -->
-                    <div class="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-6">
-                    </div>
+                    <div class="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-6"></div>
 
-                    <!-- SWITCH SECTION (Lower - for GIDDY) -->
+                    <!-- SWITCH SECTION -->
                     <div id="switch-section" class="mode-section">
-                        <div class="flex items-center gap-2 mb-4">
+                        <div class="flex items-center gap-2 mb-3">
                             <span class="text-2xl">🔄</span>
                             <span id="switch-heading" class="font-bold text-lg tracking-tight"
-                                style="color: var(--text-color);">Move to dynamic value</span>
+                                style="color: var(--text-color);">Unlock Value</span>
                         </div>
                         <div class="grid grid-cols-4 gap-1">
-                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">25%</button>
-                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">50%</button>
-                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">75%</button>
-                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">100%</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">25</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">50</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">75</button>
+                            <button onclick="selectPercent(this, 'switch')" class="switch-percent-btn">100</button>
+                        </div>
+                        <div class="text-center -mt-1 mb-1">
+                            <span class="text-[10px] uppercase font-semibold tracking-widest text-zinc-400">PERCENTAGE
+                                (%)</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- RIGHT INFO PANEL -->
+                <!-- RIGHT INFO PANEL - Better Vertical Centering -->
                 <div
-                    class="w-36 flex-shrink-0 bg-[var(--card-bg-color,#1e0f33)] border border-purple-500/30 rounded-3xl p-4 flex flex-col text-center shadow-inner">
-                    <div id="right-panel-label"
-                        class="text-[10px] uppercase font-bold tracking-widest text-purple-300 mb-1">
-                        DYNAMIC<br>QUANTITY
-                        TO LOCK</div>
-                    <div id="dynamic-quantity-display" class="text-4xl font-black" style="color: var(--text-color);">
-                        1126</div>
+                    class="w-36 flex-shrink-0 bg-[var(--card-bg-color,#1e0f33)] border border-purple-500/30 rounded-3xl p-5 flex flex-col justify-center shadow-inner min-h-[280px]">
 
-                    <div class="mt-auto">
-                        <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400">CURRENT VALUE
+                    <div class="text-center">
+                        <div id="right-panel-label"
+                            class="text-[10px] uppercase font-bold tracking-widest text-purple-300 mb-3">
+                            DYNAMIC<br>QUANTITY TO LOCK
                         </div>
-                        <div id="current-value-display" class="text-3xl font-black text-emerald-400">$0.50 CAD
+                        <div id="dynamic-quantity-display" class="text-4xl font-black mb-6"
+                            style="color: var(--text-color);">
+                            1126
+                        </div>
+
+                        <div class="pt-4 border-t border-purple-500/20">
+                            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">CURRENT
+                                VALUE</div>
+                            <div id="current-value-display" class="text-3xl font-black text-emerald-400">
+                                $0.00 CAD
+                            </div>
                         </div>
                     </div>
                 </div>
