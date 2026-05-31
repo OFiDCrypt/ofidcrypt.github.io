@@ -45,11 +45,11 @@ function claimBonus() {
 }
 
 function buyToken() {
-    alert("Buy Interface Loading...");
+    alert("Buy from Token / Exchange Loop Coming Soon...");
 }
 
 function sellToken() {
-    alert("Sell Interface Loading...");
+    alert("Sell to Token / Exchange Loop Coming Soon...");
 }
 
 // ====================== MODAL & REDEEM FUNCTIONS ======================
@@ -322,7 +322,7 @@ let currentLockBaseQty = 0;
 let currentLockBaseValue = 0;
 let currentLockToken = '';
 
-function openValueLockModal(mode = 'lock') {
+function openValueLockModal(mode = 'expb') {
     const modal = document.getElementById('value-lock-modal');
     if (!modal) return;
     modal.style.display = 'flex';
@@ -330,41 +330,40 @@ function openValueLockModal(mode = 'lock') {
     const lockSection = document.getElementById('lock-section');
     const switchSection = document.getElementById('switch-section');
     const rightLabel = document.getElementById('right-panel-label');
-    const qtyDisplay = document.getElementById('dynamic-quantity-display');
-    const valueDisplay = document.getElementById('current-value-display');
+    const topHeading = document.getElementById('modal-top-heading');   // ← New
 
     // Reset
     document.querySelectorAll('.lock-percent-btn, .switch-percent-btn').forEach(btn => btn.classList.remove('active'));
     lockSection.classList.remove('dimmed');
     switchSection.classList.remove('dimmed');
 
-    if (mode === 'lock' || mode === 'dynamic') {
-        // eXPB Mode
+    if (mode === 'expb' || mode === 'dynamic') {
+        // eXPB → GIDDY (Dynamic Swap)
         currentLockToken = 'expb';
         lockSection.classList.remove('dimmed');
         switchSection.classList.add('dimmed');
 
-        document.getElementById('lock-heading').textContent = "Lock value in Giddy";
+        document.getElementById('lock-heading').textContent = "Lock Value";
         rightLabel.innerHTML = "DYNAMIC<br>QUANTITY TO LOCK";
 
-        currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '1126');
+        if (topHeading) topHeading.innerHTML = `Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy`;
 
-        const valueEl = document.getElementById('value-EXPB');
-        currentLockBaseValue = parseFloat(valueEl?.textContent?.replace(/[^0-9.]/g, '') || '0');
+        currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
+        currentLockBaseValue = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
 
     } else if (mode === 'giddy') {
-        // GIDDY Mode
+        // GIDDY → eXPB
         currentLockToken = 'giddy';
         lockSection.classList.add('dimmed');
         switchSection.classList.remove('dimmed');
 
-        document.getElementById('switch-heading').textContent = "Move to dynamic value";
+        document.getElementById('switch-heading').textContent = "Unlock Value";
         rightLabel.innerHTML = "LOCKED<br>QUANTITY TO MOVE";
 
-        currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '1');
+        if (topHeading) topHeading.innerHTML = `Swap Giddy <span class="text-purple-400">⟶</span> Bouncy Ball`;
 
-        const valueEl = document.getElementById('value-GIDDY');
-        currentLockBaseValue = parseFloat(valueEl?.textContent?.replace(/[^0-9.]/g, '') || '0');
+        currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
+        currentLockBaseValue = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
     }
 
     // Default 50%
