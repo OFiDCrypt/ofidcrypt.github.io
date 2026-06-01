@@ -346,7 +346,7 @@ function openValueLockModal(mode = 'expb') {
         document.getElementById('lock-heading').textContent = "Lock Value";
         rightLabel.innerHTML = "DYNAMIC<br>QUANTITY TO LOCK";
 
-        if (topHeading) topHeading.innerHTML = `Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy`;
+        if (topHeading) topHeading.innerHTML = `Swap Bouncy Ball <span class="text-purple-400">⟶</span> GIDDY`;
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
         currentLockBaseValue = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
@@ -358,9 +358,9 @@ function openValueLockModal(mode = 'expb') {
         switchSection.classList.remove('dimmed');
 
         document.getElementById('switch-heading').textContent = "Unlock Value";
-        rightLabel.innerHTML = "LOCKED<br>QUANTITY TO MOVE";
+        rightLabel.innerHTML = "GIDDY<br>QUANTITY TO UNLOCK";
 
-        if (topHeading) topHeading.innerHTML = `Swap Giddy <span class="text-purple-400">⟶</span> Bouncy Ball`;
+        if (topHeading) topHeading.innerHTML = `Swap Giddy <span class="text-purple-400">⟶</span> BOUNCY BALL`;
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
         currentLockBaseValue = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
