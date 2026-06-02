@@ -278,6 +278,8 @@ textarea {
 	--nav-panel-close-hover-color: #212931;
 	--nav-panel-close-tap-highlight-color: rgba(0, 0, 0, 0);
 	--nav-panel-box-shadow-color: rgba(0, 0, 0, 0.2);
+    --html-bg-top: #0a0c0f;           /* Dark top for app pages */
+    --html-bg-bottom: #ffffff;        /* Light mode bottom */
 }
 
 body.dark-mode {
@@ -393,6 +395,8 @@ body.dark-mode {
 	--nav-panel-close-hover-color: #212931;
 	--nav-panel-close-tap-highlight-color: rgba(255, 255, 255, 0);
 	--nav-panel-box-shadow-color: rgba(255, 255, 255, 0.2);
+    --html-bg-top: #0a0c0f;
+    --html-bg-bottom: #111416;        /* Dark mode bottom */
 }
 
 /* Preload Styles */
@@ -433,12 +437,12 @@ body {
     background-color: transparent;       /* Let html handle it */
 }
 
-/* ====================== APP PAGES ONLY (50/50) ====================== */
+/* App pages only - 50/50 using variables */
 body.app-page html {
     background: linear-gradient(to bottom,
-        #0a0c0f 0%,
-        #0a0c0f 50%,
-        var(--main-bg-color) 50%) !important;
+        var(--html-bg-top) 0%,
+        var(--html-bg-top) 50%,
+        var(--html-bg-bottom) 50%) !important;
     background-attachment: fixed !important;
 }
 
