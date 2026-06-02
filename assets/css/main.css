@@ -278,7 +278,6 @@ textarea {
 	--nav-panel-close-hover-color: #212931;
 	--nav-panel-close-tap-highlight-color: rgba(0, 0, 0, 0);
 	--nav-panel-box-shadow-color: rgba(0, 0, 0, 0.2);
-    --page-bg: #ffffff;
 }
 
 body.dark-mode {
@@ -394,7 +393,6 @@ body.dark-mode {
 	--nav-panel-close-hover-color: #212931;
 	--nav-panel-close-tap-highlight-color: rgba(255, 255, 255, 0);
 	--nav-panel-box-shadow-color: rgba(255, 255, 255, 0.2);
-    --page-bg: #111416;
 }
 
 /* Preload Styles */
@@ -422,28 +420,32 @@ body.is-preload *:after {
 	width: device-width;
 }
 
-/* 1. HTML is always listening to the variable */
+/* 1. Base Styles for ALL pages */
 html {
-  background: var(--page-bg) fixed; /* Use 'background' not 'background-color' */
-  box-sizing: border-box;
-  overscroll-behavior-y: contain;
+    background-color: #0a0c0f; /* Normal Page Default */
+    box-sizing: border-box;
+    overscroll-behavior-y: contain;
 }
 
-/* 2. When on an app page, update the variable to be the gradient */
-/* We define the gradient variable here */
-body.app-page {
-  --page-bg: linear-gradient(to bottom, #0a0c0f 50%, #ffffff 50%);
+/* 2. Normal Page Dark Mode */
+html.dark-mode {
+    background-color: #111416;
 }
 
-/* 3. Handle dark mode for app pages */
-body.app-page.dark-mode {
-  --page-bg: linear-gradient(to bottom, #0a0c0f 50%, #111416 50%);
+/* 3. App Page Light Mode */
+html.app-page {
+    background: linear-gradient(to bottom, #0a0c0f 50%, #ffffff 50%) fixed;
 }
 
-/* 4. Ensure body is transparent so the HTML background shows */
+/* 4. App Page Dark Mode */
+html.app-page.dark-mode {
+    background: linear-gradient(to bottom, #0a0c0f 50%, #111416 50%) fixed;
+}
+
+/* 5. Keep body transparent so the html background shows through */
 body {
-  background-color: transparent;
-  margin: 0;
+    background-color: transparent;
+    margin: 0;
 }
 
 @media screen and (max-width: 480px) {
