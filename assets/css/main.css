@@ -420,32 +420,17 @@ body.is-preload *:after {
 	width: device-width;
 }
 
-/* 1. Base Styles for ALL pages */
+/* General Styles */
 html {
-    background-color: #0a0c0f; /* Normal Page Default */
-    box-sizing: border-box;
-    overscroll-behavior-y: contain;
+	box-sizing: border-box;
 }
 
-/* 2. Normal Page Dark Mode */
-html.dark-mode {
-    background-color: #111416;
-}
-
-/* 3. App Page Light Mode */
-html.app-page {
-    background: linear-gradient(to bottom, #0a0c0f 50%, #ffffff 50%) fixed;
-}
-
-/* 4. App Page Dark Mode */
-html.app-page.dark-mode {
-    background: linear-gradient(to bottom, #0a0c0f 50%, #111416 50%) fixed;
-}
-
-/* 5. Keep body transparent so the html background shows through */
 body {
-    background-color: transparent;
-    margin: 0;
+	overflow-y: auto;
+	/* Will add scrollbars when needed */
+	-webkit-overflow-scrolling: touch;
+	/* For smoother scrolling on iOS */
+	background-color: #1e2931;
 }
 
 @media screen and (max-width: 480px) {
