@@ -278,8 +278,7 @@ textarea {
 	--nav-panel-close-hover-color: #212931;
 	--nav-panel-close-tap-highlight-color: rgba(0, 0, 0, 0);
 	--nav-panel-box-shadow-color: rgba(0, 0, 0, 0.2);
-    --html-bg-top: #0a0c0f;           /* Dark top for app pages */
-    --html-bg-bottom: #ffffff;        /* Light mode bottom */
+    --page-bg: #ffffff;
 }
 
 body.dark-mode {
@@ -395,8 +394,7 @@ body.dark-mode {
 	--nav-panel-close-hover-color: #212931;
 	--nav-panel-close-tap-highlight-color: rgba(255, 255, 255, 0);
 	--nav-panel-box-shadow-color: rgba(255, 255, 255, 0.2);
-    --html-bg-top: #0a0c0f;
-    --html-bg-bottom: #111416;        /* Dark mode bottom */
+    --page-bg: #111416;
 }
 
 /* Preload Styles */
@@ -424,26 +422,28 @@ body.is-preload *:after {
 	width: device-width;
 }
 
-/* General Styles */
+/* 1. HTML is always listening to the variable */
 html {
-    box-sizing: border-box;
-    background-color: #0a0c0f;           /* Default for normal pages + overscroll */
-    background-attachment: fixed;
+  background: var(--page-bg) fixed; /* Use 'background' not 'background-color' */
+  box-sizing: border-box;
+  overscroll-behavior-y: contain;
 }
 
+/* 2. When on an app page, update the variable to be the gradient */
+/* We define the gradient variable here */
+body.app-page {
+  --page-bg: linear-gradient(to bottom, #0a0c0f 50%, #ffffff 50%);
+}
+
+/* 3. Handle dark mode for app pages */
+body.app-page.dark-mode {
+  --page-bg: linear-gradient(to bottom, #0a0c0f 50%, #111416 50%);
+}
+
+/* 4. Ensure body is transparent so the HTML background shows */
 body {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background-color: transparent;       /* Let html handle it */
-}
-
-/* App pages only - 50/50 using variables */
-body.app-page html {
-    background: linear-gradient(to bottom,
-        var(--html-bg-top) 0%,
-        var(--html-bg-top) 50%,
-        var(--html-bg-bottom) 50%) !important;
-    background-attachment: fixed !important;
+  background-color: transparent;
+  margin: 0;
 }
 
 @media screen and (max-width: 480px) {
