@@ -495,7 +495,28 @@
 
 </head>
 
-<body>
+<body class="app-page">
+
+    <style>
+        /* Shared app-page behavior */
+        body.app-page {
+            /* Top colour shared by both themes */
+            --app-top: #0a0c0f;
+        }
+
+        /* Light mode */
+        body.app-page:not(.dark-mode) {
+            --app-bottom: #ffffff;
+            background: linear-gradient(to bottom, var(--app-top), var(--app-bottom));
+        }
+
+        /* Dark mode */
+        body.app-page.dark-mode {
+            --app-bottom: #111416;
+            /* matches --main-bg-color */
+            background: linear-gradient(to bottom, var(--app-top), var(--app-bottom));
+        }
+    </style>
 
     <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
@@ -1497,25 +1518,24 @@
     </div>
 
     <!-- SMART VALUE LOCK MODAL -->
-<div id="value-lock-modal" class="modal">
-    <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
+    <div id="value-lock-modal" class="modal">
+        <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
 
-        <!-- Top Bar -->
-        <div class="flex items-center justify-between mb-6">
-            
-            <!-- Title -->
-            <div id="modal-top-heading" class="text-lg font-semibold tracking-tight"
-                style="color: var(--text-color); opacity: 0.85;">
-                Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy
-            </div>
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-6">
 
-            <!-- Close Button - Perfectly Aligned -->
-            <span onclick="closeValueLockModal()"
-                class="text-3xl text-zinc-400 hover:text-white cursor-pointer transition-colors 
+                <!-- Title -->
+                <div id="modal-top-heading" class="text-lg font-semibold tracking-tight"
+                    style="color: var(--text-color); opacity: 0.85;">
+                    Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy
+                </div>
+
+                <!-- Close Button - Perfectly Aligned -->
+                <span onclick="closeValueLockModal()" class="text-3xl text-zinc-400 hover:text-white cursor-pointer transition-colors 
                        flex items-center justify-center w-8 h-8 -mt-0.5 leading-none">
-                ×
-            </span>
-        </div>
+                    ×
+                </span>
+            </div>
 
             <div class="flex gap-4">
 
