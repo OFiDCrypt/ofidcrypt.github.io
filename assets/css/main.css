@@ -422,15 +422,24 @@ body.is-preload *:after {
 
 /* General Styles */
 html {
-	box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #0a0c0f;           /* Default for normal pages + overscroll */
+    background-attachment: fixed;
 }
 
 body {
-	overflow-y: auto;
-	/* Will add scrollbars when needed */
-	-webkit-overflow-scrolling: touch;
-	/* For smoother scrolling on iOS */
-	/* background-color: #0a0c0f; */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: transparent;       /* Let html handle it */
+}
+
+/* ====================== APP PAGES ONLY (50/50) ====================== */
+body.app-page html {
+    background: linear-gradient(to bottom,
+        #0a0c0f 0%,
+        #0a0c0f 50%,
+        var(--main-bg-color) 50%) !important;
+    background-attachment: fixed !important;
 }
 
 @media screen and (max-width: 480px) {
@@ -4712,24 +4721,10 @@ body {
 	pointer-events: none;
 }
 
-/* ================================================
-   BACKGROUND LAYER (.bg.fixed) - FINAL VERSION
-   ================================================ */
-
-#wrapper > .bg.fixed {
+#wrapper>.bg.fixed {
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
-    background-color: #0a0c0f;        /* Solid dark for ALL normal pages */
-}
-
-/* ====================== APP PAGES ONLY ====================== */
-body.app-page > .bg.fixed {
-    background: linear-gradient(to bottom,
-        #0a0c0f 0%,                    /* Dark top (same as normal pages) */
-        #0a0c0f 35%,                    /* Keep dark until this point */
-        var(--main-bg-color) 35%        /* Then switch to theme colour */
-    );
 }
 
 #wrapper.fade-in:before {
@@ -9334,7 +9329,8 @@ footer {
    TOKEN DIRECTORY MODAL - HEADER & CLOSE BUTTON THEME RULES
    ========================================================================== */
 
-/* --- CONTAINER BASE ANCHOR (AUTOMATIC VARIABLES) --- */
+/* --- CONTAINER BASE STYLES --- */
+.modal-content {                    /* ← Add your actual container selector here */
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     box-sizing: border-box;
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
@@ -9349,7 +9345,6 @@ footer {
     text-align: center;
     letter-spacing: 0.5px;
     
-    /* Keeps a dynamic gradient matching your dark profile, but falls back gracefully in light mode */
     background: linear-gradient(135deg, var(--text-color) 40%, #c084fc 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -9361,9 +9356,9 @@ footer {
     top: 14px;
     right: 18px;
     font-size: 32px;
-    font-weight: 200; /* Sleek lightweight look */
-    color: var(--text-color); /* Inherits theme color base */
-    opacity: 0.6; /* Softened by default */
+    font-weight: 200;
+    color: var(--text-color);
+    opacity: 0.6;
     cursor: pointer;
     line-height: 0.7;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -9371,10 +9366,10 @@ footer {
     padding: 5px;
 }
 
-/* Close Hover/Interaction States (Universal Theme Actions) --- */
+/* Close Hover/Interaction States */
 .modal-content .close:hover {
     opacity: 1;
-    color: #f43f5e; /* Vivid alert coral red on hover across both light/dark themes */
+    color: #f43f5e;
     text-shadow: 0 0 10px rgba(244, 63, 94, 0.5);
     transform: scale(1.1);
 }
