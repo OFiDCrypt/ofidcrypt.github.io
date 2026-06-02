@@ -4712,10 +4712,24 @@ body {
 	pointer-events: none;
 }
 
-#wrapper>.bg.fixed {
+/* ================================================
+   BACKGROUND LAYER (.bg.fixed) - FINAL VERSION
+   ================================================ */
+
+#wrapper > .bg.fixed {
 	position: fixed;
 	width: 100vw;
 	height: 100vh;
+    background-color: #0a0c0f;        /* Solid dark for ALL normal pages */
+}
+
+/* ====================== APP PAGES ONLY ====================== */
+body.app-page > .bg.fixed {
+    background: linear-gradient(to bottom,
+        #0a0c0f 0%,                    /* Dark top (same as normal pages) */
+        #0a0c0f 35%,                    /* Keep dark until this point */
+        var(--main-bg-color) 35%        /* Then switch to theme colour */
+    );
 }
 
 #wrapper.fade-in:before {
