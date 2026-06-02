@@ -498,23 +498,13 @@
 <body class="app-page">
 
     <style>
-        /* Shared app-page behavior */
-        body.app-page {
-            /* Top colour shared by both themes */
-            --app-top: #0a0c0f;
-        }
-
-        /* Light mode */
-        body.app-page:not(.dark-mode) {
-            --app-bottom: #ffffff;
-            background: linear-gradient(to bottom, var(--app-top), var(--app-bottom));
-        }
-
-        /* Dark mode */
-        body.app-page.dark-mode {
-            --app-bottom: #111416;
-            /* matches --main-bg-color */
-            background: linear-gradient(to bottom, var(--app-top), var(--app-bottom));
+        /* ====================== APP PAGES ONLY ====================== */
+        body.app-page .bg.fixed {
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    transparent 35%,
+                    /* ← tweak this % (higher = longer transparent top) */
+                    var(--main-bg-color) 35%);
         }
     </style>
 

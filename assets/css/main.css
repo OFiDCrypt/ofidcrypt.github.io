@@ -430,7 +430,7 @@ body {
 	/* Will add scrollbars when needed */
 	-webkit-overflow-scrolling: touch;
 	/* For smoother scrolling on iOS */
-	background-color: #1e2931;
+	/* background-color: #0a0c0f; */
 }
 
 @media screen and (max-width: 480px) {
