@@ -599,3 +599,108 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('✅ Wallet.js loaded with dynamic currency + full redeem form + Value Lock Modal');
 });
+
+// ====================== GIDDY SWAP MODAL ======================
+
+let currentSwapMode = 'buy';
+let currentSwapBaseQty = 0;
+
+function openGiddySwapModal(mode = 'buy') {
+    currentSwapMode = mode;
+    const modal = document.getElementById('giddy-swap-modal');
+    if (!modal) return;
+
+    modal.classList.remove('hidden');
+    modal.style.display = 'flex';
+
+    const buySection = document.getElementById('buy-section');
+    const sellSection = document.getElementById('sell-section');
+
+    document.querySelectorAll('.buy-percent-btn, .sell-percent-btn').forEach(b => b.classList.remove('active'));
+
+    if (mode === 'buy' || mode === 'expb-buy' || mode === 'sell-sol') {
+        currentSwapBaseQty = parseFloat(document.getElementById('qty-SOL')?.textContent?.replace(/[^0-9.]/g, '') || 0);
+        buySection.classList.remove('dimmed');
+        sellSection.classList.add('dimmed');
+
+        if (mode === 'expb-buy') {
+            document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-emerald-400">eXPB</span> with Solana`;
+        } else if (mode === 'sell-sol') {
+            document.getElementById('swap-modal-title').innerHTML = `Sell <span class="text-emerald-400">Solana</span> for eXPB`;
+        } else {
+            document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-emerald-400">Solana / Bouncy Ball</span>`;
+        }
+
+        const fiftyBtn = document.querySelector('.buy-percent-btn:nth-child(2)');
+        if (fiftyBtn) fiftyBtn.classList.add('active');
+
+    } else if (mode === 'usdc-buy') {
+        currentSwapBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || 0);
+        buySection.classList.add('dimmed');
+        sellSection.classList.remove('dimmed');
+
+        document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-pink-400">USDC</span> with Giddy`;
+
+        const fiftyBtn = document.querySelector('.sell-percent-btn:nth-child(2)');
+        if (fiftyBtn) fiftyBtn.classList.add('active');
+    }
+
+    updateSelectedSwapQuantity(50);
+}
+
+function updateSelectedSwapQuantity(percent) {
+    const qtyDisplay = document.getElementById('swap-quantity-display');
+    const valueDisplay = document.getElementById('swap-value-display');
+
+    const calculatedQty = currentSwapBaseQty * (percent / 100);
+
+    if (qtyDisplay) {
+        qtyDisplay.textContent = (currentSwapMode === 'usdc-buy') 
+            ? calculatedQty.toFixed(2) 
+            : calculatedQty.toFixed(4);
+    }
+
+    let calculatedValue = calculatedQty;
+    const tokenSymbol = (currentSwapMode === 'usdc-buy') ? 'GIDDY' : 'SOL';
+
+    if (latestPrices[tokenSymbol]) {
+        calculatedValue = calculatedQty * latestPrices[tokenSymbol];
+    } else {
+        calculatedValue = calculatedQty * (tokenSymbol === 'SOL' ? 220 : 1);
+    }
+
+    if (valueDisplay) {
+        const displayValue = calculatedValue * CURRENCY_RATES[currentCurrency];
+        valueDisplay.textContent = '$' + displayValue.toFixed(2) + ' ' + currentCurrency;
+    }
+}
+
+function closeGiddySwapModal() {
+    const modal = document.getElementById('giddy-swap-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+}
+
+function selectSwapPercent(btn, group) {
+    document.querySelectorAll('.buy-percent-btn, .sell-percent-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const percent = parseInt(btn.textContent);
+    updateSelectedSwapQuantity(percent);
+}
+
+function confirmGiddySwap() {
+    const isUpper = (currentSwapMode === 'buy' || currentSwapMode === 'expb-buy' || currentSwapMode === 'sell-sol');
+    const activeBtn = document.querySelector(`.${isUpper ? 'buy' : 'sell'}-percent-btn.active`);
+    const percent = activeBtn ? parseInt(activeBtn.textContent) : 50;
+
+    alert(`✅ Swap Confirmed!\nMode: ${currentSwapMode.toUpperCase()}\n${percent}%`);
+    closeGiddySwapModal();
+}
+
+window.openGiddySwapModal = openGiddySwapModal;
+window.closeGiddySwapModal = closeGiddySwapModal;
+window.selectSwapPercent = selectSwapPercent;
+window.confirmGiddySwap = confirmGiddySwap;
