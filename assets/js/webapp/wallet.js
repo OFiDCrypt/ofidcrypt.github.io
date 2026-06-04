@@ -10,11 +10,18 @@ let currentLockBaseQuantity = 0;   // ← New: stores base qty for percentage ca
 // ====================== CURRENCY SYSTEM ======================
 let lastTotalValue = 0;
 let currentCurrency = 'CAD';
+let usdToCadRate = 1.35;   // fallback
 
-const CURRENCY_RATES = {
-    'CAD': 1.35,
-    'USD': 1
-};
+async function fetchExchangeRate() {
+    try {
+        const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const data = await res.json();
+        usdToCadRate = data.rates.CAD || 1.35;
+        console.log(`✅ Live USD → CAD rate loaded: ${usdToCadRate}`);
+    } catch (e) {
+        console.warn("Exchange rate API failed, using fallback 1.35");
+    }
+}
 
 function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
@@ -256,7 +263,9 @@ async function updateWalletBalances() {
 
             const priceUSD = latestPrices[sym] || 0;
             const usdValue = rawQty * priceUSD;
-            const displayValue = usdValue * CURRENCY_RATES[currentCurrency];
+            
+            // FIXED: Use dynamic rate instead of old CURRENCY_RATES
+            const displayValue = usdValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
 
             if (qtyEl) qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
             if (valueEl) valueEl.innerHTML = `$${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
@@ -267,7 +276,7 @@ async function updateWalletBalances() {
         lastTotalValue = totalValueUSD;
 
         if (totalValueEl) {
-            const displayTotal = (totalValueUSD * CURRENCY_RATES[currentCurrency]).toFixed(2);
+            const displayTotal = (totalValueUSD * (currentCurrency === 'CAD' ? usdToCadRate : 1)).toFixed(2);
             totalValueEl.textContent = '$' + displayTotal;
             totalValueEl.style.color = 'var(--text-color, #ffffff)';
         }
@@ -393,8 +402,8 @@ function updateSelectedQuantity(percent) {
 
     // Value display - respects global currentCurrency
     if (valueDisplay) {
-        const currencySymbol = currentCurrency === 'USD' ? 'USD' : 'CAD';
-        valueDisplay.textContent = '$' + calculatedValue.toFixed(2) + ' ' + currencySymbol;
+        const displayValue = calculatedValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
+        valueDisplay.textContent = '$' + displayValue.toFixed(2) + ' ' + currentCurrency;
     }
 }
 
@@ -542,6 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Live updates
+    fetchExchangeRate();  
     fetchTokenPrices();
     setInterval(fetchTokenPrices, 15000);
     setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
@@ -665,12 +675,11 @@ function updateSelectedSwapQuantity(percent) {
 
     if (latestPrices[tokenSymbol]) {
         calculatedValue = calculatedQty * latestPrices[tokenSymbol];
-    } else {
-        calculatedValue = calculatedQty * (tokenSymbol === 'SOL' ? 220 : 1);
     }
 
+    // FIXED: Use dynamic rate (no more CURRENCY_RATES)
     if (valueDisplay) {
-        const displayValue = calculatedValue * CURRENCY_RATES[currentCurrency];
+        const displayValue = calculatedValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
         valueDisplay.textContent = '$' + displayValue.toFixed(2) + ' ' + currentCurrency;
     }
 }
