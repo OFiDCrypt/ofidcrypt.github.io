@@ -787,7 +787,9 @@
                             <!-- Buttons Row -->
                             <div class="flex gap-2 mt-5">
                                 <!-- Buy Button -->
-                                <button onclick="openGiddySwapModal('expb-buy'); event.stopPropagation();"
+                                <!-- Buy Button -->
+                                <button
+                                    onclick="event.stopImmediatePropagation(); openGiddySwapModal('expb-buy'); return false;"
                                     class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-2xl transition-all active:scale-95 buy-btn">
                                     Buy
                                 </button>
