@@ -351,7 +351,8 @@
             }
         }
 
-        /* ====================== VALUE LOCK MODAL STYLES ====================== */
+        /* ====================== MODAL STYLES (Unified - Value Lock + Giddy Swap) ====================== */
+
         .mode-section {
             transition: all 0.3s ease;
             background: var(--card-bg-color, rgba(30, 5, 51, 0.6));
@@ -366,9 +367,11 @@
             pointer-events: none;
         }
 
-        /* Percentage Buttons */
+        /* Percentage Buttons - Shared across ALL modals */
         .lock-percent-btn,
-        .switch-percent-btn {
+        .switch-percent-btn,
+        .buy-percent-btn,
+        .sell-percent-btn {
             width: 100%;
             padding: 9px 6px;
             font-size: 0.875rem;
@@ -388,7 +391,9 @@
         }
 
         .lock-percent-btn:hover,
-        .switch-percent-btn:hover {
+        .switch-percent-btn:hover,
+        .buy-percent-btn:hover,
+        .sell-percent-btn:hover {
             background: rgba(107, 33, 168, 0.6);
             border-color: rgba(236, 72, 153, 0.6);
             transform: scale(1.04);
@@ -396,7 +401,9 @@
         }
 
         .lock-percent-btn.active,
-        .switch-percent-btn.active {
+        .switch-percent-btn.active,
+        .buy-percent-btn.active,
+        .sell-percent-btn.active {
             background: #ec4899 !important;
             border-color: #ffffff !important;
             box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.45),
@@ -404,8 +411,9 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        /* Right Panel */
-        #value-lock-modal .w-36.flex-shrink-0 {
+        /* Right Panel Styling (Shared) */
+        #value-lock-modal .w-36.flex-shrink-0,
+        #giddy-swap-modal .w-36.flex-shrink-0 {
             box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.4),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
@@ -447,7 +455,9 @@
             }
 
             .lock-percent-btn,
-            .switch-percent-btn {
+            .switch-percent-btn,
+            .buy-percent-btn,
+            .sell-percent-btn {
                 padding: 11px 8px;
                 font-size: 0.95rem;
                 min-height: 46px;
@@ -460,7 +470,9 @@
             }
 
             .lock-percent-btn,
-            .switch-percent-btn {
+            .switch-percent-btn,
+            .buy-percent-btn,
+            .sell-percent-btn {
                 padding: 8px 4px;
                 font-size: 0.82rem;
                 min-height: 37px;
@@ -734,6 +746,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Added normal-case to break any parent styles -->
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
                     style="color: var(--text-color) ;">Local Currencies</h1>
@@ -774,7 +787,7 @@
                             <!-- Buttons Row -->
                             <div class="flex gap-2 mt-5">
                                 <!-- Buy Button -->
-                                <button onclick="buyToken(); event.stopPropagation();"
+                                <button onclick="openGiddySwapModal('expb-buy'); event.stopPropagation();"
                                     class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-2xl transition-all active:scale-95 buy-btn">
                                     Buy
                                 </button>
@@ -1335,6 +1348,10 @@
                     </div>
                 </div><!-- End of Community Tokens Accordion -->
 
+                <!-- Added normal-case to break any parent styles -->
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
+                    style="color: var(--text-color) ;">Top Currencies</h1>
+
                 <!-- SOLANA & USDC SECTION -->
                 <div class="mb-6">
                     <div class="relative">
@@ -1357,8 +1374,10 @@
                                         <div class="flex gap-1.5 ml-2">
                                             <button onclick="buyToken(); event.stopPropagation();"
                                                 class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
-                                            <button onclick="sellToken(); event.stopPropagation();"
-                                                class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
+                                            <button onclick="openGiddySwapModal('sell-sol'); event.stopPropagation();"
+                                                class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">
+                                                Sell
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="mt-3 card-content border-t border-purple-950/40 pt-2">
@@ -1416,8 +1435,10 @@
                                         <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color);">
                                             USDC</div>
                                         <div class="flex gap-1.5 ml-2">
-                                            <button onclick="buyToken(); event.stopPropagation();"
-                                                class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
+                                            <button onclick="openGiddySwapModal('usdc-buy'); event.stopPropagation();"
+                                                class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">
+                                                Buy
+                                            </button>
                                             <button onclick="sellToken(); event.stopPropagation();"
                                                 class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
                                         </div>
@@ -1497,25 +1518,24 @@
     </div>
 
     <!-- SMART VALUE LOCK MODAL -->
-<div id="value-lock-modal" class="modal">
-    <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
+    <div id="value-lock-modal" class="modal">
+        <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
 
-        <!-- Top Bar -->
-        <div class="flex items-center justify-between mb-6">
-            
-            <!-- Title -->
-            <div id="modal-top-heading" class="text-lg font-semibold tracking-tight"
-                style="color: var(--text-color); opacity: 0.85;">
-                Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy
-            </div>
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-6">
 
-            <!-- Close Button - Perfectly Aligned -->
-            <span onclick="closeValueLockModal()"
-                class="text-3xl text-zinc-400 hover:text-white cursor-pointer transition-colors 
+                <!-- Title -->
+                <div id="modal-top-heading" class="text-lg font-semibold tracking-tight"
+                    style="color: var(--text-color); opacity: 0.85;">
+                    Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy
+                </div>
+
+                <!-- Close Button - Perfectly Aligned -->
+                <span onclick="closeValueLockModal()" class="text-3xl text-zinc-400 hover:text-white cursor-pointer transition-colors 
                        flex items-center justify-center w-8 h-8 -mt-0.5 leading-none">
-                ×
-            </span>
-        </div>
+                    ×
+                </span>
+            </div>
 
             <div class="flex gap-4">
 
@@ -1594,6 +1614,101 @@
                 class="confirm-btn w-full mt-7 text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97]"
                 style="background: linear-gradient(to right, #9333ea, #ec4899);">
                 Confirm
+            </button>
+        </div>
+    </div>
+
+    <!-- GIDDY SWAP MODAL - Consistent Headings -->
+    <div id="giddy-swap-modal" class="modal hidden flex items-center justify-center fixed inset-0 bg-black/80 z-50">
+        <div class="modal-content" style="width: 340px; max-width: 92vw; padding: 18px 16px;">
+
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-6">
+                <div id="swap-modal-title" class="text-lg font-semibold tracking-tight"
+                    style="color: var(--text-color); opacity: 0.85;">
+                    Sell Solana for eXPB
+                </div>
+                <span onclick="closeGiddySwapModal()"
+                    class="text-3xl text-zinc-400 hover:text-white cursor-pointer transition-colors flex items-center justify-center w-8 h-8 -mt-0.5 leading-none">
+                    ×
+                </span>
+            </div>
+
+            <div class="flex gap-4">
+
+                <!-- LEFT COLUMN -->
+                <div class="flex-1 min-w-0">
+
+                    <!-- UPPER SECTION -->
+                    <div id="buy-section" class="mode-section mb-7">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">♻️</span>
+                            <span id="buy-heading" class="font-bold text-lg tracking-tight"
+                                style="color: var(--text-color);">
+                                Swap Solana
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1">
+                            <button onclick="selectSwapPercent(this, 'buy')" class="buy-percent-btn">25</button>
+                            <button onclick="selectSwapPercent(this, 'buy')" class="buy-percent-btn">50</button>
+                            <button onclick="selectSwapPercent(this, 'buy')" class="buy-percent-btn">75</button>
+                            <button onclick="selectSwapPercent(this, 'buy')" class="buy-percent-btn">100</button>
+                        </div>
+                        <div class="text-center -mt-1 mb-1">
+                            <span class="text-[10px] uppercase font-semibold tracking-widest text-zinc-400">PERCENTAGE
+                                (%)</span>
+                        </div>
+                    </div>
+
+                    <!-- DIVIDER -->
+                    <div class="h-px bg-gradient-to-r from-transparent via-purple-400/30 to-transparent my-6"></div>
+
+                    <!-- LOWER SECTION -->
+                    <div id="sell-section" class="mode-section">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">♻️</span>
+                            <span id="sell-heading" class="font-bold text-lg tracking-tight"
+                                style="color: var(--text-color);">
+                                Swap Giddy
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-1">
+                            <button onclick="selectSwapPercent(this, 'sell')" class="sell-percent-btn">25</button>
+                            <button onclick="selectSwapPercent(this, 'sell')" class="sell-percent-btn">50</button>
+                            <button onclick="selectSwapPercent(this, 'sell')" class="sell-percent-btn">75</button>
+                            <button onclick="selectSwapPercent(this, 'sell')" class="sell-percent-btn">100</button>
+                        </div>
+                        <div class="text-center -mt-1 mb-1">
+                            <span class="text-[10px] uppercase font-semibold tracking-widest text-zinc-400">PERCENTAGE
+                                (%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT INFO PANEL -->
+                <div
+                    class="w-36 flex-shrink-0 bg-[var(--card-bg-color,#1e0f33)] border border-purple-500/30 rounded-3xl p-5 flex flex-col justify-center shadow-inner min-h-[280px]">
+                    <div class="text-center">
+                        <div class="text-[10px] uppercase font-bold tracking-widest text-purple-300 mb-3">
+                            ESTIMATED<br>SWAP AMOUNT
+                        </div>
+                        <div id="swap-quantity-display" class="text-4xl font-black mb-6"
+                            style="color: var(--text-color);">0.00</div>
+
+                        <div class="pt-4 border-t border-purple-500/20">
+                            <div class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mb-1">CURRENT
+                                VALUE</div>
+                            <div id="swap-value-display" class="text-3xl font-black text-emerald-400">$0.00 CAD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFIRM BUTTON -->
+            <button onclick="confirmGiddySwap()"
+                class="confirm-btn w-full mt-7 text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97]"
+                style="background: linear-gradient(to right, #9333ea, #ec4899);">
+                Confirm Swap
             </button>
         </div>
     </div>
