@@ -22,7 +22,7 @@ if (typeof Buffer === 'undefined') {
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 let provider = null;
-let latestPrices = {};
+let latestPrices = {};        // Always stored in USD
 let currentLockBaseQuantity = 0;
 
 // ====================== CURRENCY SYSTEM ======================
@@ -45,6 +45,7 @@ function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
     updateWalletBalances();
     updateCommunityCurrencyLabels();
+    updateAllPriceDisplays();          // Updates prices on all cards
 }
 
 function updateCommunityCurrencyLabels() {
@@ -52,6 +53,32 @@ function updateCommunityCurrencyLabels() {
     symbols.forEach(sym => {
         const el = document.getElementById(`price-currency-${sym}`);
         if (el) el.textContent = currentCurrency;
+    });
+}
+
+// ====================== UPDATE PRICE DISPLAYS WITH CURRENCY ======================
+function updateAllPriceDisplays() {
+    const symbols = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+
+    symbols.forEach(symbol => {
+        const priceEl = document.getElementById(`price-${symbol}`);
+        if (!priceEl) return;
+
+        const usdPrice = latestPrices[symbol];
+        if (!usdPrice) {
+            priceEl.innerText = "No Pool";
+            return;
+        }
+
+        const displayPrice = (currentCurrency === 'CAD') ? usdPrice * usdToCadRate : usdPrice;
+
+        let priceStr = (symbol === 'ONE' || symbol === 'GIDDY' || symbol === 'SOL')
+            ? `$${(displayPrice).toFixed(2)}`
+            : `$${(displayPrice).toFixed(6)}`;
+
+        priceStr += (currentCurrency === 'CAD') ? ' CAD' : ' USD';
+
+        priceEl.innerText = priceStr;
     });
 }
 
@@ -283,6 +310,8 @@ async function updateWalletBalances() {
         const response = await fetch(`http://localhost:3000/api/balances/${connectedWallet}`);
         const balances = await response.json();
 
+        console.log("📊 Raw balances from API:", balances);
+
         const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
         let totalValueUSD = 0;
 
@@ -290,15 +319,24 @@ async function updateWalletBalances() {
             const qtyEl = document.getElementById(`qty-${sym}`);
             const valueEl = document.getElementById(`value-${sym}`);
 
-            let rawQty = parseFloat(balances[sym] || 0);
-            if (sym === 'EXPB') rawQty *= 1000;
+            // FIXED: Remove commas before parsing
+            let rawStr = String(balances[sym] || 0).replace(/,/g, '');
+            let rawQty = parseFloat(rawStr);
+
+            if (sym === 'EXPB') {
+                console.log(`🔍 EXPB cleaned raw: ${rawQty}`);
+            }
 
             const priceUSD = latestPrices[sym] || 0;
             const usdValue = rawQty * priceUSD;
             const displayValue = usdValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
 
-            if (qtyEl) qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
-            if (valueEl) valueEl.innerHTML = `$${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
+            if (qtyEl) {
+                qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
+            }
+            if (valueEl) {
+                valueEl.innerHTML = `$${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
+            }
 
             totalValueUSD += usdValue;
         });
@@ -317,7 +355,6 @@ async function updateWalletBalances() {
         console.error("Balance fetch failed", e);
         if (totalValueEl && !lastTotalValue) {
             totalValueEl.textContent = "$0.00";
-            totalValueEl.style.color = 'var(--text-color, #ffffff)';
         }
     }
 }
@@ -332,22 +369,13 @@ async function fetchTokenPrices() {
         const dataMatrix = await response.json();
 
         TARGET_SYMBOLS.forEach(symbol => {
-            const priceEl = document.getElementById(`price-${symbol}`);
             const tokenData = dataMatrix[symbol];
-
             if (tokenData && tokenData.price !== null && tokenData.price !== undefined) {
                 latestPrices[symbol] = tokenData.price;
-
-                let priceStr = (symbol === 'ONE' || symbol === 'GIDDY' || symbol === 'SOL')
-                    ? `$${tokenData.price.toFixed(2)}`
-                    : `$${tokenData.price.toFixed(6)}`;
-
-                if (priceEl) priceEl.innerText = priceStr;
-            } else if (priceEl) {
-                priceEl.innerText = "No Pool";
             }
         });
 
+        updateAllPriceDisplays();
         if (connectedWallet) updateWalletBalances();
         updateCommunityCurrencyLabels();
 
@@ -356,9 +384,9 @@ async function fetchTokenPrices() {
     }
 }
 
-// ====================== VALUE LOCK MODAL FUNCTIONS ======================
+// ====================== VALUE LOCK MODAL FUNCTIONS (FIXED) ======================
 let currentLockBaseQty = 0;
-let currentLockBaseValue = 0;
+let currentLockBaseValueUSD = 0;   // Always store in USD
 let currentLockToken = '';
 
 function openValueLockModal(mode = 'expb') {
@@ -386,7 +414,9 @@ function openValueLockModal(mode = 'expb') {
         if (topHeading) topHeading.innerHTML = `Swap Bouncy Ball <span class="text-purple-400">⟶</span> GIDDY`;
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
-        currentLockBaseValue = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
+        // Store value in USD (remove any previous conversion)
+        currentLockBaseValueUSD = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0') 
+                                  / (currentCurrency === 'CAD' ? usdToCadRate : 1);
 
     } else if (mode === 'giddy') {
         currentLockToken = 'giddy';
@@ -399,7 +429,8 @@ function openValueLockModal(mode = 'expb') {
         if (topHeading) topHeading.innerHTML = `Swap Giddy <span class="text-purple-400">⟶</span> BOUNCY BALL`;
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
-        currentLockBaseValue = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
+        currentLockBaseValueUSD = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0') 
+                                  / (currentCurrency === 'CAD' ? usdToCadRate : 1);
     }
 
     const percentBtns = mode === 'giddy' ? '.switch-percent-btn' : '.lock-percent-btn';
@@ -417,17 +448,30 @@ function updateSelectedQuantity(percent) {
     const valueDisplay = document.getElementById('current-value-display');
 
     const calculatedQty = currentLockBaseQty * (percent / 100);
-    const calculatedValue = currentLockBaseValue * (percent / 100);
+    const calculatedValueUSD = currentLockBaseValueUSD * (percent / 100);
 
-    if (currentLockToken === 'giddy') {
-        qtyDisplay.textContent = calculatedQty.toFixed(2);
-    } else {
-        qtyDisplay.textContent = Math.round(calculatedQty).toLocaleString();
+    if (qtyDisplay) {
+        if (currentLockToken === 'giddy') {
+            qtyDisplay.textContent = calculatedQty.toFixed(2) + " GIDDY";
+        } else {
+            qtyDisplay.textContent = formatLargeNumber(calculatedQty);
+        }
     }
 
     if (valueDisplay) {
-        const displayValue = calculatedValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
+        const displayValue = calculatedValueUSD * (currentCurrency === 'CAD' ? usdToCadRate : 1);
         valueDisplay.textContent = '$' + displayValue.toFixed(2) + ' ' + currentCurrency;
+    }
+}
+
+// ====================== K / M FORMATTER (as requested) ======================
+function formatLargeNumber(num) {
+    if (num >= 1_000_000) {
+        return (num / 1_000_000).toFixed(2) + "M";     // e.g. 1.80M
+    } else if (num >= 1_000) {
+        return (num / 1_000).toFixed(1) + "K";         // e.g. 25.5K
+    } else {
+        return num.toFixed(0);                         // small numbers
     }
 }
 
@@ -462,28 +506,30 @@ function openGiddySwapModal(mode = 'buy') {
 
     document.querySelectorAll('.buy-percent-btn, .sell-percent-btn').forEach(b => b.classList.remove('active'));
 
-    if (mode === 'buy' || mode === 'expb-buy' || mode === 'sell-sol') {
-        currentSwapBaseQty = parseFloat(document.getElementById('qty-SOL')?.textContent?.replace(/[^0-9.]/g, '') || 0);
-        buySection.classList.remove('dimmed');
-        sellSection.classList.add('dimmed');
+if (mode === 'buy' || mode === 'expb-buy' || mode === 'sell-sol') {
+    currentSwapBaseQty = parseFloat(document.getElementById('qty-SOL')?.textContent?.replace(/[^0-9.]/g, '') || 0);
+    buySection.classList.remove('dimmed');
+    sellSection.classList.add('dimmed');
 
-        if (mode === 'expb-buy') {
-            document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-emerald-400">eXPB</span> with Solana`;
-        } else if (mode === 'sell-sol') {
-            document.getElementById('swap-modal-title').innerHTML = `Sell <span class="text-emerald-400">Solana</span> for eXPB`;
-        } else {
-            document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-emerald-400">Solana / Bouncy Ball</span>`;
-        }
+    if (mode === 'expb-buy') {
+        document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-teal-400">BOUNCY BALL</span> with <span class="text-purple-400">SOLANA</span>`;
+    } else if (mode === 'sell-sol') {
+        document.getElementById('swap-modal-title').innerHTML = `Sell <span class="text-purple-400">SOLANA</span> for <span class="text-teal-400">BOUNCY BALL</span>`;
+    } else {
+        document.getElementById('swap-modal-title').innerHTML = `Buy <span class="text-teal-400">BOUNCY BALL</span> with <span class="text-purple-400">SOLANA</span>`;
+    }
 
-        const fiftyBtn = document.querySelector('.buy-percent-btn:nth-child(2)');
-        if (fiftyBtn) fiftyBtn.classList.add('active');
+    const fiftyBtn = document.querySelector('.buy-percent-btn:nth-child(2)');
+    if (fiftyBtn) fiftyBtn.classList.add('active');
 
-    } else if (mode === 'usdc-buy') {
+        } else if (mode === 'usdc-buy') {
         currentSwapBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || 0);
         buySection.classList.add('dimmed');
         sellSection.classList.remove('dimmed');
 
-        document.getElementById('swap-modal-title').innerHTML = `Sell <span class="text-pink-400">GIDDY</span> for USDC`;
+        // GIDDY = Pink, USDC = Proper Blue (not too light)
+        document.getElementById('swap-modal-title').innerHTML = 
+            `Sell <span class="text-pink-400">GIDDY</span> for <span class="text-blue-400">USDC</span>`;
 
         const fiftyBtn = document.querySelector('.sell-percent-btn:nth-child(2)');
         if (fiftyBtn) fiftyBtn.classList.add('active');
@@ -539,7 +585,7 @@ function selectSwapPercent(btn, group) {
 async function confirmValueLock() {
     const activeLock = document.querySelector('.lock-percent-btn.active');
     const activeSwitch = document.querySelector('.switch-percent-btn.active');
-    
+
     let percent = 50;
     if (activeLock) percent = parseInt(activeLock.textContent);
     else if (activeSwitch) percent = parseInt(activeSwitch.textContent);
@@ -555,11 +601,11 @@ async function confirmValueLock() {
     }
 
     try {
-        const inputMint = currentLockToken === 'giddy' 
-            ? "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z" 
+        const inputMint = currentLockToken === 'giddy'
+            ? "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z"
             : "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump";
-        const outputMint = currentLockToken === 'giddy' 
-            ? "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump" 
+        const outputMint = currentLockToken === 'giddy'
+            ? "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump"
             : "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z";
 
         const result = await performUltraSwap(inputMint, outputMint, rawAmount, provider, connectedWallet);
@@ -727,16 +773,16 @@ document.addEventListener('DOMContentLoaded', () => {
             showConnectedState();
         } else if (isInPhantomBrowser && !alreadyPrompted) {
             sessionStorage.setItem('deepLinkPromptShown', 'true');
-            setTimeout(() => window.solana.connect({ onlyIfTrusted: false }).catch(() => {}), 800);
+            setTimeout(() => window.solana.connect({ onlyIfTrusted: false }).catch(() => { }), 800);
         } else {
             showDisconnectedState();
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => {});
+            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
         }
     } else {
         showDisconnectedState();
     }
 
-    fetchExchangeRate();  
+    fetchExchangeRate();
     fetchTokenPrices();
     setInterval(fetchTokenPrices, 15000);
     setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
@@ -791,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js FINAL - SOL buffer + Connect Wallet check added');
+    console.log('✅ Wallet.js FINAL - Currency switcher now affects price displays');
 });
 
 // Make functions globally available
@@ -803,3 +849,4 @@ window.confirmValueLock = confirmValueLock;
 window.confirmGiddySwap = confirmGiddySwap;
 window.selectPercent = selectPercent;
 window.selectSwapPercent = selectSwapPercent;
+window.changeCurrency = changeCurrency;
