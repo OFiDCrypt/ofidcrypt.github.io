@@ -57,10 +57,14 @@ async function executeUltraTransaction(quote, provider) {
     };
 }
 
-// ==================== V1 FALLBACK via Backend Proxy ====================
+// ==================== V1 FALLBACK via Backend Proxy (NOW DYNAMIC) ====================
 async function performV1Swap(inputMint, outputMint, rawAmount, provider, connectedWallet) {
     try {
-        const proxyRes = await fetch('http://localhost:3000/api/swap/v1', {  // Change to your production domain later
+        const proxyUrl = getApiUrl('/api/swap/v1');   // ← uses CONFIG automatically
+
+        console.log(`[V1 Proxy] Using dynamic URL: ${proxyUrl}`);
+
+        const proxyRes = await fetch(proxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -95,4 +99,4 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
 window.performUltraSwap = performUltraSwap;
 window.performV1Swap = performV1Swap;
 
-console.log("✅ swapUtils.js loaded (Ultra primary + v1 proxy)");
+console.log("✅ swapUtils.js loaded (Ultra primary + dynamic v1 proxy)");
