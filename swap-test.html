@@ -1,38 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swap Engine Testbed - All Pairs</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
-    
+
     <!-- Shared Swap Utilities -->
     <script src="assets/js/webapp/swapUtils.js"></script>
-    
+
     <style>
-        body { font-family: system-ui, sans-serif; }
+        body {
+            font-family: system-ui, sans-serif;
+        }
+
         select {
             background-color: #18181b !important;
             color: white !important;
             border: 1px solid #3f3f46;
         }
+
         select option {
             background-color: #18181b;
             color: white;
         }
     </style>
+
+<script>
+// ==================== ENVIRONMENT CONFIG - FINAL ====================
+const CONFIG = {
+    PROD_BASE: "https://giddy-key-swaps-production.up.railway.app",
+    
+    get BASE() {
+        const hostname = window.location.hostname;
+        const isLocal = hostname === "localhost" || 
+                       hostname === "127.0.0.1" || 
+                       hostname.includes("5500");
+        
+        if (!isLocal) return this.PROD_BASE;
+
+        // Use "localhost" - this is what works on your setup
+        return "http://localhost:3000";
+    }
+};
+
+function getApiUrl(endpoint) {
+    let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
+    const url = CONFIG.BASE + clean;
+    console.log("🔗 Fetching:", url);
+    return url;
+}
+</script>
+
 </head>
+
 <body class="bg-zinc-950 text-zinc-100 min-h-screen">
 
     <div class="max-w-7xl mx-auto p-6">
-        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-zinc-800 pb-6 mb-8">
+        <header
+            class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-zinc-800 pb-6 mb-8">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight">Swap Engine Testbed</h1>
                 <p class="text-zinc-400">Phantom + Jupiter Ultra → v1 Proxy • All Pairs</p>
             </div>
             <div class="flex items-center gap-4 mt-4 sm:mt-0">
-                <div id="walletBadge" class="hidden flex items-center gap-2 bg-zinc-900 border border-emerald-500 px-4 py-2 rounded-2xl">
+                <div id="walletBadge"
+                    class="hidden flex items-center gap-2 bg-zinc-900 border border-emerald-500 px-4 py-2 rounded-2xl">
                     <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                     <span id="walletAddressDisplay" class="font-mono text-sm text-purple-400"></span>
                 </div>
@@ -48,10 +83,16 @@
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sticky top-6">
                     <h2 class="font-bold text-lg text-purple-400 mb-4">Jupiter Diagnostic Console</h2>
                     <div class="flex gap-2 mb-4">
-                        <button onclick="checkEndpoint('ultra')" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Ultra</button>
-                        <button onclick="checkEndpoint('v1')" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1 Proxy</button>
+                        <button onclick="checkEndpoint('ultra')"
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test
+                            Ultra</button>
+                        <button onclick="checkEndpoint('v1')"
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1
+                            Proxy</button>
                     </div>
-                    <div id="logWindow" class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4"></div>
+                    <div id="logWindow"
+                        class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4">
+                    </div>
                     <div class="text-xs text-zinc-400 space-y-1">
                         <p><span class="text-purple-400">Ultra:</span> <span id="ultraUrl" class="break-all"></span></p>
                         <p><span class="text-purple-400">v1 Proxy:</span> <span id="v1Url" class="break-all"></span></p>
@@ -62,7 +103,7 @@
             <div class="xl:col-span-8 space-y-8">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
                     <h2 class="text-2xl font-bold mb-2">Quick Swap</h2>
-                    
+
                     <div class="flex items-center gap-3 mb-6 bg-zinc-950 border border-zinc-700 rounded-3xl p-2">
                         <select id="fromToken" onchange="handleDropdownChange('from')"
                             class="flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none">
@@ -85,22 +126,50 @@
                 <div id="walletInfo" class="hidden bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold">Your Live Wallet Balances</h3>
-                        <button onclick="fetchWalletBalances()" class="text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl flex items-center gap-1.5">
+                        <button onclick="fetchWalletBalances()"
+                            class="text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl flex items-center gap-1.5">
                             <span>🔄</span> Refresh Balances
                         </button>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">SOL Balance</span><span id="bal-SOL" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">USDC Balance</span><span id="bal-USDC" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">EXPB Balance</span><span id="bal-EXPB" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">GIDDY Balance</span><span id="bal-GIDDY" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">ONE Balance</span><span id="bal-ONE" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">KIN Balance</span><span id="bal-KIN" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">DOBBY Balance</span><span id="bal-DOBBY" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">MYLO Balance</span><span id="bal-MYLO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">DUNO Balance</span><span id="bal-DUNO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">CPT Balance</span><span id="bal-CPT" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">SINU Balance</span><span id="bal-SINU" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">SOL Balance</span><span id="bal-SOL"
+                                class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">USDC Balance</span><span id="bal-USDC"
+                                class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">EXPB Balance</span><span id="bal-EXPB"
+                                class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">GIDDY Balance</span><span
+                                id="bal-GIDDY" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">ONE Balance</span><span id="bal-ONE"
+                                class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">KIN Balance</span><span id="bal-KIN"
+                                class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">DOBBY Balance</span><span
+                                id="bal-DOBBY" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">MYLO Balance</span><span
+                                id="bal-MYLO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">DUNO Balance</span><span
+                                id="bal-DUNO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">CPT Balance</span><span id="bal-CPT"
+                                class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">SINU Balance</span><span
+                                id="bal-SINU" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
                     </div>
                 </div>
 
@@ -125,17 +194,17 @@
         }
 
         const TOKEN_CONFIG = {
-            EXPB:  { symbol: "eXPB",  mint: "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump", decimals: 6 },
+            EXPB: { symbol: "eXPB", mint: "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump", decimals: 6 },
             GIDDY: { symbol: "GIDDY", mint: "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z", decimals: 6 },
-            SOL:   { symbol: "SOL",   mint: "So11111111111111111111111111111111111111112", decimals: 9 },
-            USDC:  { symbol: "USDC",  mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", decimals: 6 },
-            ONE:   { symbol: "ONE",   mint: "9Fdne837tZp97nDZTUqxv9t8Gwp2BwRf8EF7PGAAfoNe", decimals: 6 },
-            KIN:   { symbol: "KIN",   mint: "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6", decimals: 5 },
+            SOL: { symbol: "SOL", mint: "So11111111111111111111111111111111111111112", decimals: 9 },
+            USDC: { symbol: "USDC", mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", decimals: 6 },
+            ONE: { symbol: "ONE", mint: "9Fdne837tZp97nDZTUqxv9t8Gwp2BwRf8EF7PGAAfoNe", decimals: 6 },
+            KIN: { symbol: "KIN", mint: "kinXdEcpDQeHPEuQnqmUgtYykqKGVFq6CeVX5iAHJq6", decimals: 5 },
             DOBBY: { symbol: "DOBBY", mint: "CPcf58MNikQw2G23kTVWQevRDeFDpdxMH7KkR7Lhpump", decimals: 6 },
-            MYLO:  { symbol: "MYLO",  mint: "G37R1ppRgRiMAhk5a3YMRpcfyLNs5mgJij5j7JJ4Yshn", decimals: 6 },
-            DUNO:  { symbol: "DUNO",  mint: "7F8oGQ565GYgV4XtaMVG5NP9vevcKQhsRCaHHPNpvg4e", decimals: 5 },
-            CPT:   { symbol: "CPT",   mint: "2umQqRyexgfHcndkULDKStmJJ8xgDz7oBL3EfDJNmoon", decimals: 6 },
-            SINU:  { symbol: "SINU",  mint: "DXi3Uu7TC2tzJYmnFAgDKnU3p8t6qSafPcLgGaQipump", decimals: 6 }
+            MYLO: { symbol: "MYLO", mint: "G37R1ppRgRiMAhk5a3YMRpcfyLNs5mgJij5j7JJ4Yshn", decimals: 6 },
+            DUNO: { symbol: "DUNO", mint: "7F8oGQ565GYgV4XtaMVG5NP9vevcKQhsRCaHHPNpvg4e", decimals: 5 },
+            CPT: { symbol: "CPT", mint: "2umQqRyexgfHcndkULDKStmJJ8xgDz7oBL3EfDJNmoon", decimals: 6 },
+            SINU: { symbol: "SINU", mint: "DXi3Uu7TC2tzJYmnFAgDKnU3p8t6qSafPcLgGaQipump", decimals: 6 }
         };
 
         let connectedWallet = null, provider = null, selectedUiAmount = 1000;
@@ -186,15 +255,15 @@
             container.innerHTML = '';
             let presets = [];
             if (currentInputSymbol === 'SOL') {
-                presets = [{ui:0.001,label:'0.001'},{ui:0.01,label:'0.01'},{ui:0.1,label:'0.1'},{ui:1,label:'1'}];
+                presets = [{ ui: 0.001, label: '0.001' }, { ui: 0.01, label: '0.01' }, { ui: 0.1, label: '0.1' }, { ui: 1, label: '1' }];
             } else if (['USDC', 'GIDDY', 'ONE'].includes(currentInputSymbol)) {
-                presets = [{ui:0.1,label:'0.1'},{ui:1,label:'1'},{ui:10,label:'10'},{ui:100,label:'100'}];
+                presets = [{ ui: 0.1, label: '0.1' }, { ui: 1, label: '1' }, { ui: 10, label: '10' }, { ui: 100, label: '100' }];
             } else {
-                presets = [{ui:100,label:'100'},{ui:1000,label:'1,000'},{ui:10000,label:'10,000'},{ui:2000,label:'~2,000'}];
+                presets = [{ ui: 100, label: '100' }, { ui: 1000, label: '1,000' }, { ui: 10000, label: '10,000' }, { ui: 2000, label: '~2,000' }];
             }
             presets.forEach((p, i) => {
                 const btn = document.createElement('button');
-                btn.className = `amount-btn py-4 rounded-2xl font-medium transition-all ${i===1 ? 'ring-2 ring-purple-500 bg-purple-900/30' : 'bg-zinc-800 hover:bg-zinc-700'}`;
+                btn.className = `amount-btn py-4 rounded-2xl font-medium transition-all ${i === 1 ? 'ring-2 ring-purple-500 bg-purple-900/30' : 'bg-zinc-800 hover:bg-zinc-700'}`;
                 btn.textContent = `${p.label} ${currentInputSymbol}`;
                 btn.onclick = () => selectUiAmount(btn, p.ui);
                 container.appendChild(btn);
@@ -294,10 +363,11 @@
                     url = `https://lite-api.jup.ag/ultra/v1/order?inputMint=${currentInputMint}&outputMint=${currentOutputMint}&amount=${rawTestAmount}&taker=${connectedWallet || '11111111111111111111111111111111'}`;
                     document.getElementById('ultraUrl').textContent = url;
                 } else {
-                    url = `http://localhost:3000/api/swap/v1`;
+                    url = getApiUrl('/api/swap/v1');
                     document.getElementById('v1Url').textContent = url;
                 }
-                const res = await fetch(url, { 
+
+                const res = await fetch(url, {
                     method: type === 'ultra' ? 'GET' : 'POST',
                     headers: type === 'ultra' ? {} : { 'Content-Type': 'application/json' },
                     body: type === 'ultra' ? null : JSON.stringify({
@@ -316,18 +386,21 @@
         async function fetchWalletBalances() {
             if (!connectedWallet) return;
             try {
-                const res = await fetch(`http://localhost:3000/api/balances/${connectedWallet}`);
+                const res = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
                 const data = await res.json();
                 ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'].forEach(t => {
                     const el = document.getElementById(`bal-${t}`);
                     if (el) el.innerText = `${data[t] || 0} ${t}`;
                 });
-            } catch (e) {}
+            } catch (e) {
+                console.warn("Balance fetch failed", e);
+            }
         }
 
         async function fetchTokenPrices() {
             try {
-                const res = await fetch("http://localhost:3000/api/prices");
+                const res = await fetch(getApiUrl('/api/prices'));
+                if (!res.ok) throw new Error("Price server error");
                 const data = await res.json();
                 const grid = document.getElementById('priceGrid');
                 grid.innerHTML = '';
@@ -338,17 +411,20 @@
                     div.innerHTML = `<div class="text-sm font-semibold text-zinc-400">${s}</div><div class="text-2xl font-black text-emerald-400 mt-2">${d.price ? '$' + Number(d.price).toFixed(6) : 'No Pool'}</div>`;
                     grid.appendChild(div);
                 });
-            } catch (e) { 
-                document.getElementById('priceGrid').innerHTML = `<div class="text-amber-400">Backend not running</div>`; 
+            } catch (e) {
+                document.getElementById('priceGrid').innerHTML = `<div class="text-amber-400">Backend not reachable<br><small>${CONFIG.BASE}</small></div>`;
             }
         }
 
         // INIT
         logger("🚀 Testbed loaded with secure Ultra + v1 Proxy");
+        logger(`API Base: ${CONFIG.BASE}`, false);
         populateTokenSelects();
         updatePair();
         fetchTokenPrices();
         setInterval(fetchTokenPrices, 15000);
+        console.log("%cCurrent full config:", "color: orange; font-weight: bold", CONFIG);
     </script>
 </body>
+
 </html>
