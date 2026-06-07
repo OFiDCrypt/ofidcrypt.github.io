@@ -748,24 +748,18 @@
 
                         <div class="text-right">
                             <div class="flex items-center justify-end gap-2 mb-1">
-                                <select onchange="changeCurrency(this.value)"
-                                    class="bg-[var(--card-bg-color)] border border-zinc-300 dark:border-zinc-700 text-xs px-3 py-1.5 rounded-lg focus:outline-none focus:border-purple-500 min-w-[88px] transition-colors"
-                                    style="color: var(--text-color);">
-
-                                    <option value="CAD"
-                                        style="background: var(--card-bg-color); color: var(--text-color);">🇨🇦 CAD
-                                    </option>
-                                    <option value="USD"
-                                        style="background: var(--card-bg-color); color: var(--text-color);">🇺🇸 USD
-                                    </option>
-                                    <option value="MXN"
-                                        style="background: var(--card-bg-color); color: var(--text-color);">🇲🇽 MXN
-                                    </option>
-                                    <option value="NGN"
-                                        style="background: var(--card-bg-color); color: var(--text-color);">🇳🇬 NGN
-                                    </option>
-                                </select>
-                            </div>
+    <select onchange="changeCurrency(this.value)"
+            class="currency-selector bg-[var(--card-bg-color)] border border-zinc-300 dark:border-zinc-700 
+                   text-xs px-3 py-1.5 rounded-lg focus:outline-none focus:border-purple-500 
+                   transition-colors font-medium"
+            style="color: var(--text-color); width: 110px; min-width: 110px;">
+        
+        <option value="CAD" style="background: var(--card-bg-color); color: var(--text-color);">🇨🇦 CAD</option>
+        <option value="USD" style="background: var(--card-bg-color); color: var(--text-color);">🇺🇸 USD</option>
+        <option value="MXN" style="background: var(--card-bg-color); color: var(--text-color);">🇲🇽 MXN</option>
+        <option value="NGN" style="background: var(--card-bg-color); color: var(--text-color);">🇳🇬 NGN</option>
+    </select>
+</div>
 
                             <div
                                 class="text-4xl font-bold flex flex-col md:flex-row md:justify-end md:items-baseline md:gap-2">

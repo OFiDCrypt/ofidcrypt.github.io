@@ -78,9 +78,40 @@ function getCurrencySymbol(currency) {
 
 function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
-    updateWalletBalances();
+
+    // Update all UI elements
+    updateAllPriceDisplays();
     updateCommunityCurrencyLabels();
-    updateAllPriceDisplays();          
+    updateCardValuePlaceholders();
+
+    // Update main total balance label
+    const currencySpan = document.getElementById('totalCurrency');
+    if (currencySpan) currencySpan.textContent = newCurrency;
+
+    // Only fetch real balances if wallet is connected
+    if (connectedWallet) {
+        updateWalletBalances();
+    }
+}
+
+// Update MY VALUE placeholders on all cards (works whether connected or not)
+function updateCardValuePlaceholders() {
+    const symbolChar = getCurrencySymbol(currentCurrency);
+
+    // Main tokens (no currency suffix)
+    ['EXPB', 'GIDDY'].forEach(sym => {
+        const el = document.getElementById(`value-${sym}`);
+        if (el) el.innerHTML = `${symbolChar}0.00`;
+    });
+
+    // Community tokens (with currency suffix)
+    const communitySymbols = ['SOL', 'USDC', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+    communitySymbols.forEach(sym => {
+        const el = document.getElementById(`value-${sym}`);
+        if (el) {
+            el.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
+        }
+    });
 }
 
 function updateCommunityCurrencyLabels() {
@@ -266,6 +297,7 @@ function disconnectWallet() {
 
 function clearBalancesOnDisconnect() {
     const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+
     allTokens.forEach(sym => {
         const qtyEl = document.getElementById(`qty-${sym}`);
         const valueEl = document.getElementById(`value-${sym}`);
@@ -274,6 +306,7 @@ function clearBalancesOnDisconnect() {
 
         if (valueEl) {
             const symbolChar = getCurrencySymbol(currentCurrency);
+
             if (sym === 'EXPB' || sym === 'GIDDY') {
                 valueEl.innerHTML = `${symbolChar}0.00`;
             } else {
@@ -282,8 +315,12 @@ function clearBalancesOnDisconnect() {
         }
     });
 
+    // Also update main total balance
     const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl) totalValueEl.textContent = '$0.00';
+    const currencySpan = document.getElementById('totalCurrency');
+
+    if (totalValueEl) totalValueEl.textContent = `${getCurrencySymbol(currentCurrency)}0.00`;
+    if (currencySpan) currencySpan.textContent = currentCurrency;
 }
 
 function showConnectedState() {
@@ -456,8 +493,8 @@ function openValueLockModal(mode = 'expb') {
         if (topHeading) topHeading.innerHTML = `Swap Bouncy Ball <span class="text-purple-400">⟶</span> GIDDY`;
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
-        currentLockBaseValueUSD = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0') 
-                                  / getConversionRate(currentCurrency);
+        currentLockBaseValueUSD = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0')
+            / getConversionRate(currentCurrency);
 
     } else if (mode === 'giddy') {
         currentLockToken = 'giddy';
@@ -470,8 +507,8 @@ function openValueLockModal(mode = 'expb') {
         if (topHeading) topHeading.innerHTML = `Swap Giddy <span class="text-purple-400">⟶</span> BOUNCY BALL`;
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
-        currentLockBaseValueUSD = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0') 
-                                  / getConversionRate(currentCurrency);
+        currentLockBaseValueUSD = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0')
+            / getConversionRate(currentCurrency);
     }
 
     const percentBtns = mode === 'giddy' ? '.switch-percent-btn' : '.lock-percent-btn';
@@ -568,7 +605,7 @@ function openGiddySwapModal(mode = 'buy') {
         buySection.classList.add('dimmed');
         sellSection.classList.remove('dimmed');
 
-        document.getElementById('swap-modal-title').innerHTML = 
+        document.getElementById('swap-modal-title').innerHTML =
             `Sell <span class="text-pink-400">GIDDY</span> for <span class="text-blue-400">USDC</span>`;
 
         const fiftyBtn = document.querySelector('.sell-percent-btn:nth-child(2)');
