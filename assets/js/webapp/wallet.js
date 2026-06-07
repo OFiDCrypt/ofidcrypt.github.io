@@ -34,19 +34,45 @@ let provider = null;
 let latestPrices = {};        // Always stored in USD
 let currentLockBaseQuantity = 0;
 
-// ====================== CURRENCY SYSTEM ======================
+// ====================== CURRENCY SYSTEM (CAD + USD + MXN + NGN) ======================
 let lastTotalValue = 0;
 let currentCurrency = 'CAD';
-let usdToCadRate = 1.35;
 
-async function fetchExchangeRate() {
+let usdToCadRate = 1.35;
+let usdToMxnRate = 18.50;
+let usdToNgnRate = 1600;
+
+async function fetchExchangeRates() {
     try {
         const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
         const data = await res.json();
+
         usdToCadRate = data.rates.CAD || 1.35;
-        console.log(`✅ Live USD → CAD rate loaded: ${usdToCadRate}`);
+        usdToMxnRate = data.rates.MXN || 18.50;
+        usdToNgnRate = data.rates.NGN || 1600;
+
+        console.log(`✅ Exchange rates loaded → CAD:${usdToCadRate} | MXN:${usdToMxnRate} | NGN:${usdToNgnRate}`);
     } catch (e) {
-        console.warn("Exchange rate API failed, using fallback 1.35");
+        console.warn("Exchange rate API failed, using fallback rates");
+    }
+}
+
+function getConversionRate(currency) {
+    switch (currency) {
+        case 'CAD': return usdToCadRate;
+        case 'MXN': return usdToMxnRate;
+        case 'NGN': return usdToNgnRate;
+        default: return 1; // USD
+    }
+}
+
+function getCurrencySymbol(currency) {
+    switch (currency) {
+        case 'USD':
+        case 'CAD':
+        case 'MXN': return '$';
+        case 'NGN': return '₦';
+        default: return '$';
     }
 }
 
@@ -79,15 +105,22 @@ function updateAllPriceDisplays() {
             return;
         }
 
-        const displayPrice = (currentCurrency === 'CAD') ? usdPrice * usdToCadRate : usdPrice;
+        const rate = getConversionRate(currentCurrency);
+        const displayPrice = usdPrice * rate;
+        const symbolChar = getCurrencySymbol(currentCurrency);
 
         let priceStr = (symbol === 'ONE' || symbol === 'GIDDY' || symbol === 'SOL')
-            ? `$${(displayPrice).toFixed(2)}`
-            : `$${(displayPrice).toFixed(6)}`;
+            ? displayPrice.toFixed(2)
+            : displayPrice.toFixed(6);
 
-        priceStr += (currentCurrency === 'CAD') ? ' CAD' : ' USD';
-
-        priceEl.innerText = priceStr;
+        if (symbol === 'EXPB' || symbol === 'GIDDY') {
+            priceEl.innerHTML = `
+                <span class="block">${symbolChar}${priceStr}</span>
+                <span class="text-sm text-zinc-500 font-medium tracking-widest">${currentCurrency}</span>
+            `;
+        } else {
+            priceEl.innerText = `${symbolChar}${priceStr} ${currentCurrency}`;
+        }
     });
 }
 
@@ -236,9 +269,19 @@ function clearBalancesOnDisconnect() {
     allTokens.forEach(sym => {
         const qtyEl = document.getElementById(`qty-${sym}`);
         const valueEl = document.getElementById(`value-${sym}`);
+
         if (qtyEl) qtyEl.textContent = '—';
-        if (valueEl) valueEl.innerHTML = `$0.00 <span class="text-base">${currentCurrency}</span>`;
+
+        if (valueEl) {
+            const symbolChar = getCurrencySymbol(currentCurrency);
+            if (sym === 'EXPB' || sym === 'GIDDY') {
+                valueEl.innerHTML = `${symbolChar}0.00`;
+            } else {
+                valueEl.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
+            }
+        }
     });
+
     const totalValueEl = document.getElementById('totalValue');
     if (totalValueEl) totalValueEl.textContent = '$0.00';
 }
@@ -315,8 +358,6 @@ async function updateWalletBalances() {
         const response = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
         const balances = await response.json();
 
-        console.log("📊 Raw balances from API:", balances);
-
         const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
         let totalValueUSD = 0;
 
@@ -329,24 +370,28 @@ async function updateWalletBalances() {
 
             const priceUSD = latestPrices[sym] || 0;
             const usdValue = rawQty * priceUSD;
-            const displayValue = usdValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
+            const displayValue = usdValue * getConversionRate(currentCurrency);
+            const symbolChar = getCurrencySymbol(currentCurrency);
 
             if (qtyEl) {
                 qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
             }
+
             if (valueEl) {
-                valueEl.innerHTML = `$${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
+                if (sym === 'EXPB' || sym === 'GIDDY') {
+                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
+                } else {
+                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
+                }
             }
 
             totalValueUSD += usdValue;
         });
 
-        lastTotalValue = totalValueUSD;
-
         if (totalValueEl) {
-            const displayTotal = (totalValueUSD * (currentCurrency === 'CAD' ? usdToCadRate : 1)).toFixed(2);
-            totalValueEl.textContent = '$' + displayTotal;
-            totalValueEl.style.color = 'var(--text-color, #ffffff)';
+            const displayTotal = (totalValueUSD * getConversionRate(currentCurrency)).toFixed(2);
+            const symbolChar = getCurrencySymbol(currentCurrency);
+            totalValueEl.textContent = `${symbolChar}${displayTotal}`;
         }
 
         if (currencySpan) currencySpan.textContent = currentCurrency;
@@ -412,7 +457,7 @@ function openValueLockModal(mode = 'expb') {
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
         currentLockBaseValueUSD = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0') 
-                                  / (currentCurrency === 'CAD' ? usdToCadRate : 1);
+                                  / getConversionRate(currentCurrency);
 
     } else if (mode === 'giddy') {
         currentLockToken = 'giddy';
@@ -426,7 +471,7 @@ function openValueLockModal(mode = 'expb') {
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
         currentLockBaseValueUSD = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0') 
-                                  / (currentCurrency === 'CAD' ? usdToCadRate : 1);
+                                  / getConversionRate(currentCurrency);
     }
 
     const percentBtns = mode === 'giddy' ? '.switch-percent-btn' : '.lock-percent-btn';
@@ -455,8 +500,9 @@ function updateSelectedQuantity(percent) {
     }
 
     if (valueDisplay) {
-        const displayValue = calculatedValueUSD * (currentCurrency === 'CAD' ? usdToCadRate : 1);
-        valueDisplay.textContent = '$' + displayValue.toFixed(2) + ' ' + currentCurrency;
+        const displayValue = calculatedValueUSD * getConversionRate(currentCurrency);
+        const symbol = getCurrencySymbol(currentCurrency);
+        valueDisplay.textContent = symbol + displayValue.toFixed(2) + ' ' + currentCurrency;
     }
 }
 
@@ -554,8 +600,9 @@ function updateSelectedSwapQuantity(percent) {
     }
 
     if (valueDisplay) {
-        const displayValue = calculatedValue * (currentCurrency === 'CAD' ? usdToCadRate : 1);
-        valueDisplay.textContent = '$' + displayValue.toFixed(2) + ' ' + currentCurrency;
+        const displayValue = calculatedValue * getConversionRate(currentCurrency);
+        const symbol = getCurrencySymbol(currentCurrency);
+        valueDisplay.textContent = symbol + displayValue.toFixed(2) + ' ' + currentCurrency;
     }
 }
 
@@ -774,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showDisconnectedState();
     }
 
-    fetchExchangeRate();
+    fetchExchangeRates();
     fetchTokenPrices();
     setInterval(fetchTokenPrices, 15000);
     setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
