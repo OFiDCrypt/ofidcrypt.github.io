@@ -5,16 +5,19 @@
 // Buffer polyfill for swap transactions
 if (typeof Buffer === 'undefined') {
     window.Buffer = {
-        from: function (str, encoding) {
-            if (encoding === 'base64') {
-                const binary = atob(str);
+        from: function (value, encoding) {
+            if (value instanceof Uint8Array || (value && value.buffer instanceof ArrayBuffer)) {
+                return new Uint8Array(value.buffer || value);
+            }
+            if (typeof value === 'string' && encoding === 'base64') {
+                const binary = atob(value);
                 const bytes = new Uint8Array(binary.length);
                 for (let i = 0; i < binary.length; i++) {
                     bytes[i] = binary.charCodeAt(i);
                 }
                 return bytes;
             }
-            return str;
+            return value;
         }
     };
 }
@@ -659,6 +662,27 @@ function selectSwapPercent(btn, group) {
     updateSelectedSwapQuantity(percent);
 }
 
+// ====================== TX SUCCESS MODAL ======================
+function showTxSuccess(result) {
+    const modal = document.getElementById('tx-success-modal');
+    if (!modal) return;
+
+    document.getElementById('tx-router').innerHTML = `
+        Router: <strong>${result.router || 'OKX/DFlow'}</strong>
+    `;
+
+    const solscanLink = document.getElementById('tx-solscan-link');
+    solscanLink.href = `https://solscan.io/tx/${result.txid}`;
+    solscanLink.textContent = `View TX: ${result.txid.slice(0, 8)}...${result.txid.slice(-6)}`;
+
+    modal.style.display = 'flex';
+}
+
+function closeTxSuccessModal() {
+    const modal = document.getElementById('tx-success-modal');
+    if (modal) modal.style.display = 'none';
+}
+
 // ====================== REAL SWAP FUNCTIONS ======================
 async function confirmValueLock() {
     const activeLock = document.querySelector('.lock-percent-btn.active');
@@ -678,6 +702,11 @@ async function confirmValueLock() {
         return;
     }
 
+    if (typeof performUltraSwap !== 'function') {
+        alert("Swap engine not ready. Please refresh the page.");
+        return;
+    }
+
     try {
         const inputMint = currentLockToken === 'giddy'
             ? "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z"
@@ -687,8 +716,9 @@ async function confirmValueLock() {
             : "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z";
 
         const result = await performUltraSwap(inputMint, outputMint, rawAmount, provider, connectedWallet);
+        showTxSuccess(result);
 
-        alert(`✅ Swap Successful!\nRouter: ${result.router || 'OKX'}\nTx: ${result.txid?.slice(0, 12)}...`);
+        setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 1500);
     } catch (e) {
         console.error(e);
         alert(`❌ Swap failed: ${e.message}`);
@@ -698,6 +728,11 @@ async function confirmValueLock() {
 async function confirmGiddySwap() {
     if (!connectedWallet || !provider) {
         alert("Please connect your wallet first");
+        return;
+    }
+
+    if (typeof performUltraSwap !== 'function') {
+        alert("Swap engine not ready. Please refresh the page.");
         return;
     }
 
@@ -738,8 +773,7 @@ async function confirmGiddySwap() {
         }
 
         const result = await performUltraSwap(inputMint, outputMint, rawAmount, provider, connectedWallet);
-
-        alert(`✅ Swap Successful!\nRouter: ${result.router || 'OKX'}\nTx: ${result.txid?.slice(0, 12)}...`);
+        showTxSuccess(result);
 
         setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 2500);
 
@@ -926,3 +960,5 @@ window.confirmGiddySwap = confirmGiddySwap;
 window.selectPercent = selectPercent;
 window.selectSwapPercent = selectSwapPercent;
 window.changeCurrency = changeCurrency;
+window.showTxSuccess = showTxSuccess;
+window.closeTxSuccessModal = closeTxSuccessModal;

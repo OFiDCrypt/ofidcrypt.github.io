@@ -29,38 +29,50 @@ async function performUltraSwap(inputMint, outputMint, rawAmount, provider, conn
 }
 
 async function executeUltraTransaction(quote, provider) {
-    const txBuffer = Buffer.from(quote.transaction, 'base64');
-    const vtx = solanaWeb3.VersionedTransaction.deserialize(txBuffer);
-    
-    const signed = await provider.signTransaction(vtx);
-    const signedTx = Buffer.from(signed.serialize()).toString('base64');
+    try {
+        // Decode Jupiter's transaction
+        const txBuffer = Buffer.from(quote.transaction, 'base64');
+        const vtx = solanaWeb3.VersionedTransaction.deserialize(txBuffer);
+        
+        // Sign with Phantom
+        const signed = await provider.signTransaction(vtx);
+        
+        // ✅ FIXED & ROBUST: Browser-safe base64 encoding
+        const signedBytes = signed.serialize();
+        const signedTx = btoa(String.fromCharCode(...new Uint8Array(signedBytes)));
 
-    const executeRes = await fetch('https://lite-api.jup.ag/ultra/v1/execute', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            signedTransaction: signedTx, 
-            requestId: quote.requestId 
-        })
-    });
+        console.log(`[Ultra] Sending signed tx length: ${signedTx.length} chars`);
 
-    if (!executeRes.ok) {
-        const errText = await executeRes.text().catch(() => '');
-        throw new Error(`Ultra Execute Failed: ${executeRes.status} ${errText}`);
+        const executeRes = await fetch('https://lite-api.jup.ag/ultra/v1/execute', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                signedTransaction: signedTx, 
+                requestId: quote.requestId 
+            })
+        });
+
+        if (!executeRes.ok) {
+            const errText = await executeRes.text().catch(() => '');
+            throw new Error(`Ultra Execute Failed: ${executeRes.status} ${errText}`);
+        }
+
+        const result = await executeRes.json();
+        return {
+            success: true,
+            txid: result.signature,
+            router: quote.router || 'OKX/DFlow'
+        };
+    } catch (error) {
+        console.error("[Ultra] Execute failed:", error);
+        throw error;
     }
-
-    const result = await executeRes.json();
-    return {
-        success: true,
-        txid: result.signature,
-        router: quote.router || 'OKX/DFlow'
-    };
 }
 
 // ==================== V1 FALLBACK via Backend Proxy (NOW DYNAMIC) ====================
 async function performV1Swap(inputMint, outputMint, rawAmount, provider, connectedWallet) {
     try {
-        const proxyUrl = getApiUrl('/api/swap/v1');   // ← uses CONFIG automatically
+        const proxyUrl = getApiUrl('/api/swap/v1');
 
         console.log(`[V1 Proxy] Using dynamic URL: ${proxyUrl}`);
 
