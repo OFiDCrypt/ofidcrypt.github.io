@@ -305,11 +305,11 @@
             result.style.display = "none";
 
             try {
-                // Smart local testing: tries multiple possible WSL IPs automatically
+                // Railway Production + Localhost Fallback
                 const possibleUrls = [
+                    "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
                     "http://127.0.0.1:5000/api/secure-redeem",
-                    "http://localhost:5000/api/secure-redeem",
-                    "http://172.17.60.140:5000/api/secure-redeem"   // ← your current WSL IP
+                    "http://localhost:5000/api/secure-redeem"
                 ];
 
                 let data;
@@ -326,14 +326,14 @@
 
                         data = await response.json();
                         console.log("✅ Success with:", url);
-                        break; // stop once one works
+                        break;
                     } catch (e) {
                         lastError = e;
-                        console.log("❌ Failed:", url, e.message);
+                        console.log("❌ Failed:", url);
                     }
                 }
 
-                if (!data) throw lastError || new Error("All local backends failed");
+                if (!data) throw lastError || new Error("All backends failed");
 
                 showResult(JSON.stringify(data, null, 2), data.success);
 
