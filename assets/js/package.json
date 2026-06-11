@@ -1,0 +1,8 @@
+{
+  "name": "supply-updater",
+  "version": "1.0.0",
+  "main": "updateSupply.js",
+  "scripts": {
+    "start": "node updateSupply.js"
+  }
+}

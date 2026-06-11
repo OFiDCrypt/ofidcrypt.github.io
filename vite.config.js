@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import { readdirSync, statSync } from 'fs'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 const root = process.cwd()
 
-// Recursively find all .html files
 function getAllHtmlFiles(dir) {
   let results = []
   const list = readdirSync(dir)
@@ -36,7 +36,23 @@ allHtmlFiles.forEach(filePath => {
 
 export default defineConfig({
   root: '.',
-  // No publicDir and no viteStaticCopy needed anymore
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        // SEO & icons
+        { src: 'robots.txt', dest: '.' },
+        { src: 'sitemap.xml', dest: '.' },
+        { src: 'favicon.ico', dest: '.' },
+
+        // Data files
+        { src: 'cashlinks-data.json', dest: '.' },
+        { src: 'giddy.json', dest: '.' },
+        { src: 'golden-giddy.json', dest: '.' },
+        { src: 'locations.json', dest: '.' },
+        { src: 'supply.json', dest: '.' }
+      ]
+    })
+  ],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
