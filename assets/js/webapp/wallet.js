@@ -22,22 +22,68 @@ if (typeof Buffer === 'undefined') {
     };
 }
 
-// ====================== DYNAMIC API CONFIG ======================
+// ====================== PHANTOM BROWSER SDK (Dynamic Import) ======================
+let phantomSDK = null;
+
+async function getPhantomSDK() {
+    if (phantomSDK) return phantomSDK;
+
+    try {
+        const { BrowserSDK, AddressType } = await import('@phantom/browser-sdk');
+
+        phantomSDK = new BrowserSDK({
+            providers: ["injected", "google", "apple"],
+            addressTypes: [AddressType.solana],
+            appId: "2351fc48-e0c6-4ece-9191-1ba4b28a8bdf",
+            autoConnect: false,
+        });
+
+        phantomSDK.on("connect", (data) => {
+            if (data.addresses && data.addresses.length > 0) {
+                connectedWallet = data.addresses[0].address;
+                provider = phantomSDK;
+                showConnectedState();
+                if (typeof updateWalletBalances === "function") updateWalletBalances();
+            }
+        });
+
+        phantomSDK.on("disconnect", () => {
+            showDisconnectedState();
+        });
+
+        return phantomSDK;
+    } catch (err) {
+        console.error("Failed to load Phantom Browser SDK:", err);
+        alert("Wallet SDK failed to load. Please refresh the page.");
+        return null;
+    }
+}
+
+// ====================== getApiUrl - FIXED FOR VITE ======================
 function getApiUrl(endpoint) {
     let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
-    const base = (window.CONFIG && window.CONFIG.BASE) ? window.CONFIG.BASE : "http://localhost:3000";
-    const url = base + clean;
-    console.log("🔗 [wallet.js] Fetching:", url);
-    return url;
+
+    // 1. If running on Vite dev server (port 5173), always use relative path
+    if (location.port === '5173') {
+        return clean;
+    }
+
+    // 2. Use CONFIG.BASE if it is explicitly set (even if empty string)
+    if (window.CONFIG && window.CONFIG.BASE !== undefined) {
+        return window.CONFIG.BASE + clean;
+    }
+
+    // 3. Final fallback (when not using Vite)
+    return "https://giddy-key-swaps-production.up.railway.app" + clean;
 }
 
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 let provider = null;
-let latestPrices = {};        // Always stored in USD
+let latestPrices = {};
 let currentLockBaseQuantity = 0;
 
-// ====================== CURRENCY SYSTEM (CAD + USD + MXN + NGN) ======================
+// ====================== CURRENCY SYSTEM ======================
 let lastTotalValue = 0;
 let currentCurrency = 'CAD';
 
@@ -65,7 +111,7 @@ function getConversionRate(currency) {
         case 'CAD': return usdToCadRate;
         case 'MXN': return usdToMxnRate;
         case 'NGN': return usdToNgnRate;
-        default: return 1; // USD
+        default: return 1;
     }
 }
 
@@ -81,39 +127,28 @@ function getCurrencySymbol(currency) {
 
 function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
-
-    // Update all UI elements
     updateAllPriceDisplays();
     updateCommunityCurrencyLabels();
     updateCardValuePlaceholders();
 
-    // Update main total balance label
     const currencySpan = document.getElementById('totalCurrency');
     if (currencySpan) currencySpan.textContent = newCurrency;
 
-    // Only fetch real balances if wallet is connected
-    if (connectedWallet) {
-        updateWalletBalances();
-    }
+    if (connectedWallet) updateWalletBalances();
 }
 
-// Update MY VALUE placeholders on all cards (works whether connected or not)
 function updateCardValuePlaceholders() {
     const symbolChar = getCurrencySymbol(currentCurrency);
 
-    // Main tokens (no currency suffix)
     ['EXPB', 'GIDDY'].forEach(sym => {
         const el = document.getElementById(`value-${sym}`);
         if (el) el.innerHTML = `${symbolChar}0.00`;
     });
 
-    // Community tokens (with currency suffix)
     const communitySymbols = ['SOL', 'USDC', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
     communitySymbols.forEach(sym => {
         const el = document.getElementById(`value-${sym}`);
-        if (el) {
-            el.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
-        }
+        if (el) el.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
     });
 }
 
@@ -125,7 +160,6 @@ function updateCommunityCurrencyLabels() {
     });
 }
 
-// ====================== UPDATE PRICE DISPLAYS ======================
 function updateAllPriceDisplays() {
     const symbols = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
 
@@ -253,44 +287,54 @@ document.addEventListener('click', (e) => {
 });
 
 async function handlePhantomConnect() {
-    const dappUrl = "https://www.ofidcrypt.com/wallet.html";
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    provider = window.phantom?.solana || window.solana;
+    const sdk = await getPhantomSDK();
+    if (!sdk) return;
 
-    if (provider && provider.isPhantom) {
-        try {
-            const resp = await provider.connect();
-            connectedWallet = resp.publicKey.toString();
+    try {
+        const { addresses } = await sdk.connect({ provider: "injected" });
+        if (addresses && addresses.length > 0) {
+            connectedWallet = addresses[0].address;
+            provider = sdk;
             showConnectedState();
             if (typeof updateWalletBalances === "function") updateWalletBalances();
-        } catch (err) {
-            console.error(err);
-            if (err.code === 4001) {
-                alert("Connection cancelled by user.");
-            } else {
-                alert("Failed to connect to Phantom.");
-            }
         }
-        return;
+    } catch (err) {
+        console.error("[Phantom SDK] Injected connect failed:", err);
+        alert("Phantom extension not found or connection failed.");
     }
+}
 
-    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-        const encodedUrl = encodeURIComponent(dappUrl);
-        window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
-        return;
+async function handleCreateWallet() {
+    const dropdown = document.getElementById('walletDropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+
+    const sdk = await getPhantomSDK();
+    if (!sdk) return;
+
+    try {
+        const { addresses } = await sdk.connect({ provider: "google" });
+        if (addresses && addresses.length > 0) {
+            connectedWallet = addresses[0].address;
+            provider = sdk;
+            showConnectedState();
+            if (typeof updateWalletBalances === "function") updateWalletBalances();
+        }
+    } catch (err) {
+        console.error("[Phantom SDK] Create Wallet failed:", err);
+        alert("Failed to create wallet with Google/Apple. Please try again.");
     }
-
-    alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
 }
 
 function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    const providerLocal = window.phantom?.solana || window.solana;
-    if (providerLocal) providerLocal.disconnect();
+    if (phantomSDK) {
+        phantomSDK.disconnect().catch(() => {});
+    }
 
     connectedWallet = null;
     provider = null;
@@ -318,7 +362,6 @@ function clearBalancesOnDisconnect() {
         }
     });
 
-    // Also update main total balance
     const totalValueEl = document.getElementById('totalValue');
     const currencySpan = document.getElementById('totalCurrency');
 
@@ -327,7 +370,6 @@ function clearBalancesOnDisconnect() {
 }
 
 function showConnectedState() {
-    connectedWallet = connectedWallet || window.solana?.publicKey?.toString();
     const short = connectedWallet ? `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}` : "";
 
     const navText = document.getElementById('walletBtnText');
@@ -947,10 +989,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED with dynamic localhost + Railway support');
+    console.log('✅ Wallet.js FULLY LOADED (Vite + Railway Fixed)');
 });
 
-// Make functions globally available
+// ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.disconnectWallet = disconnectWallet;
+window.handlePhantomConnect = handlePhantomConnect;
+window.handleCreateWallet = handleCreateWallet;
+
 window.openValueLockModal = openValueLockModal;
 window.closeValueLockModal = closeValueLockModal;
 window.openGiddySwapModal = openGiddySwapModal;
