@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import { readdirSync, statSync } from 'fs'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 const root = process.cwd()
 
-// Recursively find all .html files (excluding dist/ and node_modules)
+// Recursively find all .html files
 function getAllHtmlFiles(dir) {
   let results = []
   const list = readdirSync(dir)
@@ -28,7 +27,6 @@ function getAllHtmlFiles(dir) {
 
 const allHtmlFiles = getAllHtmlFiles(root)
 
-// Create clean input names
 const input = {}
 allHtmlFiles.forEach(filePath => {
   const relativePath = filePath.replace(root + '/', '').replace('.html', '')
@@ -38,28 +36,13 @@ allHtmlFiles.forEach(filePath => {
 
 export default defineConfig({
   root: '.',
-  publicDir: 'assets',
-  plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'assets/js',
-          dest: 'assets/js'
-        }
-      ]
-    })
-  ],
+  // No publicDir and no viteStaticCopy needed anymore
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     assetsDir: 'assets',
     rollupOptions: {
-      input: input,
-      output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
-      }
+      input: input
     }
   },
   server: {
