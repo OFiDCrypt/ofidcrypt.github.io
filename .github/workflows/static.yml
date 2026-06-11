@@ -4,8 +4,8 @@ on:
   push:
     branches: 
       - main
-      - site-beta          # ← Added so it also deploys when you push to site-beta
-  workflow_dispatch:       # Allows manual runs from the Actions tab
+      - site-beta
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'           # ← Changed from 20 to 22
           cache: 'npm'
 
       - name: Install dependencies
@@ -44,7 +44,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist'                    # Only upload the built dist folder
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
