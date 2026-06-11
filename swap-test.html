@@ -36,13 +36,16 @@
     </style>
 
     <script>
-        // ==================== ENVIRONMENT CONFIG - RAILWAY FIRST ====================
+        // ==================== VITE + RAILWAY CONFIG ====================
+        const isViteDev = location.port === '5173';
+
         const CONFIG = {
             PROD_BASE: "https://giddy-key-swaps-production.up.railway.app",
             LOCAL_BASE: "http://localhost:3000",
             _base: null,
 
             get BASE() {
+                if (isViteDev) return ''; // Use relative paths via Vite proxy
                 return this._base || this.PROD_BASE;
             },
             set BASE(value) {
@@ -52,12 +55,18 @@
 
         function getApiUrl(endpoint) {
             let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
-            const url = CONFIG.BASE + clean;
-            console.log("🔗 Fetching:", url);
-            return url;
+            return CONFIG.BASE + clean;
         }
 
         async function testBackendConnection() {
+            if (isViteDev) {
+                logger("🟢 Vite dev server detected → using proxy to Railway", false);
+                CONFIG.BASE = '';
+                updateServerStatus();
+                return '';
+            }
+
+            // Normal flow when not using Vite
             logger("🔍 Testing Railway Production...", false);
             try {
                 const controller = new AbortController();
@@ -116,13 +125,13 @@
 
     <div class="max-w-7xl mx-auto p-6">
         <header class="flex flex-col sm:flex-row justify-between items-start border-b border-zinc-800 pb-6 mb-8 gap-6">
-    <!-- Title Section -->
-    <div>
-        <h1 class="text-3xl font-bold tracking-tight">Swap Engine Testbed</h1>
-        <p class="text-zinc-400">Phantom + Jupiter Ultra → v1 Proxy • All Pairs</p>
-    </div>
+            <!-- Title Section -->
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight">Swap Engine Testbed</h1>
+                <p class="text-zinc-400">Phantom + Jupiter Ultra → v1 Proxy • All Pairs</p>
+            </div>
 
-    <!-- Action Section: Stacked vertically -->
+            <!-- Action Section: Stacked vertically -->
     <div class="flex flex-col items-start gap-2">
         <!-- Button first (Top) -->
         <button id="connectBtn" onclick="connectWallet()"
@@ -170,7 +179,7 @@
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8">
                     <h2 class="text-2xl font-bold mb-2">Quick Swap</h2>
 
-                    <!-- Responsive Container: Stacks vertically on mobile, row on tablet+ -->
+ <!-- Responsive Container: Stacks vertically on mobile, row on tablet+ -->
                     <div
                         class="flex flex-col sm:flex-row items-center gap-2 mb-6 bg-zinc-950 border border-zinc-700 rounded-3xl p-2">
                         <select id="fromToken" onchange="handleDropdownChange('from')"
@@ -298,7 +307,6 @@
             log.scrollTop = log.scrollHeight;
         }
 
-                // === NEW: Test Kinnected Redeem API ===
         async function testKinnected() {
             logger("🧪 Testing Kinnected Redeem API...");
             const testPayload = {
@@ -561,5 +569,4 @@
         console.log("%cCurrent full config:", "color: orange; font-weight: bold", CONFIG);
     </script>
 </body>
-
 </html>

@@ -92,66 +92,78 @@
     </script>
 
     <script>
-        // ==================== ENVIRONMENT CONFIG - RAILWAY FIRST (Live Wallet) ====================
-        const CONFIG = {
-            PROD_BASE: "https://giddy-key-swaps-production.up.railway.app",
-            LOCAL_BASE: "http://localhost:3000",
-            _base: null,
+    // ==================== ENVIRONMENT CONFIG (Vite + Railway) ====================
+    const isViteDev = location.port === '5173';
 
-            get BASE() {
-                return this._base || this.PROD_BASE;
-            },
-            set BASE(value) {
-                this._base = value;
-            }
-        };
+    const CONFIG = {
+        PROD_BASE: "https://giddy-key-swaps-production.up.railway.app",
+        LOCAL_BASE: "http://localhost:3000",
+        _base: null,
 
-        function getApiUrl(endpoint) {
-            let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
-            const url = CONFIG.BASE + clean;
-            console.log("🔗 [wallet] Fetching:", url);
-            return url;
+        get BASE() {
+            return this._base || (isViteDev ? '' : this.PROD_BASE);
+        },
+        set BASE(value) {
+            this._base = value;
+        }
+    };
+
+    function getApiUrl(endpoint) {
+        let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
+        const url = CONFIG.BASE + clean;
+        console.log("🔗 [wallet] Fetching:", url);
+        return url;
+    }
+
+    async function testBackendConnection() {
+        // When running with Vite (`npm run dev`), use relative paths + proxy
+        if (isViteDev) {
+            console.log("🟢 [wallet] Vite dev server detected → using proxy to Railway");
+            CONFIG.BASE = ''; // relative path (Vite proxy will handle it)
+            return '';
         }
 
-        async function testBackendConnection() {
-            console.log("🔍 [wallet] Testing Railway Production...");
-            try {
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 5000);
+        // Normal flow when not using Vite
+        console.log("🔍 [wallet] Testing Railway Production...");
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 5000);
 
-                const res = await fetch(CONFIG.PROD_BASE + '/api/prices', {
-                    method: 'GET',
-                    cache: 'no-store',
-                    headers: { 'Accept': 'application/json' },
-                    signal: controller.signal
-                });
+            const res = await fetch(CONFIG.PROD_BASE + '/api/prices', {
+                method: 'GET',
+                cache: 'no-store',
+                headers: { 'Accept': 'application/json' },
+                signal: controller.signal
+            });
 
-                clearTimeout(timeout);
+            clearTimeout(timeout);
 
-                if (res.ok) {
-                    console.log("✅ [wallet] Railway Production Connected");
-                    CONFIG.BASE = CONFIG.PROD_BASE;
-                    return CONFIG.PROD_BASE;
-                }
-            } catch (e) {
-                console.warn("⚠️ [wallet] Railway unreachable → falling back to localhost");
+            if (res.ok) {
+                console.log("✅ [wallet] Railway Production Connected");
+                CONFIG.BASE = CONFIG.PROD_BASE;
+                return CONFIG.PROD_BASE;
             }
-
-            CONFIG.BASE = CONFIG.LOCAL_BASE;
-            return CONFIG.LOCAL_BASE;
+        } catch (e) {
+            console.warn("⚠️ [wallet] Railway unreachable → falling back to localhost");
         }
 
-        // Initialize
-        (async () => {
-            window.CONFIG = CONFIG;
-            await testBackendConnection();
-            console.log("🔗 [wallet] Final API Base:", CONFIG.BASE);
+        CONFIG.BASE = CONFIG.LOCAL_BASE;
+        return CONFIG.LOCAL_BASE;
+    }
 
-            // Refresh prices & balances with correct backend
-            if (typeof fetchTokenPrices === 'function') fetchTokenPrices();
-            if (connectedWallet && typeof updateWalletBalances === 'function') updateWalletBalances();
-        })();
-    </script>
+    // Initialize
+    (async () => {
+        window.CONFIG = CONFIG;
+        await testBackendConnection();
+        console.log("🔗 [wallet] Final API Base:", CONFIG.BASE || "(relative via Vite proxy)");
+
+        // Refresh prices & balances with correct backend
+        if (typeof fetchTokenPrices === 'function') fetchTokenPrices();
+        if (window.connectedWallet && typeof window.updateWalletBalances === 'function') {
+            window.updateWalletBalances();
+        }
+    })();
+</script>
 
 </head>
 
@@ -736,11 +748,18 @@
                         <div id="walletDropdown"
                             class="wallet-dropdown hidden absolute left-0 top-full mt-2 z-50 min-w-[240px] w-full border border-purple-900/50 rounded-xl overflow-hidden">
 
-                            <!-- Connect Phantom Button -->
+                            <!-- Connect Phantom Button (Existing) -->
                             <button onclick="handlePhantomConnect()" id="connectOption"
                                 class="block w-full text-left px-5 py-4 bg-purple-600 hover:bg-purple-700 flex items-center gap-3 text-white font-semibold transition-colors">
                                 <i class="fas fa-plug text-zinc-200"></i>
                                 <div>Connect Phantom</div>
+                            </button>
+
+                            <!-- NEW: Create Wallet Button (Google / Apple) -->
+                            <button onclick="handleCreateWallet()"
+                                class="block w-full text-left px-5 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 flex items-center gap-3 text-white font-semibold transition-colors">
+                                <i class="fas fa-user-plus text-zinc-200"></i>
+                                <div>Create Wallet</div>
                             </button>
 
                             <!-- Disconnect Wallet Button -->
@@ -1837,7 +1856,7 @@
 
     <!-- Scripts-->
     <script src="/assets/js/ofid-main.js"></script>
-    <script src="/assets/js/webapp/wallet.js"></script>
+    <script type="module" src="/assets/js/webapp/wallet.js"></script>
 
     <!-- Shared Swap Utilities -->
     <script src="assets/js/webapp/swapUtils.js"></script>
