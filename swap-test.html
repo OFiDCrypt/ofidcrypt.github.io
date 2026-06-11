@@ -147,14 +147,15 @@
                     <!-- Server Status -->
                     <div id="serverStatus" class="mb-4"></div>
 
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex flex-wrap gap-2 mb-4">
                         <button onclick="checkEndpoint('ultra')"
-                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test
-                            Ultra</button>
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Ultra</button>
                         <button onclick="checkEndpoint('v1')"
-                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1
-                            Proxy</button>
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1 Proxy</button>
+                        <button onclick="testKinnected()"
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Kinnected</button>
                     </div>
+
                     <div id="logWindow"
                         class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4">
                     </div>
@@ -295,6 +296,46 @@
             const log = document.getElementById('logWindow');
             log.innerHTML += `<div class="${isErr ? 'text-red-400' : 'text-emerald-400'}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
             log.scrollTop = log.scrollHeight;
+        }
+
+                // === NEW: Test Kinnected Redeem API ===
+        async function testKinnected() {
+            logger("🧪 Testing Kinnected Redeem API...");
+            const testPayload = {
+                linkId: "1234567890123",
+                destinationWallet: connectedWallet || "11111111111111111111111111111111"
+            };
+
+            const possibleUrls = [
+                "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
+                "http://127.0.0.1:5000/api/secure-redeem",
+                "http://localhost:5000/api/secure-redeem"
+            ];
+
+            let success = false;
+
+            for (const url of possibleUrls) {
+                try {
+                    logger(`→ Trying ${url.includes('railway') ? 'Railway' : 'Localhost'}`, false);
+                    const res = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(testPayload)
+                    });
+
+                    const data = await res.json();
+                    logger(`✅ Kinnected Test ${res.status} ${res.ok ? 'OK' : 'Failed'}`, !res.ok);
+                    console.log("Kinnected Response:", data);
+                    success = true;
+                    break;
+                } catch (e) {
+                    logger(`❌ ${url.includes('railway') ? 'Railway' : 'Localhost'} failed`, true);
+                }
+            }
+
+            if (!success) {
+                logger("❌ All Kinnected endpoints failed", true);
+            }
         }
 
         function populateTokenSelects() {
