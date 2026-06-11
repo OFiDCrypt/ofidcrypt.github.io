@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import { readdirSync, statSync } from 'fs'
+import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 const root = process.cwd()
 
-function getAllHtmlFiles(dir, baseDir = root) {
+// Recursively find all .html files (excluding dist/ and node_modules)
+function getAllHtmlFiles(dir) {
   let results = []
   const list = readdirSync(dir)
 
@@ -15,7 +17,7 @@ function getAllHtmlFiles(dir, baseDir = root) {
     const stat = statSync(filePath)
 
     if (stat && stat.isDirectory()) {
-      results = results.concat(getAllHtmlFiles(filePath, baseDir))
+      results = results.concat(getAllHtmlFiles(filePath))
     } else if (file.endsWith('.html')) {
       results.push(filePath)
     }
@@ -26,18 +28,27 @@ function getAllHtmlFiles(dir, baseDir = root) {
 
 const allHtmlFiles = getAllHtmlFiles(root)
 
-// Create input with better names (preserves some folder structure)
+// Create clean input names
 const input = {}
 allHtmlFiles.forEach(filePath => {
-  let relativePath = filePath.replace(root + '/', '').replace('.html', '')
-  // Replace slashes with dashes but keep it readable
+  const relativePath = filePath.replace(root + '/', '').replace('.html', '')
   const name = relativePath.replace(/\//g, '-')
   input[name] = filePath
 })
 
 export default defineConfig({
   root: '.',
-  publicDir: 'assets',           // ← This helps copy assets from your assets/ folder
+  publicDir: 'assets',
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'assets/js',
+          dest: 'assets/js'
+        }
+      ]
+    })
+  ],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
@@ -45,7 +56,6 @@ export default defineConfig({
     rollupOptions: {
       input: input,
       output: {
-        // Try to keep some structure
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
