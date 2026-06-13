@@ -1,6 +1,8 @@
-// ================================================
-// assets/js/webapp/wallet.js - FULL PRODUCTION VERSION
-// ================================================
+// =======================================================
+// assets/js/webapp/wallet.js - FULL HYBRID (SDK + Direct Extension)
+// =======================================================
+
+import { BrowserSDK, AddressType } from "@phantom/browser-sdk";
 
 // Buffer polyfill for swap transactions
 if (typeof Buffer === 'undefined') {
@@ -21,6 +23,16 @@ if (typeof Buffer === 'undefined') {
         }
     };
 }
+
+// ====================== PHANTOM BROWSER SDK INITIALIZATION ======================
+const sdk = new BrowserSDK({
+    providers: ["google", "apple", "injected"],
+    addressTypes: [AddressType.solana],
+    appId: "2351fc48-e0c6-4ece-9191-1ba4b28a8bdf",
+    authOptions: {
+        redirectUrl: "http://localhost:5173/auth/callback.html",
+    },
+});
 
 // ====================== DYNAMIC API CONFIG ======================
 function getApiUrl(endpoint) {
@@ -82,7 +94,7 @@ function getCurrencySymbol(currency) {
 function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
 
-    // Update all UI elements
+// Update all UI elements
     updateAllPriceDisplays();
     updateCommunityCurrencyLabels();
     updateCardValuePlaceholders();
@@ -234,7 +246,7 @@ function toggleCommunityTokens() {
     }
 }
 
-// ====================== PHANTOM WALLET INTEGRATION ======================
+// ====================== WALLET DROPDOWN ======================
 function toggleWalletDropdown() {
     const dropdown = document.getElementById('walletDropdown');
     const chevron = document.getElementById('chevron');
@@ -252,50 +264,66 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// ====================== HYBRID CONNECT FUNCTIONS ======================
 async function handlePhantomConnect() {
-    const dappUrl = "https://www.ofidcrypt.com/wallet.html";
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    provider = window.phantom?.solana || window.solana;
+    const extensionProvider = window.phantom?.solana || window.solana;
 
-    if (provider && provider.isPhantom) {
+    if (extensionProvider && extensionProvider.isPhantom) {
         try {
-            const resp = await provider.connect();
+            console.log("Connecting directly via Phantom extension...");
+            const resp = await extensionProvider.connect();
             connectedWallet = resp.publicKey.toString();
+            provider = extensionProvider;
+            
             showConnectedState();
-            if (typeof updateWalletBalances === "function") updateWalletBalances();
+            updateWalletBalances();
         } catch (err) {
-            console.error(err);
-            if (err.code === 4001) {
-                alert("Connection cancelled by user.");
-            } else {
-                alert("Failed to connect to Phantom.");
-            }
+            console.error("Extension pairing aborted:", err);
+            if (err.code === 4001) alert("Connection cancelled by user.");
         }
         return;
     }
 
-    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-        const encodedUrl = encodeURIComponent(dappUrl);
-        window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
-        return;
+    // Fallback to SDK
+    try {
+        const { addresses } = await sdk.connect({ provider: "injected" });
+        console.log("Connected via SDK injected:", addresses);
+    } catch (err) {
+        console.error("SDK injected fallback failed:", err);
     }
-
-    alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
 }
 
-function disconnectWallet() {
+async function handleCreateWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
+    try {
+        console.log("Opening embedded login window...");
+        const { addresses } = await sdk.connect({ provider: "google" }); 
+        console.log("Embedded Auth successfully paired:", addresses);
+    } catch (err) {
+        console.error("Embedded Auth pairing aborted:", err);
+    }
+}
 
-    const providerLocal = window.phantom?.solana || window.solana;
-    if (providerLocal) providerLocal.disconnect();
-
-    connectedWallet = null;
-    provider = null;
-    clearBalancesOnDisconnect();
-    showDisconnectedState();
+async function disconnectWallet() {
+    const dropdown = document.getElementById('walletDropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+    try {
+        if (sdk) await sdk.disconnect().catch(() => {});
+        const extensionProvider = window.phantom?.solana || window.solana;
+        if (extensionProvider && extensionProvider.disconnect) {
+            await extensionProvider.disconnect();
+        }
+        connectedWallet = null;
+        provider = null;
+        clearBalancesOnDisconnect();
+        showDisconnectedState();
+    } catch (err) {
+        console.error("Clear session failed:", err);
+    }
 }
 
 function clearBalancesOnDisconnect() {
@@ -818,6 +846,25 @@ function initPullToRefresh() {
     });
 }
 
+// ====================== SDK EVENT STREAM ======================
+sdk.on("userChanged", (user) => {
+    if (user) {
+        console.log("SDK Stream Activated. Wallets retrieved:", user.wallets);
+        const solanaWallet = user.wallets.find(w => w.addressType === "solana");
+        if (solanaWallet) {
+            connectedWallet = solanaWallet.address;
+            provider = window.phantom?.solana || window.solana;
+            showConnectedState();
+            updateWalletBalances();
+        }
+    } else {
+        connectedWallet = null;
+        provider = null;
+        clearBalancesOnDisconnect();
+        showDisconnectedState();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
@@ -859,106 +906,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBtn = document.getElementById('addWalletBtn');
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
+    fetchExchangeRates();
+    fetchTokenPrices();
+    setInterval(fetchTokenPrices, 15000);
+    setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
+    initPullToRefresh();
+
+    // Auto detect already connected wallet
     provider = window.phantom?.solana || window.solana;
     if (provider && provider.isPhantom && provider.isConnected && provider.publicKey) {
         connectedWallet = provider.publicKey.toString();
         showConnectedState();
     }
 
-    if (window.solana && window.solana.isPhantom) {
-        window.solana.on('connect', (publicKey) => {
-            connectedWallet = publicKey.toString();
-            showConnectedState();
-        });
-
-        window.solana.on('disconnect', () => {
-            showDisconnectedState();
-        });
-
-        const isInPhantomBrowser = /Phantom/i.test(navigator.userAgent);
-        const alreadyPrompted = sessionStorage.getItem('deepLinkPromptShown') === 'true';
-
-        if (window.solana.isConnected) {
-            connectedWallet = window.solana.publicKey.toString();
-            showConnectedState();
-        } else if (isInPhantomBrowser && !alreadyPrompted) {
-            sessionStorage.setItem('deepLinkPromptShown', 'true');
-            setTimeout(() => window.solana.connect({ onlyIfTrusted: false }).catch(() => { }), 800);
-        } else {
-            showDisconnectedState();
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
-        }
-    } else {
-        showDisconnectedState();
-    }
-
-    fetchExchangeRates();
-    fetchTokenPrices();
-    setInterval(fetchTokenPrices, 15000);
-    setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
-
-    initPullToRefresh();
-
-    const fallbackObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
-
-    const currentHash = window.location.hash;
-    if (currentHash && currentHash.startsWith('#card-')) {
-        history.replaceState(null, null, ' ');
-
-        const content = document.getElementById('community-content');
-        const icon = document.getElementById('expand-icon');
-        const targetCard = document.querySelector(currentHash);
-
-        if (targetCard) {
-            const cleanHash = currentHash.substring(1);
-            const isCommunityToken = !['card-EXPB', 'card-GIDDY'].includes(cleanHash);
-
-            if (isCommunityToken && content && icon) {
-                content.style.transition = 'none';
-                content.style.maxHeight = (content.scrollHeight + 100) + 'px';
-                icon.style.transform = 'rotate(180deg)';
-            }
-
-            const performScroll = () => {
-                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                targetCard.style.transition = "all 0.9s ease-in-out";
-                targetCard.style.backgroundColor = "rgba(168, 85, 247, 0.22)";
-                targetCard.style.boxShadow = "inset 0 0 25px rgba(168, 85, 247, 0.4), 0 0 15px rgba(168, 85, 247, 0.25)";
-
-                setTimeout(() => {
-                    targetCard.style.backgroundColor = "";
-                    targetCard.style.boxShadow = "none";
-                }, 2400);
-            };
-
-            requestAnimationFrame(() => {
-                if (isCommunityToken && content) {
-                    setTimeout(performScroll, 100);
-                } else {
-                    performScroll();
-                }
-            });
-        }
-    }
-
-    console.log('✅ Wallet.js FULLY LOADED with dynamic localhost + Railway support');
+    // Expose all functions to window
+    window.handlePhantomConnect = handlePhantomConnect;
+    window.handleCreateWallet = handleCreateWallet;
+    window.disconnectWallet = disconnectWallet;
+    window.openValueLockModal = openValueLockModal;
+    window.closeValueLockModal = closeValueLockModal;
+    window.openGiddySwapModal = openGiddySwapModal;
+    window.closeGiddySwapModal = closeGiddySwapModal;
+    window.confirmValueLock = confirmValueLock;
+    window.confirmGiddySwap = confirmGiddySwap;
+    window.selectPercent = selectPercent;
+    window.selectSwapPercent = selectSwapPercent;
+    window.changeCurrency = changeCurrency;
+    window.showTxSuccess = showTxSuccess;
+    window.closeTxSuccessModal = closeTxSuccessModal;
+    window.toggleWalletDropdown = toggleWalletDropdown;
+    window.goToToken = goToToken;
+    window.goToShop = goToShop;
+    window.claimBonus = claimBonus;
+    window.dismissClaimBubble = dismissClaimBubble;
+    window.toggleCommunityTokens = toggleCommunityTokens;
 });
 
-// Make functions globally available
-window.openValueLockModal = openValueLockModal;
-window.closeValueLockModal = closeValueLockModal;
-window.openGiddySwapModal = openGiddySwapModal;
-window.closeGiddySwapModal = closeGiddySwapModal;
-window.confirmValueLock = confirmValueLock;
-window.confirmGiddySwap = confirmGiddySwap;
-window.selectPercent = selectPercent;
-window.selectSwapPercent = selectSwapPercent;
-window.changeCurrency = changeCurrency;
-window.showTxSuccess = showTxSuccess;
-window.closeTxSuccessModal = closeTxSuccessModal;
+console.log("✅ wallet.js fully loaded and ready");

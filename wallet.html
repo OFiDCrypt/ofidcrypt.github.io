@@ -1839,12 +1839,14 @@
         </button>
     </div>
 
-    <!-- Solana Web3.js Library -->
+        <!-- Solana Web3.js Library -->
     <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
 
     <!-- Scripts-->
     <script src="/assets/js/ofid-main.js"></script>
-    <script src="/assets/js/webapp/wallet.js"></script>
+    
+    <!-- CHANGE THIS TO TYPE="MODULE" SO VITE BUNDLES THE SDK -->
+    <script type="module" src="/assets/js/webapp/wallet.js"></script>
 
     <!-- Shared Swap Utilities -->
     <script src="assets/js/webapp/swapUtils.js"></script>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phantom Callback</title>
+</head>
+<body>
+    <h2 style="text-align:center; margin-top:120px; font-family:sans-serif; color:#333;">
+        This is the Phantom Callback Page
+    </h2>
+    <p style="text-align:center;">If you see this message, the file is working correctly.</p>
+
+    <script type="module">
+        console.log("✅ Phantom callback.html loaded successfully at", window.location.href);
+        
+        import { BrowserSDK } from "@phantom/browser-sdk";
+
+        const sdk = new BrowserSDK({
+            appId: "2351fc48-e0c6-4ece-9191-1ba4b28a8bdf"
+        });
+
+        sdk.on("userChanged", (user) => {
+            console.log("✅ Auth Success!", user);
+            window.location.href = "/wallet.html";
+        });
+
+        // Force redirect after 4 seconds
+        setTimeout(() => {
+            window.location.href = "/wallet.html";
+        }, 4000);
+    </script>
+</body>
+</html>
