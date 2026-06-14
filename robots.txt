@@ -10,4 +10,5 @@ Disallow: /promote
 Disallow: /promote/client-directory
 Disallow: /game/app-play-backup
 Disallow: /swap-test
+Disallow: /public/auth/callback
 Sitemap: https://www.ofidcrypt.com/sitemap.xml
