@@ -252,12 +252,12 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// ====================== HYBRID CONNECT (NEW) ======================
 async function handlePhantomConnect() {
+    const dappUrl = "https://www.ofidcrypt.com/wallet.html";
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    provider = window.phantom?.solana || window.solana;
+    const provider = window.phantom?.solana || window.solana;
 
     if (provider && provider.isPhantom) {
         try {
@@ -267,12 +267,22 @@ async function handlePhantomConnect() {
             if (typeof updateWalletBalances === "function") updateWalletBalances();
         } catch (err) {
             console.error(err);
-            if (err.code === 4001) alert("Connection cancelled by user.");
+            if (err.code === 4001) {
+                alert("Connection cancelled by user.");
+            } else {
+                alert("Failed to connect to Phantom.");
+            }
         }
         return;
     }
 
-    alert("Phantom Wallet not detected.");
+    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+        const encodedUrl = encodeURIComponent(dappUrl);
+        window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
+        return;
+    }
+
+    alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
 }
 
 async function handleCreateWallet() {
@@ -285,11 +295,11 @@ async function handleCreateWallet() {
         console.log("Embedded wallet created:", addresses);
     } catch (err) {
         console.error("Create Wallet failed:", err);
-        alert("Google/Apple login failed.\n\nUse 'Connect Phantom' instead.");
+        alert("Google/Apple login coming soon.\n\nUse 'Connect Phantom' instead.");
     }
 }
 
-async function disconnectWallet() {
+function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
@@ -322,7 +332,6 @@ function clearBalancesOnDisconnect() {
         }
     });
 
-    // Also update main total balance
     const totalValueEl = document.getElementById('totalValue');
     const currencySpan = document.getElementById('totalCurrency');
 
@@ -340,6 +349,7 @@ function showConnectedState() {
     const addr = document.getElementById('connectedAddress');
     const status = document.getElementById('connectedStatus');
     const cOpt = document.getElementById('connectOption');
+    const createOpt = document.getElementById('createWalletOption');
     const dOpt = document.getElementById('disconnectOption');
 
     if (navText) navText.innerText = "CONNECTED";
@@ -369,6 +379,7 @@ function showDisconnectedState() {
     const chevron = document.getElementById('chevron');
     const status = document.getElementById('connectedStatus');
     const cOpt = document.getElementById('connectOption');
+    const createOpt = document.getElementById('createWalletOption');
     const dOpt = document.getElementById('disconnectOption');
 
     if (navText) navText.innerText = "ADD WALLET";
@@ -376,6 +387,7 @@ function showDisconnectedState() {
     if (chevron) chevron.style.display = 'inline-block';
     if (status) status.classList.add('hidden');
     if (cOpt) cOpt.classList.remove('hidden');
+    if (createOpt) createOpt.classList.remove('hidden');
     if (dOpt) dOpt.classList.add('hidden');
 
     const dot = document.getElementById('status-dot');
@@ -954,7 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ Wallet.js FULLY LOADED with dynamic localhost + Railway support');
 });
 
-// Expose both old and new functions
+// Make functions globally available
 window.handlePhantomConnect = handlePhantomConnect;
 window.handleCreateWallet = handleCreateWallet;
 window.disconnectWallet = disconnectWallet;
