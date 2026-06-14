@@ -33,11 +33,11 @@ export default defineConfig({
                 },
 
                 // Copy all other static folders
-                { src: 'pages', dest: 'pages' },
-                { src: 'docs', dest: 'docs' },
-                { src: 'explore', dest: 'explore' },
-                { src: 'game', dest: 'game' },
-                { src: 'promote', dest: 'promote' },
+                { src: 'docs', dest: '.' },
+                { src: 'pages', dest: '.' },
+                { src: 'explore', dest: '.' },
+                { src: 'game', dest: '.' },
+                { src: 'promote', dest: '.' },
 
                 // Copy ALL root HTML files + other static files
                 {
