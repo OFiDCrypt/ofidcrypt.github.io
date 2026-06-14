@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phantom Callback</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 360px;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #6b21a8;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="spinner"></div>
+        <h2>Connecting to Phantom...</h2>
+        <p id="status">Completing wallet setup</p>
+    </div>
+
+    <script type="module">
+        import { BrowserSDK } from '@phantom/browser-sdk';
+
+        async function handleCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const error = params.get('error');
+            const statusEl = document.getElementById('status');
+
+            if (error) {
+                statusEl.textContent = "Error: " + error;
+                statusEl.style.color = "#ef4444";
+                window.opener?.postMessage({ type: 'phantom-callback', error }, '*');
+                setTimeout(() => window.close(), 1500);
+                return;
+            }
+
+            if (code) {
+                try {
+                    statusEl.textContent = "Success! Returning to wallet...";
+                    const sdk = new BrowserSDK({ appId: "2351fc48-e0c6-4ece-9191-1ba4b28a8bdf" });
+                    
+                    window.opener?.postMessage({ 
+                        type: 'phantom-callback', 
+                        success: true, 
+                        code 
+                    }, '*');
+
+                    setTimeout(() => window.close(), 800);
+                } catch (err) {
+                    console.error(err);
+                    statusEl.textContent = "Failed to complete setup";
+                    statusEl.style.color = "#ef4444";
+                    window.opener?.postMessage({ type: 'phantom-callback', error: err.message }, '*');
+                    setTimeout(() => window.close(), 1500);
+                }
+            }
+        }
+
+        handleCallback();
+    </script>
+</body>
+</html>
