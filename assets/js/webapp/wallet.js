@@ -966,12 +966,21 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ Wallet.js FULLY LOADED with dynamic localhost + Railway support');
 });
 
-// Make functions globally available
+// ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
 window.handlePhantomConnect = handlePhantomConnect;
 window.handleCreateWallet = handleCreateWallet;
 window.disconnectWallet = disconnectWallet;
 
-// Make functions globally available
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.claimBonus = claimBonus;
+window.goToToken = goToToken;
+window.goToShop = goToShop;
+window.buyToken = buyToken;
+window.sellToken = sellToken;
+window.dismissClaimBubble = dismissClaimBubble;
+window.toggleCommunityTokens = toggleCommunityTokens;
+
 window.openValueLockModal = openValueLockModal;
 window.closeValueLockModal = closeValueLockModal;
 window.openGiddySwapModal = openGiddySwapModal;
