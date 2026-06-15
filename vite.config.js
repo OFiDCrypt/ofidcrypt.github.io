@@ -47,6 +47,8 @@ export default defineConfig({
                         '*.txt',
                         '*.xml',
                         '*.ico',
+                        '*.PNG',
+                        '*.png',
                         'CNAME',
                         'robots.txt',
                         'sitemap.xml'
