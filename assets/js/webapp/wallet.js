@@ -153,7 +153,8 @@ function updateAllPriceDisplays() {
                 <span class="text-sm text-zinc-500 font-medium tracking-widest">${currentCurrency}</span>
             `;
         } else {
-            priceEl.innerText = `${symbolChar}${priceStr} ${currentCurrency}`;
+            // Community tokens - clean price only
+            priceEl.innerText = `${symbolChar}${priceStr}`;
         }
     });
 }
@@ -224,6 +225,19 @@ function dismissClaimBubble() {
 function toggleCommunityTokens() {
     const content = document.getElementById('community-content');
     const icon = document.getElementById('expand-icon');
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        content.style.maxHeight = (content.scrollHeight + 32) + 'px';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+function toggleWorldwideCurrencies() {
+    const content = document.getElementById('worldwide-content');
+    const icon = document.getElementById('worldwide-expand-icon');
 
     if (content.style.maxHeight && content.style.maxHeight !== '0px') {
         content.style.maxHeight = '0px';
@@ -437,7 +451,8 @@ async function updateWalletBalances() {
                 if (sym === 'EXPB' || sym === 'GIDDY') {
                     valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
                 } else {
-                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)} <span class="text-base">${currentCurrency}</span>`;
+                    // Community tokens - Clean (no CAD text)
+                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
                 }
             }
 
@@ -980,6 +995,7 @@ window.buyToken = buyToken;
 window.sellToken = sellToken;
 window.dismissClaimBubble = dismissClaimBubble;
 window.toggleCommunityTokens = toggleCommunityTokens;
+window.toggleWorldwideCurrencies = toggleWorldwideCurrencies;
 
 window.openValueLockModal = openValueLockModal;
 window.closeValueLockModal = closeValueLockModal;
