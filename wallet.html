@@ -997,57 +997,152 @@
                     <img src="https://flagcdn.com/w40/ca.png" alt="Canada" class="h-5">
                 </div>
 
-                <!-- GIDDY'S SHOP PROMO SECTION - Seamless Joined Button -->
-                <div onclick="goToShop()" class="fade-in mb-6 cursor-pointer">
+<!-- ===================================================== -->
+<!--  HORIZONTAL PROMO SCROLLER - Giddy's + Patrons       -->
+<!--  Browse Stores now links to client-directory.html    -->
+<!-- ===================================================== -->
 
-                    <!-- Image + Button Container -->
-                    <div class="relative rounded-t-3xl overflow-hidden">
+<div class="relative mb-8">
 
-                        <!-- Image -->
-                        <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop"
-                            class="w-full h-52 object-cover object-center">
+    <!-- Scroll Container -->
+    <div id="promo-scroller"
+         class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 scroll-smooth"
+         style="scrollbar-width: none; -ms-overflow-style: none;"
+         tabindex="0">
 
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-
-                        <!-- Overlay Text -->
-                        <div class="absolute bottom-6 left-6 text-white">
-                            <p class="text-xl font-bold tracking-tight">Giddy's Shop</p>
-                            <p class="text-sm opacity-90">Toys • Apparel • Collectibles</p>
-                        </div>
+        <!-- ========== GIDDY'S SHOP ========== -->
+        <div class="flex-shrink-0 w-full md:w-[calc(50%-12px)] snap-start">
+            <div onclick="goToShop()" class="fade-in cursor-pointer">
+                <div class="relative rounded-t-3xl overflow-hidden">
+                    <img src="/assets/images/webp/giddys-shop-wide-follow.webp" alt="Giddy's Shop"
+                        class="w-full h-52 object-cover object-center">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <p class="text-xl font-bold tracking-tight">Giddy's Shop</p>
+                        <p class="text-sm opacity-90">Toys • Apparel • Collectibles</p>
                     </div>
-
-                    <!-- Button - Joined to image, no top radius, shorter height -->
-                    <button onclick="event.stopPropagation(); goToShop();"
-                        class="joined-shop-btn w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 font-bold text-lg text-white shadow-lg transition-all active:scale-[0.98]">
-                        Shop Now
-                    </button>
                 </div>
+                <button onclick="event.stopPropagation(); goToShop();"
+                    class="joined-shop-btn w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 font-bold text-lg text-white shadow-lg transition-all active:scale-[0.98]">
+                    Shop Now
+                </button>
+            </div>
+        </div>
 
-                <style>
-                    /* Seamless Shop Promo Button */
-                    .joined-shop-btn {
-                        border-radius: 0 0 20px 20px !important;
-                        /* Only bottom rounded */
-                        padding: 14px 0 !important;
-                        /* Less tall */
-                        min-height: 52px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-top: -4px;
-                        /* Join to image */
-                    }
+        <!-- ========== PATRONS STORES ========== -->
+        <div class="flex-shrink-0 w-full md:w-[calc(50%-12px)] snap-start">
+            <div onclick="goToClientDirectory()" class="fade-in cursor-pointer">
+                <div class="relative rounded-t-3xl overflow-hidden">
+                    <img src="/assets/images/webp/patrons-wide.webp" alt="Patrons Stores"
+                        class="w-full h-52 object-cover object-center">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <p class="text-xl font-bold tracking-tight">Patrons Stores</p>
+                        <p class="text-sm opacity-90">Shop Local • Browse Products</p>
+                    </div>
+                </div>
+                <button onclick="event.stopPropagation(); goToClientDirectory();"
+                    class="joined-shop-btn w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 font-bold text-lg text-white shadow-lg transition-all active:scale-[0.98]">
+                    Browse Stores
+                </button>
+            </div>
+        </div>
 
-                    .joined-shop-btn:hover {
-                        filter: brightness(1.08);
-                    }
+    </div>
 
-                    /* Remove bottom radius from image container */
-                    .relative.rounded-t-3xl {
-                        border-bottom-left-radius: 0 !important;
-                        border-bottom-right-radius: 0 !important;
-                    }
-                </style>
+    <!-- Dots Navigation -->
+    <div class="flex justify-center gap-3 mt-4">
+        <button onclick="goToPromo(0)"
+                class="promo-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-200"
+                data-index="0" aria-label="Go to Giddy's Shop"></button>
+        <button onclick="goToPromo(1)"
+                class="promo-dot w-2.5 h-2.5 rounded-full bg-white/40 hover:bg-white/70 transition-all duration-200"
+                data-index="1" aria-label="Go to Patrons Stores"></button>
+    </div>
+
+</div>
+
+<!-- Styles -->
+<style>
+    /* Button styles */
+    .joined-shop-btn {
+        border-radius: 0 0 20px 20px !important;
+        padding: 14px 0 !important;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -4px;
+    }
+    .joined-shop-btn:hover {
+        filter: brightness(1.08);
+    }
+    .relative.rounded-t-3xl {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    /* Scroller */
+    #promo-scroller {
+        scroll-snap-type: x mandatory;
+    }
+    .promo-dot.active {
+        background-color: #fff;
+        transform: scale(1.15);
+    }
+</style>
+
+<!-- JavaScript -->
+<script>
+    const scroller = document.getElementById('promo-scroller');
+    const dots = document.querySelectorAll('.promo-dot');
+
+    function goToPromo(index) {
+        const cards = scroller.querySelectorAll('.snap-start');
+        if (cards[index]) {
+            cards[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'start'
+            });
+        }
+    }
+
+    // Navigate to Client Directory
+    function goToClientDirectory() {
+        window.location.href = '/promote/client-directory.html';
+    }
+
+    function updateActiveDot() {
+        const cards = scroller.querySelectorAll('.snap-start');
+        const scrollLeft = scroller.scrollLeft;
+        const cardWidth = cards[0].offsetWidth + 24;
+        let activeIndex = Math.round(scrollLeft / cardWidth);
+        activeIndex = Math.max(0, Math.min(activeIndex, cards.length - 1));
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === activeIndex);
+        });
+    }
+
+    if (scroller) {
+        scroller.addEventListener('keydown', (e) => {
+            const cardWidth = scroller.querySelector('.snap-start').offsetWidth + 24;
+            if (e.key === 'ArrowRight') {
+                scroller.scrollBy({ left: cardWidth, behavior: 'smooth' });
+            }
+            if (e.key === 'ArrowLeft') {
+                scroller.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+            }
+        });
+
+        scroller.addEventListener('scroll', () => {
+            requestAnimationFrame(updateActiveDot);
+        });
+
+        setTimeout(updateActiveDot, 150);
+    }
+</script>
 
                 <!-- COMMUNITY TOKENS SECTION (Accordion) -->
                 <div class="mb-6">
