@@ -443,39 +443,39 @@ async function updateWalletBalances() {
         const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
         let totalValueUSD = 0;
 
-allTokens.forEach(sym => {
-    const qtyEl = document.getElementById(`qty-${sym}`);
-    const valueEl = document.getElementById(`value-${sym}`);
+        allTokens.forEach(sym => {
+            const qtyEl = document.getElementById(`qty-${sym}`);
+            const valueEl = document.getElementById(`value-${sym}`);
 
-    let rawStr = String(balances[sym] || 0).replace(/,/g, '');
-    let rawQty = parseFloat(rawStr);
+            let rawStr = String(balances[sym] || 0).replace(/,/g, '');
+            let rawQty = parseFloat(rawStr);
 
-    const priceUSD = latestPrices[sym] || 0;
-    const usdValue = rawQty * priceUSD;
-    const displayValue = usdValue * getConversionRate(currentCurrency);
-    const symbolChar = getCurrencySymbol(currentCurrency);
+            const priceUSD = latestPrices[sym] || 0;
+            const usdValue = rawQty * priceUSD;
+            const displayValue = usdValue * getConversionRate(currentCurrency);
+            const symbolChar = getCurrencySymbol(currentCurrency);
 
-    if (qtyEl) {
-        // Only apply K/M formatting to Community token quantities
-        const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+            if (qtyEl) {
+                // Only apply K/M formatting to Community token quantities
+                const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
 
-        if (communityTokens.includes(sym) && rawQty >= 1000) {
-            qtyEl.textContent = formatLargeNumber(rawQty);
-        } else {
-            qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
-        }
-    }
+                if (communityTokens.includes(sym) && rawQty >= 1000) {
+                    qtyEl.textContent = formatLargeNumber(rawQty);
+                } else {
+                    qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
+                }
+            }
 
-    if (valueEl) {
-        if (sym === 'EXPB' || sym === 'GIDDY') {
-            valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-        } else {
-            valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-        }
-    }
+            if (valueEl) {
+                if (sym === 'EXPB' || sym === 'GIDDY') {
+                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
+                } else {
+                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
+                }
+            }
 
-    totalValueUSD += usdValue;
-});
+            totalValueUSD += usdValue;
+        });
 
         if (totalValueEl) {
             const displayTotal = (totalValueUSD * getConversionRate(currentCurrency)).toFixed(2);
@@ -931,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!provider.isConnected) {
-            provider.connect({ onlyIfTrusted: true }).catch(() => {});
+            provider.connect({ onlyIfTrusted: true }).catch(() => { });
         }
     }
 
@@ -999,7 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED with fixed disconnect clearing');
+    console.log('✅ Wallet.js FULLY LOADED with VITE + Dynamic Localhost + Railway Support');
 });
 
 // ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
