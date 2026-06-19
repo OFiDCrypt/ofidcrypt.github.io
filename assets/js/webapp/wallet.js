@@ -33,8 +33,10 @@ function getApiUrl(endpoint) {
 
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
+window.connectedWallet = null;
+
 let provider = null;
-let latestPrices = {};        // Always stored in USD
+let latestPrices = {};
 let currentLockBaseQuantity = 0;
 
 // ====================== CURRENCY SYSTEM (CAD + USD + MXN + NGN) ======================
@@ -65,7 +67,7 @@ function getConversionRate(currency) {
         case 'CAD': return usdToCadRate;
         case 'MXN': return usdToMxnRate;
         case 'NGN': return usdToNgnRate;
-        default: return 1; // USD
+        default: return 1;
     }
 }
 
@@ -82,32 +84,26 @@ function getCurrencySymbol(currency) {
 function changeCurrency(newCurrency) {
     currentCurrency = newCurrency;
 
-    // Update all UI elements
     updateAllPriceDisplays();
     updateCommunityCurrencyLabels();
     updateCardValuePlaceholders();
 
-    // Update main total balance label
     const currencySpan = document.getElementById('totalCurrency');
     if (currencySpan) currencySpan.textContent = newCurrency;
 
-    // Only fetch real balances if wallet is connected
     if (connectedWallet) {
         updateWalletBalances();
     }
 }
 
-// Update MY VALUE placeholders on all cards (works whether connected or not)
 function updateCardValuePlaceholders() {
     const symbolChar = getCurrencySymbol(currentCurrency);
 
-    // Main tokens (no currency suffix)
     ['EXPB', 'GIDDY'].forEach(sym => {
         const el = document.getElementById(`value-${sym}`);
         if (el) el.innerHTML = `${symbolChar}0.00`;
     });
 
-    // Community tokens (with currency suffix)
     const communitySymbols = ['SOL', 'USDC', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
     communitySymbols.forEach(sym => {
         const el = document.getElementById(`value-${sym}`);
@@ -153,7 +149,6 @@ function updateAllPriceDisplays() {
                 <span class="text-sm text-zinc-500 font-medium tracking-widest">${currentCurrency}</span>
             `;
         } else {
-            // Community tokens - clean price only
             priceEl.innerText = `${symbolChar}${priceStr}`;
         }
     });
@@ -248,6 +243,104 @@ function toggleWorldwideCurrencies() {
     }
 }
 
+// ====================== CENTRALIZED WALLET STATE + CLEAR LOGIC ======================
+function clearBalancesOnDisconnect() {
+    const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+    const symbolChar = getCurrencySymbol(currentCurrency);
+
+    allTokens.forEach(sym => {
+        const qtyEl = document.getElementById(`qty-${sym}`);
+        const valueEl = document.getElementById(`value-${sym}`);
+
+        if (qtyEl) qtyEl.textContent = '—';
+
+        if (valueEl) {
+            if (sym === 'EXPB' || sym === 'GIDDY') {
+                valueEl.innerHTML = `${symbolChar}0.00`;
+            } else {
+                valueEl.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
+            }
+        }
+    });
+
+    const totalValueEl = document.getElementById('totalValue');
+    if (totalValueEl) {
+        totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
+    }
+}
+
+function setWalletState(isConnected, publicKey = null) {
+    connectedWallet = isConnected && publicKey ? publicKey : null;
+    window.connectedWallet = connectedWallet;
+
+    // Wallet page elements
+    const navText = document.getElementById('walletBtnText');
+    const navBtn = document.getElementById('addWalletBtn');
+    const chevron = document.getElementById('chevron');
+    const statusBar = document.getElementById('connectedStatus');
+    const addrEl = document.getElementById('connectedAddress');
+    const connectOpt = document.getElementById('connectOption');
+    const createOpt = document.getElementById('createWalletOption');
+    const disconnectOpt = document.getElementById('disconnectOption');
+
+    // Shop page elements
+    const shopDot = document.getElementById('status-dot');
+    const shopText = document.getElementById('status-text');
+    const shopBtn = document.getElementById('connect-btn');
+
+    if (isConnected && connectedWallet) {
+        const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
+
+        if (navText) navText.innerText = "CONNECTED";
+        if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
+        if (chevron) chevron.style.display = 'none';
+        if (statusBar) statusBar.classList.remove('hidden');
+        if (addrEl) addrEl.innerText = short;
+        if (connectOpt) connectOpt.classList.add('hidden');
+        if (createOpt) createOpt.classList.add('hidden');
+        if (disconnectOpt) disconnectOpt.classList.remove('hidden');
+
+        if (shopDot) shopDot.style.backgroundColor = "#10b981";
+        if (shopText) shopText.innerText = "Wallet Connected";
+        if (shopBtn) {
+            shopBtn.innerText = "Disconnect";
+            shopBtn.style.borderColor = "#ef4444";
+            shopBtn.style.color = "#ef4444";
+            shopBtn.onclick = disconnectWallet;
+        }
+
+        if (typeof updateWalletBalances === 'function') {
+            updateWalletBalances();
+        }
+    } else {
+        if (navText) navText.innerText = "ADD WALLET";
+        if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
+        if (chevron) chevron.style.display = 'inline-block';
+        if (statusBar) statusBar.classList.add('hidden');
+        if (connectOpt) connectOpt.classList.remove('hidden');
+        if (createOpt) createOpt.classList.remove('hidden');
+        if (disconnectOpt) disconnectOpt.classList.add('hidden');
+
+        if (shopDot) shopDot.style.backgroundColor = "#71717a";
+        if (shopText) shopText.innerText = "Wallet Disconnected";
+        if (shopBtn) {
+            shopBtn.innerText = "Connect";
+            shopBtn.style.borderColor = "#8b5cf6";
+            shopBtn.style.color = "#8b5cf6";
+            shopBtn.onclick = handlePhantomConnect;
+        }
+
+        clearBalancesOnDisconnect();
+    }
+}
+
+function showAddWalletPrompt() {
+    const totalValueEl = document.getElementById('totalValue');
+    if (totalValueEl) {
+        totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
+    }
+}
+
 // ====================== PHANTOM WALLET INTEGRATION ======================
 function toggleWalletDropdown() {
     const dropdown = document.getElementById('walletDropdown');
@@ -271,14 +364,18 @@ async function handlePhantomConnect() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    const provider = window.phantom?.solana || window.solana;
+    const totalValueEl = document.getElementById('totalValue');
+    if (totalValueEl && document.getElementById('walletTotalCard')) {
+        totalValueEl.textContent = 'Calculating...';
+    }
 
-    if (provider && provider.isPhantom) {
+    const phantomProvider = window.phantom?.solana || window.solana;
+
+    if (phantomProvider && phantomProvider.isPhantom) {
         try {
-            const resp = await provider.connect();
-            connectedWallet = resp.publicKey.toString();
-            showConnectedState();
-            if (typeof updateWalletBalances === "function") updateWalletBalances();
+            const resp = await phantomProvider.connect();
+            const publicKey = resp.publicKey.toString();
+            setWalletState(true, publicKey);
         } catch (err) {
             console.error(err);
             if (err.code === 4001) {
@@ -286,6 +383,7 @@ async function handlePhantomConnect() {
             } else {
                 alert("Failed to connect to Phantom.");
             }
+            showAddWalletPrompt();
         }
         return;
     }
@@ -318,110 +416,24 @@ function disconnectWallet() {
     if (dropdown) dropdown.classList.add('hidden');
 
     const providerLocal = window.phantom?.solana || window.solana;
-    if (providerLocal) providerLocal.disconnect();
-
-    connectedWallet = null;
-    provider = null;
-    clearBalancesOnDisconnect();
-    showDisconnectedState();
-}
-
-function clearBalancesOnDisconnect() {
-    const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
-
-    allTokens.forEach(sym => {
-        const qtyEl = document.getElementById(`qty-${sym}`);
-        const valueEl = document.getElementById(`value-${sym}`);
-
-        if (qtyEl) qtyEl.textContent = '—';
-
-        if (valueEl) {
-            const symbolChar = getCurrencySymbol(currentCurrency);
-
-            if (sym === 'EXPB' || sym === 'GIDDY') {
-                valueEl.innerHTML = `${symbolChar}0.00`;
-            } else {
-                valueEl.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
-            }
-        }
-    });
-
-    const totalValueEl = document.getElementById('totalValue');
-    const currencySpan = document.getElementById('totalCurrency');
-
-    if (totalValueEl) totalValueEl.textContent = `${getCurrencySymbol(currentCurrency)}0.00`;
-    if (currencySpan) currencySpan.textContent = currentCurrency;
-}
-
-function showConnectedState() {
-    connectedWallet = connectedWallet || window.solana?.publicKey?.toString();
-    const short = connectedWallet ? `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}` : "";
-
-    const navText = document.getElementById('walletBtnText');
-    const navBtn = document.getElementById('addWalletBtn');
-    const chevron = document.getElementById('chevron');
-    const addr = document.getElementById('connectedAddress');
-    const status = document.getElementById('connectedStatus');
-    const cOpt = document.getElementById('connectOption');
-    const createOpt = document.getElementById('createWalletOption');
-    const dOpt = document.getElementById('disconnectOption');
-
-    if (navText) navText.innerText = "CONNECTED";
-    if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
-    if (chevron) chevron.style.display = 'none';
-    if (addr) addr.innerText = short;
-    if (status) status.classList.remove('hidden');
-    if (cOpt) cOpt.classList.add('hidden');
-    if (dOpt) dOpt.classList.remove('hidden');
-
-    const dot = document.getElementById('status-dot');
-    const text = document.getElementById('status-text');
-    const btn = document.getElementById('connect-btn');
-    if (dot) dot.style.backgroundColor = "#10b981";
-    if (text) text.innerText = "Wallet Connected";
-    if (btn) {
-        btn.innerText = "Disconnect";
-        btn.style.borderColor = "#ef4444";
-        btn.style.color = "#ef4444";
-        btn.onclick = disconnectWallet;
+    if (providerLocal && typeof providerLocal.disconnect === 'function') {
+        providerLocal.disconnect();
     }
-}
 
-function showDisconnectedState() {
-    const navText = document.getElementById('walletBtnText');
-    const navBtn = document.getElementById('addWalletBtn');
-    const chevron = document.getElementById('chevron');
-    const status = document.getElementById('connectedStatus');
-    const cOpt = document.getElementById('connectOption');
-    const createOpt = document.getElementById('createWalletOption');
-    const dOpt = document.getElementById('disconnectOption');
-
-    if (navText) navText.innerText = "ADD WALLET";
-    if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
-    if (chevron) chevron.style.display = 'inline-block';
-    if (status) status.classList.add('hidden');
-    if (cOpt) cOpt.classList.remove('hidden');
-    if (createOpt) createOpt.classList.remove('hidden');
-    if (dOpt) dOpt.classList.add('hidden');
-
-    const dot = document.getElementById('status-dot');
-    const text = document.getElementById('status-text');
-    const btn = document.getElementById('connect-btn');
-    if (dot) dot.style.backgroundColor = "#71717a";
-    if (text) text.innerText = "Wallet Disconnected";
-    if (btn) {
-        btn.innerText = "Connect";
-        btn.style.borderColor = "#8b5cf6";
-        btn.style.color = "#8b5cf6";
-        btn.onclick = handlePhantomConnect;
-    }
+    setWalletState(false);
 }
 
 // ====================== BALANCES + TOTAL ======================
 async function updateWalletBalances() {
     if (!connectedWallet) return;
+    if (!document.getElementById('totalValue')) return;
 
+    // Prevent "Add Wallet" placeholder from being applied during auto-connect on refresh
     const totalValueEl = document.getElementById('totalValue');
+    if (totalValueEl && totalValueEl.textContent.includes('Add Wallet')) {
+        totalValueEl.textContent = 'Calculating...';
+    }
+
     const currencySpan = document.getElementById('totalCurrency');
 
     try {
@@ -431,33 +443,39 @@ async function updateWalletBalances() {
         const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
         let totalValueUSD = 0;
 
-        allTokens.forEach(sym => {
-            const qtyEl = document.getElementById(`qty-${sym}`);
-            const valueEl = document.getElementById(`value-${sym}`);
+allTokens.forEach(sym => {
+    const qtyEl = document.getElementById(`qty-${sym}`);
+    const valueEl = document.getElementById(`value-${sym}`);
 
-            let rawStr = String(balances[sym] || 0).replace(/,/g, '');
-            let rawQty = parseFloat(rawStr);
+    let rawStr = String(balances[sym] || 0).replace(/,/g, '');
+    let rawQty = parseFloat(rawStr);
 
-            const priceUSD = latestPrices[sym] || 0;
-            const usdValue = rawQty * priceUSD;
-            const displayValue = usdValue * getConversionRate(currentCurrency);
-            const symbolChar = getCurrencySymbol(currentCurrency);
+    const priceUSD = latestPrices[sym] || 0;
+    const usdValue = rawQty * priceUSD;
+    const displayValue = usdValue * getConversionRate(currentCurrency);
+    const symbolChar = getCurrencySymbol(currentCurrency);
 
-            if (qtyEl) {
-                qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
-            }
+    if (qtyEl) {
+        // Only apply K/M formatting to Community token quantities
+        const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
 
-            if (valueEl) {
-                if (sym === 'EXPB' || sym === 'GIDDY') {
-                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-                } else {
-                    // Community tokens - Clean (no CAD text)
-                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-                }
-            }
+        if (communityTokens.includes(sym) && rawQty >= 1000) {
+            qtyEl.textContent = formatLargeNumber(rawQty);
+        } else {
+            qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
+        }
+    }
 
-            totalValueUSD += usdValue;
-        });
+    if (valueEl) {
+        if (sym === 'EXPB' || sym === 'GIDDY') {
+            valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
+        } else {
+            valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
+        }
+    }
+
+    totalValueUSD += usdValue;
+});
 
         if (totalValueEl) {
             const displayTotal = (totalValueUSD * getConversionRate(currentCurrency)).toFixed(2);
@@ -476,6 +494,8 @@ async function updateWalletBalances() {
 const TARGET_SYMBOLS = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
 
 async function fetchTokenPrices() {
+    if (!document.getElementById('totalValue')) return;
+
     try {
         const response = await fetch(getApiUrl('/api/prices'));
         if (!response.ok) throw new Error("Price server error");
@@ -850,6 +870,8 @@ function initPullToRefresh() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const isWalletPage = window.location.pathname.includes('wallet');
+
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
         redeemForm.addEventListener('submit', (e) => {
@@ -891,44 +913,41 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
     provider = window.phantom?.solana || window.solana;
-    if (provider && provider.isPhantom && provider.isConnected && provider.publicKey) {
-        connectedWallet = provider.publicKey.toString();
-        showConnectedState();
-    }
 
-    if (window.solana && window.solana.isPhantom) {
-        window.solana.on('connect', (publicKey) => {
-            connectedWallet = publicKey.toString();
-            showConnectedState();
-        });
+    setWalletState(false);
 
-        window.solana.on('disconnect', () => {
-            showDisconnectedState();
-        });
-
-        const isInPhantomBrowser = /Phantom/i.test(navigator.userAgent);
-        const alreadyPrompted = sessionStorage.getItem('deepLinkPromptShown') === 'true';
-
-        if (window.solana.isConnected) {
-            connectedWallet = window.solana.publicKey.toString();
-            showConnectedState();
-        } else if (isInPhantomBrowser && !alreadyPrompted) {
-            sessionStorage.setItem('deepLinkPromptShown', 'true');
-            setTimeout(() => window.solana.connect({ onlyIfTrusted: false }).catch(() => { }), 800);
-        } else {
-            showDisconnectedState();
-            window.solana.connect({ onlyIfTrusted: true }).catch(() => { });
+    if (provider && provider.isPhantom) {
+        if (provider.isConnected && provider.publicKey) {
+            const pk = provider.publicKey.toString();
+            setWalletState(true, pk);
         }
-    } else {
-        showDisconnectedState();
+
+        provider.on('connect', (publicKey) => {
+            setWalletState(true, publicKey.toString());
+        });
+
+        provider.on('disconnect', () => {
+            setWalletState(false);
+        });
+
+        if (!provider.isConnected) {
+            provider.connect({ onlyIfTrusted: true }).catch(() => {});
+        }
     }
 
-    fetchExchangeRates();
-    fetchTokenPrices();
-    setInterval(fetchTokenPrices, 15000);
-    setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
+    if (isWalletPage) {
+        fetchExchangeRates();
+        fetchTokenPrices();
+        setInterval(fetchTokenPrices, 15000);
+        setInterval(() => { if (connectedWallet) updateWalletBalances(); }, 25000);
+        initPullToRefresh();
 
-    initPullToRefresh();
+        setTimeout(() => {
+            if (!connectedWallet) {
+                showAddWalletPrompt();
+            }
+        }, 900);
+    }
 
     const fallbackObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -938,47 +957,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.fade-in').forEach(el => fallbackObserver.observe(el));
 
-    const currentHash = window.location.hash;
-    if (currentHash && currentHash.startsWith('#card-')) {
-        history.replaceState(null, null, ' ');
+    if (isWalletPage) {
+        const currentHash = window.location.hash;
+        if (currentHash && currentHash.startsWith('#card-')) {
+            history.replaceState(null, null, ' ');
 
-        const content = document.getElementById('community-content');
-        const icon = document.getElementById('expand-icon');
-        const targetCard = document.querySelector(currentHash);
+            const content = document.getElementById('community-content');
+            const icon = document.getElementById('expand-icon');
+            const targetCard = document.querySelector(currentHash);
 
-        if (targetCard) {
-            const cleanHash = currentHash.substring(1);
-            const isCommunityToken = !['card-EXPB', 'card-GIDDY'].includes(cleanHash);
+            if (targetCard) {
+                const cleanHash = currentHash.substring(1);
+                const isCommunityToken = !['card-EXPB', 'card-GIDDY'].includes(cleanHash);
 
-            if (isCommunityToken && content && icon) {
-                content.style.transition = 'none';
-                content.style.maxHeight = (content.scrollHeight + 100) + 'px';
-                icon.style.transform = 'rotate(180deg)';
-            }
-
-            const performScroll = () => {
-                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                targetCard.style.transition = "all 0.9s ease-in-out";
-                targetCard.style.backgroundColor = "rgba(168, 85, 247, 0.22)";
-                targetCard.style.boxShadow = "inset 0 0 25px rgba(168, 85, 247, 0.4), 0 0 15px rgba(168, 85, 247, 0.25)";
-
-                setTimeout(() => {
-                    targetCard.style.backgroundColor = "";
-                    targetCard.style.boxShadow = "none";
-                }, 2400);
-            };
-
-            requestAnimationFrame(() => {
-                if (isCommunityToken && content) {
-                    setTimeout(performScroll, 100);
-                } else {
-                    performScroll();
+                if (isCommunityToken && content && icon) {
+                    content.style.transition = 'none';
+                    content.style.maxHeight = (content.scrollHeight + 100) + 'px';
+                    icon.style.transform = 'rotate(180deg)';
                 }
-            });
+
+                const performScroll = () => {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetCard.style.transition = "all 0.9s ease-in-out";
+                    targetCard.style.backgroundColor = "rgba(168, 85, 247, 0.22)";
+                    targetCard.style.boxShadow = "inset 0 0 25px rgba(168, 85, 247, 0.4), 0 0 15px rgba(168, 85, 247, 0.25)";
+
+                    setTimeout(() => {
+                        targetCard.style.backgroundColor = "";
+                        targetCard.style.boxShadow = "none";
+                    }, 2400);
+                };
+
+                requestAnimationFrame(() => {
+                    if (isCommunityToken && content) {
+                        setTimeout(performScroll, 100);
+                    } else {
+                        performScroll();
+                    }
+                });
+            }
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED with dynamic localhost + Railway support');
+    console.log('✅ Wallet.js FULLY LOADED with fixed disconnect clearing');
 });
 
 // ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
