@@ -1,8 +1,5 @@
 // ================================================
 // assets/js/webapp/wallet.js - FULL PRODUCTION VERSION (HYBRID + FIXED)
-// Updated: Hybrid Connect (Desktop legacy + Mobile deep link via SDK)
-// + No more "Unknown injected wallet id: phantom" errors
-// + Reduced flicker on Create Wallet
 // ================================================
 
 // Buffer polyfill for swap transactions
@@ -42,7 +39,6 @@ async function getPhantomSDK() {
             autoConnect: true,
         });
 
-        // Event listeners for better state management
         phantomSDK.on("connect", (data) => {
             console.log("✅ Phantom SDK Connected via", data.provider, data.addresses);
             const addr = data.addresses?.[0]?.address;
@@ -76,7 +72,7 @@ function getApiUrl(endpoint) {
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 window.connectedWallet = null;
-let connectionMethod = null;   // "injected", "google", "apple"
+let connectionMethod = null;
 
 let provider = null;
 let latestPrices = {};
@@ -319,7 +315,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
 
     window.connectionMethod = connectionMethod;
 
-    // Wallet page elements
+     // Wallet page elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -410,7 +406,7 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// ====================== CONNECT PHANTOM (HYBRID - DESKTOP LEGACY + MOBILE DEEP LINK) ======================
+// ====================== CONNECT PHANTOM (HYBRID - DESKTOP + iOS FALLBACK) ======================
 async function handlePhantomConnect() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
@@ -425,39 +421,41 @@ async function handlePhantomConnect() {
 
     try {
         if (hasLegacyPhantom) {
-            // === DESKTOP EXTENSION PATH (most stable after manual disconnect) ===
-            console.log("🔌 Using legacy desktop injected path (window.phantom.solana)");
+            // Desktop extension path (fast & reliable)
+            console.log("🔌 Using legacy desktop injected path");
             const resp = await window.phantom.solana.connect();
             const publicKey = resp.publicKey.toString();
             setWalletState(true, publicKey, "injected");
             return;
         }
 
-        // === MOBILE DEEP LINK / FALLBACK via SDK ===
-        console.log("🔌 No legacy injected detected — using SDK injected for deep link");
+        // Try SDK deep link first
+        console.log("🔌 Trying SDK injected for mobile deep link");
         const sdk = await getPhantomSDK();
 
-        // Safety buffer for extension detection
-        if (!hasLegacyPhantom && !isMobileDevice()) {
-            try {
-                await Promise.race([
-                    waitForPhantomExtension(2200),
-                    new Promise(r => setTimeout(r, 2200))
-                ]);
-            } catch (_) {}
+        try {
+            const result = await sdk.connect({ provider: "injected" });
+            const publicKey = result.addresses?.[0]?.address;
+            if (publicKey) {
+                setWalletState(true, publicKey, "injected");
+                return;
+            }
+        } catch (sdkErr) {
+            console.warn("SDK deep link attempt failed on mobile, using manual fallback...");
         }
 
-        const result = await sdk.connect({ provider: "injected" });
-        const publicKey = result.addresses?.[0]?.address;
-
-        if (publicKey) {
-            setWalletState(true, publicKey, "injected");
-            console.log("✅ Connected via SDK injected/deep-link:", publicKey);
-        } else {
-            throw new Error("No address returned");
+        // iOS / Mobile manual deep link fallback
+        if (isMobileDevice()) {
+            const dappUrl = window.location.href;
+            const encoded = encodeURIComponent(dappUrl);
+            window.location.href = `https://phantom.app/ul/browse/${encoded}?ref=${encoded}`;
+            return;
         }
+
+        throw new Error("Phantom connection failed");
+
     } catch (err) {
-        console.error("❌ Phantom connection failed:", err);
+        console.error("Phantom connect failed:", err);
 
         const mobile = isMobileDevice();
         let msg = "Failed to connect to Phantom wallet.";
@@ -475,7 +473,7 @@ async function handlePhantomConnect() {
     }
 }
 
-// ====================== CREATE WALLET (Google) — with better visual feedback ======================
+// ====================== CREATE WALLET (Google) ======================
 async function handleCreateWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
@@ -487,13 +485,11 @@ async function handleCreateWallet() {
     window.__isConnecting = true;
 
     try {
-        console.log("🚀 Starting Create Wallet (Google Embedded via SDK)...");
         const sdk = await getPhantomSDK();
         const result = await sdk.connect({ provider: "google" });
 
         const publicKey = result.addresses?.[0]?.address;
         if (publicKey) {
-            console.log("✅ Embedded wallet created:", publicKey);
             setWalletState(true, publicKey, "google");
         }
     } catch (err) {
@@ -514,7 +510,7 @@ function disconnectWallet() {
 
     clearBalancesOnDisconnect();
 
-    // Only call SDK disconnect when we actually used the SDK for this session
+// Only call SDK disconnect when we actually used the SDK for this session
     const usedSDKFlow = connectionMethod === 'google' || connectionMethod === 'apple';
 
     if (phantomSDK && usedSDKFlow) {
@@ -759,7 +755,7 @@ function openGiddySwapModal(mode = 'buy') {
         sellSection.classList.remove('dimmed');
 
         document.getElementById('swap-modal-title').innerHTML =
-            `Buy <span class="text-blue-400">USDC</span> with <span class="text-pink-400">GIDDY</span>`;
+`Buy <span class="text-blue-400">USDC</span> with <span class="text-pink-400">GIDDY</span>`;
 
         const fiftyBtn = document.querySelector('.sell-percent-btn:nth-child(2)');
         if (fiftyBtn) fiftyBtn.classList.add('active');
@@ -971,12 +967,12 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-    // ====================== HANDLE PHANTOM REDIRECT / CALLBACK (CLEANED - NO LOOPS) ======================
+    // ====================== HANDLE RETURN FROM callback.html (FIXED - ACTIVE RESUME) ======================
     const urlParams = new URLSearchParams(window.location.search);
-    const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code') || urlParams.has('state');
+    const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
 
     if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
-        console.log("🔄 Phantom redirect params detected — cleaning URL and letting SDK resume session");
+        console.log("🔄 Returned from callback.html — resuming Google wallet");
         window.__phantomCallbackProcessed = true;
 
         history.replaceState({}, document.title, window.location.pathname);
@@ -985,12 +981,24 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 if (!connectedWallet) {
                     const sdk = await getPhantomSDK();
-                    console.log("Post-redirect: Checking for resumed session...");
+                    const result = await sdk.connect({ provider: "google" });
+                    const publicKey = result.addresses?.[0]?.address;
+
+                    if (publicKey) {
+                        console.log("✅ Embedded wallet resumed from callback:", publicKey);
+                        setWalletState(true, publicKey, "google");
+
+                        setTimeout(() => {
+                            if (connectedWallet && typeof updateWalletBalances === 'function') {
+                                updateWalletBalances();
+                            }
+                        }, 800);
+                    }
                 }
             } catch (err) {
-                console.warn("Post-redirect session check (non-fatal):", err);
+                console.warn("Resume after callback failed (non-critical):", err);
             }
-        }, 700);
+        }, 900);
     }
 
     // Listen for postMessage from callback.html
@@ -1051,7 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setWalletState(false);
 
-    // Legacy injected auto-connect (desktop)
+       // Legacy injected auto-connect (desktop)
     if (provider && provider.isPhantom) {
         if (provider.isConnected && provider.publicKey) {
             const pk = provider.publicKey.toString();
@@ -1135,7 +1143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED (Hybrid Desktop + Mobile Deep Link + Fixed Callback)');
+    console.log('✅ Wallet.js FULLY LOADED (Hybrid + Google Resume Fixed)');
 });
 
 // ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
