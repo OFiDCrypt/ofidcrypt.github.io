@@ -51,7 +51,7 @@ export default defineConfig(({ command }) => {
                     {
                         src: ['*.html', '*.json', '*.txt', '*.xml', '*.ico', '*.PNG', '*.png', 'CNAME', 'robots.txt', 'sitemap.xml'],
                         dest: '.',
-                        ignore: ['wallet.html', 'shop.html', 'callback.html']
+                        ignore: ['index.html', 'wallet.html', 'shop.html', 'callback.html', 'wallet.js']
                     }
                 ]
             })
