@@ -1,6 +1,6 @@
 // ================================================
 // assets/js/webapp/wallet.js - FULL PRODUCTION VERSION
-// Updated with Phantom Browser SDK
+// Updated with Phantom Browser SDK + Mobile Support
 // ================================================
 
 // Buffer polyfill for swap transactions
@@ -44,7 +44,7 @@ async function getPhantomSDK() {
         phantomSDK.on("connect", (data) => {
             console.log("✅ Phantom SDK Connected via", data.provider, data.addresses);
             const addr = data.addresses[0]?.address;
-            if (addr) setWalletState(true, addr);
+            if (addr) setWalletState(true, addr, data.provider);
         });
 
         phantomSDK.on("connect_error", (err) => {
@@ -71,6 +71,7 @@ function getApiUrl(endpoint) {
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 window.connectedWallet = null;
+let connectionMethod = null;   // "injected", "google", "apple"
 
 let provider = null;
 let latestPrices = {};
@@ -306,9 +307,10 @@ function clearBalancesOnDisconnect() {
     }
 }
 
-function setWalletState(isConnected, publicKey = null) {
+function setWalletState(isConnected, publicKey = null, method = null) {
     connectedWallet = isConnected && publicKey ? publicKey : null;
     window.connectedWallet = connectedWallet;
+    if (method) connectionMethod = method;
 
     // Wallet page elements
     const navText = document.getElementById('walletBtnText');
@@ -338,7 +340,7 @@ function setWalletState(isConnected, publicKey = null) {
         if (disconnectOpt) disconnectOpt.classList.remove('hidden');
 
         if (shopDot) shopDot.style.backgroundColor = "#10b981";
-        if (shopText) shopText.innerText = "Wallet Connected";
+        if (shopText) shopText.innerText = method === "google" ? "Embedded Wallet" : "Wallet Connected";
         if (shopBtn) {
             shopBtn.innerText = "Disconnect";
             shopBtn.style.borderColor = "#ef4444";
@@ -402,53 +404,50 @@ async function handlePhantomConnect() {
     if (dropdown) dropdown.classList.add('hidden');
 
     const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl && document.getElementById('walletTotalCard')) {
-        totalValueEl.textContent = 'Connecting...';
-    }
+    if (totalValueEl) totalValueEl.textContent = 'Connecting...';
 
     try {
-        // Prefer classic injected provider first (best for Phantom extension users)
         if (window.phantom?.solana?.isPhantom) {
             const resp = await window.phantom.solana.connect();
             const publicKey = resp.publicKey.toString();
-            setWalletState(true, publicKey);
+            setWalletState(true, publicKey, "injected");
             return;
         }
 
-        // Fallback to Browser SDK
         const sdk = await getPhantomSDK();
         const { addresses } = await sdk.connect({ provider: "injected" });
 
         const publicKey = addresses[0]?.address;
-        if (publicKey) setWalletState(true, publicKey);
+        if (publicKey) setWalletState(true, publicKey, "injected");
     } catch (err) {
         console.error(err);
-        if (err.code === 4001) {
-            alert("Connection cancelled by user.");
-        } else {
-            alert("Failed to connect to Phantom.\n\nPlease make sure Phantom is installed.");
-        }
+        alert("Failed to connect to Phantom extension.");
         showAddWalletPrompt();
     }
 }
 
-// ====================== CREATE WALLET (Google) ======================
+// ====================== CREATE WALLET (Google) - Priority Flow ======================
 async function handleCreateWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    try {
-        const sdk = await getPhantomSDK();
-        const { addresses } = await sdk.connect({ provider: "google" });
+    const totalValueEl = document.getElementById('totalValue');
+    if (totalValueEl) totalValueEl.textContent = 'Connecting...';
 
-        const publicKey = addresses[0]?.address;
+    try {
+        console.log("🚀 Starting Create Wallet (Google Embedded)...");
+        const sdk = await getPhantomSDK();
+        const result = await sdk.connect({ provider: "google" });
+
+        const publicKey = result.addresses?.[0]?.address;
         if (publicKey) {
             console.log("✅ Embedded wallet created:", publicKey);
-            setWalletState(true, publicKey);
+            setWalletState(true, publicKey, "google");
         }
     } catch (err) {
         console.error("Create Wallet failed:", err);
         alert("Google/Apple login failed or cancelled.\n\nPlease try again or use Connect Phantom.");
+        showAddWalletPrompt();
     }
 }
 
@@ -456,15 +455,14 @@ function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    if (phantomSDK) {
-        try {
-            phantomSDK.disconnect();
-        } catch (e) { }
-    }
+    // Explicitly clear balances first (most reliable)
+    clearBalancesOnDisconnect();
 
-    // Also disconnect classic provider if present
+    if (phantomSDK) {
+        try { phantomSDK.disconnect(); } catch (e) {}
+    }
     if (window.phantom?.solana) {
-        window.phantom.solana.disconnect().catch(() => { });
+        window.phantom.solana.disconnect().catch(() => {});
     }
 
     setWalletState(false);
@@ -475,7 +473,6 @@ async function updateWalletBalances() {
     if (!connectedWallet) return;
     if (!document.getElementById('totalValue')) return;
 
-    // Prevent "Add Wallet" placeholder from being applied during auto-connect on refresh
     const totalValueEl = document.getElementById('totalValue');
     if (totalValueEl && totalValueEl.textContent.includes('Add Wallet')) {
         totalValueEl.textContent = 'Calculating...';
@@ -503,9 +500,7 @@ async function updateWalletBalances() {
             const symbolChar = getCurrencySymbol(currentCurrency);
 
             if (qtyEl) {
-                // Only apply K/M formatting to Community token quantities
                 const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
-
                 if (communityTokens.includes(sym) && rawQty >= 1000) {
                     qtyEl.textContent = formatLargeNumber(rawQty);
                 } else {
@@ -514,11 +509,7 @@ async function updateWalletBalances() {
             }
 
             if (valueEl) {
-                if (sym === 'EXPB' || sym === 'GIDDY') {
-                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-                } else {
-                    valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-                }
+                valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
             }
 
             totalValueUSD += usdValue;
@@ -919,29 +910,61 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
+         // ====================== HANDLE PHANTOM CALLBACK FROM GOOGLE/APPLE ======================
+    const urlParams = new URLSearchParams(window.location.search);
+    if ((urlParams.has('phantom_callback') || urlParams.has('code')) && !window.__phantomCallbackProcessed) {
+        console.log("🔄 Phantom Callback Detected - Finalizing embedded wallet...");
+
+        window.__phantomCallbackProcessed = true; // Prevent re-triggering
+
+        // Clean URL immediately
+        history.replaceState({}, document.title, '/wallet.html');
+
+        setTimeout(async () => {
+            try {
+                const sdk = await getPhantomSDK();
+                
+                // Only connect if not already connected
+                if (!connectedWallet) {
+                    const result = await sdk.connect({ provider: "google" });
+                    const publicKey = result.addresses?.[0]?.address;
+
+                    if (publicKey) {
+                        console.log("✅ New Embedded wallet connected from callback:", publicKey);
+                        setWalletState(true, publicKey, "google");
+
+                        if (typeof updateWalletBalances === 'function') {
+                            setTimeout(updateWalletBalances, 800);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Callback processing failed:", err);
+            }
+        }, 1200);
+    }
+
     // ================================================
     // LISTEN FOR CALLBACK FROM GOOGLE/APPLE LOGIN
     // ================================================
-window.addEventListener('message', async (event) => {
-    if (event.data?.type === 'phantom-callback') {
-        if (event.data.success) {
-            console.log("✅ Google/Apple login callback received");
+    window.addEventListener('message', async (event) => {
+        if (event.data?.type === 'phantom-callback') {
+            if (event.data.success) {
+                console.log("✅ Google/Apple login callback received");
 
-            // Give the SDK time to finish internal processing
-            await new Promise(resolve => setTimeout(resolve, 700));
+                await new Promise(resolve => setTimeout(resolve, 700));
 
-            try {
-                // Refresh balances after successful social login
-                if (connectedWallet && typeof updateWalletBalances === 'function') {
-                    console.log("Refreshing wallet balances...");
-                    await updateWalletBalances();
+                try {
+                    if (connectedWallet && typeof updateWalletBalances === 'function') {
+                        console.log("Refreshing wallet balances...");
+                        await updateWalletBalances();
+                    }
+                } catch (err) {
+                    console.error("Error refreshing after callback:", err);
                 }
-            } catch (err) {
-                console.error("Error refreshing after callback:", err);
             }
         }
-    }
-});
+    });
 
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
@@ -990,11 +1013,11 @@ window.addEventListener('message', async (event) => {
     if (provider && provider.isPhantom) {
         if (provider.isConnected && provider.publicKey) {
             const pk = provider.publicKey.toString();
-            setWalletState(true, pk);
+            setWalletState(true, pk, "injected");
         }
 
         provider.on('connect', (publicKey) => {
-            setWalletState(true, publicKey.toString());
+            setWalletState(true, publicKey.toString(), "injected");
         });
 
         provider.on('disconnect', () => {
@@ -1070,7 +1093,7 @@ window.addEventListener('message', async (event) => {
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED with Phantom Browser SDK + Vite Polyfills');
+    console.log('✅ Wallet.js FULLY LOADED with Phantom Browser SDK + Mobile + Callback Handling');
 });
 
 // ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
