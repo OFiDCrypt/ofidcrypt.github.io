@@ -69,6 +69,17 @@ function getApiUrl(endpoint) {
     return url;
 }
 
+// ====================== MEMORY (LOCAL STORAGE) ======================
+window.addEventListener('load', async () => {
+    const savedAddress = localStorage.getItem('wallet_address');
+    const savedMethod = localStorage.getItem('connection_method');
+
+    if (savedAddress && savedMethod) {
+        // Restore UI without re-triggering SDK connect
+        setWalletState(true, savedAddress, savedMethod);
+    }
+});
+
 // ====================== GLOBAL VARIABLES ======================
 let connectedWallet = null;
 window.connectedWallet = null;
@@ -967,65 +978,39 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-    // ====================== HANDLE RETURN FROM callback.html (RELIABLE STATUS UPDATE) ======================
+    // ====================== HANDLE CALLBACK & SESSION RESUMPTION ======================
     const urlParams = new URLSearchParams(window.location.search);
     const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
 
     if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
-        console.log("🔄 Returned from callback.html — finalizing Google wallet connection");
+        console.log("🔄 Returning from callback, re-hydrating session...");
+        window.__phantomCallbackProcessed = true;
 
-        window.__phantomCallbackProcessed = true;   // ← Prevents any loop
-
-        // Clean URL immediately so refresh doesn't re-trigger
+        // 1. Clean URL to prevent loop on refresh
         history.replaceState({}, document.title, window.location.pathname);
 
-        setTimeout(async () => {
+        // 2. Initialize and re-hydrate
+        // Do NOT call .connect() again; the SDK automatically checks localStorage
+        getPhantomSDK().then(async (sdk) => {
             try {
-                const sdk = await getPhantomSDK();
+                // Give the SDK a moment to process the redirect params internally
+                await new Promise(resolve => setTimeout(resolve, 500));
 
-                // Only connect if we don't already have a wallet
-                if (!connectedWallet) {
-                    console.log("🔄 Resuming Google embedded session...");
-
-                    const result = await sdk.connect({
-                        provider: "google"
-                    });
-
-                    const publicKey = result.addresses?.[0]?.address;
-
-                    if (publicKey) {
-                        console.log("✅ Google wallet connected successfully:", publicKey);
-                        setWalletState(true, publicKey, "google");   // This triggers your nice "Embedded Wallet" label
-                    }
-                } else {
-                    console.log("✅ Wallet already connected, skipping re-connect");
-                }
-
-                // Force balance refresh after connection
-                setTimeout(() => {
-                    if (connectedWallet && typeof updateWalletBalances === 'function') {
-                        updateWalletBalances();
-                    }
-                }, 800);
-
+                // Check if we have an active session after redirect
+                // If the user successfully logged in, the 'connect' event listener 
+                // defined in your getPhantomSDK function will fire automatically.
+                console.log("🔄 Session check complete.");
             } catch (err) {
-                console.warn("Could not auto-resume Google session after callback:", err);
-                // Fallback: just show connected state if we already have an address from SDK events
+                console.warn("Session resume attempt failed:", err);
             }
-        }, 1000);
+        });
     }
 
-    // Listen for postMessage from callback.html
+    // 3. Keep this ONLY if you still need it for cross-window communication
     window.addEventListener('message', async (event) => {
         if (event.data?.type === 'phantom-callback') {
             console.log("✅ Received phantom-callback message");
-            if (event.data.success && !connectedWallet) {
-                setTimeout(async () => {
-                    try {
-                        const sdk = await getPhantomSDK();
-                    } catch (e) { }
-                }, 400);
-            }
+            // No need to trigger re-connect here, the SDK handles the state change.
         }
     });
 
