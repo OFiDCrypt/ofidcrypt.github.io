@@ -1,8 +1,8 @@
 // ================================================
-// assets/js/webapp/wallet.js - FULL PRODUCTION VERSION (HYBRID + FIXED)
+// assets/js/webapp/wallet.js - FULL PRODUCTION VERSION
 // ================================================
 
-// Buffer polyfill for swap transactions
+// 1. Buffer polyfill for swap transactions
 if (typeof Buffer === 'undefined') {
     window.Buffer = {
         from: function (value, encoding) {
@@ -22,10 +22,133 @@ if (typeof Buffer === 'undefined') {
     };
 }
 
-// ====================== PHANTOM BROWSER SDK ======================
-import { BrowserSDK, AddressType, waitForPhantomExtension } from "@phantom/browser-sdk";
-
+// 2. Global Variables
 let phantomSDK = null;
+let connectedWallet = null;
+window.connectedWallet = null;
+let connectionMethod = null;
+let provider = null;
+let latestPrices = {};
+let currentLockBaseQuantity = 0;
+
+// 3. UI Helpers
+// ====================== UI HELPERS ======================
+function setWalletState(isConnected, publicKey = null, method = null) {
+    // 1. Update Global State
+    connectedWallet = isConnected && publicKey ? publicKey : null;
+    window.connectedWallet = connectedWallet;
+    
+    if (method) {
+        connectionMethod = method;
+    } else if (!isConnected) {
+        connectionMethod = null;
+    }
+    window.connectionMethod = connectionMethod;
+
+    // 2. Persist to LocalStorage (Crucial for mobile redirect stability)
+    if (isConnected && connectedWallet) {
+        localStorage.setItem('wallet_address', connectedWallet);
+        localStorage.setItem('connection_method', connectionMethod || 'injected');
+    } else {
+        localStorage.removeItem('wallet_address');
+        localStorage.removeItem('connection_method');
+    }
+
+    // 3. Wallet page elements
+    const navText = document.getElementById('walletBtnText');
+    const navBtn = document.getElementById('addWalletBtn');
+    const chevron = document.getElementById('chevron');
+    const statusBar = document.getElementById('connectedStatus');
+    const addrEl = document.getElementById('connectedAddress');
+    const connectOpt = document.getElementById('connectOption');
+    const createOpt = document.getElementById('createWalletOption');
+    const disconnectOpt = document.getElementById('disconnectOption');
+
+    // 4. Shop page elements
+    const shopDot = document.getElementById('status-dot');
+    const shopText = document.getElementById('status-text');
+    const shopBtn = document.getElementById('connect-btn');
+
+    if (isConnected && connectedWallet) {
+        const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
+
+        if (navText) navText.innerText = "CONNECTED";
+        if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
+        if (chevron) chevron.style.display = 'none';
+        if (statusBar) statusBar.classList.remove('hidden');
+        if (addrEl) addrEl.innerText = short;
+        if (connectOpt) connectOpt.classList.add('hidden');
+        if (createOpt) createOpt.classList.add('hidden');
+        if (disconnectOpt) disconnectOpt.classList.remove('hidden');
+
+        if (shopDot) shopDot.style.backgroundColor = "#10b981";
+        if (shopText) shopText.innerText = (method === "google" || method === "apple") ? "Embedded Wallet" : "Wallet Connected";
+        if (shopBtn) {
+            shopBtn.innerText = "Disconnect";
+            shopBtn.style.borderColor = "#ef4444";
+            shopBtn.style.color = "#ef4444";
+            shopBtn.onclick = disconnectWallet;
+        }
+
+        if (typeof updateWalletBalances === 'function') {
+            updateWalletBalances();
+        }
+    } else {
+        if (navText) navText.innerText = "ADD WALLET";
+        if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
+        if (chevron) chevron.style.display = 'inline-block';
+        if (statusBar) statusBar.classList.add('hidden');
+        if (connectOpt) connectOpt.classList.remove('hidden');
+        if (createOpt) createOpt.classList.remove('hidden');
+        if (disconnectOpt) disconnectOpt.classList.add('hidden');
+
+        if (shopDot) shopDot.style.backgroundColor = "#71717a";
+        if (shopText) shopText.innerText = "Wallet Disconnected";
+        if (shopBtn) {
+            shopBtn.innerText = "Connect";
+            shopBtn.style.borderColor = "#8b5cf6";
+            shopBtn.style.color = "#8b5cf6";
+            shopBtn.onclick = handlePhantomConnect;
+        }
+
+        if (typeof clearBalancesOnDisconnect === 'function') {
+            clearBalancesOnDisconnect();
+        }
+    }
+}
+
+function dismissClaimBubble() {
+    const bubble = document.getElementById('mobileClaimBubble');
+    if (bubble) bubble.style.setProperty('display', 'none', 'important');
+    localStorage.setItem('claimBubbleDismissed', 'true');
+}
+
+function toggleCommunityTokens() {
+    const content = document.getElementById('community-content');
+    const icon = document.getElementById('expand-icon');
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        content.style.maxHeight = (content.scrollHeight + 32) + 'px';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+function toggleWorldwideCurrencies() {
+    const content = document.getElementById('worldwide-content');
+    const icon = document.getElementById('worldwide-expand-icon');
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        content.style.maxHeight = (content.scrollHeight + 32) + 'px';
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+// 4. Phantom SDK & API Config
+import { BrowserSDK, AddressType } from "@phantom/browser-sdk";
 
 async function getPhantomSDK() {
     if (!phantomSDK) {
@@ -33,25 +156,17 @@ async function getPhantomSDK() {
             providers: ["injected", "google", "apple"],
             addressTypes: [AddressType.solana],
             appId: "62ccac9b-8746-42db-8a6d-45e2c97f7f58",
-            authOptions: {
-                redirectUrl: `${window.location.origin}/callback.html`,
-            },
+            authOptions: { redirectUrl: `${window.location.origin}/callback.html` },
             autoConnect: true,
         });
 
         phantomSDK.on("connect", (data) => {
             console.log("✅ Phantom SDK Connected via", data.provider, data.addresses);
             const addr = data.addresses?.[0]?.address;
-            if (addr) {
-                const method = data.provider || "injected";
-                setWalletState(true, addr, method);
-            }
+            if (addr) setWalletState(true, addr, data.provider || "injected");
         });
 
-        phantomSDK.on("connect_error", (err) => {
-            console.error("❌ SDK Connect Error:", err);
-        });
-
+        phantomSDK.on("connect_error", (err) => console.error("❌ SDK Connect Error:", err));
         phantomSDK.on("disconnect", () => {
             console.log("🔌 Phantom SDK Disconnected");
             setWalletState(false);
@@ -60,48 +175,28 @@ async function getPhantomSDK() {
     return phantomSDK;
 }
 
-// ====================== DYNAMIC API CONFIG ======================
 function getApiUrl(endpoint) {
-    let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
     const base = (window.CONFIG && window.CONFIG.BASE) ? window.CONFIG.BASE : "http://localhost:3000";
-    const url = base + clean;
-    console.log("🔗 [wallet.js] Fetching:", url);
-    return url;
+    return base + (endpoint.startsWith('/') ? endpoint : '/' + endpoint);
 }
 
-// ====================== MEMORY / CALLBACK (LOCAL STORAGE) ======================
+// 5. Initialization (Mobile/Desktop Sync)
 window.addEventListener('load', async () => {
-    // 1. Check for the cached code from the callback
-    const cachedCode = localStorage.getItem('phantom_auth_code');
-    
-    // 2. Clear it immediately so it doesn't re-trigger on next load
-    if (cachedCode) {
-        localStorage.removeItem('phantom_auth_code');
-    }
+    // Clear temp auth code
+    if (localStorage.getItem('phantom_auth_code')) localStorage.removeItem('phantom_auth_code');
 
-    // 3. Restore UI state from saved address
+    // Restore UI from storage
     const savedAddress = localStorage.getItem('wallet_address');
     const savedMethod = localStorage.getItem('connection_method');
-    if (savedAddress && savedMethod) {
-        setWalletState(true, savedAddress, savedMethod);
-    }
+    if (savedAddress && savedMethod) setWalletState(true, savedAddress, savedMethod);
 
-    // 4. If we have a cached code, initialize the SDK
-    if (cachedCode) {
-        console.log("🔄 Resuming session via cached code...");
-        const sdk = await getPhantomSDK();
-        // The SDK internal logic will pick up the auth code from the URL or state
+    // Sync with SDK session
+    const sdk = await getPhantomSDK();
+    if (sdk.isLoggedIn) {
+        const addr = sdk.publicKey?.toBase58();
+        if (addr) setWalletState(true, addr, "google");
     }
 });
-
-// ====================== GLOBAL VARIABLES ======================
-let connectedWallet = null;
-window.connectedWallet = null;
-let connectionMethod = null;
-
-let provider = null;
-let latestPrices = {};
-let currentLockBaseQuantity = 0;
 
 // ====================== CURRENCY SYSTEM (CAD + USD + MXN + NGN) ======================
 let lastTotalValue = 0;
@@ -272,41 +367,6 @@ function resetRedeemForm() {
     }
 }
 
-// ====================== UI HELPER FUNCTIONS ======================
-function dismissClaimBubble() {
-    const bubble = document.getElementById('mobileClaimBubble');
-    if (bubble) {
-        bubble.style.setProperty('display', 'none', 'important');
-    }
-    localStorage.setItem('claimBubbleDismissed', 'true');
-}
-
-function toggleCommunityTokens() {
-    const content = document.getElementById('community-content');
-    const icon = document.getElementById('expand-icon');
-
-    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-        content.style.maxHeight = '0px';
-        icon.style.transform = 'rotate(0deg)';
-    } else {
-        content.style.maxHeight = (content.scrollHeight + 32) + 'px';
-        icon.style.transform = 'rotate(180deg)';
-    }
-}
-
-function toggleWorldwideCurrencies() {
-    const content = document.getElementById('worldwide-content');
-    const icon = document.getElementById('worldwide-expand-icon');
-
-    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-        content.style.maxHeight = '0px';
-        icon.style.transform = 'rotate(0deg)';
-    } else {
-        content.style.maxHeight = (content.scrollHeight + 32) + 'px';
-        icon.style.transform = 'rotate(180deg)';
-    }
-}
-
 // ====================== CENTRALIZED WALLET STATE + CLEAR LOGIC ======================
 function clearBalancesOnDisconnect() {
     const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
@@ -330,74 +390,6 @@ function clearBalancesOnDisconnect() {
     const totalValueEl = document.getElementById('totalValue');
     if (totalValueEl) {
         totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
-    }
-}
-
-function setWalletState(isConnected, publicKey = null, method = null) {
-    connectedWallet = isConnected && publicKey ? publicKey : null;
-    window.connectedWallet = connectedWallet;
-    if (method) connectionMethod = method;
-
-    window.connectionMethod = connectionMethod;
-
-    // Wallet page elements
-    const navText = document.getElementById('walletBtnText');
-    const navBtn = document.getElementById('addWalletBtn');
-    const chevron = document.getElementById('chevron');
-    const statusBar = document.getElementById('connectedStatus');
-    const addrEl = document.getElementById('connectedAddress');
-    const connectOpt = document.getElementById('connectOption');
-    const createOpt = document.getElementById('createWalletOption');
-    const disconnectOpt = document.getElementById('disconnectOption');
-
-    // Shop page elements
-    const shopDot = document.getElementById('status-dot');
-    const shopText = document.getElementById('status-text');
-    const shopBtn = document.getElementById('connect-btn');
-
-    if (isConnected && connectedWallet) {
-        const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
-
-        if (navText) navText.innerText = "CONNECTED";
-        if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
-        if (chevron) chevron.style.display = 'none';
-        if (statusBar) statusBar.classList.remove('hidden');
-        if (addrEl) addrEl.innerText = short;
-        if (connectOpt) connectOpt.classList.add('hidden');
-        if (createOpt) createOpt.classList.add('hidden');
-        if (disconnectOpt) disconnectOpt.classList.remove('hidden');
-
-        if (shopDot) shopDot.style.backgroundColor = "#10b981";
-        if (shopText) shopText.innerText = (method === "google" || method === "apple") ? "Embedded Wallet" : "Wallet Connected";
-        if (shopBtn) {
-            shopBtn.innerText = "Disconnect";
-            shopBtn.style.borderColor = "#ef4444";
-            shopBtn.style.color = "#ef4444";
-            shopBtn.onclick = disconnectWallet;
-        }
-
-        if (typeof updateWalletBalances === 'function') {
-            updateWalletBalances();
-        }
-    } else {
-        if (navText) navText.innerText = "ADD WALLET";
-        if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
-        if (chevron) chevron.style.display = 'inline-block';
-        if (statusBar) statusBar.classList.add('hidden');
-        if (connectOpt) connectOpt.classList.remove('hidden');
-        if (createOpt) createOpt.classList.remove('hidden');
-        if (disconnectOpt) disconnectOpt.classList.add('hidden');
-
-        if (shopDot) shopDot.style.backgroundColor = "#71717a";
-        if (shopText) shopText.innerText = "Wallet Disconnected";
-        if (shopBtn) {
-            shopBtn.innerText = "Connect";
-            shopBtn.style.borderColor = "#8b5cf6";
-            shopBtn.style.color = "#8b5cf6";
-            shopBtn.onclick = handlePhantomConnect;
-        }
-
-        clearBalancesOnDisconnect();
     }
 }
 
