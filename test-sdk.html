@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDK Test</title>
+    <style>
+        body { font-family: system-ui; padding: 40px; background: #111; color: #fff; }
+        button { padding: 12px 24px; font-size: 16px; margin: 10px; }
+        pre { background: #222; padding: 20px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Phantom Browser SDK Test</h1>
+    
+    <button onclick="testStaticImport()">Test Static Import</button>
+    <button onclick="testDynamicImport()">Test Dynamic Import</button>
+    
+    <pre id="output">Click a button to test...</pre>
+
+    <script type="module">
+        const output = document.getElementById('output');
+
+        // Static Import Test
+        async function testStaticImport() {
+            output.textContent = 'Trying static import...';
+            try {
+                const mod = await import("@phantom/browser-sdk");
+                output.textContent = '✅ Static import SUCCESS!\n' + JSON.stringify(Object.keys(mod), null, 2);
+            } catch (err) {
+                output.textContent = '❌ Static import FAILED:\n' + err.message;
+                console.error(err);
+            }
+        }
+
+        // Dynamic Import Test
+        async function testDynamicImport() {
+            output.textContent = 'Trying dynamic import...';
+            try {
+                // @vite-ignore
+                const mod = await import("@phantom/browser-sdk");
+                output.textContent = '✅ Dynamic import SUCCESS!\n' + JSON.stringify(Object.keys(mod), null, 2);
+            } catch (err) {
+                output.textContent = '❌ Dynamic import FAILED:\n' + err.message;
+                console.error(err);
+            }
+        }
+
+        // Auto test on load
+        window.testStaticImport = testStaticImport;
+        window.testDynamicImport = testDynamicImport;
+
+        console.log('%c[SDK Test] Page loaded. Click buttons to test imports.', 'color: #888');
+    </script>
+</body>
+</html>
