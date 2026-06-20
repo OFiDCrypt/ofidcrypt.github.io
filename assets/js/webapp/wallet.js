@@ -1,6 +1,6 @@
 // ================================================
 // assets/js/webapp/wallet.js - FULL PRODUCTION VERSION
-// Updated with Phantom Browser SDK + Event Listeners
+// Updated with Phantom Browser SDK
 // ================================================
 
 // Buffer polyfill for swap transactions
@@ -920,42 +920,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
     // ================================================
-    // EVENT LISTENERS (Replaces onclick attributes)
+    // LISTEN FOR CALLBACK FROM GOOGLE/APPLE LOGIN
     // ================================================
-    const backBtn = document.getElementById('backBtn');
-    if (backBtn) backBtn.addEventListener('click', () => history.back());
+window.addEventListener('message', async (event) => {
+    if (event.data?.type === 'phantom-callback') {
+        if (event.data.success) {
+            console.log("✅ Google/Apple login callback received");
 
-    const claimGiddyBtn = document.getElementById('claimGiddyBtn');
-    if (claimGiddyBtn) claimGiddyBtn.addEventListener('click', claimBonus);
+            // Give the SDK time to finish internal processing
+            await new Promise(resolve => setTimeout(resolve, 700));
 
-    const profileBtn = document.getElementById('profileBtn');
-    if (profileBtn) profileBtn.addEventListener('click', () => {
-        // Add your profile modal/function here if needed
-        console.log('Profile clicked');
-    });
+            try {
+                // Refresh balances after successful social login
+                if (connectedWallet && typeof updateWalletBalances === 'function') {
+                    console.log("Refreshing wallet balances...");
+                    await updateWalletBalances();
+                }
+            } catch (err) {
+                console.error("Error refreshing after callback:", err);
+            }
+        }
+    }
+});
 
-    const redeemBtn = document.getElementById('redeemBtn');
-    if (redeemBtn) redeemBtn.addEventListener('click', () => openModal('redeem'));
-
-    const connectPhantomBtn = document.getElementById('connectPhantomBtn');
-    if (connectPhantomBtn) connectPhantomBtn.addEventListener('click', handlePhantomConnect);
-
-    const createWalletBtn = document.getElementById('createWalletBtn');
-    if (createWalletBtn) createWalletBtn.addEventListener('click', handleCreateWallet);
-
-    const disconnectWalletBtn = document.getElementById('disconnectWalletBtn');
-    if (disconnectWalletBtn) disconnectWalletBtn.addEventListener('click', disconnectWallet);
-
-    const buyExpbBtn = document.getElementById('buyExpbBtn');
-    if (buyExpbBtn) buyExpbBtn.addEventListener('click', () => openGiddySwapModal('expb-buy'));
-
-    const lockExpbBtn = document.getElementById('lockExpbBtn');
-    if (lockExpbBtn) lockExpbBtn.addEventListener('click', () => openValueLockModal('giddy'));
-
-    const lockGiddyBtn = document.getElementById('lockGiddyBtn');
-    if (lockGiddyBtn) lockGiddyBtn.addEventListener('click', () => openValueLockModal('dynamic'));
-
-    // Existing redeem form + addWalletBtn listeners (kept from original)
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
         redeemForm.addEventListener('submit', (e) => {
@@ -1069,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         targetCard.style.backgroundColor = "";
                         targetCard.style.boxShadow = "none";
-                    }, 2404);
+                    }, 2400);
                 };
 
                 requestAnimationFrame(() => {
@@ -1083,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED with Phantom Browser SDK + Event Listeners');
+    console.log('✅ Wallet.js FULLY LOADED with Phantom Browser SDK + Vite Polyfills');
 });
 
 // ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================

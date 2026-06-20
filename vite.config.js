@@ -14,7 +14,15 @@ export default defineConfig(({ command }) => {
 
         build: {
             outDir: 'dist',
-            emptyOutDir: true
+            emptyOutDir: true,
+            rollupOptions: {
+                input: {
+                    // Only the pages that need bundling + SDK
+                    wallet: resolve(__dirname, 'wallet.html'),
+                    shop: resolve(__dirname, 'shop.html'),
+                    callback: resolve(__dirname, 'callback.html'),
+                }
+            }
         },
 
         server: {
