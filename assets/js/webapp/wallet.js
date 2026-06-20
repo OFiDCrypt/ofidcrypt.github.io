@@ -69,14 +69,28 @@ function getApiUrl(endpoint) {
     return url;
 }
 
-// ====================== MEMORY (LOCAL STORAGE) ======================
+// ====================== MEMORY / CALLBACK (LOCAL STORAGE) ======================
 window.addEventListener('load', async () => {
+    // 1. Check for the cached code from the callback
+    const cachedCode = localStorage.getItem('phantom_auth_code');
+    
+    // 2. Clear it immediately so it doesn't re-trigger on next load
+    if (cachedCode) {
+        localStorage.removeItem('phantom_auth_code');
+    }
+
+    // 3. Restore UI state from saved address
     const savedAddress = localStorage.getItem('wallet_address');
     const savedMethod = localStorage.getItem('connection_method');
-
     if (savedAddress && savedMethod) {
-        // Restore UI without re-triggering SDK connect
         setWalletState(true, savedAddress, savedMethod);
+    }
+
+    // 4. If we have a cached code, initialize the SDK
+    if (cachedCode) {
+        console.log("🔄 Resuming session via cached code...");
+        const sdk = await getPhantomSDK();
+        // The SDK internal logic will pick up the auth code from the URL or state
     }
 });
 

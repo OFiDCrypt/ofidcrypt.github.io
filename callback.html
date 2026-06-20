@@ -36,29 +36,29 @@
     </div>
 
     <script>
-        function handleCallback() {
-            const params = new URLSearchParams(window.location.search);
-            const code = params.get('code');
-            const error = params.get('error');
+    window.addEventListener('load', () => {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        const error = params.get('error');
 
-            console.log("📨 Phantom Callback received:", { code: !!code, error });
-
-            if (error) {
-                document.getElementById('status').textContent = "Login failed";
-                document.getElementById('status').style.color = "#ef4444";
-            } else {
-                document.getElementById('status').textContent = "Success! Redirecting...";
-            }
-
-            // Clean redirect back to wallet with the code
-            const redirectUrl = `${window.location.origin}/wallet.html?phantom_callback=1&code=${encodeURIComponent(code || '')}`;
-
-            setTimeout(() => {
-                window.location.href = redirectUrl;
-            }, 600);
+        if (error) {
+            document.getElementById('status').textContent = "Login failed: " + error;
+            return;
         }
 
-        window.addEventListener('load', handleCallback);
-    </script>
+        // Store the code in localStorage to ensure the main page can grab it
+        // even if URL params get mangled by mobile redirect behaviors
+        if (code) {
+            localStorage.setItem('phantom_auth_code', code);
+        }
+
+        // Use location.replace to avoid creating extra entries in browser history
+        // which helps prevent "back-button" loops
+        const target = '/wallet.html' + window.location.search;
+        setTimeout(() => {
+            window.location.replace(target);
+        }, 300);
+    });
+</script>
 </body>
 </html>
