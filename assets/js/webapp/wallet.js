@@ -984,26 +984,38 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-    // ====================== GOOGLE CALLBACK HANDLER (SDK + FALLBACK) ======================
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
+// ====================== GOOGLE CALLBACK - AGGRESSIVE FIX ======================
+const urlParams = new URLSearchParams(window.location.search);
+const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
 
-    if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
-        console.log("🔄 Returned from callback.html");
-        window.__phantomCallbackProcessed = true;
-        history.replaceState({}, document.title, window.location.pathname);
+if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
+    console.log("🔄 Returned from callback.html");
+    window.__phantomCallbackProcessed = true;
+    history.replaceState({}, document.title, window.location.pathname);
 
-        // Wait a bit, then restore from localStorage
-        setTimeout(() => {
-            const savedAddress = localStorage.getItem('wallet_address');
-            if (savedAddress) {
-                console.log("✅ Restoring Google wallet from localStorage:", savedAddress);
-                setWalletState(true, savedAddress, "google");
-            } else {
-                console.warn("No saved address found after callback");
-            }
-        }, 900);
-    }
+    setTimeout(() => {
+        const savedAddress = localStorage.getItem('wallet_address');
+
+        if (savedAddress) {
+            console.log("✅ Found address in localStorage:", savedAddress);
+            setWalletState(true, savedAddress, "google");
+
+            // Force UI update as backup (in case setWalletState misses something)
+            const navText = document.getElementById('walletBtnText');
+            const navBtn = document.getElementById('addWalletBtn');
+            const statusBar = document.getElementById('connectedStatus');
+            const addrEl = document.getElementById('connectedAddress');
+
+            if (navText) navText.innerText = "CONNECTED";
+            if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
+            if (statusBar) statusBar.classList.remove('hidden');
+            if (addrEl) addrEl.innerText = `${savedAddress.slice(0, 6)}...${savedAddress.slice(-4)}`;
+
+        } else {
+            console.warn("❌ No wallet_address found in localStorage after callback");
+        }
+    }, 1400);
+}
 
     // 3. Keep this ONLY if you still need it for cross-window communication
     window.addEventListener('message', async (event) => {
