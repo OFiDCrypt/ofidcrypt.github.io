@@ -37,7 +37,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     // 1. Update Global State
     connectedWallet = isConnected && publicKey ? publicKey : null;
     window.connectedWallet = connectedWallet;
-    
+
     if (method) {
         connectionMethod = method;
     } else if (!isConnected) {
@@ -984,32 +984,25 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-    // ====================== HANDLE CALLBACK & SESSION RESUMPTION ======================
+    // ====================== GOOGLE CALLBACK HANDLER (SDK + FALLBACK) ======================
     const urlParams = new URLSearchParams(window.location.search);
     const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
 
     if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
-        console.log("🔄 Returning from callback, re-hydrating session...");
+        console.log("🔄 Returned from callback.html");
         window.__phantomCallbackProcessed = true;
-
-        // 1. Clean URL to prevent loop on refresh
         history.replaceState({}, document.title, window.location.pathname);
 
-        // 2. Initialize and re-hydrate
-        // Do NOT call .connect() again; the SDK automatically checks localStorage
-        getPhantomSDK().then(async (sdk) => {
-            try {
-                // Give the SDK a moment to process the redirect params internally
-                await new Promise(resolve => setTimeout(resolve, 500));
-
-                // Check if we have an active session after redirect
-                // If the user successfully logged in, the 'connect' event listener 
-                // defined in your getPhantomSDK function will fire automatically.
-                console.log("🔄 Session check complete.");
-            } catch (err) {
-                console.warn("Session resume attempt failed:", err);
+        // Wait a bit, then restore from localStorage
+        setTimeout(() => {
+            const savedAddress = localStorage.getItem('wallet_address');
+            if (savedAddress) {
+                console.log("✅ Restoring Google wallet from localStorage:", savedAddress);
+                setWalletState(true, savedAddress, "google");
+            } else {
+                console.warn("No saved address found after callback");
             }
-        });
+        }, 900);
     }
 
     // 3. Keep this ONLY if you still need it for cross-window communication
