@@ -315,7 +315,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
 
     window.connectionMethod = connectionMethod;
 
-     // Wallet page elements
+    // Wallet page elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -510,14 +510,14 @@ function disconnectWallet() {
 
     clearBalancesOnDisconnect();
 
-// Only call SDK disconnect when we actually used the SDK for this session
+    // Only call SDK disconnect when we actually used the SDK for this session
     const usedSDKFlow = connectionMethod === 'google' || connectionMethod === 'apple';
 
     if (phantomSDK && usedSDKFlow) {
-        try { phantomSDK.disconnect(); } catch (e) {}
+        try { phantomSDK.disconnect(); } catch (e) { }
     }
     if (window.phantom?.solana) {
-        window.phantom.solana.disconnect().catch(() => {});
+        window.phantom.solana.disconnect().catch(() => { });
     }
 
     setWalletState(false);
@@ -755,7 +755,7 @@ function openGiddySwapModal(mode = 'buy') {
         sellSection.classList.remove('dimmed');
 
         document.getElementById('swap-modal-title').innerHTML =
-`Buy <span class="text-blue-400">USDC</span> with <span class="text-pink-400">GIDDY</span>`;
+            `Buy <span class="text-blue-400">USDC</span> with <span class="text-pink-400">GIDDY</span>`;
 
         const fiftyBtn = document.querySelector('.sell-percent-btn:nth-child(2)');
         if (fiftyBtn) fiftyBtn.classList.add('active');
@@ -967,12 +967,12 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-    // ====================== HANDLE RETURN FROM callback.html (FIXED - ACTIVE RESUME) ======================
+    // ====================== HANDLE RETURN FROM callback.html (RELIABLE STATUS UPDATE) ======================
     const urlParams = new URLSearchParams(window.location.search);
     const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
 
     if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
-        console.log("🔄 Returned from callback.html — resuming Google wallet");
+        console.log("🔄 Returned from callback.html — finalizing Google wallet connection");
         window.__phantomCallbackProcessed = true;
 
         history.replaceState({}, document.title, window.location.pathname);
@@ -981,24 +981,28 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 if (!connectedWallet) {
                     const sdk = await getPhantomSDK();
+
+                    // Actively resume the session so setWalletState() runs
                     const result = await sdk.connect({ provider: "google" });
                     const publicKey = result.addresses?.[0]?.address;
 
                     if (publicKey) {
-                        console.log("✅ Embedded wallet resumed from callback:", publicKey);
+                        console.log("✅ Google wallet connected with address:", publicKey);
                         setWalletState(true, publicKey, "google");
 
+                        // Extra safety: refresh balances shortly after
                         setTimeout(() => {
                             if (connectedWallet && typeof updateWalletBalances === 'function') {
                                 updateWalletBalances();
                             }
-                        }, 800);
+                        }, 700);
                     }
                 }
             } catch (err) {
-                console.warn("Resume after callback failed (non-critical):", err);
+                console.warn("Google resume after callback:", err);
+                // If it fails here, the autoConnect event might still fire
             }
-        }, 900);
+        }, 850);
     }
 
     // Listen for postMessage from callback.html
@@ -1009,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(async () => {
                     try {
                         const sdk = await getPhantomSDK();
-                    } catch (e) {}
+                    } catch (e) { }
                 }, 400);
             }
         }
@@ -1059,7 +1063,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setWalletState(false);
 
-       // Legacy injected auto-connect (desktop)
+    // Legacy injected auto-connect (desktop)
     if (provider && provider.isPhantom) {
         if (provider.isConnected && provider.publicKey) {
             const pk = provider.publicKey.toString();
