@@ -973,36 +973,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
         console.log("🔄 Returned from callback.html — finalizing Google wallet connection");
-        window.__phantomCallbackProcessed = true;
 
+        window.__phantomCallbackProcessed = true;   // ← Prevents any loop
+
+        // Clean URL immediately so refresh doesn't re-trigger
         history.replaceState({}, document.title, window.location.pathname);
 
         setTimeout(async () => {
             try {
-                if (!connectedWallet) {
-                    const sdk = await getPhantomSDK();
+                const sdk = await getPhantomSDK();
 
-                    // Actively resume the session so setWalletState() runs
-                    const result = await sdk.connect({ provider: "google" });
+                // Only connect if we don't already have a wallet
+                if (!connectedWallet) {
+                    console.log("🔄 Resuming Google embedded session...");
+
+                    const result = await sdk.connect({
+                        provider: "google"
+                    });
+
                     const publicKey = result.addresses?.[0]?.address;
 
                     if (publicKey) {
-                        console.log("✅ Google wallet connected with address:", publicKey);
-                        setWalletState(true, publicKey, "google");
-
-                        // Extra safety: refresh balances shortly after
-                        setTimeout(() => {
-                            if (connectedWallet && typeof updateWalletBalances === 'function') {
-                                updateWalletBalances();
-                            }
-                        }, 700);
+                        console.log("✅ Google wallet connected successfully:", publicKey);
+                        setWalletState(true, publicKey, "google");   // This triggers your nice "Embedded Wallet" label
                     }
+                } else {
+                    console.log("✅ Wallet already connected, skipping re-connect");
                 }
+
+                // Force balance refresh after connection
+                setTimeout(() => {
+                    if (connectedWallet && typeof updateWalletBalances === 'function') {
+                        updateWalletBalances();
+                    }
+                }, 800);
+
             } catch (err) {
-                console.warn("Google resume after callback:", err);
-                // If it fails here, the autoConnect event might still fire
+                console.warn("Could not auto-resume Google session after callback:", err);
+                // Fallback: just show connected state if we already have an address from SDK events
             }
-        }, 850);
+        }, 1000);
     }
 
     // Listen for postMessage from callback.html
@@ -1063,23 +1073,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setWalletState(false);
 
-    // Legacy injected auto-connect (desktop)
+    // ====================== LEGACY PHANTOM INIT (FIRST-TIME POPUP CONTROL) ======================
     if (provider && provider.isPhantom) {
+
+        const wasDisconnected = localStorage.getItem('phantomWasDisconnected') === 'true';
+        const hasConnectedBefore = sessionStorage.getItem('phantomHasConnected') === 'true';
+
+        // Restore connected state if already connected
         if (provider.isConnected && provider.publicKey) {
-            const pk = provider.publicKey.toString();
-            setWalletState(true, pk, "injected");
+            setWalletState(true, provider.publicKey.toString(), "injected");
         }
 
+        // Event listeners
         provider.on('connect', (publicKey) => {
             setWalletState(true, publicKey.toString(), "injected");
+            sessionStorage.setItem('phantomHasConnected', 'true');
+            localStorage.removeItem('phantomWasDisconnected');
         });
 
         provider.on('disconnect', () => {
             setWalletState(false);
+            localStorage.setItem('phantomWasDisconnected', 'true');
         });
 
+        // Only try to connect if we're not already connected
         if (!provider.isConnected) {
-            provider.connect({ onlyIfTrusted: true }).catch(() => { });
+            if (!hasConnectedBefore && !wasDisconnected) {
+                // First time ever → show popup in Phantom app
+                console.log("🔵 First-time Phantom deep link → showing connection popup");
+                provider.connect({ onlyIfTrusted: false }).catch(() => { });
+                sessionStorage.setItem('phantomHasConnected', 'true');
+            } else {
+                // Normal visits or after disconnect → silent reconnect only
+                provider.connect({ onlyIfTrusted: true }).catch(() => { });
+            }
         }
     }
 
