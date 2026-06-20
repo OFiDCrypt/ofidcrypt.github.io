@@ -6,11 +6,17 @@ export default defineConfig({
     root: '.',
     publicDir: 'public',
 
+    optimizeDeps: {
+        include: ['@phantom/browser-sdk', 'buffer'],
+        force: true
+    },
+
     build: {
         outDir: 'dist',
         emptyOutDir: true,
         rollupOptions: {
             input: {
+                index: resolve(__dirname, 'index.html'),
                 wallet: resolve(__dirname, 'wallet.html'),
                 shop: resolve(__dirname, 'shop.html'),
                 callback: resolve(__dirname, 'callback.html'),
@@ -19,49 +25,48 @@ export default defineConfig({
     },
 
     plugins: [
-        viteStaticCopy({
-            targets: [
-                {
-                    src: 'assets',
-                    dest: '.',
-                    overwrite: true,
-                    ignore: [
-                        'js/webapp/wallet.js',
-                        'js/webapp/shop.js',
-                        'js/webapp/swapUtils.js'
-                    ]
-                },
-
-                // Copy all other static folders
-                { src: 'docs', dest: '.' },
-                { src: 'pages', dest: '.' },
-                { src: 'explore', dest: '.' },
-                { src: 'game', dest: '.' },
-                { src: 'promote', dest: '.' },
-
-                // Copy ALL root HTML files + other static files
-                {
-                    src: [
-                        '*.html',
-                        '*.json',
-                        '*.txt',
-                        '*.xml',
-                        '*.ico',
-                        '*.PNG',
-                        '*.png',
-                        'CNAME',
-                        'robots.txt',
-                        'sitemap.xml'
-                    ],
-                    dest: '.',
-                    ignore: [
-                        'wallet.html',      // Already handled as entry point
-                        'shop.html',        // Already handled as entry point
-                        'callback.html'     // Already handled as entry point
-                    ]
-                }
-            ]
-        })
+        {
+            ...viteStaticCopy({
+                targets: [
+                    {
+                        src: 'assets',
+                        dest: '.',
+                        overwrite: true,
+                        ignore: [
+                            'js/webapp/wallet.js',
+                            'js/webapp/shop.js',
+                            'js/webapp/swapUtils.js'
+                        ]
+                    },
+                    { src: 'docs', dest: '.' },
+                    { src: 'pages', dest: '.' },
+                    { src: 'explore', dest: '.' },
+                    { src: 'game', dest: '.' },
+                    { src: 'promote', dest: '.' },
+                    {
+                        src: [
+                            '*.html',
+                            '*.json',
+                            '*.txt',
+                            '*.xml',
+                            '*.ico',
+                            '*.PNG',
+                            '*.png',
+                            'CNAME',
+                            'robots.txt',
+                            'sitemap.xml'
+                        ],
+                        dest: '.',
+                        ignore: [
+                            'wallet.html',
+                            'shop.html',
+                            'callback.html'
+                        ]
+                    }
+                ]
+            }),
+            apply: 'build'
+        }
     ],
 
     server: {
