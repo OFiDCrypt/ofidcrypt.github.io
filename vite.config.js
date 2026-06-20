@@ -17,7 +17,6 @@ export default defineConfig(({ command }) => {
             emptyOutDir: true,
             rollupOptions: {
                 input: {
-                    // Only the pages that need bundling + SDK
                     wallet: resolve(__dirname, 'wallet.html'),
                     shop: resolve(__dirname, 'shop.html'),
                     callback: resolve(__dirname, 'callback.html'),
@@ -58,9 +57,34 @@ export default defineConfig(({ command }) => {
                     { src: 'explore', dest: '.' },
                     { src: 'game', dest: '.' },
                     { src: 'promote', dest: '.' },
+
+                    // Explicit list of HTML files (replaced *.html)
                     {
                         src: [
-                            '*.html',
+                            'index.html',
+                            '404.html',
+                            'bouncyball.html',
+                            'cashlinks.html',
+                            'cashlinks-updater.html',
+                            'discover.html',
+                            'explore.html',
+                            'kincommunity.html',
+                            'ofidkid.html',
+                            'ofidtales.html',
+                            'onegiddy.html',
+                            'posts-page2.html',
+                            'promote.html',
+                            'redeem.html',
+                            'redeem-backup.html',
+                            'swap-test.html',
+                            'test-sdk.html'
+                        ],
+                        dest: '.'
+                    },
+
+                    // Keep all the other root static files
+                    {
+                        src: [
                             '*.json',
                             '*.txt',
                             '*.xml',
@@ -71,12 +95,7 @@ export default defineConfig(({ command }) => {
                             'robots.txt',
                             'sitemap.xml'
                         ],
-                        dest: '.',
-                        ignore: [
-                            'wallet.html',
-                            'shop.html',
-                            'callback.html'
-                        ]
+                        dest: '.'
                     }
                 ]
             })
