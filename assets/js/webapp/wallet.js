@@ -1,5 +1,6 @@
 // ================================================
 // assets/js/webapp/wallet.js - FULL PRODUCTION VERSION
+// Updated with Phantom Browser SDK
 // ================================================
 
 // Buffer polyfill for swap transactions
@@ -20,6 +21,42 @@ if (typeof Buffer === 'undefined') {
             return value;
         }
     };
+}
+
+// ====================== PHANTOM BROWSER SDK ======================
+import { BrowserSDK, AddressType } from "@phantom/browser-sdk";
+
+let phantomSDK = null;
+
+async function getPhantomSDK() {
+    if (!phantomSDK) {
+        phantomSDK = new BrowserSDK({
+            providers: ["injected", "google", "apple"],
+            addressTypes: [AddressType.solana],
+            appId: "62ccac9b-8746-42db-8a6d-45e2c97f7f58",
+            authOptions: {
+                redirectUrl: `${window.location.origin}/callback.html`,
+            },
+            autoConnect: true,
+        });
+
+        // Event listeners for better state management
+        phantomSDK.on("connect", (data) => {
+            console.log("✅ Phantom SDK Connected via", data.provider, data.addresses);
+            const addr = data.addresses[0]?.address;
+            if (addr) setWalletState(true, addr);
+        });
+
+        phantomSDK.on("connect_error", (err) => {
+            console.error("❌ SDK Connect Error:", err);
+        });
+
+        phantomSDK.on("disconnect", () => {
+            console.log("🔌 Phantom SDK Disconnected");
+            setWalletState(false);
+        });
+    }
+    return phantomSDK;
 }
 
 // ====================== DYNAMIC API CONFIG ======================
@@ -341,7 +378,7 @@ function showAddWalletPrompt() {
     }
 }
 
-// ====================== PHANTOM WALLET INTEGRATION ======================
+// ====================== PHANTOM WALLET INTEGRATION (SDK) ======================
 function toggleWalletDropdown() {
     const dropdown = document.getElementById('walletDropdown');
     const chevron = document.getElementById('chevron');
@@ -359,55 +396,59 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// ====================== CONNECT PHANTOM (Injected) ======================
 async function handlePhantomConnect() {
-    const dappUrl = "https://www.ofidcrypt.com/wallet.html";
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
     const totalValueEl = document.getElementById('totalValue');
     if (totalValueEl && document.getElementById('walletTotalCard')) {
-        totalValueEl.textContent = 'Calculating...';
+        totalValueEl.textContent = 'Connecting...';
     }
 
-    const phantomProvider = window.phantom?.solana || window.solana;
-
-    if (phantomProvider && phantomProvider.isPhantom) {
-        try {
-            const resp = await phantomProvider.connect();
+    try {
+        // Prefer classic injected provider first (best for Phantom extension users)
+        if (window.phantom?.solana?.isPhantom) {
+            const resp = await window.phantom.solana.connect();
             const publicKey = resp.publicKey.toString();
             setWalletState(true, publicKey);
-        } catch (err) {
-            console.error(err);
-            if (err.code === 4001) {
-                alert("Connection cancelled by user.");
-            } else {
-                alert("Failed to connect to Phantom.");
-            }
-            showAddWalletPrompt();
+            return;
         }
-        return;
-    }
 
-    if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-        const encodedUrl = encodeURIComponent(dappUrl);
-        window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedUrl}`;
-        return;
-    }
+        // Fallback to Browser SDK
+        const sdk = await getPhantomSDK();
+        const { addresses } = await sdk.connect({ provider: "injected" });
 
-    alert("Phantom Wallet not detected.\n\nPlease install Phantom from phantom.app");
+        const publicKey = addresses[0]?.address;
+        if (publicKey) setWalletState(true, publicKey);
+    } catch (err) {
+        console.error(err);
+        if (err.code === 4001) {
+            alert("Connection cancelled by user.");
+        } else {
+            alert("Failed to connect to Phantom.\n\nPlease make sure Phantom is installed.");
+        }
+        showAddWalletPrompt();
+    }
 }
 
+// ====================== CREATE WALLET (Google) ======================
 async function handleCreateWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
     try {
-        console.log("Starting SDK Google login...");
+        const sdk = await getPhantomSDK();
         const { addresses } = await sdk.connect({ provider: "google" });
-        console.log("Embedded wallet created:", addresses);
+
+        const publicKey = addresses[0]?.address;
+        if (publicKey) {
+            console.log("✅ Embedded wallet created:", publicKey);
+            setWalletState(true, publicKey);
+        }
     } catch (err) {
         console.error("Create Wallet failed:", err);
-        alert("Google/Apple login coming soon.\n\nUse 'Connect Phantom' instead.");
+        alert("Google/Apple login failed or cancelled.\n\nPlease try again or use Connect Phantom.");
     }
 }
 
@@ -415,9 +456,15 @@ function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    const providerLocal = window.phantom?.solana || window.solana;
-    if (providerLocal && typeof providerLocal.disconnect === 'function') {
-        providerLocal.disconnect();
+    if (phantomSDK) {
+        try {
+            phantomSDK.disconnect();
+        } catch (e) { }
+    }
+
+    // Also disconnect classic provider if present
+    if (window.phantom?.solana) {
+        window.phantom.solana.disconnect().catch(() => { });
     }
 
     setWalletState(false);
@@ -872,6 +919,30 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
+    // ================================================
+    // LISTEN FOR CALLBACK FROM GOOGLE/APPLE LOGIN
+    // ================================================
+window.addEventListener('message', async (event) => {
+    if (event.data?.type === 'phantom-callback') {
+        if (event.data.success) {
+            console.log("✅ Google/Apple login callback received");
+
+            // Give the SDK time to finish internal processing
+            await new Promise(resolve => setTimeout(resolve, 700));
+
+            try {
+                // Refresh balances after successful social login
+                if (connectedWallet && typeof updateWalletBalances === 'function') {
+                    console.log("Refreshing wallet balances...");
+                    await updateWalletBalances();
+                }
+            } catch (err) {
+                console.error("Error refreshing after callback:", err);
+            }
+        }
+    }
+});
+
     const redeemForm = document.getElementById('redeem-form');
     if (redeemForm) {
         redeemForm.addEventListener('submit', (e) => {
@@ -999,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    console.log('✅ Wallet.js FULLY LOADED with VITE + Dynamic Localhost + Railway Support');
+    console.log('✅ Wallet.js FULLY LOADED with Phantom Browser SDK + Vite Polyfills');
 });
 
 // ====================== EXPOSE ALL FUNCTIONS TO WINDOW ======================
