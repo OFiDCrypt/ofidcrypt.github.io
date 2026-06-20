@@ -6,22 +6,25 @@ export default defineConfig(({ command }) => {
     const config = {
         root: '.',
         publicDir: 'public',
+
         optimizeDeps: {
             include: ['@phantom/browser-sdk', 'buffer'],
             force: true
         },
+
         build: {
             outDir: 'dist',
             emptyOutDir: true,
             rollupOptions: {
                 input: {
-                    index: resolve(__dirname, 'index.html'),
+                    // Only the pages that need bundling + SDK
                     wallet: resolve(__dirname, 'wallet.html'),
                     shop: resolve(__dirname, 'shop.html'),
                     callback: resolve(__dirname, 'callback.html'),
                 }
             }
         },
+
         server: {
             port: 5173,
             proxy: {
@@ -32,26 +35,48 @@ export default defineConfig(({ command }) => {
                 }
             }
         },
+
         plugins: []
     };
 
-    // Only apply static copy during build
     if (command === 'build') {
         config.plugins.push(
             viteStaticCopy({
                 targets: [
-                    // REMOVED: js/webapp folder references from ignore
-                    // We only copy assets that are NOT processed by Rollup
-                    { src: 'assets', dest: '.' }, 
+                    {
+                        src: 'assets',
+                        dest: '.',
+                        overwrite: true,
+                        ignore: [
+                            'js/webapp/wallet.js',
+                            'js/webapp/shop.js',
+                            'js/webapp/swapUtils.js'
+                        ]
+                    },
                     { src: 'docs', dest: '.' },
                     { src: 'pages', dest: '.' },
                     { src: 'explore', dest: '.' },
                     { src: 'game', dest: '.' },
                     { src: 'promote', dest: '.' },
                     {
-                        src: ['*.html', '*.json', '*.txt', '*.xml', '*.ico', '*.PNG', '*.png', 'CNAME', 'robots.txt', 'sitemap.xml'],
+                        src: [
+                            '*.html',
+                            '*.json',
+                            '*.txt',
+                            '*.xml',
+                            '*.ico',
+                            '*.PNG',
+                            '*.png',
+                            'CNAME',
+                            'robots.txt',
+                            'sitemap.xml'
+                        ],
                         dest: '.',
-                        ignore: ['index.html', 'wallet.html', 'shop.html', 'callback.html', 'wallet.js']
+                        ignore: [
+                            'wallet.html',
+                            'shop.html',
+                            'callback.html'
+                        ]
                     }
                 ]
             })
