@@ -566,9 +566,10 @@
 
 <body>
 
-    <!-- ANTI-FLICKER SCRIPT -->
+    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
         (function () {
+            // Apply dark mode BEFORE the page paints
             if (localStorage.getItem('dark-mode') === 'true') {
                 document.documentElement.classList.add('dark-mode');
                 document.body.classList.add('dark-mode');
@@ -651,6 +652,7 @@
             </ul>
         </nav>
 
+        <!-- MAIN CONTENT AREA -->
         <div id="main">
 
             <!-- Pull to Refresh Indicator -->
@@ -664,6 +666,7 @@
             </div>
 
             <style>
+                /* Pull to Refresh */
                 #pullToRefresh {
                     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                     opacity: 0;
@@ -681,11 +684,11 @@
                 class="relative flex items-center justify-between px-6 pt-5 pb-4 border-b border-purple-700 bg-gradient-to-r from-purple-950 to-black mb-6 min-h-[68px]">
 
                 <div class="flex items-center gap-4 z-10">
-                    <button id="backBtn" class="back-btn flex items-center justify-center !mb-0">
+                    <button onclick="history.back()" class="back-btn flex items-center justify-center !mb-0">
                         <i class="fas fa-arrow-left"></i>
                     </button>
 
-                    <div id="claimGiddyBtn"
+                    <div onclick="claimBonus()"
                         class="hidden md:flex bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm font-bold px-5 py-2.5 rounded-3xl items-center gap-2 cursor-pointer shadow-lg hover:shadow-xl transition-all">
                         <span class="text-xl">🎁</span> Claim $GIDDY
                     </div>
@@ -703,7 +706,7 @@
                     <i id="navPanelTrigger"
                         class="fa-solid fa-bars text-2xl text-white/80 hover:text-white cursor-pointer transition-colors md:hidden"></i>
 
-                    <div id="profileBtn"
+                    <div onclick="showProfile()"
                         class="w-10 h-10 bg-purple-300 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-200 transition-colors overflow-hidden">
                         <img src="/assets/images/webp/ofidcrypt-digitized-logo.webp" alt="OFIDCrypt Logo"
                             class="w-full h-full object-cover" />
@@ -713,34 +716,42 @@
 
             <div class="px-4 pb-12">
 
-                <!-- ACTION BUTTONS SECTION -->
+                <!-- ACTION BUTTONS SECTION - Updated with Phantom Dropdown -->
                 <div class="grid grid-cols-2 gap-4 mb-2 relative">
 
                     <!-- ADD WALLET with Dropdown -->
                     <div class="relative">
                         <button id="addWalletBtn"
-                            class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all active:bg-purple-600 text-white">
-                            <span id="walletBtnText" class="text-white">ADD WALLET</span>
-                            <i class="fas fa-chevron-down text-base transition-transform" id="chevron"></i>
+                            class="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all active:bg-purple-600 text-white"
+                            style="color: #ffffff ;">
+
+                            <span id="walletBtnText" class="text-white" style="color: #ffffff ;">ADD
+                                WALLET</span>
+
+                            <i class="fas fa-chevron-down text-base transition-transform" id="chevron"
+                                style="color: #ffffff ;"></i>
                         </button>
 
                         <!-- Dropdown Menu -->
                         <div id="walletDropdown"
                             class="wallet-dropdown hidden absolute left-0 top-full mt-2 z-50 min-w-[240px] w-full border border-purple-900/50 rounded-xl overflow-hidden">
 
-                            <button id="connectPhantomBtn"
+                            <!-- Connect Phantom Button (Existing) -->
+                            <button onclick="handlePhantomConnect()" id="connectOption"
                                 class="block w-full text-left px-5 py-4 bg-purple-600 hover:bg-purple-700 flex items-center gap-3 text-white font-semibold transition-colors">
                                 <i class="fas fa-plug text-zinc-200"></i>
                                 <div>Connect Phantom</div>
                             </button>
 
-                            <button id="createWalletBtn"
+                            <!-- NEW: Create Wallet Button (Google / Apple) -->
+                            <button onclick="handleCreateWallet()" id="createWalletOption"
                                 class="block w-full text-left px-5 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 flex items-center gap-3 text-white font-semibold transition-colors">
                                 <i class="fas fa-user-plus text-zinc-200"></i>
                                 <div>Create Wallet</div>
                             </button>
 
-                            <button id="disconnectWalletBtn"
+                            <!-- Disconnect Wallet Button -->
+                            <button onclick="disconnectWallet()" id="disconnectOption"
                                 class="hidden w-full text-left px-5 py-4 bg-red-600 hover:bg-red-700 flex items-center gap-3 text-white font-semibold transition-colors">
                                 <i class="fas fa-power-off text-white"></i>
                                 <div>Disconnect Wallet</div>
@@ -748,8 +759,8 @@
                         </div>
                     </div>
 
-                    <!-- REDEEM CODE BUTTON -->
-                    <button id="redeemBtn"
+                    <!-- REDEEM CODE BUTTON - Force white text -->
+                    <button onclick="openModal('redeem')"
                         class="w-full flex items-center justify-center bg-purple-600 hover:bg-purple-700 active:bg-purple-600 font-bold py-4 px-6 rounded-3xl text-lg shadow-lg transition-all text-white">
                         <span>REDEEM CODE</span>
                     </button>
@@ -759,7 +770,9 @@
                 <div id="connectedStatus"
                     class="hidden mb-6 px-4 py-3 bg-emerald-900/30 border border-emerald-500/30 rounded-2xl flex items-center gap-3">
                     <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-                    <span id="connectedAddress" class="font-mono text-sm" style="color: var(--text-color, #ffffff);"></span>
+                    <span id="connectedAddress" class="font-mono text-sm" style="color: var(--text-color, #ffffff) ;">
+                        H5BFAK...FXqc
+                    </span>
                 </div>
 
                 <!-- TOTAL BALANCE CARD SECTION -->
@@ -804,13 +817,14 @@
                     </div>
                 </div>
 
+                <!-- Added normal-case to break any parent styles -->
                 <h1 class="text-4xl sm:text-5xl font-extrabold text-left ml-4 mb-5 tracking-tight normal-case"
                     style="color: var(--text-color) ;">Local Currencies</h1>
 
-                <!-- MY TOKENS GRID SECTION -->
+                <!-- MY TOKENS GRID SECTION - FINAL RESPONSIVE -->
                 <div class="grid grid-cols-2 gap-4 mb-6">
 
-                    <!-- eXPB CARD -->
+                    <!-- ==================== eXPB CARD ==================== -->
                     <div class="relative">
                         <div
                             class="h-11 bg-gradient-to-r from-purple-600 to-violet-600 rounded-t-3xl flex items-center justify-center">
@@ -819,6 +833,7 @@
 
                         <div id="card-EXPB" class="card p-5 cursor-pointer token-card fade-in -mt-1 rounded-t-none">
 
+                            <!-- Responsive Top Section -->
                             <div class="flex flex-col md:flex-row md:items-start gap-4 mb-6 md:justify-start">
                                 <div class="flex flex-col flex-1 text-center md:text-left">
                                     <div class="text-2xl sm:text-3xl font-bold" style="color: var(--text-color);">e𝕏PB
@@ -835,18 +850,21 @@
                                 </div>
                             </div>
 
+                            <!-- Buttons Row -->
                             <div class="flex gap-2 mt-5">
-                                <button id="buyExpbBtn"
-                                    class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-2xl transition-all active:scale-95">
+                                <button
+                                    onclick="event.stopImmediatePropagation(); openGiddySwapModal('expb-buy'); return false;"
+                                    class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-2xl transition-all active:scale-95 buy-btn">
                                     Buy
                                 </button>
 
-                                <button id="lockExpbBtn"
+                                <button onclick="event.stopPropagation(); openValueLockModal('giddy');"
                                     class="flex-1 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white rounded-2xl shadow-lg transition-all active:scale-95 dynamic-lock-btn">
                                     <i class="fas fa-exchange-alt text-xl"></i>
                                 </button>
                             </div>
 
+                            <!-- Price Section -->
                             <div class="mt-[-0.25rem] card-content border-t border-purple-950/40 pt-2">
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">PRICE PER
                                     TOKEN</div>
@@ -855,6 +873,7 @@
                                 <div class="text-sm text-green-400 font-medium">24 hr: +0.00%</div>
                             </div>
 
+                            <!-- Quantity & Value -->
                             <div class="mt-5 card-content">
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
                                     QUANTITY</div>
@@ -871,14 +890,15 @@
                             </div>
 
                             <div class="mt-6 text-left">
-                                <a href="/bouncyball.html" class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                <a href="/bouncyball.html" onclick="event.stopPropagation();"
+                                    class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
                                     Token Price Details →
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- GIDDY CARD -->
+                    <!-- ==================== GIDDY CARD ==================== -->
                     <div class="relative">
                         <div
                             class="h-11 bg-gradient-to-r from-purple-600 to-pink-600 rounded-t-3xl flex items-center justify-center">
@@ -887,6 +907,7 @@
 
                         <div id="card-GIDDY" class="card p-5 cursor-pointer token-card fade-in -mt-1 rounded-t-none">
 
+                            <!-- Responsive Top Section -->
                             <div class="flex flex-col md:flex-row md:items-start gap-4 mb-6 md:justify-start">
                                 <div class="flex flex-col flex-1 text-center md:text-left">
                                     <div class="text-2xl sm:text-3xl font-bold" style="color: var(--text-color);">GIDDY
@@ -903,13 +924,15 @@
                                 </div>
                             </div>
 
+                            <!-- Lock Button -->
                             <div class="flex gap-2 mt-5">
-                                <button id="lockGiddyBtn"
+                                <button onclick="event.stopPropagation(); openValueLockModal('dynamic');"
                                     class="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-2xl shadow-lg transition-all active:scale-95 flex items-center justify-center">
                                     <i class="fas fa-lock text-xl"></i>
                                 </button>
                             </div>
 
+                            <!-- Price Section -->
                             <div class="mt-[-0.25rem] card-content border-t border-purple-950/40 pt-2">
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">PRICE PER
                                     TOKEN</div>
@@ -918,6 +941,7 @@
                                 <div class="text-sm text-zinc-500 font-medium">24 hr: 0.00%</div>
                             </div>
 
+                            <!-- Quantity & Value -->
                             <div class="mt-5 card-content">
                                 <div class="text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">MY
                                     QUANTITY</div>
@@ -934,7 +958,8 @@
                             </div>
 
                             <div class="mt-6 text-left">
-                                <a href="/onegiddy.html" class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
+                                <a href="/onegiddy.html" onclick="event.stopPropagation();"
+                                    class="text-purple-400 hover:text-purple-300 text-sm inline-flex items-center gap-1 font-semibold transition-colors">
                                     Token Price Details →
                                 </a>
                             </div>
