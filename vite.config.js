@@ -2,8 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-export default defineConfig(({ command, mode }) => {
-    // Shared configuration
+export default defineConfig(({ command }) => {
     const config = {
         root: '.',
         publicDir: 'public',
@@ -36,16 +35,14 @@ export default defineConfig(({ command, mode }) => {
         plugins: []
     };
 
-    // Environment-specific logic
-    if (command === 'serve') {
-        // Dev-specific additions
-        console.log('Running in Development mode');
-    } else {
-        // Build-specific additions (Production)
+    // Only apply static copy during build
+    if (command === 'build') {
         config.plugins.push(
             viteStaticCopy({
                 targets: [
-                    { src: 'assets', dest: '.', overwrite: true, ignore: ['js/webapp/wallet.js', 'js/webapp/shop.js', 'js/webapp/swapUtils.js'] },
+                    // REMOVED: js/webapp folder references from ignore
+                    // We only copy assets that are NOT processed by Rollup
+                    { src: 'assets', dest: '.' }, 
                     { src: 'docs', dest: '.' },
                     { src: 'pages', dest: '.' },
                     { src: 'explore', dest: '.' },
