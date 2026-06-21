@@ -31,7 +31,6 @@ let provider = null;
 let latestPrices = {};
 let currentLockBaseQuantity = 0;
 
-// 3. UI Helpers
 // ====================== UI HELPERS ======================
 function setWalletState(isConnected, publicKey = null, method = null) {
     // 1. Update Global State
@@ -45,7 +44,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     }
     window.connectionMethod = connectionMethod;
 
-    // 2. Persist to LocalStorage (Crucial for mobile redirect stability)
+    // 2. Persist to LocalStorage
     if (isConnected && connectedWallet) {
         localStorage.setItem('wallet_address', connectedWallet);
         localStorage.setItem('connection_method', connectionMethod || 'injected');
@@ -54,7 +53,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         localStorage.removeItem('connection_method');
     }
 
-    // 3. Wallet page elements
+    // 3. UI Elements
     const navText = document.getElementById('walletBtnText');
     const navBtn = document.getElementById('addWalletBtn');
     const chevron = document.getElementById('chevron');
@@ -63,11 +62,11 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     const connectOpt = document.getElementById('connectOption');
     const createOpt = document.getElementById('createWalletOption');
     const disconnectOpt = document.getElementById('disconnectOption');
-
-    // 4. Shop page elements
+    
+    // Shop & Container UI
     const shopDot = document.getElementById('status-dot');
     const shopText = document.getElementById('status-text');
-    const shopBtn = document.getElementById('connect-btn');
+    const actionsContainer = document.getElementById('status-actions'); 
 
     if (isConnected && connectedWallet) {
         const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
@@ -81,18 +80,41 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (createOpt) createOpt.classList.add('hidden');
         if (disconnectOpt) disconnectOpt.classList.remove('hidden');
 
+        // Shop UI Updates
         if (shopDot) shopDot.style.backgroundColor = "#10b981";
         if (shopText) shopText.innerText = (method === "google" || method === "apple") ? "Embedded Wallet" : "Wallet Connected";
-        if (shopBtn) {
-            shopBtn.innerText = "Disconnect";
-            shopBtn.style.borderColor = "#ef4444";
-            shopBtn.style.color = "#ef4444";
-            shopBtn.onclick = disconnectWallet;
+        
+        // Handle Action Buttons
+if (actionsContainer) {
+    actionsContainer.innerHTML = ''; 
+    
+    // Add Manage Button if embedded
+    if (method === "google" || method === "apple") {
+        const manageBtn = document.createElement('button');
+        manageBtn.type = 'button';
+        manageBtn.textContent = "Manage";
+        
+        manageBtn.style.cssText = "background:transparent; border:1px solid #10b981; color:#10b981; padding:2px 8px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px; display:flex; align-items:center; justify-content:center; line-height:1; margin-bottom:0;";
+        
+        manageBtn.onclick = () => {
+            const encoded = encodeURIComponent(window.location.href);
+            window.location.href = `https://phantom.app/ul/browse/${encoded}?ref=${encoded}`;
+        };
+        actionsContainer.appendChild(manageBtn);
+    }
+
+            // Only add Disconnect button if we are NOT on the main Wallet Status view (or based on your specific ID check)
+            // If you want to hide it on wallet.html but keep on shop.html:
+            if (window.location.pathname.includes('shop.html')) {
+                const discBtn = document.createElement('button');
+                discBtn.innerText = "Disconnect";
+                discBtn.style.cssText = "background:transparent; border:1px solid #ef4444; color:#ef4444; padding:2px 8px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px; margin-left:6px;";
+                discBtn.onclick = disconnectWallet;
+                actionsContainer.appendChild(discBtn);
+            }
         }
 
-        if (typeof updateWalletBalances === 'function') {
-            updateWalletBalances();
-        }
+        if (typeof updateWalletBalances === 'function') updateWalletBalances();
     } else {
         if (navText) navText.innerText = "ADD WALLET";
         if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
@@ -104,16 +126,12 @@ function setWalletState(isConnected, publicKey = null, method = null) {
 
         if (shopDot) shopDot.style.backgroundColor = "#71717a";
         if (shopText) shopText.innerText = "Wallet Disconnected";
-        if (shopBtn) {
-            shopBtn.innerText = "Connect";
-            shopBtn.style.borderColor = "#8b5cf6";
-            shopBtn.style.color = "#8b5cf6";
-            shopBtn.onclick = handlePhantomConnect;
+        
+        if (actionsContainer) {
+            actionsContainer.innerHTML = `<button id="connect-btn" onclick="handlePhantomConnect()" style="background:transparent; border:1px solid #8b5cf6; color:#8b5cf6; padding:2px 10px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px;">Connect</button>`;
         }
 
-        if (typeof clearBalancesOnDisconnect === 'function') {
-            clearBalancesOnDisconnect();
-        }
+        if (typeof clearBalancesOnDisconnect === 'function') clearBalancesOnDisconnect();
     }
 }
 
@@ -511,7 +529,7 @@ async function handleCreateWallet() {
     if (dropdown) dropdown.classList.add('hidden');
 
     const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl) totalValueEl.textContent = 'Signing in with Google...';
+    if (totalValueEl) totalValueEl.textContent = 'Google Sign in...';
 
     if (window.__isConnecting) return;
     window.__isConnecting = true;
