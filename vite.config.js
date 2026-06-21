@@ -7,6 +7,17 @@ export default defineConfig(({ command }) => {
         root: '.',
         publicDir: 'public',
 
+        // Fixes the Buffer/Externalization issue
+        define: {
+            'process.env': {},
+            global: 'window',
+        },
+        resolve: {
+            alias: {
+                buffer: 'buffer',
+            },
+        },
+
         optimizeDeps: {
             include: ['@phantom/browser-sdk', 'buffer'],
             force: true
@@ -58,7 +69,6 @@ export default defineConfig(({ command }) => {
                     { src: 'game', dest: '.' },
                     { src: 'promote', dest: '.' },
 
-                    // Explicit list of HTML files (replaced *.html)
                     {
                         src: [
                             'index.html',
@@ -82,7 +92,6 @@ export default defineConfig(({ command }) => {
                         dest: '.'
                     },
 
-                    // Keep all the other root static files
                     {
                         src: [
                             '*.json',
