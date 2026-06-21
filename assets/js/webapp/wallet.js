@@ -36,18 +36,13 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     // 1. Update Global State
     connectedWallet = isConnected && publicKey ? publicKey : null;
     window.connectedWallet = connectedWallet;
-
-    if (method) {
-        connectionMethod = method;
-    } else if (!isConnected) {
-        connectionMethod = null;
-    }
+    connectionMethod = isConnected ? (method || connectionMethod || 'injected') : null;
     window.connectionMethod = connectionMethod;
 
     // 2. Persist to LocalStorage
     if (isConnected && connectedWallet) {
         localStorage.setItem('wallet_address', connectedWallet);
-        localStorage.setItem('connection_method', connectionMethod || 'injected');
+        localStorage.setItem('connection_method', connectionMethod);
     } else {
         localStorage.removeItem('wallet_address');
         localStorage.removeItem('connection_method');
@@ -63,12 +58,14 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     const createOpt = document.getElementById('createWalletOption');
     const disconnectOpt = document.getElementById('disconnectOption');
     
-    // Shop & Container UI
+    // Shop UI elements
     const shopDot = document.getElementById('status-dot');
     const shopText = document.getElementById('status-text');
-    const actionsContainer = document.getElementById('status-actions'); 
+    const actionsContainer = document.getElementById('status-actions');
+    const connectBtn = document.getElementById('connect-btn');
 
     if (isConnected && connectedWallet) {
+        // Connected UI
         const short = `${connectedWallet.slice(0, 6)}...${connectedWallet.slice(-4)}`;
 
         if (navText) navText.innerText = "CONNECTED";
@@ -80,42 +77,34 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (createOpt) createOpt.classList.add('hidden');
         if (disconnectOpt) disconnectOpt.classList.remove('hidden');
 
-        // Shop UI Updates
+        // Shop Status
         if (shopDot) shopDot.style.backgroundColor = "#10b981";
-        if (shopText) shopText.innerText = (method === "google" || method === "apple") ? "Embedded Wallet" : "Wallet Connected";
-        
-        // Handle Action Buttons
-if (actionsContainer) {
-    actionsContainer.innerHTML = ''; 
-    
-    // Add Manage Button if embedded
-    if (method === "google" || method === "apple") {
-        const manageBtn = document.createElement('button');
-        manageBtn.type = 'button';
-        manageBtn.textContent = "Manage";
-        
-        manageBtn.style.cssText = "background:transparent; border:1px solid #10b981; color:#10b981; padding:2px 8px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px; display:flex; align-items:center; justify-content:center; line-height:1; margin-bottom:0;";
-        
-        manageBtn.onclick = () => {
-            const encoded = encodeURIComponent(window.location.href);
-            window.location.href = `https://phantom.app/ul/browse/${encoded}?ref=${encoded}`;
-        };
-        actionsContainer.appendChild(manageBtn);
-    }
+        if (shopText) shopText.innerText = "Connected";
 
-            // Only add Disconnect button if we are NOT on the main Wallet Status view (or based on your specific ID check)
-            // If you want to hide it on wallet.html but keep on shop.html:
-            if (window.location.pathname.includes('shop.html')) {
-                const discBtn = document.createElement('button');
-                discBtn.innerText = "Disconnect";
-                discBtn.style.cssText = "background:transparent; border:1px solid #ef4444; color:#ef4444; padding:2px 8px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px; margin-left:6px;";
-                discBtn.onclick = disconnectWallet;
-                actionsContainer.appendChild(discBtn);
-            }
+        // Shop Button Toggle to Disconnect
+        if (connectBtn) {
+            connectBtn.innerText = "Disconnect";
+            connectBtn.onclick = disconnectWallet;
+            connectBtn.style.borderColor = "#ef4444";
+            connectBtn.style.color = "#ef4444";
         }
 
+        // Manage Button Injection
+        if (actionsContainer) {
+            actionsContainer.innerHTML = '';
+            if (method === "google" || method === "apple") {
+                const manageBtn = document.createElement('button');
+                manageBtn.type = 'button';
+                manageBtn.textContent = "Manage";
+                manageBtn.style.cssText = "background:transparent; border:1px solid #10b981; color:#10b981; padding:2px 8px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px; display:flex; align-items:center; justify-content:center; line-height:1; margin-bottom:0; margin-right:6px;";
+                manageBtn.onclick = () => window.open('https://phantom.app', '_blank');
+                actionsContainer.appendChild(manageBtn);
+            }
+        }
         if (typeof updateWalletBalances === 'function') updateWalletBalances();
+
     } else {
+        // Disconnected UI
         if (navText) navText.innerText = "ADD WALLET";
         if (navBtn) navBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700');
         if (chevron) chevron.style.display = 'inline-block';
@@ -124,13 +113,19 @@ if (actionsContainer) {
         if (createOpt) createOpt.classList.remove('hidden');
         if (disconnectOpt) disconnectOpt.classList.add('hidden');
 
+        // Shop Status
         if (shopDot) shopDot.style.backgroundColor = "#71717a";
         if (shopText) shopText.innerText = "Wallet Disconnected";
-        
-        if (actionsContainer) {
-            actionsContainer.innerHTML = `<button id="connect-btn" onclick="handlePhantomConnect()" style="background:transparent; border:1px solid #8b5cf6; color:#8b5cf6; padding:2px 10px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer; height:22px;">Connect</button>`;
+
+        // Shop Button Toggle to Connect
+        if (connectBtn) {
+            connectBtn.innerText = "Connect";
+            connectBtn.onclick = handlePhantomConnect;
+            connectBtn.style.borderColor = "#8b5cf6";
+            connectBtn.style.color = "#8b5cf6";
         }
 
+        if (actionsContainer) actionsContainer.innerHTML = '';
         if (typeof clearBalancesOnDisconnect === 'function') clearBalancesOnDisconnect();
     }
 }
@@ -203,28 +198,36 @@ async function getPhantomSDK() {
     return phantomSDK;
 }
 
-// 5. Initialization (Optimized for Redirects)
+// 5. Initialization (Optimized for persistence)
 window.addEventListener('load', async () => {
-    // 1. Clear temp auth code if you are manually handling it
-    if (localStorage.getItem('phantom_auth_code')) {
-        localStorage.removeItem('phantom_auth_code');
-    }
+    // 1. Cleanup
+    if (localStorage.getItem('phantom_auth_code')) localStorage.removeItem('phantom_auth_code');
 
-    // 2. Initialize SDK first - This processes the URL params automatically
-    const sdk = await getPhantomSDK();
-
-    // 3. Check if the SDK already has a valid session (even if localStorage is empty)
-    // The Phantom SDK stores its own session internally; checking isLoggedIn is the most reliable way.
-    if (sdk.isLoggedIn) {
-        const addr = sdk.publicKey?.toBase58();
-        const method = 'google'; // Or detect provider if possible
-        if (addr) {
-            setWalletState(true, addr, method);
-            return; // Exit, we found the user!
+    // 2. Check Extension (Injected) first
+    const isExtensionConnected = !!(window.phantom?.solana?.isConnected);
+    if (isExtensionConnected) {
+        try {
+            const resp = await window.phantom.solana.connect({ onlyIfTrusted: true });
+            setWalletState(true, resp.publicKey.toString(), "injected");
+            return; // Success
+        } catch (e) {
+            console.warn("Extension found but not auto-connectable:", e);
         }
     }
 
-    // 4. Fallback to localStorage only if SDK isn't already logged in
+    // 3. Initialize SDK
+    const sdk = await getPhantomSDK();
+
+    // 4. Check SDK Session
+    if (sdk.isLoggedIn) {
+        const addr = sdk.publicKey?.toBase58();
+        if (addr) {
+            setWalletState(true, addr, 'google'); // or detect based on your storage
+            return;
+        }
+    }
+
+    // 5. Fallback to LocalStorage
     const savedAddress = localStorage.getItem('wallet_address');
     const savedMethod = localStorage.getItem('connection_method');
     if (savedAddress && savedMethod) {
@@ -456,6 +459,9 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// ====================== STATE PROTECTION ======================
+let lastFetchWallet = null;
+
 // ====================== CONNECT PHANTOM (HYBRID - DESKTOP + iOS FALLBACK) ======================
 async function handlePhantomConnect() {
     const dropdown = document.getElementById('walletDropdown');
@@ -471,7 +477,6 @@ async function handlePhantomConnect() {
 
     try {
         if (hasLegacyPhantom) {
-            // Desktop extension path (fast & reliable)
             console.log("🔌 Using legacy desktop injected path");
             const resp = await window.phantom.solana.connect();
             const publicKey = resp.publicKey.toString();
@@ -479,9 +484,17 @@ async function handlePhantomConnect() {
             return;
         }
 
-        // Try SDK deep link first
         console.log("🔌 Trying SDK injected for mobile deep link");
         const sdk = await getPhantomSDK();
+
+        if (sdk.isLoggedIn) {
+            try {
+                await sdk.disconnect();
+                console.log("🧹 Cleared previous SDK session before injected connect");
+            } catch (e) {
+                console.warn("Could not disconnect previous SDK session:", e);
+            }
+        }
 
         try {
             const result = await sdk.connect({ provider: "injected" });
@@ -494,7 +507,6 @@ async function handlePhantomConnect() {
             console.warn("SDK deep link attempt failed on mobile, using manual fallback...");
         }
 
-        // iOS / Mobile manual deep link fallback
         if (isMobileDevice()) {
             const dappUrl = window.location.href;
             const encoded = encodeURIComponent(dappUrl);
@@ -506,16 +518,8 @@ async function handlePhantomConnect() {
 
     } catch (err) {
         console.error("Phantom connect failed:", err);
-
         const mobile = isMobileDevice();
-        let msg = "Failed to connect to Phantom wallet.";
-
-        if (mobile) {
-            msg = "Could not open Phantom app.\n\nPlease make sure Phantom is installed and try again, or use Create Wallet with Google.";
-        } else {
-            msg = "Phantom extension connection failed. Try refreshing the page or use Create Wallet with Google/Apple.";
-        }
-
+        let msg = mobile ? "Could not open Phantom app.\n\nPlease make sure Phantom is installed and try again, or use Create Wallet with Google." : "Phantom extension connection failed. Try refreshing the page or use Create Wallet with Google/Apple.";
         alert(msg);
         showAddWalletPrompt();
     } finally {
@@ -538,9 +542,12 @@ async function handleCreateWallet() {
         console.log("🚀 [Google] Starting sign-in...");
         const sdk = await getPhantomSDK();
 
-        // Matches official Phantom vanilla JS docs pattern
-        const { addresses } = await sdk.connect({ provider: "google" });
+        clearBalancesOnDisconnect();
+        if (document.getElementById('connectedAddress')) {
+            document.getElementById('connectedAddress').innerText = '';
+        }
 
+        const { addresses } = await sdk.connect({ provider: "google" });
         const publicKey = addresses?.[0]?.address;
 
         if (publicKey) {
@@ -548,10 +555,13 @@ async function handleCreateWallet() {
             localStorage.setItem('wallet_address', publicKey);
             localStorage.setItem('connection_method', 'google');
             setWalletState(true, publicKey, "google");
+
+            setTimeout(() => {
+                if (typeof updateWalletBalances === 'function') updateWalletBalances();
+            }, 800);
         } else {
             console.warn("⚠️ [Google] No address returned from SDK");
         }
-
     } catch (err) {
         console.error("❌ [Google] Create Wallet error:", err);
         alert("Google login failed or was cancelled.\n\nPlease try again or use Connect Phantom.");
@@ -570,27 +580,34 @@ function disconnectWallet() {
     if (dropdown) dropdown.classList.add('hidden');
 
     clearBalancesOnDisconnect();
+    lastFetchWallet = null; // Clear token on disconnect
 
-    // Only disconnect SDK if we used Google/Apple this session
-    const usedSDKFlow = connectionMethod === 'google' || connectionMethod === 'apple';
+    const addrEl = document.getElementById('connectedAddress');
+    if (addrEl) addrEl.innerText = '';
 
-    if (phantomSDK && usedSDKFlow) {
-        try { phantomSDK.disconnect(); } catch (e) {}
-    }
+    const shopDot = document.getElementById('status-dot');
+    const shopText = document.getElementById('status-text');
+    if (shopDot) shopDot.style.backgroundColor = "#71717a";
+    if (shopText) shopText.innerText = "Wallet Disconnected";
 
-    if (window.phantom?.solana) {
-        window.phantom.solana.disconnect().catch(() => {});
-    }
+    if (window.phantomSDK) try { phantomSDK.disconnect(); } catch (e) { }
+    if (window.phantom?.solana) window.phantom.solana.disconnect().catch(() => { });
 
     setWalletState(false);
     connectionMethod = null;
     window.connectionMethod = null;
+
+    try { localStorage.removeItem('phantom_auth_code'); } catch (e) { }
 }
 
 // ====================== BALANCES + TOTAL ======================
 async function updateWalletBalances() {
     if (!connectedWallet) return;
     if (!document.getElementById('totalValue')) return;
+
+    // Assign fetch ID to prevent leaks
+    const fetchId = connectedWallet;
+    lastFetchWallet = fetchId;
 
     const totalValueEl = document.getElementById('totalValue');
     if (totalValueEl && totalValueEl.textContent.includes('Add Wallet')) {
@@ -603,43 +620,32 @@ async function updateWalletBalances() {
         const response = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
         const balances = await response.json();
 
+        // CHECK TOKEN: If wallet was switched during fetch, ignore result
+        if (lastFetchWallet !== fetchId) return;
+
         const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
         let totalValueUSD = 0;
 
         allTokens.forEach(sym => {
             const qtyEl = document.getElementById(`qty-${sym}`);
             const valueEl = document.getElementById(`value-${sym}`);
+            let rawQty = parseFloat(String(balances[sym] || 0).replace(/,/g, ''));
 
-            let rawStr = String(balances[sym] || 0).replace(/,/g, '');
-            let rawQty = parseFloat(rawStr);
-
-            const priceUSD = latestPrices[sym] || 0;
-            const usdValue = rawQty * priceUSD;
+            const usdValue = rawQty * (latestPrices[sym] || 0);
             const displayValue = usdValue * getConversionRate(currentCurrency);
             const symbolChar = getCurrencySymbol(currentCurrency);
 
             if (qtyEl) {
                 const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
-                if (communityTokens.includes(sym) && rawQty >= 1000) {
-                    qtyEl.textContent = formatLargeNumber(rawQty);
-                } else {
-                    qtyEl.textContent = rawQty > 0 ? rawQty.toLocaleString() : "0";
-                }
+                qtyEl.textContent = (communityTokens.includes(sym) && rawQty >= 1000) ? formatLargeNumber(rawQty) : (rawQty > 0 ? rawQty.toLocaleString() : "0");
             }
-
-            if (valueEl) {
-                valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-            }
-
+            if (valueEl) valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
             totalValueUSD += usdValue;
         });
 
         if (totalValueEl) {
-            const displayTotal = (totalValueUSD * getConversionRate(currentCurrency)).toFixed(2);
-            const symbolChar = getCurrencySymbol(currentCurrency);
-            totalValueEl.textContent = `${symbolChar}${displayTotal}`;
+            totalValueEl.textContent = `${getCurrencySymbol(currentCurrency)}${(totalValueUSD * getConversionRate(currentCurrency)).toFixed(2)}`;
         }
-
         if (currencySpan) currencySpan.textContent = currentCurrency;
 
     } catch (e) {
@@ -1029,7 +1035,7 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-// ====================== AUTO-RESUME OAUTH ======================
+    // ====================== AUTO-RESUME OAUTH ======================
     async function initOAuthListener() {
         const urlParams = new URLSearchParams(window.location.search);
         const hasCode = urlParams.has('code');
@@ -1054,7 +1060,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check if already logged in (for normal page refreshes)
         if (sdk.isLoggedIn) {
             const addr = sdk.publicKey?.toBase58();
-            if (addr) setWalletState(true, addr, "google");
+            const method = localStorage.getItem('connection_method') || 'injected';
+            if (addr) {
+                setWalletState(true, addr, method);
+                return;
+            }
         }
     }
     initOAuthListener();
