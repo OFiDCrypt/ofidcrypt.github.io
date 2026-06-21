@@ -156,17 +156,27 @@ async function getPhantomSDK() {
             providers: ["injected", "google", "apple"],
             addressTypes: [AddressType.solana],
             appId: "62ccac9b-8746-42db-8a6d-45e2c97f7f58",
-            authOptions: { redirectUrl: `${window.location.origin}/callback.html` },
+            authOptions: {
+                redirectUrl: `${window.location.origin}/callback.html`,
+            },
             autoConnect: true,
         });
 
+        // Listen for successful connections (this is the reliable way)
         phantomSDK.on("connect", (data) => {
             console.log("✅ Phantom SDK Connected via", data.provider, data.addresses);
             const addr = data.addresses?.[0]?.address;
-            if (addr) setWalletState(true, addr, data.provider || "injected");
+            if (addr) {
+                localStorage.setItem('wallet_address', addr);
+                localStorage.setItem('connection_method', data.provider || 'injected');
+                setWalletState(true, addr, data.provider || "injected");
+            }
         });
 
-        phantomSDK.on("connect_error", (err) => console.error("❌ SDK Connect Error:", err));
+        phantomSDK.on("connect_error", (err) => {
+            console.error("❌ SDK Connect Error:", err);
+        });
+
         phantomSDK.on("disconnect", () => {
             console.log("🔌 Phantom SDK Disconnected");
             setWalletState(false);
@@ -175,29 +185,34 @@ async function getPhantomSDK() {
     return phantomSDK;
 }
 
-function getApiUrl(endpoint) {
-    const base = (window.CONFIG && window.CONFIG.BASE) ? window.CONFIG.BASE : "http://localhost:3000";
-    return base + (endpoint.startsWith('/') ? endpoint : '/' + endpoint);
-}
-
-// 5. Initialization (Mobile/Desktop Sync)
+// 5. Initialization (Optimized for Redirects)
 window.addEventListener('load', async () => {
-    // Clear temp auth code
-    if (localStorage.getItem('phantom_auth_code')) localStorage.removeItem('phantom_auth_code');
+    // 1. Clear temp auth code if you are manually handling it
+    if (localStorage.getItem('phantom_auth_code')) {
+        localStorage.removeItem('phantom_auth_code');
+    }
 
-    // Restore UI from storage
-    const savedAddress = localStorage.getItem('wallet_address');
-    const savedMethod = localStorage.getItem('connection_method');
-    if (savedAddress && savedMethod) setWalletState(true, savedAddress, savedMethod);
-
-    // Sync with SDK session
+    // 2. Initialize SDK first - This processes the URL params automatically
     const sdk = await getPhantomSDK();
+
+    // 3. Check if the SDK already has a valid session (even if localStorage is empty)
+    // The Phantom SDK stores its own session internally; checking isLoggedIn is the most reliable way.
     if (sdk.isLoggedIn) {
         const addr = sdk.publicKey?.toBase58();
-        if (addr) setWalletState(true, addr, "google");
+        const method = 'google'; // Or detect provider if possible
+        if (addr) {
+            setWalletState(true, addr, method);
+            return; // Exit, we found the user!
+        }
+    }
+
+    // 4. Fallback to localStorage only if SDK isn't already logged in
+    const savedAddress = localStorage.getItem('wallet_address');
+    const savedMethod = localStorage.getItem('connection_method');
+    if (savedAddress && savedMethod) {
+        setWalletState(true, savedAddress, savedMethod);
     }
 });
-
 // ====================== CURRENCY SYSTEM (CAD + USD + MXN + NGN) ======================
 let lastTotalValue = 0;
 let currentCurrency = 'CAD';
@@ -502,16 +517,26 @@ async function handleCreateWallet() {
     window.__isConnecting = true;
 
     try {
+        console.log("🚀 [Google] Starting sign-in...");
         const sdk = await getPhantomSDK();
-        const result = await sdk.connect({ provider: "google" });
 
-        const publicKey = result.addresses?.[0]?.address;
+        // Matches official Phantom vanilla JS docs pattern
+        const { addresses } = await sdk.connect({ provider: "google" });
+
+        const publicKey = addresses?.[0]?.address;
+
         if (publicKey) {
+            console.log("✅ [Google] Wallet address received:", publicKey);
+            localStorage.setItem('wallet_address', publicKey);
+            localStorage.setItem('connection_method', 'google');
             setWalletState(true, publicKey, "google");
+        } else {
+            console.warn("⚠️ [Google] No address returned from SDK");
         }
+
     } catch (err) {
-        console.error("Create Wallet failed:", err);
-        alert("Google/Apple login failed or cancelled.\n\nPlease try again or use Connect Phantom.");
+        console.error("❌ [Google] Create Wallet error:", err);
+        alert("Google login failed or was cancelled.\n\nPlease try again or use Connect Phantom.");
         showAddWalletPrompt();
     } finally {
         if (totalValueEl && !connectedWallet) {
@@ -521,20 +546,22 @@ async function handleCreateWallet() {
     }
 }
 
+// ====================== DISCONNECT WALLET ======================
 function disconnectWallet() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
     clearBalancesOnDisconnect();
 
-    // Only call SDK disconnect when we actually used the SDK for this session
+    // Only disconnect SDK if we used Google/Apple this session
     const usedSDKFlow = connectionMethod === 'google' || connectionMethod === 'apple';
 
     if (phantomSDK && usedSDKFlow) {
-        try { phantomSDK.disconnect(); } catch (e) { }
+        try { phantomSDK.disconnect(); } catch (e) {}
     }
+
     if (window.phantom?.solana) {
-        window.phantom.solana.disconnect().catch(() => { });
+        window.phantom.solana.disconnect().catch(() => {});
     }
 
     setWalletState(false);
@@ -984,44 +1011,40 @@ function initPullToRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     const isWalletPage = window.location.pathname.includes('wallet');
 
-// ====================== GOOGLE CALLBACK - AGGRESSIVE FIX ======================
-const urlParams = new URLSearchParams(window.location.search);
-const hasPhantomRedirectParams = urlParams.has('phantom_callback') || urlParams.has('code');
+// ====================== AUTO-RESUME OAUTH ======================
+    async function initOAuthListener() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasCode = urlParams.has('code');
 
-if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
-    console.log("🔄 Returned from callback.html");
-    window.__phantomCallbackProcessed = true;
-    history.replaceState({}, document.title, window.location.pathname);
-
-    setTimeout(() => {
-        const savedAddress = localStorage.getItem('wallet_address');
-
-        if (savedAddress) {
-            console.log("✅ Found address in localStorage:", savedAddress);
-            setWalletState(true, savedAddress, "google");
-
-            // Force UI update as backup (in case setWalletState misses something)
-            const navText = document.getElementById('walletBtnText');
-            const navBtn = document.getElementById('addWalletBtn');
-            const statusBar = document.getElementById('connectedStatus');
-            const addrEl = document.getElementById('connectedAddress');
-
-            if (navText) navText.innerText = "CONNECTED";
-            if (navBtn) navBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700');
-            if (statusBar) statusBar.classList.remove('hidden');
-            if (addrEl) addrEl.innerText = `${savedAddress.slice(0, 6)}...${savedAddress.slice(-4)}`;
-
-        } else {
-            console.warn("❌ No wallet_address found in localStorage after callback");
+        // If we just returned from the callback and have a code, 
+        // trigger the connection flow automatically.
+        if (hasCode) {
+            console.log("🔄 Callback detected, auto-triggering login...");
+            await handleCreateWallet();
+            return; // Exit after triggering
         }
-    }, 1400);
-}
 
-    // 3. Keep this ONLY if you still need it for cross-window communication
+        const sdk = await getPhantomSDK();
+
+        // Standard listener for future events
+        sdk.on("connect", (data) => {
+            console.log("✅ OAuth Handshake Complete");
+            const addr = data.addresses?.[0]?.address;
+            if (addr) setWalletState(true, addr, data.provider || "google");
+        });
+
+        // Check if already logged in (for normal page refreshes)
+        if (sdk.isLoggedIn) {
+            const addr = sdk.publicKey?.toBase58();
+            if (addr) setWalletState(true, addr, "google");
+        }
+    }
+    initOAuthListener();
+
+    // 3. Keep cross-window communication for specific legacy needs
     window.addEventListener('message', async (event) => {
         if (event.data?.type === 'phantom-callback') {
             console.log("✅ Received phantom-callback message");
-            // No need to trigger re-connect here, the SDK handles the state change.
         }
     });
 
@@ -1066,7 +1089,6 @@ if (hasPhantomRedirectParams && !window.__phantomCallbackProcessed) {
     if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
 
     provider = window.phantom?.solana || window.solana;
-
     setWalletState(false);
 
     // ====================== LEGACY PHANTOM INIT (FIRST-TIME POPUP CONTROL) ======================
