@@ -743,10 +743,10 @@
                                 <div>Connect Phantom</div>
                             </button>
 
-                            <!-- ==================== NEW: CREATE / SIGN IN with Sub-Dropdown ==================== -->
+                            <!-- ==================== CREATE / SIGN IN (Now opens Modal) ==================== -->
                             <div class="relative" id="createSignInContainer">
-                                <button onclick="toggleCreateSignInDropdown()"
-                                    class="w-full flex items-center justify-between px-5 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transition-colors">
+                                <button onclick="openCreateSignInModal()"
+                                    class="w-full flex items-center justify-between px-5 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transition-colors rounded-3xl">
                                     <div class="flex items-center gap-3">
                                         <i class="fas fa-user-plus text-zinc-200"></i>
                                         <div>Create / Sign In</div>
@@ -754,25 +754,6 @@
                                     <i class="fas fa-chevron-down text-base transition-transform"
                                         id="createChevron"></i>
                                 </button>
-
-                                <!-- Sub Dropdown: Google + Apple -->
-                                <div id="createSignInDropdown"
-                                    class="hidden relative w-full z-50 mt-1 flex flex-col gap-1">
-
-                                    <!-- Google Button -->
-                                    <button onclick="handleCreateWallet(); closeCreateSignInDropdown()"
-                                        class="w-full flex items-center gap-4 px-5 py-4 bg-purple-600 hover:bg-purple-700 text-left text-white font-semibold transition-all rounded-3xl">
-                                        <div class="w-6 flex justify-center"><i class="fab fa-google text-lg"></i></div>
-                                        <span>Google</span>
-                                    </button>
-
-                                    <!-- Apple Button -->
-                                    <button onclick="handleAppleSignIn(); closeCreateSignInDropdown()"
-                                        class="w-full flex items-center gap-4 px-5 py-4 bg-purple-600 hover:bg-purple-700 text-left text-white font-semibold transition-all rounded-3xl">
-                                        <div class="w-6 flex justify-center"><i class="fab fa-apple text-lg"></i></div>
-                                        <span>Apple</span>
-                                    </button>
-                                </div>
                             </div>
                             <!-- ==================== END NEW SECTION ==================== -->
 
@@ -1792,6 +1773,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('redeem')">&times;</span>
             <h2 class="text-2xl font-black tracking-tight mb-2">Redeem Code</h2>
+
             <form id="redeem-form">
                 <input type="text" id="redeem-input" placeholder="Enter your 13-digit code" maxlength="13"
                     pattern="[0-9]{13}" title="Please enter exactly 13 digits" required>
@@ -1802,10 +1784,64 @@
 
                 <!-- Beautiful Gradient Button Applied Instantly -->
                 <button type="submit" class="w-full py-4 text-center font-bold text-lg mt-8"
-                    style="height: auto ; line-height: 1.4 ; min-height: 56px ;">
+                    style="height: auto; line-height: 1.4; min-height: 56px;">
                     Redeem
                 </button>
             </form>
+
+            <!-- Powered by Kinnected -->
+            <p class="text-center text-zinc-400 text-sm mt-8">
+                Powered by
+                <a href="https://kinnected-links.com" class="status-link"
+                    style="text-decoration: none; font-weight: 600; color: inherit;">
+                    Kinnected
+                </a>
+                • Secure • Instant
+            </p>
+        </div>
+    </div>
+
+    <!-- CREATE / SIGN IN MODAL - Phantom Style -->
+    <div id="create-signin-modal" class="modal"
+        onclick="if (event.target.id === 'create-signin-modal') closeCreateSignInModal()">
+        <div class="modal-content"
+            style="max-width: 380px; width: 92%; padding: 32px 28px; text-align: center; border-radius: 24px;">
+
+            <!-- Logo -->
+            <div class="flex justify-center mb-6">
+                <div
+                    class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                    <img src="/assets/images/webp/giddy-key-logo-2.webp" alt="Giddy Key"
+                        class="w-14 h-14 object-contain">
+                </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h2 class="text-3xl font-bold tracking-tight mb-2" style="color: var(--text-color);">Sign up or login</h2>
+            <p class="text-zinc-400 text-sm mb-8 px-4">
+                Create an account to access your Giddy Key Wallet and start using $GIDDY, $eXPB, and more.
+            </p>
+
+            <!-- Google Button -->
+            <button onclick="handleCreateWalletFromModal()" class="w-full flex items-center justify-center gap-3 px-6 py-4 mb-3 
+                   bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 
+                   text-white font-semibold rounded-2xl transition-all text-lg">
+                <i class="fab fa-google text-xl"></i>
+                <span>Continue with Google</span>
+            </button>
+
+            <!-- Apple Button -->
+            <button onclick="handleAppleSignInFromModal()" class="w-full flex items-center justify-center gap-3 px-6 py-4 
+                   bg-gradient-to-r from-zinc-700 to-zinc-800 hover:from-zinc-800 hover:to-zinc-900 
+                   text-white font-semibold rounded-2xl transition-all text-lg">
+                <i class="fab fa-apple text-xl"></i>
+                <span>Continue with Apple</span>
+            </button>
+
+            <p class="text-[11px] text-zinc-500 mt-6 px-4">
+                By continuing, you agree to our Terms of Service and <a href="/docs/privacy-policy.html"
+                    class="text-purple-400 hover:text-purple-300 transition-colors">Privacy Policy</a>.
+            </p>
         </div>
     </div>
 
