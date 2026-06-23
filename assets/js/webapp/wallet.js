@@ -40,13 +40,18 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     window.connectionMethod = connectionMethod;
 
     // 2. Persist to LocalStorage
-    if (isConnected && connectedWallet) {
-        localStorage.setItem('wallet_address', connectedWallet);
-        localStorage.setItem('connection_method', connectionMethod);
-    } else {
-        localStorage.removeItem('wallet_address');
-        localStorage.removeItem('connection_method');
-    }
+if (isConnected && connectedWallet) {
+    localStorage.setItem('wallet_address', connectedWallet);
+    localStorage.setItem('connection_method', connectionMethod);
+
+    // === NEW: Also expose to window for swapUtils.js ===
+    window.connectionMethod = connectionMethod;
+
+} else {
+    localStorage.removeItem('wallet_address');
+    localStorage.removeItem('connection_method');
+    window.connectionMethod = null;
+}
 
     // 3. UI Elements
     const navText = document.getElementById('walletBtnText');
@@ -1097,8 +1102,12 @@ async function confirmValueLock() {
 
         setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 1500);
     } catch (e) {
-        console.error(e);
-        alert(`❌ Swap failed: ${e.message}`);
+        console.log(`[Swap Status] ${e.message === "USER_REJECTED" ? "Swap cancelled" : "Swap failed"}`);
+        
+        if (e.message !== "USER_REJECTED") {
+            console.error(e);
+            alert(`❌ Swap failed: ${e.message}`);
+        }
     }
 }
 
@@ -1155,8 +1164,12 @@ async function confirmGiddySwap() {
         setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 2500);
 
     } catch (e) {
-        console.error(e);
-        alert(`❌ Swap failed: ${e.message}`);
+        console.log(`[Swap Status] ${e.message === "USER_REJECTED" ? "Swap cancelled" : "Swap failed"}`);
+        
+        if (e.message !== "USER_REJECTED") {
+            console.error(e);
+            alert(`❌ Swap failed: ${e.message}`);
+        }
     }
 }
 
