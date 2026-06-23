@@ -475,45 +475,50 @@ function toggleWalletDropdown() {
     if (chevron) chevron.classList.toggle('rotate-180');
 }
 
-// Create / Sign In Sub-Dropdown
-function toggleCreateSignInDropdown() {
-    const dropdown = document.getElementById('createSignInDropdown');
-    const chevron = document.getElementById('createChevron');
+// ====================== CREATE / SIGN IN MODAL ======================
 
-    if (dropdown) dropdown.classList.toggle('hidden');
-
-    if (chevron) {
-        chevron.style.transform = dropdown && !dropdown.classList.contains('hidden')
-            ? 'rotate(180deg)'
-            : 'rotate(0deg)';
-    }
-}
-
-function closeCreateSignInDropdown() {
-    const dropdown = document.getElementById('createSignInDropdown');
-    const chevron = document.getElementById('createChevron');
+// Open Create/Sign In Modal
+function openCreateSignInModal() {
+    const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
-    if (chevron) chevron.style.transform = 'rotate(0deg)';
+
+    const modal = document.getElementById('create-signin-modal');
+    if (modal) modal.style.display = 'flex';
 }
 
-// Unified Click Outside Handler (handles both dropdowns)
+// Close Create/Sign In Modal
+function closeCreateSignInModal() {
+    const modal = document.getElementById('create-signin-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+// Google from Modal
+function handleCreateWalletFromModal() {
+    closeCreateSignInModal();
+    handleCreateWallet();
+}
+
+// Apple from Modal
+function handleAppleSignInFromModal() {
+    closeCreateSignInModal();
+    handleAppleSignIn();
+}
+
+// ====================== CLICK OUTSIDE HANDLER ======================
+
+// Unified Click Outside Handler (only handles main wallet dropdown now)
 document.addEventListener('click', (e) => {
-    // Close main wallet dropdown
     const addBtn = document.getElementById('addWalletBtn');
     const walletDropdown = document.getElementById('walletDropdown');
+
+    // Close main wallet dropdown when clicking outside
     if (addBtn && walletDropdown &&
         !addBtn.contains(e.target) &&
         !walletDropdown.contains(e.target)) {
-
+        
         walletDropdown.classList.add('hidden');
         const mainChevron = document.getElementById('chevron');
         if (mainChevron) mainChevron.classList.remove('rotate-180');
-    }
-
-    // Close Create/Sign In sub-dropdown
-    const createContainer = document.getElementById('createSignInContainer');
-    if (createContainer && !createContainer.contains(e.target)) {
-        closeCreateSignInDropdown();
     }
 });
 
@@ -1397,8 +1402,12 @@ window.sellToken = sellToken;
 window.dismissClaimBubble = dismissClaimBubble;
 window.toggleCommunityTokens = toggleCommunityTokens;
 window.toggleWorldwideCurrencies = toggleWorldwideCurrencies;
-window.toggleCreateSignInDropdown = toggleCreateSignInDropdown;
-window.closeCreateSignInDropdown = closeCreateSignInDropdown;
+
+// Create / Sign In Modal (Updated)
+window.openCreateSignInModal = openCreateSignInModal;
+window.closeCreateSignInModal = closeCreateSignInModal;
+window.handleCreateWalletFromModal = handleCreateWalletFromModal;
+window.handleAppleSignInFromModal = handleAppleSignInFromModal;
 
 window.openValueLockModal = openValueLockModal;
 window.closeValueLockModal = closeValueLockModal;
