@@ -1,6 +1,6 @@
 // assets/js/webapp/swapUtils.js
 
-// ==================== ULTRA SWAP (Primary - No API Key) ====================
+// ==================== ULTRA SWAP (Primary) ====================
 async function performUltraSwap(inputMint, outputMint, rawAmount, provider, connectedWallet) {
     try {
         console.log(`[Ultra] Requesting quote: ${rawAmount} from ${inputMint} to ${outputMint}`);
@@ -23,32 +23,63 @@ async function performUltraSwap(inputMint, outputMint, rawAmount, provider, conn
 
         return await executeUltraTransaction(quote, provider);
     } catch (error) {
-        console.error("[Ultra] Failed:", error.message);
+        // Suppress logging if the user simply cancelled the swap
+        if (error.message !== "USER_REJECTED") {
+            console.error("[Ultra] Failed:", error.message);
+        }
         throw error;
     }
 }
 
+// ==================== SMART SIGNING (Injected + Browser SDK) ====================
 async function executeUltraTransaction(quote, provider) {
     try {
-        // Decode Jupiter's transaction
         const txBuffer = Buffer.from(quote.transaction, 'base64');
         const vtx = solanaWeb3.VersionedTransaction.deserialize(txBuffer);
-        
-        // Sign with Phantom
-        const signed = await provider.signTransaction(vtx);
-        
-        // ✅ FIXED & ROBUST: Browser-safe base64 encoding
-        const signedBytes = signed.serialize();
-        const signedTx = btoa(String.fromCharCode(...new Uint8Array(signedBytes)));
 
-        console.log(`[Ultra] Sending signed tx length: ${signedTx.length} chars`);
+        const connectionMethod = window.connectionMethod || localStorage.getItem('connection_method');
+        let signedTx;
+
+        // 1. PHANTOM BROWSER SDK (Google / Apple)
+        if (connectionMethod === 'google' || connectionMethod === 'apple') {
+            console.log("[Ultra] Signing with Phantom Browser SDK (solana namespace)...");
+
+            const sdk = await window.getPhantomSDK?.();
+            if (!sdk?.solana) throw new Error("Phantom SDK solana provider not available");
+
+            try {
+                signedTx = await sdk.solana.signTransaction(vtx);
+            } catch (err) {
+                // Check for user rejection
+                if (err.message && (err.message.includes("rejected") || err.message.includes("cancelled"))) {
+                    throw new Error("USER_REJECTED");
+                }
+                throw err;
+            }
+        } 
+        // 2. INJECTED PHANTOM (Extension / In-App)
+        else {
+            console.log("[Ultra] Signing with Injected Phantom Provider...");
+            try {
+                signedTx = await provider.signTransaction(vtx);
+            } catch (err) {
+                if (err.message && (err.message.includes("rejected") || err.message.includes("cancelled"))) {
+                    throw new Error("USER_REJECTED");
+                }
+                throw err;
+            }
+        }
+
+        // Serialize and Execute
+        const signedBytes = signedTx.serialize();
+        const signedTxBase64 = btoa(String.fromCharCode(...new Uint8Array(signedBytes)));
 
         const executeRes = await fetch('https://lite-api.jup.ag/ultra/v1/execute', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                signedTransaction: signedTx, 
-                requestId: quote.requestId 
+            body: JSON.stringify({
+                signedTransaction: signedTxBase64,
+                requestId: quote.requestId
             })
         });
 
@@ -63,28 +94,23 @@ async function executeUltraTransaction(quote, provider) {
             txid: result.signature,
             router: quote.router || 'OKX/DFlow'
         };
+
     } catch (error) {
-        console.error("[Ultra] Execute failed:", error);
+        if (error.message !== "USER_REJECTED") {
+            console.error("[Ultra] Execute failed:", error);
+        }
         throw error;
     }
 }
 
-// ==================== V1 FALLBACK via Backend Proxy (NOW DYNAMIC) ====================
+// ==================== V1 FALLBACK ====================
 async function performV1Swap(inputMint, outputMint, rawAmount, provider, connectedWallet) {
     try {
         const proxyUrl = getApiUrl('/api/swap/v1');
-
-        console.log(`[V1 Proxy] Using dynamic URL: ${proxyUrl}`);
-
         const proxyRes = await fetch(proxyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                inputMint,
-                outputMint,
-                rawAmount,
-                connectedWallet
-            })
+            body: JSON.stringify({ inputMint, outputMint, rawAmount, connectedWallet })
         });
 
         const data = await proxyRes.json();
@@ -107,8 +133,8 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
     }
 }
 
-// Make available globally
+// Global Export
 window.performUltraSwap = performUltraSwap;
 window.performV1Swap = performV1Swap;
 
-console.log("✅ swapUtils.js loaded (Ultra primary + dynamic v1 proxy)");
+console.log("✅ swapUtils.js loaded (Robust SDK, Provider support + Silent Cancel)");
