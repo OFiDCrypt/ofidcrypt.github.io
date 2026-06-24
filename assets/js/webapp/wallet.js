@@ -43,10 +43,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     if (isConnected && connectedWallet) {
         localStorage.setItem('wallet_address', connectedWallet);
         localStorage.setItem('connection_method', connectionMethod);
-
-        // === NEW: Also expose to window for swapUtils.js ===
         window.connectionMethod = connectionMethod;
-
     } else {
         localStorage.removeItem('wallet_address');
         localStorage.removeItem('connection_method');
@@ -60,7 +57,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     const statusBar = document.getElementById('connectedStatus');
     const addrEl = document.getElementById('connectedAddress');
     const connectOpt = document.getElementById('connectOption');
-    const createContainer = document.getElementById('createSignInContainer');   // ← NEW
+    const createContainer = document.getElementById('createSignInContainer');
     const disconnectOpt = document.getElementById('disconnectOption');
 
     // Shop UI elements
@@ -78,8 +75,9 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (chevron) chevron.style.display = 'none';
         if (statusBar) statusBar.classList.remove('hidden');
         if (addrEl) addrEl.innerText = short;
+
         if (connectOpt) connectOpt.classList.add('hidden');
-        if (createContainer) createContainer.classList.add('hidden');     // ← Hide Create/Sign In when connected
+        if (createContainer) createContainer.classList.add('hidden');
         if (disconnectOpt) disconnectOpt.classList.remove('hidden');
 
         // Shop Status
@@ -115,7 +113,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (chevron) chevron.style.display = 'inline-block';
         if (statusBar) statusBar.classList.add('hidden');
         if (connectOpt) connectOpt.classList.remove('hidden');
-        if (createContainer) createContainer.classList.remove('hidden');   // ← Show Create/Sign In when disconnected
+        if (createContainer) createContainer.classList.remove('hidden');
         if (disconnectOpt) disconnectOpt.classList.add('hidden');
 
         // Shop Status
@@ -1113,6 +1111,41 @@ function closeTxSuccessModal() {
     if (modal) modal.style.display = 'none';
 }
 
+// ====================== SUCCESS MODAL FUNCTIONS ======================
+function showRedeemSuccessModal(data) {
+    const txHash = data.transaction_hash || "";
+    const shortHash = txHash ? txHash.slice(0, 8) + "..." + txHash.slice(-6) : "";
+    const solscanLink = txHash ? `https://solscan.io/tx/${txHash}` : "#";
+
+    document.getElementById('redeem-result-details').innerHTML = `
+        <div class="flex justify-between" style="color: var(--text-color);">
+            <span style="color: var(--text-muted, #a1a1aa);">Amount</span>
+            <span class="font-bold" style="color: var(--text-color);">${data.amount || "—"} ${data.token_name || ""}</span>
+        </div>
+        <div class="flex justify-between" style="color: var(--text-color);">
+            <span style="color: var(--text-muted, #a1a1aa);">Model</span>
+            <span class="font-medium" style="color: var(--text-color);">${data.model || "escrow"}</span>
+        </div>
+        <div class="flex justify-between items-center" style="color: var(--text-color);">
+            <span style="color: var(--text-muted, #a1a1aa);">Transaction</span>
+            <a href="${solscanLink}" target="_blank" class="font-mono text-emerald-400 hover:text-emerald-300 text-xs break-all" style="color: var(--accent-color, #4ade80);">
+                ${shortHash || "—"}
+            </a>
+        </div>
+    `;
+
+    document.getElementById('redeem-solscan-link').href = solscanLink;
+
+    const modal = document.getElementById('redeem-success-modal');
+    modal.style.display = 'flex';
+    modal.classList.add('show');
+}
+
+function closeRedeemSuccessModal() {
+    const modal = document.getElementById('redeem-success-modal');
+    if (modal) modal.style.display = 'none';
+}
+
 // ====================== REAL SWAP FUNCTIONS ======================
 async function confirmValueLock() {
     const activeLock = document.querySelector('.lock-percent-btn.active');
@@ -1303,8 +1336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ====================== REDEEM IN KINNECTED BUTTON LOGIC ======================
-    const kinnectedBtn = document.querySelector('button[onclick="redeemInKinnected()"]');
+    // ====================== REDEEM FORM (Main REDEEM button - now uses redeem.html logic) ======================
     const redeemForm = document.getElementById('redeem-form');
 
     if (redeemForm) {
@@ -1314,13 +1346,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const linkId = document.getElementById('redeem-input').value.trim();
             const destinationWallet = document.getElementById('wallet-address').value.trim();
             const messageDiv = document.getElementById('redeem-message');
+            const mainBtn = document.getElementById('redeem-submit-btn');
 
             messageDiv.textContent = '';
-            messageDiv.style.color = '';
+            messageDiv.style.color = '#2ecc71';
 
-            if (!linkId || !/^\d{13}$/.test(linkId)) {
-                messageDiv.textContent = !linkId ? 'Please enter a code.' : 'Invalid code: Must be exactly 13 digits.';
+            if (mainBtn) mainBtn.classList.remove('success', 'failure');
+
+            if (!linkId) {
+                messageDiv.textContent = 'Please enter a code.';
                 messageDiv.style.color = '#e74c3c';
+                if (mainBtn) mainBtn.classList.add('failure');
+                return;
+            }
+
+            if (!/^\d{13}$/.test(linkId)) {
+                messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+                messageDiv.style.color = '#e74c3c';
+                if (mainBtn) mainBtn.classList.add('failure');
+                if (mainBtn) mainBtn.textContent = 'INVALID';
                 return;
             }
 
@@ -1330,71 +1374,124 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const originalText = kinnectedBtn ? kinnectedBtn.textContent : 'Redeem';
-            if (kinnectedBtn) {
-                kinnectedBtn.textContent = 'Checking...';
-                kinnectedBtn.disabled = true;
+            // Show Checking... on main REDEEM button
+            const originalText = mainBtn ? mainBtn.textContent : 'REDEEM';
+            if (mainBtn) {
+                mainBtn.textContent = 'Checking...';
+                mainBtn.disabled = true;
             }
 
-            await window.performRedeem(linkId, destinationWallet, {
-                onSuccess: (data) => {
-                    // Show the nice modal instead of redirect
-                    showRedeemSuccessModal(data);
-                },
-                onError: (msg) => {
-                    messageDiv.style.color = '#e74c3c';
-                    messageDiv.textContent = msg;
-                    if (kinnectedBtn) {
-                        kinnectedBtn.textContent = originalText;
-                        kinnectedBtn.disabled = false;
-                    }
+            // Same fetch logic as redeem.html
+            const possibleUrls = [
+                "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
+                "http://127.0.0.1:5000/api/secure-redeem",
+                "http://localhost:5000/api/secure-redeem"
+            ];
+
+            let data = null;
+            let lastError = null;
+
+            for (const url of possibleUrls) {
+                try {
+                    console.log("🔄 Trying backend:", url);
+                    const response = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ linkId, destinationWallet })
+                    });
+
+                    data = await response.json();
+                    console.log("✅ Success with:", url);
+                    break;
+                } catch (e) {
+                    lastError = e;
+                    console.log("❌ Failed:", url);
                 }
-            });
+            }
+
+            if (!data) {
+                // Error handling (same style as redeem.html)
+                messageDiv.style.color = '#e74c3c';
+                messageDiv.textContent = "Network error: " + (lastError?.message || "All backends failed");
+                if (mainBtn) {
+                    mainBtn.textContent = originalText;
+                    mainBtn.disabled = false;
+                }
+                return;
+            }
+
+            if (data.success) {
+                // Success → show the nice modal (same as redeem.html)
+                showRedeemSuccessModal(data);
+                if (mainBtn) {
+                    mainBtn.textContent = originalText;
+                    mainBtn.disabled = false;
+                }
+            } else {
+                // Error from backend
+                messageDiv.style.color = '#e74c3c';
+                messageDiv.textContent = data.message || "Redemption failed";
+                if (mainBtn) {
+                    mainBtn.textContent = originalText;
+                    mainBtn.disabled = false;
+                }
+            }
         });
     }
 
-    // Show Success Modal (reused from redeem.html)
-    function showRedeemSuccessModal(data) {
-        const txHash = data.transaction_hash || "";
-        const shortHash = txHash ? txHash.slice(0, 8) + "..." + txHash.slice(-6) : "";
-        const solscanLink = txHash ? `https://solscan.io/tx/${txHash}` : "#";
+    // ====================== REDEEM IN KINNECTED BUTTON (Original Simple Flow) ======================
+    const kinnectedBtn = document.querySelector('button[onclick="redeemInKinnected()"]');
 
-        document.getElementById('redeem-result-details').innerHTML = `
-        <div class="flex justify-between" style="color: var(--text-color);">
-            <span style="color: var(--text-muted, #a1a1aa);">Amount</span>
-            <span class="font-bold" style="color: var(--text-color);">${data.amount || "—"} ${data.token_name || ""}</span>
-        </div>
-        <div class="flex justify-between" style="color: var(--text-color);">
-            <span style="color: var(--text-muted, #a1a1aa);">Model</span>
-            <span class="font-medium" style="color: var(--text-color);">${data.model || "escrow"}</span>
-        </div>
-        <div class="flex justify-between items-center" style="color: var(--text-color);">
-            <span style="color: var(--text-muted, #a1a1aa);">Transaction</span>
-            <a href="${solscanLink}" target="_blank" class="font-mono text-emerald-400 hover:text-emerald-300 text-xs break-all" style="color: var(--accent-color, #4ade80);">
-                ${shortHash || "—"}
-            </a>
-        </div>
-    `;
+    if (kinnectedBtn) {
+        kinnectedBtn.addEventListener('click', (e) => {
+            e.preventDefault();
 
-        document.getElementById('redeem-solscan-link').href = solscanLink;
+            const input = document.getElementById('redeem-input').value.trim();
+            const messageDiv = document.getElementById('redeem-message');
+            const button = kinnectedBtn;
 
-        const modal = document.getElementById('redeem-success-modal');
-        modal.style.display = 'flex';
-        modal.classList.add('show');
+            // Reset
+            messageDiv.textContent = '';
+            messageDiv.style.color = '#2ecc71';
+            button.classList.remove('success', 'failure');
+
+            if (!input) {
+                messageDiv.textContent = 'Please enter a code.';
+                messageDiv.style.color = '#e74c3c';
+                button.classList.add('failure');
+                return;
+            }
+
+            if (!/^\d{13}$/.test(input)) {
+                messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+                messageDiv.style.color = '#e74c3c';
+                button.classList.add('failure');
+                button.textContent = 'INVALID';
+                return;
+            }
+
+            // Original simple flow - green checking only
+            messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
+            messageDiv.style.color = '#2ecc71';
+            button.textContent = 'Checking...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
+            }, 800);
+        });
     }
 
-    function closeRedeemSuccessModal() {
-        const modal = document.getElementById('redeem-success-modal');
-        modal.style.display = 'none';
-        modal.classList.remove('show');
-    }
+    // Wrapper for onclick in HTML
+    window.redeemInKinnected = function () {
+        const btn = document.querySelector('button[onclick="redeemInKinnected()"]');
+        if (btn) btn.click();
+    };
 
-    function closeRedeemSuccessModal() {
-        const modal = document.getElementById('redeem-success-modal');
-        if (modal) {
-            modal.style.display = 'none';
-            modal.classList.remove('show');
-        }
+    // ====================== ADD WALLET BUTTON LISTENER ======================
+    const addBtn = document.getElementById('addWalletBtn');
+    if (addBtn) {
+        addBtn.addEventListener('click', toggleWalletDropdown);
     }
 
     // ====================== LEGACY PHANTOM INIT (FIRST-TIME POPUP CONTROL) ======================

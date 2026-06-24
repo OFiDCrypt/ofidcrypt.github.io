@@ -1050,27 +1050,51 @@
                     </button>
                 </div>
 
-                <!-- Wallet Connected Status -->
-                <div id="connectedStatus"
-                    class="hidden mb-6 px-4 py-3 bg-emerald-900/30 border border-emerald-500/30 rounded-2xl flex items-center justify-between gap-3">
+<!-- Wallet Connected Status -->
+<div id="connectedStatus"
+    class="hidden mb-6 px-5 py-2 bg-white border border-emerald-500 rounded-3xl flex items-center justify-between gap-3 shadow-sm">
 
-                    <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse flex-shrink-0"></span>
-                        <span id="connectedAddress" class="font-mono text-sm text-white truncate"></span>
-                    </div>
+    <div class="flex items-center gap-3 flex-1 min-w-0">
+        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse flex-shrink-0"></span>
+        <span id="connectedAddress" class="font-mono text-sm text-emerald-700 truncate font-medium"></span>
+    </div>
 
-                    <div class="flex items-center gap-2 flex-shrink-0">
+    <div class="flex items-center gap-2 flex-shrink-0">
+        <button id="shareWalletBtn"
+            class="flex items-center justify-center p-1.5 m-0 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-100 rounded-lg transition-all !w-auto !h-auto !border-none !shadow-none !ring-0"
+            style="min-width: unset; min-height: unset; line-height: normal;"
+            title="Share wallet address">
+            <i class="fas fa-share-alt text-sm"></i>
+        </button>
 
-                        <button id="shareWalletBtn"
-                            class="flex items-center justify-center p-1.5 m-0 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-900/50 rounded-lg transition-all !w-auto !h-auto !border-none !shadow-none !ring-0"
-                            style="min-width: unset; min-height: unset; line-height: normal;"
-                            title="Share wallet address">
-                            <i class="fas fa-share-alt text-sm"></i>
-                        </button>
+        <div id="status-actions" class="flex items-center gap-2"></div>
+    </div>
+</div>
 
-                        <div id="status-actions" class="flex items-center gap-2"></div>
-                    </div>
-                </div>
+<style>
+/* === CONNECTED STATUS BAR - THEME AWARE === */
+#connectedStatus {
+    background: var(--card-bg-color, #ffffff);
+    border: 2px solid #10b981;
+    box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.25),
+                0 0 0 1px rgba(16, 185, 129, 0.15) inset;
+}
+
+#connectedStatus #connectedAddress {
+    color: var(--text-color, #166534) !important;
+}
+
+/* Dark Mode Override */
+.dark-mode #connectedStatus {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode #connectedStatus #connectedAddress {
+    color: #ffffff !important;
+}
+</style>
 
                 <!-- TOTAL BALANCE CARD SECTION -->
                 <div id="walletTotalCard" class="card p-5 fade-in mb-6">
