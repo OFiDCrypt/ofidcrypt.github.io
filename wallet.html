@@ -2057,34 +2057,116 @@
     <div id="redeem-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('redeem')">&times;</span>
-            <h2 class="text-2xl font-black tracking-tight mb-2">Redeem Code</h2>
+            <h2 class="text-2xl font-black tracking-tight mb-6">REDEEM CODE</h2>
 
             <form id="redeem-form">
-                <input type="text" id="redeem-input" placeholder="Enter your 13-digit code" maxlength="13"
-                    pattern="[0-9]{13}" title="Please enter exactly 13 digits" required>
-                <small style="display: block; margin-top: 2px; color: #a1a1aa; font-size: 13px;">
-                    Exactly 13 digits (numbers only)
-                </small>
-                <div id="redeem-message" style="margin-top: 10px; font-size: 14px; min-height: 20px;"></div>
 
-                <!-- Beautiful Gradient Button Applied Instantly -->
-                <button type="submit" class="w-full py-4 text-center font-bold text-lg mt-8"
-                    style="height: auto; line-height: 1.4; min-height: 56px;">
-                    Redeem
+                <!-- Wallet Address -->
+                <div class="mb-3 text-left">
+                    <input type="text" id="wallet-address" placeholder="Wallet Address"
+                        class="w-full px-4 py-3 rounded-2xl border border-[#6b21a8] bg-[#1a0f2e] text-white text-center focus:outline-none focus:border-[#a855f7]">
+
+                    <div class="mt-1.5 text-center">
+                        <span class="text-[#a1a1aa] text-xs cursor-pointer hover:text-blue-400 transition-colors"
+                            onclick="document.getElementById('wallet-address').focus()">
+                            Add address manually
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Code Input + QR Button -->
+                <div class="mb-1 text-left">
+                    <div class="flex items-center gap-2">
+
+                        <input type="text" id="redeem-input" placeholder="Enter 13-digit code" maxlength="13"
+                            pattern="[0-9]{13}" title="Please enter exactly 13 digits"
+                            class="flex-1 px-4 py-3 rounded-2xl border border-[#6b21a8] bg-[#1a0f2e] text-white text-center focus:outline-none focus:border-[#a855f7]">
+
+                        <!-- QR Button -->
+                        <button type="button" id="redeem-qr-btn"
+                            class="w-11 h-11 flex-shrink-0 flex items-center justify-center self-center mb-0 rounded-xl border-none bg-[var(--button-bg-color)] text-[var(--button-text-color)] shadow-md hover:shadow-lg hover:bg-[var(--button-hover-bg-color)] transition-all active:scale-95"
+                            onclick="scanQRCode()">
+                            <i class="fas fa-qrcode text-2xl"></i>
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div id="redeem-message" class="min-h-[20px] text-sm mt-2"></div>
+
+                <!-- Main Redeem Button -->
+                <button type="submit" id="redeem-submit-btn"
+                    class="w-full mt-5 mb-0 py-4 text-lg font-bold text-white rounded-full flex items-center justify-center leading-none transition-all active:scale-[0.985] bg-gradient-to-r from-[#9333ea] to-[#ec4899] hover:opacity-90">
+                    REDEEM
                 </button>
+
+                <!-- OR Divider (themed) -->
+                <div class="flex items-center justify-center my-5">
+                    <div class="flex-1 h-px bg-[var(--button-border-color)] opacity-30"></div>
+                    <span class="px-4 text-sm text-[var(--button-text-color)] opacity-70">or</span>
+                    <div class="flex-1 h-px bg-[var(--button-border-color)] opacity-30"></div>
+                </div>
+
+                <!-- Redeem in Kinnected -->
+                <button type="button" onclick="redeemInKinnected()" class="w-full py-3.5 text-base font-semibold rounded-full border-2 border-[var(--button-border-color)] 
+                       bg-[var(--button-bg-color)] text-[var(--button-text-color)] 
+                       hover:bg-[var(--button-hover-bg-color)] transition-all">
+                    Redeem in Kinnected
+                </button>
+
             </form>
 
             <!-- Powered by Kinnected -->
-            <p class="text-center text-zinc-400 text-sm mt-8">
+
+            <p class="text-center text-zinc-400 text-xs mt-6 tracking-wide">
                 Powered by
-                <a href="https://kinnected-links.com" class="status-link"
-                    style="text-decoration: none; font-weight: 600; color: inherit;">
-                    Kinnected
-                </a>
+                <a href="https://kinnected-links.com"
+                    class="font-semibold text-[var(--link-color,#a855f7)] hover:text-[#c026d3] hover:underline transition-colors">
+                    Kinnected</a>
                 • Secure • Instant
             </p>
         </div>
     </div>
+
+    <style>
+        /* === REDEEM MODAL ENHANCEMENTS === */
+        #redeem-modal .modal-content {
+            width: 340px;
+            padding: 28px 24px 24px;
+        }
+
+        @media (min-width: 768px) {
+            #redeem-modal .modal-content {
+                width: 380px;
+            }
+        }
+
+        /* Input focus styling */
+        #redeem-modal input:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+        }
+
+        /* QR Button */
+        #redeem-modal .qr-btn {
+            transition: all 0.2s ease;
+        }
+
+        #redeem-modal .qr-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Kinnected outlined button */
+        #redeem-modal button.border-2 {
+            transition: all 0.2s ease;
+        }
+
+        #redeem-modal button.border-2:hover {
+            background-color: rgba(107, 33, 168, 0.25);
+            border-color: #7e22ce;
+        }
+    </style>
 
     <!-- CREATE / SIGN IN MODAL - Phantom Style -->
     <div id="create-signin-modal" class="modal"
@@ -2347,6 +2429,36 @@
             <button onclick="closeTxSuccessModal()"
                 class="confirm-btn w-full text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97]"
                 style="background: linear-gradient(to right, #9333ea, #ec4899);">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- REDEEM SUCCESS MODAL (for wallet.html) -->
+    <div id="redeem-success-modal" class="modal">
+        <div class="modal-content"
+            style="width: 360px; max-width: 92vw; padding: 24px 20px; text-align: center; background: var(--card-bg-color, rgba(30, 5, 51, 0.98)); border-radius: 1.5rem;">
+            <div class="text-5xl mb-4">✅</div>
+            <h2 class="text-2xl font-bold tracking-tight mb-2" style="color: var(--text-color);">Redemption Successful!
+            </h2>
+
+            <div id="redeem-result-details"
+                class="text-left rounded-2xl p-5 mb-6 space-y-3 text-sm border border-purple-500/30 shadow-md"
+                style="background: var(--card-bg-color, #1a0f2e);">
+            </div>
+
+            <div
+                class="border border-purple-500/40 hover:border-purple-400/60 rounded-2xl p-4 mb-6 transition-all shadow-md hover:shadow-lg">
+                <a id="redeem-solscan-link" href="#" target="_blank"
+                    class="no-style-link text-emerald-400 hover:text-emerald-300 flex items-center gap-2 justify-center font-medium">
+                    <i class="fas fa-external-link-alt"></i>
+                    View Transaction on Solscan
+                </a>
+            </div>
+
+            <button onclick="closeRedeemSuccessModal()"
+                class="confirm-btn w-full py-4 text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97] flex items-center justify-center"
+                style="background: linear-gradient(to right, #9333ea, #ec4899); min-height: 68px;">
                 Close
             </button>
         </div>

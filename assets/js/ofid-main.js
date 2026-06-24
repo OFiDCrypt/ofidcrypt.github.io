@@ -332,3 +332,103 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// ====================== GLOBAL REDEEM HANDLER (Shared across wallet + redeem.html) ======================
+
+/**
+ * performRedeem - Reusable redemption function
+ * @param {string} linkId - 13-digit code
+ * @param {string} destinationWallet - Solana wallet address
+ * @param {object} options - onSuccess, onError, loadingText, etc.
+ */
+window.performRedeem = async function(linkId, destinationWallet, options = {}) {
+    const {
+        onSuccess = null,
+        onError = null,
+        loadingText = "Redeeming...",
+        successMessage = "Redirecting to Kinnected..."
+    } = options;
+
+    if (!linkId || !destinationWallet) {
+        const msg = "⚠️ Please fill in both fields.";
+        if (onError) onError(msg);
+        return { success: false, message: msg };
+    }
+
+    // Try Railway first, then localhost
+    const possibleUrls = [
+        "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
+        "http://127.0.0.1:5000/api/secure-redeem",
+        "http://localhost:5000/api/secure-redeem"
+    ];
+
+    let data = null;
+    let lastError = null;
+
+    for (const url of possibleUrls) {
+        try {
+            console.log("🔄 Trying backend:", url);
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ linkId, destinationWallet })
+            });
+
+            data = await response.json();
+            console.log("✅ Success with:", url);
+            break;
+        } catch (e) {
+            lastError = e;
+            console.log("❌ Failed:", url);
+        }
+    }
+
+    if (!data) {
+        const msg = "Network error: " + (lastError?.message || "All backends failed");
+        if (onError) onError(msg);
+        return { success: false, message: msg };
+    }
+
+    if (data.success) {
+        if (onSuccess) onSuccess(data);
+    } else {
+        if (onError) onError(data.message || "Redemption failed");
+    }
+
+    return data;
+};
+
+// ====================== WALLET MODAL REDEEM IN KINNECTED BUTTON ======================
+document.addEventListener('DOMContentLoaded', () => {
+    const kinnectedBtn = document.querySelector('button[onclick="redeemInKinnected()"]');
+
+    if (kinnectedBtn) {
+        kinnectedBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const linkId = document.getElementById('redeem-input').value.trim();
+            const destinationWallet = document.getElementById('wallet-address').value.trim();
+            const messageDiv = document.getElementById('redeem-message');
+
+            // Reset
+            messageDiv.textContent = '';
+            messageDiv.style.color = '';
+
+            const result = await window.performRedeem(linkId, destinationWallet, {
+                loadingText: "Checking...",
+                onSuccess: (data) => {
+                    messageDiv.style.color = '#2ecc71';
+                    messageDiv.textContent = 'Success! Redirecting...';
+                    
+                    setTimeout(() => {
+                        window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${linkId}`;
+                    }, 800);
+                },
+                onError: (msg) => {
+                    messageDiv.style.color = '#e74c3c';
+                    messageDiv.textContent = msg;
+                }
+            });
+        });
+    }
+});

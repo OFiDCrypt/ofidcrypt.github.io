@@ -40,18 +40,18 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     window.connectionMethod = connectionMethod;
 
     // 2. Persist to LocalStorage
-if (isConnected && connectedWallet) {
-    localStorage.setItem('wallet_address', connectedWallet);
-    localStorage.setItem('connection_method', connectionMethod);
+    if (isConnected && connectedWallet) {
+        localStorage.setItem('wallet_address', connectedWallet);
+        localStorage.setItem('connection_method', connectionMethod);
 
-    // === NEW: Also expose to window for swapUtils.js ===
-    window.connectionMethod = connectionMethod;
+        // === NEW: Also expose to window for swapUtils.js ===
+        window.connectionMethod = connectionMethod;
 
-} else {
-    localStorage.removeItem('wallet_address');
-    localStorage.removeItem('connection_method');
-    window.connectionMethod = null;
-}
+    } else {
+        localStorage.removeItem('wallet_address');
+        localStorage.removeItem('connection_method');
+        window.connectionMethod = null;
+    }
 
     // 3. UI Elements
     const navText = document.getElementById('walletBtnText');
@@ -418,7 +418,7 @@ function closeModal(modalId) {
 function resetRedeemForm() {
     const input = document.getElementById('redeem-input');
     const msg = document.getElementById('redeem-message');
-    const btn = document.querySelector('#redeem-form button');
+    const btn = document.getElementById('redeem-submit-btn'); // ← Fixed: targets correct button
 
     if (input) input.value = '';
     if (msg) {
@@ -427,7 +427,7 @@ function resetRedeemForm() {
     }
     if (btn) {
         btn.classList.remove('success', 'failure');
-        btn.textContent = 'Redeem';
+        btn.textContent = 'REDEEM';
         btn.disabled = false;
     }
 }
@@ -520,7 +520,7 @@ document.addEventListener('click', (e) => {
     if (addBtn && walletDropdown &&
         !addBtn.contains(e.target) &&
         !walletDropdown.contains(e.target)) {
-        
+
         walletDropdown.classList.add('hidden');
         const mainChevron = document.getElementById('chevron');
         if (mainChevron) mainChevron.classList.remove('rotate-180');
@@ -541,7 +541,7 @@ function initShareWalletButton() {
         }
 
         // 2. Updated: share only the address
-        const shareText = address; 
+        const shareText = address;
 
         // 3. Try native share
         if (navigator.share) {
@@ -560,15 +560,15 @@ function initShareWalletButton() {
         // 4. Fallback: Copy address to clipboard
         try {
             await navigator.clipboard.writeText(address);
-            
+
             // Visual feedback
             const originalIcon = shareBtn.innerHTML;
             shareBtn.innerHTML = `<i class="fas fa-check text-emerald-400"></i>`;
-            
+
             setTimeout(() => {
                 shareBtn.innerHTML = originalIcon;
             }, 1500);
-            
+
         } catch (err) {
             prompt("Copy your wallet address:", address);
         }
@@ -668,7 +668,7 @@ async function handleCreateWallet() {
 
         if (publicKey) {
             console.log("✅ [Google] Wallet address received:", publicKey);
-            
+
             // Kill URL params to stop OAuth loop
             clearUrlParams();
 
@@ -743,7 +743,7 @@ async function handleAppleSignIn() {
 
         if (publicKey) {
             console.log("✅ [Apple] Wallet address received:", publicKey);
-            
+
             // Kill URL params to stop OAuth loop
             clearUrlParams();
 
@@ -1151,7 +1151,7 @@ async function confirmValueLock() {
         setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 1500);
     } catch (e) {
         console.log(`[Swap Status] ${e.message === "USER_REJECTED" ? "Swap cancelled" : "Swap failed"}`);
-        
+
         if (e.message !== "USER_REJECTED") {
             console.error(e);
             alert(`❌ Swap failed: ${e.message}`);
@@ -1213,7 +1213,7 @@ async function confirmGiddySwap() {
 
     } catch (e) {
         console.log(`[Swap Status] ${e.message === "USER_REJECTED" ? "Swap cancelled" : "Swap failed"}`);
-        
+
         if (e.message !== "USER_REJECTED") {
             console.error(e);
             alert(`❌ Swap failed: ${e.message}`);
@@ -1303,48 +1303,99 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ====================== REDEEM IN KINNECTED BUTTON LOGIC ======================
+    const kinnectedBtn = document.querySelector('button[onclick="redeemInKinnected()"]');
     const redeemForm = document.getElementById('redeem-form');
+
     if (redeemForm) {
-        redeemForm.addEventListener('submit', (e) => {
+        redeemForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const input = document.getElementById('redeem-input').value.trim();
+
+            const linkId = document.getElementById('redeem-input').value.trim();
+            const destinationWallet = document.getElementById('wallet-address').value.trim();
             const messageDiv = document.getElementById('redeem-message');
-            const button = redeemForm.querySelector('button');
 
             messageDiv.textContent = '';
-            messageDiv.style.color = '#2ecc71';
-            button.classList.remove('success', 'failure');
+            messageDiv.style.color = '';
 
-            if (!input) {
-                messageDiv.textContent = 'Please enter a code.';
+            if (!linkId || !/^\d{13}$/.test(linkId)) {
+                messageDiv.textContent = !linkId ? 'Please enter a code.' : 'Invalid code: Must be exactly 13 digits.';
                 messageDiv.style.color = '#e74c3c';
-                button.classList.add('failure');
                 return;
             }
 
-            if (!/^\d{13}$/.test(input)) {
-                messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
+            if (!destinationWallet) {
+                messageDiv.textContent = 'Please enter or add a wallet address.';
                 messageDiv.style.color = '#e74c3c';
-                button.classList.add('failure');
-                button.textContent = 'INVALID';
                 return;
             }
 
-            messageDiv.textContent = 'Validating code — redirecting to Kinnected!';
-            button.textContent = 'Checking...';
-            button.disabled = true;
+            const originalText = kinnectedBtn ? kinnectedBtn.textContent : 'Redeem';
+            if (kinnectedBtn) {
+                kinnectedBtn.textContent = 'Checking...';
+                kinnectedBtn.disabled = true;
+            }
 
-            setTimeout(() => {
-                window.location.href = `https://kinnected-links.com/k7m9x2qw8e4r5t6y/pay.html?id=${input}`;
-            }, 800);
+            await window.performRedeem(linkId, destinationWallet, {
+                onSuccess: (data) => {
+                    // Show the nice modal instead of redirect
+                    showRedeemSuccessModal(data);
+                },
+                onError: (msg) => {
+                    messageDiv.style.color = '#e74c3c';
+                    messageDiv.textContent = msg;
+                    if (kinnectedBtn) {
+                        kinnectedBtn.textContent = originalText;
+                        kinnectedBtn.disabled = false;
+                    }
+                }
+            });
         });
     }
 
-    const addBtn = document.getElementById('addWalletBtn');
-    if (addBtn) addBtn.addEventListener('click', toggleWalletDropdown);
+    // Show Success Modal (reused from redeem.html)
+    function showRedeemSuccessModal(data) {
+        const txHash = data.transaction_hash || "";
+        const shortHash = txHash ? txHash.slice(0, 8) + "..." + txHash.slice(-6) : "";
+        const solscanLink = txHash ? `https://solscan.io/tx/${txHash}` : "#";
 
-    provider = window.phantom?.solana || window.solana;
-    setWalletState(false);
+        document.getElementById('redeem-result-details').innerHTML = `
+        <div class="flex justify-between" style="color: var(--text-color);">
+            <span style="color: var(--text-muted, #a1a1aa);">Amount</span>
+            <span class="font-bold" style="color: var(--text-color);">${data.amount || "—"} ${data.token_name || ""}</span>
+        </div>
+        <div class="flex justify-between" style="color: var(--text-color);">
+            <span style="color: var(--text-muted, #a1a1aa);">Model</span>
+            <span class="font-medium" style="color: var(--text-color);">${data.model || "escrow"}</span>
+        </div>
+        <div class="flex justify-between items-center" style="color: var(--text-color);">
+            <span style="color: var(--text-muted, #a1a1aa);">Transaction</span>
+            <a href="${solscanLink}" target="_blank" class="font-mono text-emerald-400 hover:text-emerald-300 text-xs break-all" style="color: var(--accent-color, #4ade80);">
+                ${shortHash || "—"}
+            </a>
+        </div>
+    `;
+
+        document.getElementById('redeem-solscan-link').href = solscanLink;
+
+        const modal = document.getElementById('redeem-success-modal');
+        modal.style.display = 'flex';
+        modal.classList.add('show');
+    }
+
+    function closeRedeemSuccessModal() {
+        const modal = document.getElementById('redeem-success-modal');
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+    }
+
+    function closeRedeemSuccessModal() {
+        const modal = document.getElementById('redeem-success-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+        }
+    }
 
     // ====================== LEGACY PHANTOM INIT (FIRST-TIME POPUP CONTROL) ======================
     if (provider && provider.isPhantom) {
@@ -1487,3 +1538,6 @@ window.closeTxSuccessModal = closeTxSuccessModal;
 
 window.getPhantomSDK = getPhantomSDK;
 window.isMobileDevice = isMobileDevice;
+
+// Kinnected Redeem
+window.closeRedeemSuccessModal = closeRedeemSuccessModal;
