@@ -582,12 +582,256 @@
         <!-- Background Layer -->
         <div class="bg fixed"></div>
 
-        <!-- PAGE HEADER -->
-        <header class="header-subpage">
-            <a href="/index.html">
-                <img src="/assets/images/webp/giddy-key-logo-2.webp" alt="Giddys Key Logo" class="logo">
-            </a>
-        </header>
+<!-- PAGE HEADER -->
+<header class="header-subpage">
+  <div class="header-carousel">
+    
+    <!-- Left Arrow -->
+    <button class="scroll-btn left" aria-label="Scroll left to receive">
+      <div class="chevron-container">
+        <div class="chevron"></div>
+        <div class="chevron"></div>
+        <div class="chevron"></div>
+      </div>
+    </button>
+
+    <!-- Horizontal Scroll Container -->
+    <div class="header-scroll" id="headerScroll">
+      
+      <!-- LEFT: Receive -->
+      <div class="header-slide" data-slide="receive">
+        <img src="/assets/images/webp/giddy-receive.webp" 
+             alt="Giddy Receive" 
+             class="header-image">
+      </div>
+
+      <!-- CENTER: Logo -->
+      <div class="header-slide active" data-slide="logo">
+        <a href="/index.html">
+          <img src="/assets/images/webp/giddy-key-logo-2.webp" 
+               alt="Giddys Key Logo" 
+               class="header-logo">
+        </a>
+      </div>
+
+      <!-- RIGHT: Send -->
+      <div class="header-slide" data-slide="send">
+        <img src="/assets/images/webp/giddy-send.webp" 
+             alt="Giddy Send" 
+             class="header-image">
+      </div>
+
+    </div>
+
+    <!-- Right Arrow -->
+    <button class="scroll-btn right" aria-label="Scroll right to send">
+      <div class="chevron-container">
+        <div class="chevron"></div>
+        <div class="chevron"></div>
+        <div class="chevron"></div>
+      </div>
+    </button>
+
+  </div>
+</header>
+
+<style>
+/* === HORIZONTAL SCROLLING HEADER === */
+.header-subpage {
+  position: relative;
+  overflow: hidden;
+}
+
+.header-carousel {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.header-scroll {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.header-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.header-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  scroll-snap-align: center;
+}
+
+/* Logo sizing */
+.header-logo {
+  visibility: visible;
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  margin: 1rem auto 0;
+  padding: 10px;
+  transition: opacity .5s, visibility .5s, transform .5s;
+}
+
+.header-image {
+visibility: visible;
+  width: 200px;
+  max-width: 100%;
+  height: auto;
+  padding: 10px;
+  transition: opacity .5s, visibility .5s, transform .5s;
+}
+
+/* === CLEAN ARROWS - NO BACKGROUND + HOVER OVERRIDE === */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 10px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Override global button hover box-shadow */
+.scroll-btn:hover {
+  box-shadow: none !important;
+  transform: translateY(-50%) scale(1.2);
+}
+
+.scroll-btn.left  { left: 12px; }
+.scroll-btn.right { right: 12px; }
+
+/* Desktop - closer to edges */
+@media (min-width: 1024px) {
+  .scroll-btn.left  { left: 24px; }
+  .scroll-btn.right { right: 24px; }
+}
+
+/* === HORIZONTAL TRIPLE CHEVRONS === */
+.chevron-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+}
+
+.chevron {
+  width: 14px;
+  height: 14px;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  box-shadow: none;
+  animation: chevronBounce 1.5s infinite ease-in-out;
+}
+
+/* LEFT ARROW - points LEFT (<<<) */
+.scroll-btn.left .chevron {
+  transform: rotate(135deg);
+  animation-name: chevronBounceLeft;
+}
+
+.scroll-btn.left .chevron:nth-child(2) { animation-delay: 0.08s; }
+.scroll-btn.left .chevron:nth-child(3) { animation-delay: 0.16s; }
+
+/* RIGHT ARROW - points RIGHT (>>>) */
+.scroll-btn.right .chevron {
+  transform: rotate(-45deg);
+  animation-name: chevronBounceRight;
+}
+
+.scroll-btn.right .chevron:nth-child(2) { animation-delay: 0.08s; }
+.scroll-btn.right .chevron:nth-child(3) { animation-delay: 0.16s; }
+
+@keyframes chevronBounceLeft {
+  0%, 100% { opacity: 0.35; transform: rotate(135deg) translateX(0); }
+  50%      { opacity: 1;    transform: rotate(135deg) translateX(-4px); }
+}
+
+@keyframes chevronBounceRight {
+  0%, 100% { opacity: 0.35; transform: rotate(-45deg) translateX(0); }
+  50%      { opacity: 1;    transform: rotate(-45deg) translateX(4px); }
+}
+</style>
+
+<script>
+// Load already centered on logo + dynamic arrow visibility
+document.addEventListener('DOMContentLoaded', () => {
+  const scrollContainer = document.getElementById('headerScroll');
+  const leftBtn = document.querySelector('.scroll-btn.left');
+  const rightBtn = document.querySelector('.scroll-btn.right');
+
+  // Instantly center logo on load
+  function centerLogoInstantly() {
+    const logoSlide = scrollContainer.querySelector('[data-slide="logo"]');
+    if (logoSlide) {
+      const scrollLeftPos = logoSlide.offsetLeft - (scrollContainer.clientWidth / 2) + (logoSlide.clientWidth / 2);
+      scrollContainer.scrollLeft = scrollLeftPos;
+    }
+  }
+
+  // Hide/show arrows based on scroll position
+  function updateArrowVisibility() {
+    const scrollLeft = scrollContainer.scrollLeft;
+    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+    // Left arrow
+    if (scrollLeft < 30) {
+      leftBtn.style.opacity = '0';
+      leftBtn.style.pointerEvents = 'none';
+    } else {
+      leftBtn.style.opacity = '1';
+      leftBtn.style.pointerEvents = 'auto';
+    }
+
+    // Right arrow
+    if (scrollLeft > maxScroll - 30) {
+      rightBtn.style.opacity = '0';
+      rightBtn.style.pointerEvents = 'none';
+    } else {
+      rightBtn.style.opacity = '1';
+      rightBtn.style.pointerEvents = 'auto';
+    }
+  }
+
+  // Initial setup
+  requestAnimationFrame(() => {
+    centerLogoInstantly();
+    updateArrowVisibility();
+  });
+
+  // Update arrows on scroll
+  scrollContainer.addEventListener('scroll', updateArrowVisibility);
+
+  // Left button
+  leftBtn.addEventListener('click', () => {
+    const receive = scrollContainer.querySelector('[data-slide="receive"]');
+    if (receive) receive.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+  });
+
+  // Right button
+  rightBtn.addEventListener('click', () => {
+    const send = scrollContainer.querySelector('[data-slide="send"]');
+    if (send) send.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+  });
+});
+</script>
 
         <a href="#darkModePanel" id="darkModeToggle" class="alt">
             <i class="fas fa-sun"></i>
@@ -2078,17 +2322,15 @@
         </button>
     </div>
 
-    <!-- Solana Web3.js Library -->
-    <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
+    <!-- 1. Dependencies first -->
+<script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
 
-    <!-- Scripts-->
-    <script src="/assets/js/ofid-main.js"></script>
+<!-- 2. Plain scripts that define globals (swapUtils must come before wallet.js) -->
+<script src="/assets/js/ofid-main.js"></script>
+<script src="/assets/js/webapp/swapUtils.js"></script>
 
-    <!-- CHANGE THIS TO TYPE="MODULE" SO VITE BUNDLES THE SDK -->
-    <script type="module" src="/assets/js/webapp/wallet.js"></script>
-
-    <!-- Shared Swap Utilities -->
-    <script src="/assets/js/webapp/swapUtils.js"></script>
+<!-- 3. Module last -->
+<script type="module" src="/assets/js/webapp/wallet.js"></script>
 
 </body>
 
