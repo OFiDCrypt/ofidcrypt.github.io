@@ -527,6 +527,54 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// ====================== SHARE WALLET ADDRESS ======================
+function initShareWalletButton() {
+    const shareBtn = document.getElementById('shareWalletBtn');
+    if (!shareBtn) return;
+
+    shareBtn.addEventListener('click', async () => {
+        // 1. Get the dynamic address from storage
+        const address = localStorage.getItem('wallet_address');
+        if (!address) {
+            alert("No wallet address found.");
+            return;
+        }
+
+        // 2. Updated: share only the address
+        const shareText = address; 
+
+        // 3. Try native share
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'My Giddy Key Wallet',
+                    text: shareText
+                    // Removed 'url' so only the address is shared
+                });
+                return;
+            } catch (err) {
+                console.log("Share cancelled or failed");
+            }
+        }
+
+        // 4. Fallback: Copy address to clipboard
+        try {
+            await navigator.clipboard.writeText(address);
+            
+            // Visual feedback
+            const originalIcon = shareBtn.innerHTML;
+            shareBtn.innerHTML = `<i class="fas fa-check text-emerald-400"></i>`;
+            
+            setTimeout(() => {
+                shareBtn.innerHTML = originalIcon;
+            }, 1500);
+            
+        } catch (err) {
+            prompt("Copy your wallet address:", address);
+        }
+    });
+}
+
 // ====================== STATE PROTECTION ======================
 let lastFetchWallet = null;
 
@@ -1244,6 +1292,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     initOAuthListener();
+
+    // ====================== SHARE WALLET BUTTON ======================
+    initShareWalletButton();     // ← Add this line here
 
     // 3. Keep cross-window communication for specific legacy needs
     window.addEventListener('message', async (event) => {
