@@ -62,10 +62,7 @@
         .input-field {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid #6b21a8;
-
-            /* FIXED: Corrected the syntax typo so it safely reads your main css variable */
             color: var(--text-color);
-
             border-radius: 12px;
             padding: 14px;
             width: 100%;
@@ -121,12 +118,30 @@
             font-size: 2.25rem;
             padding: 0 12px;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .modal.show {
+            display: flex !important;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
+   <!-- ANTI-FLICKER SCRIPT - Put this as high as possible -->
     <script>
         (function () {
             // Apply dark mode BEFORE the page paints
@@ -192,7 +207,7 @@
                 </li>
             </ul>
 
-            <ul class="icons">
+ <ul class="icons">
                 <li><a href="https://x.com/OFiDCrypt" class="icon brands fa-x-twitter"><span class="label">X</span></a>
                 </li>
                 <li><a href="https://youtube.com/@OFiDCrypt" class="icon brands fa-youtube"><span
@@ -271,7 +286,7 @@
                     Powered by
                     <a href="https://kinnected-links.com" class="status-link"
                         style="text-decoration: none; font-weight: 600; color: inherit;">
-                        Kinnected</a>
+                       Kinnected</a>
                     • Secure • Instant
                 </p>
             </div>
@@ -284,7 +299,7 @@
             <i class="fas fa-question-circle"></i>
             <span>Ask Giddy</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='/shop.html'"><i class="fas fa-shopping-bag"></i>Shop
+       <div class="nav-item" onclick="window.location.href='/shop.html'"><i class="fas fa-shopping-bag"></i>Shop
         </div>
         <div class="nav-item" onclick="window.location.href='/game/app-play.html'"><i class="fas fa-gamepad"></i>Play
             Blinko!</div>
@@ -293,6 +308,32 @@
         <div class="nav-item" onclick="window.location.href='/cashlinks.html'"><i class="fas fa-circle-notch"></i>Wheel
         </div>
     </nav>
+
+    <!-- REDEEM SUCCESS MODAL -->
+    <div id="redeem-success-modal" class="modal">
+        <div class="modal-content" style="width: 360px; max-width: 92vw; padding: 24px 20px; text-align: center; background: var(--card-bg-color, rgba(30, 5, 51, 0.98)); border-radius: 1.5rem;">
+            <div class="text-5xl mb-4">✅</div>
+            <h2 class="text-2xl font-bold tracking-tight mb-2" style="color: var(--text-color);">Redemption Successful!</h2>
+            
+            <div id="redeem-result-details" class="text-left rounded-2xl p-5 mb-6 space-y-3 text-sm border border-purple-500/30 shadow-md"
+                 style="background: var(--card-bg-color, #1a0f2e);">
+            </div>
+
+            <div class="border border-purple-500/40 hover:border-purple-400/60 rounded-2xl p-4 mb-6 transition-all shadow-md hover:shadow-lg">
+                <a id="redeem-solscan-link" href="#" target="_blank"
+                   class="no-style-link text-emerald-400 hover:text-emerald-300 flex items-center gap-2 justify-center font-medium">
+                    <i class="fas fa-external-link-alt"></i>
+                    View Transaction on Solscan
+                </a>
+            </div>
+
+            <button onclick="closeRedeemSuccessModal()"
+                class="confirm-btn w-full py-4 text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97] flex items-center justify-center"
+                style="background: linear-gradient(to right, #9333ea, #ec4899); min-height: 68px;">
+                Close
+            </button>
+        </div>
+    </div>
 
     <script>
         async function redeem() {
@@ -311,7 +352,6 @@
             result.style.display = "none";
 
             try {
-                // Railway Production + Localhost Fallback
                 const possibleUrls = [
                     "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
                     "http://127.0.0.1:5000/api/secure-redeem",
@@ -341,7 +381,7 @@
 
                 if (!data) throw lastError || new Error("All backends failed");
 
-                showResult(JSON.stringify(data, null, 2), data.success);
+                showResult(data, data.success);
 
             } catch (err) {
                 showResult("Network error: " + err.message, false);
@@ -351,11 +391,52 @@
             btn.textContent = "REDEEM NOW";
         }
 
-        function showResult(text, success) {
+        function showResult(data, success) {
             const result = document.getElementById("result");
-            result.textContent = text;
-            result.className = success ? "success" : "error";
-            result.style.display = "block";
+
+            if (!success) {
+                // Original simple error message
+                result.textContent = (typeof data === 'string') ? data : "Redemption failed.";
+                result.className = "error";
+                result.style.display = "block";
+                return;
+            }
+
+            // Success → Show nice modal
+            const txHash = data.transaction_hash || "";
+            const shortHash = txHash ? txHash.slice(0, 8) + "..." + txHash.slice(-6) : "";
+            const solscanLink = txHash ? `https://solscan.io/tx/${txHash}` : "#";
+
+            document.getElementById('redeem-result-details').innerHTML = `
+                <div class="flex justify-between" style="color: var(--text-color);">
+                    <span style="color: var(--text-muted, #a1a1aa);">Amount</span>
+                    <span class="font-bold" style="color: var(--text-color);">${data.amount || "—"} ${data.token_name || ""}</span>
+                </div>
+                <div class="flex justify-between" style="color: var(--text-color);">
+                    <span style="color: var(--text-muted, #a1a1aa);">Model</span>
+                    <span class="font-medium" style="color: var(--text-color);">${data.model || "escrow"}</span>
+                </div>
+                <div class="flex justify-between items-center" style="color: var(--text-color);">
+                    <span style="color: var(--text-muted, #a1a1aa);">Transaction</span>
+                    <a href="${solscanLink}" target="_blank" 
+                       class="font-mono text-emerald-400 hover:text-emerald-300 text-xs break-all" 
+                       style="color: var(--accent-color, #4ade80);">
+                        ${shortHash || "—"}
+                    </a>
+                </div>
+            `;
+
+            document.getElementById('redeem-solscan-link').href = solscanLink;
+
+            const modal = document.getElementById('redeem-success-modal');
+            modal.style.display = 'flex';
+            modal.classList.add('show');
+        }
+
+        function closeRedeemSuccessModal() {
+            const modal = document.getElementById('redeem-success-modal');
+            modal.style.display = 'none';
+            modal.classList.remove('show');
         }
     </script>
 
