@@ -398,11 +398,29 @@ function sellToken() {
     alert("Sell to Token / Exchange Loop Coming Soon...");
 }
 
+// ====================== QR / SCAN HELPER ======================
+function scanQRCode() {
+    const helper = document.getElementById('scan-helper');
+    
+    if (helper) {
+        helper.classList.toggle('hidden');
+        
+        // Auto-hide after 4 seconds
+        setTimeout(() => {
+            if (helper) helper.classList.add('hidden');
+        }, 4000);
+    }
+    
+    // Optional: future real QR scan would go here
+    console.log("📷 Scan & Send feature — coming soon");
+}
+
 // ====================== MODAL & REDEEM FUNCTIONS ======================
 function openModal(modalId) {
     if (modalId === 'redeem') {
         document.getElementById('redeem-modal').style.display = 'flex';
         resetRedeemForm();
+        populateRedeemAddress();        // Auto-populate + lock
     }
 }
 
@@ -416,7 +434,7 @@ function closeModal(modalId) {
 function resetRedeemForm() {
     const input = document.getElementById('redeem-input');
     const msg = document.getElementById('redeem-message');
-    const btn = document.getElementById('redeem-submit-btn'); // ← Fixed: targets correct button
+    const btn = document.getElementById('redeem-submit-btn');
 
     if (input) input.value = '';
     if (msg) {
@@ -429,6 +447,65 @@ function resetRedeemForm() {
         btn.disabled = false;
     }
 }
+
+// ====================== SMART ADDRESS MODE (Locked by default) ======================
+function populateRedeemAddress() {
+    const input = document.getElementById('wallet-address');
+    if (!input) return;
+
+    const connectedAddr = window.connectedWallet || localStorage.getItem('wallet_address');
+
+    if (connectedAddr) {
+        input.value = connectedAddr;
+        lockAddressField(input);
+        console.log("✅ Auto-populated and LOCKED:", connectedAddr);
+    } else {
+        unlockAddressField(input);
+    }
+}
+
+function lockAddressField(input) {
+    input.readOnly = true;
+    input.classList.add('locked-address');
+    updateAddressModeUI(true);
+}
+
+function unlockAddressField(input) {
+    input.readOnly = false;
+    input.value = '';                    // Clear for safety
+    input.classList.remove('locked-address');
+    updateAddressModeUI(false);
+}
+
+function updateAddressModeUI(isLocked) {
+    const link = document.getElementById('manual-address-link');
+    if (!link) return;
+
+    if (isLocked) {
+        link.innerHTML = `✏️ <span>Use different address</span>`;
+    } else {
+        link.innerHTML = `➕ <span>Use connected wallet</span>`;
+    }
+}
+
+window.toggleAddressMode = function() {
+    const input = document.getElementById('wallet-address');
+    if (!input) return;
+
+    if (input.classList.contains('locked-address')) {
+        // Locked → unlock for manual
+        unlockAddressField(input);
+    } else {
+        // Unlocked → restore connected wallet
+        const connectedAddr = window.connectedWallet || localStorage.getItem('wallet_address');
+        if (connectedAddr) {
+            input.value = connectedAddr;
+            lockAddressField(input);
+        } else {
+            alert("No wallet is currently connected.");
+        }
+    }
+};
 
 // ====================== CENTRALIZED WALLET STATE + CLEAR LOGIC ======================
 function clearBalancesOnDisconnect() {
@@ -1364,13 +1441,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
                 messageDiv.style.color = '#e74c3c';
                 if (mainBtn) mainBtn.classList.add('failure');
-                if (mainBtn) mainBtn.textContent = 'INVALID';
+                if (mainBtn) mainBtn.textContent = 'TRY AGAIN';
                 return;
             }
 
             if (!destinationWallet) {
                 messageDiv.textContent = 'Please enter or add a wallet address.';
                 messageDiv.style.color = '#e74c3c';
+                return;
+            }
+
+            // ====================== SOLANA ADDRESS VALIDATION ======================
+            if (!isValidSolanaAddress(destinationWallet)) {
+                messageDiv.textContent = '❌ Invalid Solana address. Please check the format and try again.';
+                messageDiv.style.color = '#e74c3c';
+                if (mainBtn) mainBtn.classList.add('failure');
                 return;
             }
 
@@ -1410,7 +1495,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (!data) {
-                // Error handling (same style as redeem.html)
                 messageDiv.style.color = '#e74c3c';
                 messageDiv.textContent = "Network error: " + (lastError?.message || "All backends failed");
                 if (mainBtn) {
@@ -1421,22 +1505,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (data.success) {
-                // Success → show the nice modal (same as redeem.html)
                 showRedeemSuccessModal(data);
                 if (mainBtn) {
                     mainBtn.textContent = originalText;
                     mainBtn.disabled = false;
                 }
             } else {
-                // Error from backend
                 messageDiv.style.color = '#e74c3c';
-                messageDiv.textContent = data.message || "Redemption failed";
+                messageDiv.textContent = data.message || "Invaild, expired or used code. Check or try another.";
                 if (mainBtn) {
                     mainBtn.textContent = originalText;
                     mainBtn.disabled = false;
                 }
             }
         });
+    }
+
+    // ====================== SOLANA ADDRESS VALIDATION HELPER ======================
+    function isValidSolanaAddress(address) {
+        if (!address || typeof address !== 'string') return false;
+        if (address.length < 32 || address.length > 44) return false;
+
+        // Basic base58 alphabet check
+        const base58Regex = /^[1-9A-HJ-NP-Za-km-z]+$/;
+        if (!base58Regex.test(address)) return false;
+
+        try {
+            // Use web3.js if available (most accurate)
+            if (typeof solanaWeb3 !== 'undefined' && solanaWeb3.PublicKey) {
+                new solanaWeb3.PublicKey(address);
+                return true;
+            }
+            return true; // fallback validation passed
+        } catch (e) {
+            return false;
+        }
     }
 
     // ====================== REDEEM IN KINNECTED BUTTON (Original Simple Flow) ======================
@@ -1466,7 +1569,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageDiv.textContent = 'Invalid code: Must be exactly 13 digits.';
                 messageDiv.style.color = '#e74c3c';
                 button.classList.add('failure');
-                button.textContent = 'INVALID';
+                button.textContent = 'TRY AGAIN';
                 return;
             }
 
@@ -1481,6 +1584,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800);
         });
     }
+
+// ====================== REFRESH REDEEM MODAL (Full Reset for Both Buttons) ======================
+window.refreshRedeemModal = function() {
+    console.log("🔄 Full Refresh - Resetting all buttons...");
+
+    // Close modal
+    const modal = document.getElementById('redeem-modal');
+    if (modal) closeModal('redeem');
+
+    setTimeout(() => {
+        // Reset Main Redeem Button
+        const mainBtn = document.getElementById('redeem-submit-btn');
+        if (mainBtn) {
+            mainBtn.textContent = 'REDEEM';
+            mainBtn.disabled = false;
+            mainBtn.classList.remove('success', 'failure');
+        }
+
+        // Reset Kinnected Button
+        const kinnectedBtn = document.querySelector('button[onclick="redeemInKinnected()"]');
+        if (kinnectedBtn) {
+            kinnectedBtn.textContent = 'Redeem in Kinnected';
+            kinnectedBtn.disabled = false;
+            kinnectedBtn.classList.remove('success', 'failure');
+        }
+
+        // Clear messages
+        const messageDiv = document.getElementById('redeem-message');
+        if (messageDiv) {
+            messageDiv.textContent = '';
+            messageDiv.style.color = '';
+        }
+
+        // Re-open modal
+        openModal('redeem');
+        console.log("✅ Both buttons and modal fully reset");
+    }, 250);
+};
 
     // Wrapper for onclick in HTML
     window.redeemInKinnected = function () {
@@ -1615,12 +1756,13 @@ window.dismissClaimBubble = dismissClaimBubble;
 window.toggleCommunityTokens = toggleCommunityTokens;
 window.toggleWorldwideCurrencies = toggleWorldwideCurrencies;
 
-// Create / Sign In Modal (Updated)
+// Create / Sign In Modal
 window.openCreateSignInModal = openCreateSignInModal;
 window.closeCreateSignInModal = closeCreateSignInModal;
 window.handleCreateWalletFromModal = handleCreateWalletFromModal;
 window.handleAppleSignInFromModal = handleAppleSignInFromModal;
 
+// Modals
 window.openValueLockModal = openValueLockModal;
 window.closeValueLockModal = closeValueLockModal;
 window.openGiddySwapModal = openGiddySwapModal;
@@ -1632,9 +1774,8 @@ window.selectSwapPercent = selectSwapPercent;
 window.changeCurrency = changeCurrency;
 window.showTxSuccess = showTxSuccess;
 window.closeTxSuccessModal = closeTxSuccessModal;
+window.closeRedeemSuccessModal = closeRedeemSuccessModal;
+window.scanQRCode = scanQRCode;
 
 window.getPhantomSDK = getPhantomSDK;
 window.isMobileDevice = isMobileDevice;
-
-// Kinnected Redeem
-window.closeRedeemSuccessModal = closeRedeemSuccessModal;
