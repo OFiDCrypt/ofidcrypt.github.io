@@ -1050,51 +1050,48 @@
                     </button>
                 </div>
 
-<!-- Wallet Connected Status -->
-<div id="connectedStatus"
-    class="hidden mb-6 px-5 py-2 bg-white border border-emerald-500 rounded-3xl flex items-center justify-between gap-3 shadow-sm">
+                <!-- Wallet Connected Status -->
+                <div id="connectedStatus"
+                    class="hidden mb-6 px-5 py-2 bg-white border border-emerald-500 rounded-3xl flex items-center justify-between gap-3 shadow-sm">
 
-    <div class="flex items-center gap-3 flex-1 min-w-0">
-        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse flex-shrink-0"></span>
-        <span id="connectedAddress" class="font-mono text-sm text-emerald-700 truncate font-medium"></span>
-    </div>
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse flex-shrink-0"></span>
+                        <span id="connectedAddress"
+                            class="font-mono text-sm text-emerald-700 truncate font-medium"></span>
+                    </div>
 
-    <div class="flex items-center gap-2 flex-shrink-0">
-        <button id="shareWalletBtn"
-            class="flex items-center justify-center p-1.5 m-0 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-100 rounded-lg transition-all !w-auto !h-auto !border-none !shadow-none !ring-0"
-            style="min-width: unset; min-height: unset; line-height: normal;"
-            title="Share wallet address">
-            <i class="fas fa-share-alt text-sm"></i>
-        </button>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button id="shareWalletBtn"
+                            class="flex items-center justify-center p-1.5 m-0 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 rounded-lg transition-all !w-auto !h-auto !border-none !shadow-none !ring-0"
+                            style="min-width: unset; min-height: unset; line-height: normal;"
+                            title="Share wallet address">
+                            <i class="fas fa-share-alt text-sm"></i>
+                        </button>
 
-        <div id="status-actions" class="flex items-center gap-2"></div>
-    </div>
-</div>
+                        <div id="status-actions" class="flex items-center gap-2"></div>
+                    </div>
+                </div>
 
-<style>
-/* === CONNECTED STATUS BAR - THEME AWARE === */
-#connectedStatus {
-    background: var(--card-bg-color, #ffffff);
-    border: 2px solid #10b981;
-    box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.25),
-                0 0 0 1px rgba(16, 185, 129, 0.15) inset;
-}
+                <style>
+                    /* === CONNECTED STATUS BAR - THEME AWARE === */
+                    #connectedStatus {
+                        background: var(--card-bg-color, #ffffff);
+                        border: 2px solid #10b981;
+                        box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.25),
+                            0 0 0 1px rgba(16, 185, 129, 0.15) inset;
+                    }
 
-#connectedStatus #connectedAddress {
-    color: var(--text-color, #166534) !important;
-}
+                    #connectedStatus #connectedAddress {
+                        color: var(--text-color, #166534) !important;
+                    }
 
-/* Dark Mode Override */
-.dark-mode #connectedStatus {
-    background: rgba(16, 185, 129, 0.12);
-    border-color: rgba(16, 185, 129, 0.5);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.dark-mode #connectedStatus #connectedAddress {
-    color: #ffffff !important;
-}
-</style>
+                    /* Dark Mode Override */
+                    .dark-mode #connectedStatus {
+                        background: rgba(16, 185, 129, 0.12);
+                        border-color: rgba(16, 185, 129, 0.5);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    }
+                </style>
 
                 <!-- TOTAL BALANCE CARD SECTION -->
                 <div id="walletTotalCard" class="card p-5 fade-in mb-6">
@@ -2081,30 +2078,18 @@
     <div id="redeem-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('redeem')">&times;</span>
+
             <h2 class="text-2xl font-black tracking-tight mb-6">REDEEM CODE</h2>
 
             <form id="redeem-form">
 
-                <!-- Wallet Address -->
-                <div class="mb-3 text-left">
-                    <input type="text" id="wallet-address" placeholder="Wallet Address"
-                        class="w-full px-4 py-3 rounded-2xl border border-[#6b21a8] bg-[#1a0f2e] text-white text-center focus:outline-none focus:border-[#a855f7]">
-
-                    <div class="mt-1.5 text-center">
-                        <span class="text-[#a1a1aa] text-xs cursor-pointer hover:text-blue-400 transition-colors"
-                            onclick="document.getElementById('wallet-address').focus()">
-                            Add address manually
-                        </span>
-                    </div>
-                </div>
-
                 <!-- Code Input + QR Button -->
-                <div class="mb-1 text-left">
+                <div class="mb-4 text-left">
                     <div class="flex items-center gap-2">
-
                         <input type="text" id="redeem-input" placeholder="Enter 13-digit code" maxlength="13"
                             pattern="[0-9]{13}" title="Please enter exactly 13 digits"
-                            class="flex-1 px-4 py-3 rounded-2xl border border-[#6b21a8] bg-[#1a0f2e] text-white text-center focus:outline-none focus:border-[#a855f7]">
+                            style="text-align: left !important;"
+                            class="flex-1 px-4 py-3 rounded-2xl border border-[#6b21a8] bg-[#1a0f2e] text-white text-left focus:outline-none focus:border-[#a855f7]">
 
                         <!-- QR Button -->
                         <button type="button" id="redeem-qr-btn"
@@ -2112,11 +2097,35 @@
                             onclick="scanQRCode()">
                             <i class="fas fa-qrcode text-2xl"></i>
                         </button>
+                    </div>
 
+                    <!-- Helper message -->
+                    <div id="scan-helper" class="text-xs text-[#a1a1aa] dark:text-zinc-500 mt-1.5 text-center hidden">
+                        Scan &amp; Send Features coming Soon!
                     </div>
                 </div>
 
-                <!-- Message -->
+                <!-- Digital Gift Card Image -->
+                <div class="flex justify-center mb-4">
+                    <img src="/assets/images/webp/digital-gift-card-expb.webp" alt="Digital Gift Card - eXPB"
+                        class="max-w-[180px] h-auto rounded-2xl shadow-lg">
+                </div>
+
+                <!-- Wallet Address -->
+                <div class="mb-3 text-left">
+                    <input type="text" id="wallet-address" placeholder="Wallet Address"
+                        style="text-align: left !important;"
+                        class="w-full px-4 py-3 rounded-2xl border border-[#6b21a8] bg-[#1a0f2e] text-white text-left focus:outline-none focus:border-[#a855f7]">
+
+                    <div class="mt-1.5 text-center">
+                        <span id="manual-address-link" onclick="toggleAddressMode()"
+                            class="text-[#a1a1aa] text-xs cursor-pointer hover:text-blue-400 transition-colors flex items-center justify-center gap-1">
+                            <span id="address-mode-text">➕ Use connected wallet</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Message Area -->
                 <div id="redeem-message" class="min-h-[20px] text-sm mt-2"></div>
 
                 <!-- Main Redeem Button -->
@@ -2125,7 +2134,7 @@
                     REDEEM
                 </button>
 
-                <!-- OR Divider (themed) -->
+                <!-- OR Divider -->
                 <div class="flex items-center justify-center my-5">
                     <div class="flex-1 h-px bg-[var(--button-border-color)] opacity-30"></div>
                     <span class="px-4 text-sm text-[var(--button-text-color)] opacity-70">or</span>
@@ -2139,10 +2148,17 @@
                     Redeem in Kinnected
                 </button>
 
+                <div class="mt-6 flex justify-center">
+                    <a href="#" onclick="refreshRedeemModal(); return false;"
+                        class="no-style-link flex items-center gap-1.5 text-[#a1a1aa] hover:text-blue-400 transition-colors">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh</span>
+                    </a>
+                </div>
+
             </form>
 
             <!-- Powered by Kinnected -->
-
             <p class="text-center text-zinc-400 text-xs mt-6 tracking-wide">
                 Powered by
                 <a href="https://kinnected-links.com"
