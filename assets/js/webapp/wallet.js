@@ -545,6 +545,31 @@ function isMobileDevice() {
     return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
+// Get the best available signer for swaps (prioritizes window.solana for injected)
+function getBestSigner() {
+    // 1. Legacy injected (best for Phantom mobile app + extension)
+    if (window.phantom?.solana) {
+        console.log("✅ Using window.phantom.solana (injected priority)");
+        return window.phantom.solana;
+    }
+    if (window.solana?.isPhantom) {
+        console.log("✅ Using window.solana");
+        return window.solana;
+    }
+
+    // 2. SDK fallback
+    if (window.getPhantomSDK) {
+        const sdk = window.getPhantomSDK(); // sync call since it's cached
+        if (sdk?.solana) {
+            console.log("✅ Using SDK signer as fallback");
+            return sdk.solana;
+        }
+    }
+
+    console.warn("⚠️ No signer found");
+    return null;
+}
+
 // ====================== PHANTOM WALLET INTEGRATION (SDK) ======================
 
 // Main Wallet Dropdown (Add Wallet)
@@ -1254,7 +1279,8 @@ async function confirmValueLock() {
             ? "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump"
             : "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z";
 
-        const result = await performUltraSwap(inputMint, outputMint, rawAmount, provider, connectedWallet);
+        // Use smart signer instead of old 'provider'
+        const result = await performUltraSwap(inputMint, outputMint, rawAmount, getBestSigner(), connectedWallet);
         showTxSuccess(result);
 
         setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 1500);
@@ -1315,7 +1341,8 @@ async function confirmGiddySwap() {
             outputMint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
         }
 
-        const result = await performUltraSwap(inputMint, outputMint, rawAmount, provider, connectedWallet);
+        // Use smart signer
+        const result = await performUltraSwap(inputMint, outputMint, rawAmount, getBestSigner(), connectedWallet);
         showTxSuccess(result);
 
         setTimeout(() => { if (connectedWallet) updateWalletBalances(); }, 2500);
