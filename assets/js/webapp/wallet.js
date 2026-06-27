@@ -691,21 +691,24 @@ async function handlePhantomConnect() {
     const hasLegacyPhantom = !!(window.phantom?.solana?.isPhantom);
 
     try {
+        // 1. Legacy injected (extension + Phantom mobile app)
         if (hasLegacyPhantom) {
-            console.log("🔌 Using legacy desktop injected path");
-            const resp = await window.phantom.solana.connect();
+            console.log("🔌 Using legacy injected path (window.phantom.solana)");
+            const resp = await window.phantom.solana.connect({ onlyIfTrusted: false });
             const publicKey = resp.publicKey.toString();
             setWalletState(true, publicKey, "injected");
+            console.log("✅ Connected via injected:", publicKey);
             return;
         }
 
+        // 2. Try SDK injected fallback
         console.log("🔌 Trying SDK injected for mobile deep link");
         const sdk = await getPhantomSDK();
 
         if (sdk.isLoggedIn) {
             try {
                 await sdk.disconnect();
-                console.log("🧹 Cleared previous SDK session before injected connect");
+                console.log("🧹 Cleared previous SDK session");
             } catch (e) {
                 console.warn("Could not disconnect previous SDK session:", e);
             }
@@ -716,13 +719,16 @@ async function handlePhantomConnect() {
             const publicKey = result.addresses?.[0]?.address;
             if (publicKey) {
                 setWalletState(true, publicKey, "injected");
+                console.log("✅ Connected via SDK injected:", publicKey);
                 return;
             }
         } catch (sdkErr) {
-            console.warn("SDK deep link attempt failed on mobile, using manual fallback...");
+            console.warn("SDK injected failed:", sdkErr.message);
         }
 
+        // 3. Deep link fallback for mobile
         if (isMobileDevice()) {
+            console.log("📱 Opening Phantom app via deep link...");
             const dappUrl = window.location.href;
             const encoded = encodeURIComponent(dappUrl);
             window.location.href = `https://phantom.app/ul/browse/${encoded}?ref=${encoded}`;
@@ -734,7 +740,10 @@ async function handlePhantomConnect() {
     } catch (err) {
         console.error("Phantom connect failed:", err);
         const mobile = isMobileDevice();
-        let msg = mobile ? "Could not open Phantom app.\n\nPlease make sure Phantom is installed and try again, or use Create Wallet with Google." : "Phantom extension connection failed. Try refreshing the page or use Create Wallet with Google/Apple.";
+        let msg = mobile 
+            ? "Could not open Phantom app.\n\nPlease make sure Phantom is installed and try again, or use Create Wallet with Google/Apple." 
+            : "Phantom extension connection failed. Try refreshing or use Create Wallet.";
+        
         alert(msg);
         showAddWalletPrompt();
     } finally {
@@ -767,10 +776,7 @@ async function handleCreateWallet() {
 
         if (publicKey) {
             console.log("✅ [Google] Wallet address received:", publicKey);
-
-            // Kill URL params to stop OAuth loop
             clearUrlParams();
-
             localStorage.setItem('wallet_address', publicKey);
             localStorage.setItem('connection_method', 'google');
             setWalletState(true, publicKey, "google");
@@ -808,47 +814,35 @@ async function handleAppleSignIn() {
         console.log("🚀 [Apple] Performing deep session wipe...");
         const sdk = await getPhantomSDK();
 
-        // 1. HARD CLEANUP: Remove SDK session markers from LocalStorage
+        // Hard cleanup
         const keysToRemove = Object.keys(localStorage).filter(k => k.includes('phantom'));
         keysToRemove.forEach(k => localStorage.removeItem(k));
 
-        // 2. Disconnect existing session if present
         if (sdk.isLoggedIn) {
             try {
                 await sdk.disconnect();
                 console.log("🧹 Force disconnected previous session");
-            } catch (e) {
-                console.warn("SDK disconnect ignored");
-            }
+            } catch (e) {}
         }
 
-        // 3. Extra delay to ensure state machine clears
         await new Promise(resolve => setTimeout(resolve, 600));
 
-        // 4. Clear UI state
         clearBalancesOnDisconnect();
         const addrEl = document.getElementById('connectedAddress');
         if (addrEl) addrEl.innerText = '';
 
-        // 5. Connect explicitly with the 'apple' provider
         const { addresses } = await sdk.connect({
             provider: "apple",
-            authOptions: {
-                force: true
-            }
+            authOptions: { force: true }
         });
 
         const publicKey = addresses?.[0]?.address;
 
         if (publicKey) {
             console.log("✅ [Apple] Wallet address received:", publicKey);
-
-            // Kill URL params to stop OAuth loop
             clearUrlParams();
-
             localStorage.setItem('wallet_address', publicKey);
             localStorage.setItem('connection_method', 'apple');
-
             setWalletState(true, publicKey, "apple");
 
             setTimeout(() => {
@@ -894,25 +888,35 @@ function disconnectWallet() {
     if (shopDot) shopDot.style.backgroundColor = "#71717a";
     if (shopText) shopText.innerText = "Wallet Disconnected";
 
+    // Force disconnect from all possible providers
     if (window.phantomSDK) {
         try { phantomSDK.disconnect(); } catch (e) { }
     }
-
     if (window.phantom?.solana) {
         window.phantom.solana.disconnect().catch(() => { });
     }
+    if (window.solana) {
+        try { window.solana.disconnect(); } catch (e) { }
+    }
 
+    // Aggressive localStorage cleanup
     try {
         localStorage.removeItem('wallet_address');
         localStorage.removeItem('connection_method');
         localStorage.removeItem('phantom_auth_code');
+        // Clear any other phantom related keys
+        Object.keys(localStorage).forEach(key => {
+            if (key.includes('phantom') || key.includes('solana')) {
+                localStorage.removeItem(key);
+            }
+        });
     } catch (e) { }
 
     setWalletState(false);
     connectionMethod = null;
     window.connectionMethod = null;
 
-    console.log("✅ Disconnected — Local state cleared");
+    console.log("✅ Disconnected — All state cleared");
 }
 
 // ====================== BALANCES + TOTAL ======================
