@@ -206,39 +206,51 @@ async function getPhantomSDK() {
 }
 
 // 5. Initialization (Optimized for persistence)
+// ====================== LOAD LISTENER - INJECTED PRIORITY (FIXED) ======================
 window.addEventListener('load', async () => {
-    // 1. Detect OAuth callback loop (Prevent auto-restore if we are in the middle of a login)
+    // 1. OAuth callback guard
     const urlParams = new URLSearchParams(window.location.search);
-    const authCode = urlParams.get('code');
-
-    if (authCode) {
-        console.log("⚠️ OAuth callback detected, skipping auto-restore to ensure clean handshake.");
-        return; // Exit here; let the button handlers process the callback
+    if (urlParams.get('code')) {
+        console.log("⚠️ OAuth callback detected — skipping auto-restore");
+        return;
     }
 
-    // 2. Cleanup old auth codes
+    // 2. Clean old phantom auth code
     if (localStorage.getItem('phantom_auth_code')) {
         localStorage.removeItem('phantom_auth_code');
     }
 
-    // 3. Check Extension (Injected) first
-    const isExtensionConnected = !!(window.phantom?.solana?.isConnected);
-    if (isExtensionConnected) {
+    // 3. CHECK INJECTED FIRST (highest priority)
+    const hasInjected = !!(window.phantom?.solana?.isConnected || window.solana?.isPhantom);
+    
+    if (hasInjected) {
         try {
-            const resp = await window.phantom.solana.connect({ onlyIfTrusted: true });
-            setWalletState(true, resp.publicKey.toString(), "injected");
-            console.log("✅ Restored injected connection");
-            return;
+            const resp = await (window.phantom?.solana || window.solana).connect({ onlyIfTrusted: true });
+            const publicKey = resp.publicKey.toString();
+            
+            setWalletState(true, publicKey, "injected");
+            provider = window.phantom?.solana || window.solana;
+            
+            console.log("✅ Restored INJECTED connection (priority)");
+
+            // IMPORTANT: If SDK also thinks it's logged in, disconnect it to avoid collision
+            const sdk = await getPhantomSDK().catch(() => null);
+            if (sdk?.isLoggedIn) {
+                try {
+                    await sdk.disconnect();
+                    console.log("🧹 Disconnected lingering SDK session (injected takes priority)");
+                } catch (e) {}
+            }
+            return; // ← Exit early — do not fall through to SDK restore
         } catch (e) {
-            console.warn("Extension found but not auto-connectable:", e);
+            console.warn("Injected wallet found but could not auto-connect:", e.message);
         }
     }
 
-    // 4. Initialize SDK
-    const sdk = await getPhantomSDK();
-
-    // 5. Check for an existing SDK Session
-    if (sdk.isLoggedIn) {
+    // 4. Only check SDK (Google/Apple) if no injected connection exists
+    const sdk = await getPhantomSDK().catch(() => null);
+    
+    if (sdk?.isLoggedIn) {
         const addr = sdk.publicKey?.toBase58();
         if (addr) {
             const savedMethod = localStorage.getItem('connection_method') || "google";
@@ -248,7 +260,7 @@ window.addEventListener('load', async () => {
         }
     }
 
-    // 6. Fallback to LocalStorage
+    // 5. LocalStorage fallback
     const savedAddress = localStorage.getItem('wallet_address');
     const savedMethod = localStorage.getItem('connection_method');
     if (savedAddress && savedMethod) {
@@ -257,7 +269,7 @@ window.addEventListener('load', async () => {
         return;
     }
 
-    // 7. Default disconnected state
+    // 6. Default disconnected
     setWalletState(false);
 });
 
