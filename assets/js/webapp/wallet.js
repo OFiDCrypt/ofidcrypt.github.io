@@ -608,44 +608,43 @@ function initShareWalletButton() {
     if (!shareBtn) return;
 
     shareBtn.addEventListener('click', async () => {
-        // 1. Get the dynamic address from storage
-        const address = localStorage.getItem('wallet_address');
+        const address = localStorage.getItem('wallet_address') || window.connectedWallet;
         if (!address) {
             alert("No wallet address found.");
             return;
         }
 
-        // 2. Updated: share only the address
-        const shareText = address;
+        const shareText = `My Giddy Key Wallet Address:\n${address}`;
 
-        // 3. Try native share
+        // Try native share first
         if (navigator.share) {
             try {
                 await navigator.share({
                     title: 'My Giddy Key Wallet',
                     text: shareText
-                    // Removed 'url' so only the address is shared
                 });
                 return;
             } catch (err) {
-                console.log("Share cancelled or failed");
+                console.log("Native share cancelled → clipboard fallback");
             }
         }
 
-        // 4. Fallback: Copy address to clipboard
+        // Silent clipboard fallback
         try {
             await navigator.clipboard.writeText(address);
 
-            // Visual feedback
-            const originalIcon = shareBtn.innerHTML;
-            shareBtn.innerHTML = `<i class="fas fa-check text-emerald-400"></i>`;
+            // Visual feedback - same size as share icon
+            const originalHTML = shareBtn.innerHTML;
+            shareBtn.innerHTML = `<i class="fas fa-check text-sm text-emerald-400"></i>`;
 
             setTimeout(() => {
-                shareBtn.innerHTML = originalIcon;
-            }, 1500);
+                shareBtn.innerHTML = originalHTML;
+            }, 1600);
 
+            console.log("✅ Address copied to clipboard");
         } catch (err) {
-            prompt("Copy your wallet address:", address);
+            console.error("Clipboard failed:", err);
+            alert(`Wallet address copied!\n\n${address}`);
         }
     });
 }

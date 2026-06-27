@@ -1,69 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swap Engine Testbed - All Pairs</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
-
     <!-- Shared Swap Utilities -->
     <script src="assets/js/webapp/swapUtils.js"></script>
-
     <style>
-        body {
-            font-family: system-ui, sans-serif;
-        }
-
+        body { font-family: system-ui, sans-serif; }
         select {
             background-color: #18181b !important;
             color: white !important;
             border: 1px solid #3f3f46;
         }
-
         select option {
             background-color: #18181b;
             color: white;
         }
-
         .status-dot {
             display: inline-block;
             width: 10px;
             height: 10px;
             border-radius: 50%;
         }
-
-        /* Unified Diagnostic Console Styling */
         #diagnostic-console {
             background-color: #18181b;
             border: 1px solid #3f3f46;
         }
+        .log-entry { font-family: monospace; }
     </style>
-
     <script>
         // ==================== VITE + RAILWAY CONFIG ====================
         const isViteDev = location.port === '5173';
-
         const CONFIG = {
             PROD_BASE: "https://giddy-key-swaps-production.up.railway.app",
             LOCAL_BASE: "http://localhost:3000",
             _base: null,
-
             get BASE() {
-                if (isViteDev) return ''; // Use Vite proxy
+                if (isViteDev) return '';
                 return this._base || this.PROD_BASE;
             },
             set BASE(value) {
                 this._base = value;
             }
         };
-
         function getApiUrl(endpoint) {
             let clean = endpoint.startsWith('/') ? endpoint : '/' + endpoint;
             return CONFIG.BASE + clean;
         }
-
         async function testBackendConnection() {
             if (isViteDev) {
                 logger("🟢 Vite dev server detected (port 5173) → Using proxy. Railway & Localhost checks skipped.", false);
@@ -71,22 +57,18 @@
                 updateServerStatus();
                 return '';
             }
-
             // Normal flow when not using Vite
             logger("🔍 Testing Railway Production...", false);
             try {
                 const controller = new AbortController();
                 const timeout = setTimeout(() => controller.abort(), 5000);
-
                 const res = await fetch(CONFIG.PROD_BASE + '/api/prices', {
                     method: 'GET',
                     cache: 'no-store',
                     headers: { 'Accept': 'application/json' },
                     signal: controller.signal
                 });
-
                 clearTimeout(timeout);
-
                 if (res.ok) {
                     logger("✅ Railway Production Connected", false);
                     CONFIG.BASE = CONFIG.PROD_BASE;
@@ -96,17 +78,14 @@
             } catch (e) {
                 logger("⚠️ Railway unreachable", true);
             }
-
             logger("🔄 Falling back to Localhost...", false);
             CONFIG.BASE = CONFIG.LOCAL_BASE;
             updateServerStatus();
             return CONFIG.LOCAL_BASE;
         }
-
         function updateServerStatus() {
             const statusContainer = document.getElementById('serverStatus');
             if (!statusContainer) return;
-
             if (isViteDev) {
                 // Vite mode - unified dark style
                 statusContainer.innerHTML = `
@@ -123,7 +102,6 @@
                     </div>`;
                 return;
             }
-
             // Normal mode
             const statusHTML = `
                 <div class="bg-black border border-zinc-700 rounded-2xl p-4 text-xs space-y-2">
@@ -141,93 +119,80 @@
                         Active Backend: <strong>${CONFIG.BASE}</strong>
                     </div>
                 </div>`;
-
             statusContainer.innerHTML = statusHTML;
         }
     </script>
 </head>
-
 <body class="bg-zinc-950 text-zinc-100 min-h-screen">
-
     <div class="max-w-7xl mx-auto p-6">
         <header class="flex flex-col sm:flex-row justify-between items-start border-b border-zinc-800 pb-6 mb-8 gap-6">
             <div>
                 <h1 class="text-3xl font-bold tracking-tight">Swap Engine Testbed</h1>
-                <p class="text-zinc-400">Phantom + Jupiter Ultra → v1 Proxy • All Pairs</p>
+                <p class="text-zinc-400">Phantom SDK + window.solana • Jupiter Ultra + v1 Proxy</p>
             </div>
-
-            <div class="flex flex-col items-start gap-2">
-                <button id="connectBtn" onclick="connectWallet()"
-                    class="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 font-bold rounded-2xl transition-all">
-                    <span id="btnText">Connect Phantom</span>
-                </button>
-
+            <div class="flex flex-col items-start gap-3">
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="connectWithSDK()"
+                            class="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 font-semibold rounded-2xl transition-all text-sm">
+                        SDK Connect
+                    </button>
+                    <button onclick="connectWithWindowSolana()"
+                            class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-2xl transition-all text-sm">
+                        window.solana
+                    </button>
+                    <button onclick="checkConnectionStatus()"
+                            class="flex items-center gap-2 px-5 py-2.5 bg-zinc-700 hover:bg-zinc-600 font-semibold rounded-2xl transition-all text-sm">
+                        Status
+                    </button>
+                    <button onclick="disconnectAll()"
+                            class="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 font-semibold rounded-2xl transition-all text-sm">
+                        Disconnect All
+                    </button>
+                </div>
                 <div id="walletBadge"
                     class="hidden flex items-center gap-2 bg-zinc-900 border border-emerald-500 px-4 py-2 rounded-2xl w-fit">
                     <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                     <span id="walletAddressDisplay" class="font-mono text-sm text-purple-400"></span>
+                    <span id="modeDisplay" class="ml-2 text-[10px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full bg-zinc-800"></span>
                 </div>
             </div>
         </header>
-
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
             <div class="xl:col-span-4">
                 <div id="diagnostic-console" class="rounded-3xl p-6 sticky top-6">
                     <h2 class="font-bold text-lg text-purple-400 mb-4">Jupiter Diagnostic Console</h2>
-
-                    <!-- Server Status -->
                     <div id="serverStatus" class="mb-4"></div>
-
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="checkEndpoint('ultra')"
-                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Ultra</button>
-                        <button onclick="checkEndpoint('v1')"
-                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1 Proxy</button>
-                        <button onclick="testKinnected()"
-                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Kinnected</button>
+                        <button onclick="checkEndpoint('ultra')" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Ultra</button>
+                        <button onclick="checkEndpoint('v1')" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1 Proxy</button>
+                        <button onclick="testKinnected()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Kinnected</button>
                     </div>
-
-                    <div id="logWindow"
-                        class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4">
-                    </div>
-
+                    <div id="logWindow" class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4"></div>
                     <div class="text-xs text-zinc-400 space-y-1">
                         <p><span class="text-purple-400">Ultra:</span> <span id="ultraUrl" class="break-all"></span></p>
                         <p><span class="text-purple-400">v1 Proxy:</span> <span id="v1Url" class="break-all"></span></p>
                     </div>
                 </div>
             </div>
-
             <div class="xl:col-span-8 space-y-8">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8">
                     <h2 class="text-2xl font-bold mb-2">Quick Swap</h2>
-
                     <div class="flex flex-col sm:flex-row items-center gap-2 mb-6 bg-zinc-950 border border-zinc-700 rounded-3xl p-2">
-                        <select id="fromToken" onchange="handleDropdownChange('from')"
-                            class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
-
+                        <select id="fromToken" onchange="handleDropdownChange('from')" class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
                         <div class="text-2xl sm:text-3xl text-purple-400 font-light rotate-90 sm:rotate-0 my-1 sm:my-0">→</div>
-
-                        <select id="toToken" onchange="handleDropdownChange('to')"
-                            class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
+                        <select id="toToken" onchange="handleDropdownChange('to')" class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
                     </div>
-
                     <p id="pairDisplay" class="text-emerald-400 mb-6 text-center font-medium text-sm">eXPB → USDC</p>
-
                     <div class="grid grid-cols-2 gap-3 mb-6" id="amountButtons"></div>
-
                     <button onclick="executeSelectedSwap()" id="swapBtn"
                         class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-5 sm:py-6 rounded-3xl font-bold text-lg sm:text-xl shadow-xl disabled:opacity-50"
                         disabled>Execute Selected Swap</button>
-
                     <div id="result" class="mt-6"></div>
                 </div>
-
                 <div id="walletInfo" class="hidden bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold">Your Live Wallet Balances</h3>
-                        <button onclick="fetchWalletBalances()"
-                            class="text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl flex items-center gap-1.5">
+                        <button onclick="fetchWalletBalances()" class="text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl flex items-center gap-1.5">
                             <span>🔄</span> Refresh Balances
                         </button>
                     </div>
@@ -245,7 +210,6 @@
                         <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">SINU Balance</span><span id="bal-SINU" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
                     </div>
                 </div>
-
                 <div>
                     <h2 class="text-xl font-bold mb-4">Tracked Asset Prices</h2>
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="priceGrid"></div>
@@ -253,17 +217,15 @@
             </div>
         </div>
     </div>
-
     <script>
+        // Buffer polyfill
         if (typeof Buffer === 'undefined') {
             window.Buffer = {
                 from: function (value, encoding) {
                     if (typeof value === 'string' && encoding === 'base64') {
                         const binary = atob(value);
                         const bytes = new Uint8Array(binary.length);
-                        for (let i = 0; i < binary.length; i++) {
-                            bytes[i] = binary.charCodeAt(i);
-                        }
+                        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
                         return bytes;
                     }
                     if (value instanceof Uint8Array || value?.buffer instanceof ArrayBuffer) {
@@ -273,7 +235,7 @@
                 }
             };
         }
-
+        // ==================== TOKEN CONFIG ====================
         const TOKEN_CONFIG = {
             EXPB: { symbol: "eXPB", mint: "GsKuLQsKCEnfQxuk4icTEQjc11Av8WiqW31CxZqZpump", decimals: 6 },
             GIDDY: { symbol: "GIDDY", mint: "8kQzvMELBQGSiFmrXqLuDSpYVLKkNoXE4bUQCC14wj3Z", decimals: 6 },
@@ -287,58 +249,107 @@
             CPT: { symbol: "CPT", mint: "2umQqRyexgfHcndkULDKStmJJ8xgDz7oBL3EfDJNmoon", decimals: 6 },
             SINU: { symbol: "SINU", mint: "DXi3Uu7TC2tzJYmnFAgDKnU3p8t6qSafPcLgGaQipump", decimals: 6 }
         };
-
-        let connectedWallet = null, provider = null, selectedUiAmount = 1000;
-        let currentInputMint = TOKEN_CONFIG.EXPB.mint, currentOutputMint = TOKEN_CONFIG.USDC.mint;
-        let currentInputSymbol = "eXPB", currentInputDecimals = 6;
-
+        let currentSigner = null;
+        let isUsingSDK = false;
+        let connectedWallet = null;
+        let provider = null;
+        let selectedUiAmount = 1000;
+        let currentInputMint = TOKEN_CONFIG.EXPB.mint;
+        let currentOutputMint = TOKEN_CONFIG.USDC.mint;
+        let currentInputSymbol = "eXPB";
+        let currentInputDecimals = 6;
         function logger(msg, isErr = false) {
             const log = document.getElementById('logWindow');
-            log.innerHTML += `<div class="${isErr ? 'text-red-400' : 'text-emerald-400'}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
+            const cssClass = isErr ? 'text-red-400' : 'text-emerald-400';
+            log.innerHTML += `<div class="log-entry ${cssClass}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
             log.scrollTop = log.scrollHeight;
         }
-
-        async function testKinnected() {
-            logger("🧪 Testing Kinnected Redeem API...");
-            const testPayload = {
-                linkId: "1234567890123",
-                destinationWallet: connectedWallet || "11111111111111111111111111111111"
-            };
-
-            const possibleUrls = [
-                "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
-                "http://127.0.0.1:5000/api/secure-redeem",
-                "http://localhost:5000/api/secure-redeem"
-            ];
-
-            let success = false;
-
-            for (const url of possibleUrls) {
-                try {
-                    logger(`→ Trying ${url.includes('railway') ? 'Railway' : 'Localhost'}`, false);
-                    const res = await fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(testPayload)
-                    });
-
-                    const data = await res.json();
-                    logger(`✅ Kinnected Test ${res.status} ${res.ok ? 'OK' : 'Failed'}`, !res.ok);
-                    console.log("Kinnected Response:", data);
-                    success = true;
-                    break;
-                } catch (e) {
-                    logger(`❌ ${url.includes('railway') ? 'Railway' : 'Localhost'} failed`, true);
-                }
-            }
-
-            if (!success) {
-                logger("❌ All Kinnected endpoints failed", true);
+        // ==================== SDK HELPERS ====================
+        async function getPhantomSDK() {
+            if (window.PhantomBrowserSDK) return window.PhantomBrowserSDK;
+            await new Promise(r => setTimeout(r, 150));
+            return window.PhantomBrowserSDK;
+        }
+        async function connectWithSDK() {
+            logger("🚀 Connecting with Phantom SDK...", false);
+            isUsingSDK = true;
+            try {
+                const SDKClass = await getPhantomSDK();
+                if (!SDKClass) throw new Error("SDK library not loaded");
+                const sdk = new SDKClass({
+                    providers: ["injected"],
+                    addressTypes: ["solana"],
+                    appId: "62ccac9b-8746-42db-8a6d-45e2c97f7f58",
+                    autoConnect: true,
+                });
+                window._phantomSDK = sdk;
+                const result = await sdk.connect({ provider: "injected" });
+                connectedWallet = result.addresses?.[0]?.address;
+                currentSigner = sdk.solana;
+                provider = currentSigner;
+                updateWalletUI();
+                logger(`✅ SDK Connected: ${connectedWallet.slice(0,8)}...${connectedWallet.slice(-4)}`, false);
+                fetchWalletBalances();
+            } catch (e) {
+                logger(`❌ SDK Connect failed: ${e.message}`, true);
+                console.error(e);
             }
         }
-
+        async function connectWithWindowSolana() {
+            logger("🚀 Connecting with window.solana...", false);
+            isUsingSDK = false;
+            try {
+                provider = window.phantom?.solana || window.solana;
+                if (!provider?.isPhantom) {
+                    logger("❌ Phantom not detected", true);
+                    return;
+                }
+                const resp = await provider.connect();
+                connectedWallet = resp.publicKey.toString();
+                currentSigner = provider;
+                updateWalletUI();
+                logger(`✅ window.solana Connected: ${connectedWallet.slice(0,8)}...${connectedWallet.slice(-4)}`, false);
+                fetchWalletBalances();
+            } catch (e) {
+                logger(`❌ window.solana failed: ${e.message}`, true);
+            }
+        }
+        function updateWalletUI() {
+            const badge = document.getElementById('walletBadge');
+            if (!connectedWallet) return;
+            badge.classList.remove('hidden');
+            document.getElementById('walletAddressDisplay').textContent = connectedWallet.slice(0, 8) + "..." + connectedWallet.slice(-4);
+            const modeEl = document.getElementById('modeDisplay');
+            modeEl.textContent = isUsingSDK ? "SDK" : "WINDOW";
+            modeEl.className = `ml-2 text-[10px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full ${isUsingSDK ? 'bg-violet-500/20 text-violet-400' : 'bg-blue-500/20 text-blue-400'}`;
+            document.getElementById('swapBtn').disabled = false;
+            document.getElementById('walletInfo').classList.remove('hidden');
+        }
+        async function checkConnectionStatus() {
+            logger("🔍 Checking connection status...", false);
+            logger(`Mode: ${isUsingSDK ? 'Phantom SDK' : 'window.solana'}`, false);
+            logger(`Wallet: ${connectedWallet || 'None'}`, false);
+            logger(`Signer ready: ${!!currentSigner}`, false);
+        }
+        function disconnectAll() {
+            logger("🔌 Disconnecting all...", false);
+            if (window._phantomSDK) window._phantomSDK.disconnect().catch(() => {});
+            if (window.solana) window.solana.disconnect().catch(() => {});
+            if (window.phantom?.solana) window.phantom.solana.disconnect().catch(() => {});
+            connectedWallet = null;
+            currentSigner = null;
+            provider = null;
+            isUsingSDK = false;
+            document.getElementById('walletBadge').classList.add('hidden');
+            document.getElementById('walletInfo').classList.add('hidden');
+            document.getElementById('swapBtn').disabled = true;
+            logger("✅ All disconnected", false);
+        }
+        // ==================== TOKEN UI ====================
         function populateTokenSelects() {
             const from = document.getElementById('fromToken'), to = document.getElementById('toToken');
+            from.innerHTML = '';
+            to.innerHTML = '';
             Object.keys(TOKEN_CONFIG).forEach(key => {
                 const t = TOKEN_CONFIG[key];
                 from.appendChild(new Option(t.symbol, t.mint));
@@ -347,7 +358,6 @@
             from.value = TOKEN_CONFIG.EXPB.mint;
             to.value = TOKEN_CONFIG.USDC.mint;
         }
-
         function handleDropdownChange(changed) {
             const from = document.getElementById('fromToken'), to = document.getElementById('toToken');
             if (from.value === to.value) {
@@ -359,7 +369,6 @@
             }
             updatePair();
         }
-
         function updatePair() {
             currentInputMint = document.getElementById('fromToken').value;
             currentOutputMint = document.getElementById('toToken').value;
@@ -369,7 +378,6 @@
             document.getElementById('pairDisplay').textContent = `${currentInputSymbol} → ${document.getElementById('toToken').selectedOptions[0].text}`;
             updateAmountButtons();
         }
-
         function updateAmountButtons() {
             const container = document.getElementById('amountButtons');
             container.innerHTML = '';
@@ -390,41 +398,38 @@
             });
             selectedUiAmount = presets[1].ui;
         }
-
         function selectUiAmount(btn, amount) {
-            document.querySelectorAll('.amount-btn').forEach(b => b.className = 'amount-btn py-4 rounded-2xl font-medium transition-all bg-zinc-800 hover:bg-zinc-700');
+            document.querySelectorAll('.amount-btn').forEach(b => {
+                b.className = 'amount-btn py-4 rounded-2xl font-medium transition-all bg-zinc-800 hover:bg-zinc-700';
+            });
             btn.className = 'amount-btn py-4 rounded-2xl font-medium transition-all ring-2 ring-purple-500 bg-purple-900/30';
             selectedUiAmount = amount;
         }
-
+        // ==================== SWAP & BALANCES ====================
         async function executeSelectedSwap() {
             if (!connectedWallet) return alert("Connect wallet first");
             await performSwap();
         }
-
         async function performSwap() {
             const btn = document.getElementById('swapBtn');
             btn.disabled = true;
             btn.textContent = "Trying Ultra...";
-
             const rawAmount = Math.floor(selectedUiAmount * Math.pow(10, currentInputDecimals));
             logger(`🔄 SWAP: ${selectedUiAmount} ${currentInputSymbol} → ${rawAmount} raw`);
-
             try {
                 const result = await performUltraSwap(
                     currentInputMint,
                     currentOutputMint,
                     rawAmount,
-                    provider,
+                    provider || currentSigner,
                     connectedWallet
                 );
-
                 document.getElementById('result').innerHTML = `
                     <div class="bg-emerald-900/30 p-5 rounded-2xl">
                         ✅ <strong>Ultra Success</strong> via ${result.router}<br>
                         <a href="https://solscan.io/tx/${result.txid}" target="_blank" class="text-purple-400 underline">View on Solscan</a>
                     </div>`;
-                logger(`✅ Ultra swap sent! Router: ${result.router}`);
+                logger(`✅ Ultra swap sent! Router: ${result.router}`, false);
             } catch (e) {
                 const errorMsg = e.message || '';
                 if (errorMsg.includes("User rejected") || errorMsg.includes("rejected the request")) {
@@ -433,13 +438,12 @@
                 } else {
                     logger(`⚠️ Ultra failed: ${errorMsg}`, true);
                     logger("→ Trying v1 proxy...");
-
                     try {
                         const result = await performV1Swap(
                             currentInputMint,
                             currentOutputMint,
                             rawAmount,
-                            provider,
+                            provider || currentSigner,
                             connectedWallet
                         );
                         document.getElementById('result').innerHTML = `
@@ -457,32 +461,39 @@
                 btn.textContent = "Execute Selected Swap";
             }
         }
-
-        async function connectWallet() {
-            provider = window.phantom?.solana || window.solana;
-            if (!provider) {
-                if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-                    const dappUrl = encodeURIComponent(window.location.href);
-                    window.location.href = `https://phantom.app/ul/browse/${dappUrl}`;
-                    return;
+        async function testKinnected() {
+            logger("🧪 Testing Kinnected Redeem API...");
+            const testPayload = {
+                linkId: "1234567890123",
+                destinationWallet: connectedWallet || "11111111111111111111111111111111"
+            };
+            const possibleUrls = [
+                "https://giddy-key-swaps-production.up.railway.app/api/secure-redeem",
+                "http://127.0.0.1:5000/api/secure-redeem",
+                "http://localhost:5000/api/secure-redeem"
+            ];
+            let success = false;
+            for (const url of possibleUrls) {
+                try {
+                    logger(`→ Trying ${url.includes('railway') ? 'Railway' : 'Localhost'}`, false);
+                    const res = await fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(testPayload)
+                    });
+                    const data = await res.json();
+                    logger(`✅ Kinnected Test ${res.status} ${res.ok ? 'OK' : 'Failed'}`, !res.ok);
+                    console.log("Kinnected Response:", data);
+                    success = true;
+                    break;
+                } catch (e) {
+                    logger(`❌ ${url.includes('railway') ? 'Railway' : 'Localhost'} failed`, true);
                 }
-                return alert("Phantom not found!");
             }
-            try {
-                const resp = await provider.connect();
-                connectedWallet = resp.publicKey.toString();
-                document.getElementById('btnText').textContent = "Connected ✓";
-                document.getElementById('connectBtn').disabled = true;
-                document.getElementById('swapBtn').disabled = false;
-                document.getElementById('walletBadge').classList.remove('hidden');
-                document.getElementById('walletAddressDisplay').textContent = connectedWallet.slice(0, 8) + "...";
-                document.getElementById('walletInfo').classList.remove('hidden');
-                fetchWalletBalances();
-            } catch (e) {
-                logger("Connection failed", true);
+            if (!success) {
+                logger("❌ All Kinnected endpoints failed", true);
             }
         }
-
         async function checkEndpoint(type) {
             logger(`Testing ${type.toUpperCase()}...`);
             const rawTestAmount = 1000000;
@@ -495,7 +506,6 @@
                     url = getApiUrl('/api/swap/v1');
                     document.getElementById('v1Url').textContent = url;
                 }
-
                 const res = await fetch(url, {
                     method: type === 'ultra' ? 'GET' : 'POST',
                     headers: type === 'ultra' ? {} : { 'Content-Type': 'application/json' },
@@ -506,26 +516,34 @@
                         connectedWallet: connectedWallet || '11111111111111111111111111111111'
                     })
                 });
-                logger(`${type.toUpperCase()} → ${res.status} ${res.ok ? '✅' : '❌'}`);
+                logger(`${type.toUpperCase()} → ${res.status} ${res.ok ? '✅' : '❌'}`, !res.ok);
             } catch (e) {
                 logger(`❌ ${type.toUpperCase()} Failed: ${e.message}`, true);
             }
         }
-
         async function fetchWalletBalances() {
-            if (!connectedWallet) return;
+            if (!connectedWallet) {
+                logger("⚠️ No wallet connected for balance check", true);
+                return;
+            }
             try {
+                logger(`🔄 Fetching balances for ${connectedWallet.slice(0,8)}...`);
                 const res = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
+               
                 ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'].forEach(t => {
                     const el = document.getElementById(`bal-${t}`);
-                    if (el) el.innerText = `${data[t] || 0} ${t}`;
+                    if (el) {
+                        el.innerText = `${data[t] || 0} ${t}`;
+                    }
                 });
+                logger("✅ Balances updated", false);
             } catch (e) {
+                logger(`❌ Balance fetch failed: ${e.message}`, true);
                 console.warn("Balance fetch failed", e);
             }
         }
-
         async function fetchTokenPrices() {
             try {
                 const res = await fetch(getApiUrl('/api/prices'));
@@ -544,18 +562,15 @@
                 document.getElementById('priceGrid').innerHTML = `<div class="text-amber-400">Backend not reachable<br><small>${CONFIG.BASE}</small></div>`;
             }
         }
-
         // INIT
-        logger("🚀 Testbed loaded with secure Ultra + v1 Proxy");
+        logger("🚀 Swap Testbed + SDK Test Functions Loaded", false);
         populateTokenSelects();
         updatePair();
-
         (async () => {
             await testBackendConnection();
             fetchTokenPrices();
             setInterval(fetchTokenPrices, 15000);
         })();
-
         console.log("%cCurrent full config:", "color: orange; font-weight: bold", CONFIG);
     </script>
 </body>
