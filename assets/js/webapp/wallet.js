@@ -261,11 +261,12 @@ window.getPhantomSDK = getPhantomSDK;
 // ====================== LOAD LISTENER - SINGLE SOURCE OF TRUTH ======================
 window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
+    
+    await getPhantomSDK();
 
     // 1. Handle OAuth Handshake
     if (urlParams.get('code')) {
         console.log("⚠️ OAuth callback detected — Initializing SDK handshake");
-        await getPhantomSDK();
         return; // The 'connect' listener in getPhantomSDK will handle the UI update
     }
 
