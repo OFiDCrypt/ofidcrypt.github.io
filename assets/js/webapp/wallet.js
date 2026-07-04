@@ -37,9 +37,9 @@ function clearEmbeddedMemory(avoidSDKDisconnect = false) {
     localStorage.removeItem('giddy_embedded_session');
 
     if (!avoidSDKDisconnect && phantomSDK) {
-        try { 
-            phantomSDK.disconnect(); 
-        } catch (e) {}
+        try {
+            phantomSDK.disconnect();
+        } catch (e) { }
     }
 }
 
@@ -205,11 +205,22 @@ function getValidEmbeddedSession() {
     }
 }
 
-// 4. Phantom SDK & API Config
+// ====================== PHANTOM SDK & API CONFIG ======================
 import { BrowserSDK, AddressType } from "@phantom/browser-sdk";
 
+// Helper for unified session storage
+function saveSession(addr, method) {
+    localStorage.setItem('wallet_address', addr);
+    localStorage.setItem('connection_method', method);
+    if (method === "google" || method === "apple") {
+        saveEmbeddedSession(addr, method);
+    }
+}
+
+// GLOBAL SINGLE INITIALIZER
 async function getPhantomSDK() {
     if (!phantomSDK) {
+        console.log("🔧 Initializing Phantom BrowserSDK (once globally)");
         phantomSDK = new BrowserSDK({
             providers: ["injected", "google", "apple"],
             addressTypes: [AddressType.solana],
@@ -234,9 +245,10 @@ async function getPhantomSDK() {
         });
 
         phantomSDK.on("disconnect", () => {
-            console.log("🔌 Phantom SDK Disconnected");
-            // Only update UI if we are not using injected
-            if (connectionMethod !== "injected") {
+            console.log("🔌 Phantom SDK Disconnected event");
+            // Only update UI if NOT an intentional manual disconnect
+            const isExplicit = sessionStorage.getItem('user_explicitly_disconnected') === 'true';
+            if (!isExplicit) {
                 setWalletState(false);
             }
         });
@@ -244,98 +256,63 @@ async function getPhantomSDK() {
     return phantomSDK;
 }
 
-// ====================== LOAD LISTENER - FIRST LOAD PROMPT + SAVED STATE CARRY ======================
+window.getPhantomSDK = getPhantomSDK;
+
+// ====================== LOAD LISTENER - SINGLE SOURCE OF TRUTH ======================
 window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
 
-    // 1. OAuth callback
+    // 1. Handle OAuth Handshake
     if (urlParams.get('code')) {
-        console.log("⚠️ OAuth callback detected");
+        console.log("⚠️ OAuth callback detected — Initializing SDK handshake");
         await getPhantomSDK();
-        return;
+        return; // The 'connect' listener in getPhantomSDK will handle the UI update
     }
 
-    // 2. Check saved state first (carry session across pages)
+    // 2. Memory Recall: Check Local Storage FIRST
     const savedAddr = localStorage.getItem('wallet_address');
     const savedMethod = localStorage.getItem('connection_method');
 
     if (savedAddr) {
-        console.log(`🔄 Carrying saved session across pages: ${savedMethod || 'injected'}`);
-        
-        // Try to restore injected silently if that's the saved method
-        if (savedMethod === "injected") {
-            const injectedProvider = window.phantom?.solana || window.solana;
-            if (injectedProvider && injectedProvider.isPhantom) {
-                try {
-                    const resp = await injectedProvider.connect({ onlyIfTrusted: true });
-                    const publicKey = resp.publicKey.toString();
-                    clearEmbeddedMemory(true);
-                    setWalletState(true, publicKey, "injected");
-                    console.log("✅ Injected session carried across pages");
-                    return;
-                } catch (e) {
-                    console.log("Silent injected restore skipped");
-                }
-            }
-        }
+        console.log(`🔄 Memory Recall: Restoring session for ${savedMethod}: ${savedAddr.slice(0, 6)}...`);
 
-        // For embedded or fallback
-        setWalletState(true, savedAddr, savedMethod || 'injected');
+        // Immediate UI Update (Prevent flicker)
+        setWalletState(true, savedAddr, savedMethod);
+        if (typeof updateWalletBalances === 'function') updateWalletBalances();
+
+        // Background Verification: Don't await this, just trigger it
+        getPhantomSDK().then(sdk => {
+            if (savedMethod === 'injected') {
+                // For injected, verify trust without prompting
+                const injected = window.phantom?.solana || window.solana;
+                injected?.connect({ onlyIfTrusted: true }).catch(() => { });
+            } else {
+                sdk.autoConnect().catch(() => { });
+            }
+        });
         return;
     }
 
-    // 3. FIRST LOAD / NO SAVED STATE → Try injected (can prompt)
-    const injectedProvider = window.phantom?.solana || window.solana;
-    if (injectedProvider && injectedProvider.isPhantom) {
+    // 3. First-time connection attempt (Injected)
+    const injected = window.phantom?.solana || window.solana;
+    if (injected?.isPhantom) {
         try {
-            // First time → allow prompt if not trusted
-            const resp = await injectedProvider.connect({ onlyIfTrusted: false });
-            const publicKey = resp.publicKey.toString();
+            // Only attempt if not already explicitly disconnected/handled
+            const resp = await injected.connect({ onlyIfTrusted: false });
+            const addr = resp.publicKey.toString();
 
             clearEmbeddedMemory(true);
-            setWalletState(true, publicKey, "injected");
-            localStorage.setItem('wallet_address', publicKey);
+            setWalletState(true, addr, "injected");
+            localStorage.setItem('wallet_address', addr);
             localStorage.setItem('connection_method', 'injected');
-            console.log("✅ First-time injected connection");
+            console.log("✅ First-time injected connection established");
             return;
         } catch (e) {
-            console.log("Injected first-time connect cancelled or failed");
+            console.log("Injected connect attempt failed or dismissed");
         }
     }
 
-    // 4. Embedded fallback (Google/Apple)
-    const storedEmbedded = getValidEmbeddedSession();
-    if (storedEmbedded && (storedEmbedded.method === "google" || storedEmbedded.method === "apple")) {
-        console.log(`🔄 First-time embedded restore: ${storedEmbedded.method}`);
-        const sdk = await getPhantomSDK().catch(() => null);
-        if (sdk) {
-            try {
-                const result = await sdk.connect({ provider: storedEmbedded.method });
-                const addr = result.addresses?.[0]?.address;
-                if (addr) {
-                    setWalletState(true, addr, storedEmbedded.method);
-                    saveEmbeddedSession(addr, storedEmbedded.method);
-                    return;
-                }
-            } catch (e) {}
-        }
-    }
-
-    // 5. SDK autoConnect fallback
-    try {
-        const sdk = await getPhantomSDK();
-        await sdk.autoConnect();
-        if (sdk.isConnected && sdk.isConnected()) {
-            const addresses = await sdk.getAddresses?.();
-            const addr = addresses?.[0]?.address;
-            if (addr) {
-                setWalletState(true, addr, localStorage.getItem('connection_method') || 'injected');
-                return;
-            }
-        }
-    } catch (e) {}
-
-    // Default disconnected
+    // 4. Final Fallback: Default to Disconnected
     setWalletState(false);
 });
 
@@ -636,12 +613,9 @@ function getBestSigner() {
     }
 
     // 2. SDK fallback
-    if (window.getPhantomSDK) {
-        const sdk = window.getPhantomSDK(); // sync call since it's cached
-        if (sdk?.solana) {
-            console.log("✅ Using SDK signer as fallback");
-            return sdk.solana;
-        }
+    if (phantomSDK && phantomSDK.solana) {
+        console.log("✅ Using SDK signer as fallback");
+        return phantomSDK.solana;
     }
 
     console.warn("⚠️ No signer found");
@@ -813,8 +787,8 @@ async function handlePhantomConnect() {
 
     } catch (err) {
         console.error("Connect failed:", err);
-        alert(isMobileDevice() 
-            ? "Could not open Phantom. Make sure it is installed." 
+        alert(isMobileDevice()
+            ? "Could not open Phantom. Make sure it is installed."
             : "Phantom connection failed.");
         showAddWalletPrompt();
     } finally {
@@ -828,6 +802,7 @@ function clearUrlParams() {
     url.searchParams.delete('code');
     url.searchParams.delete('scope');
     url.searchParams.delete('state');
+    url.searchParams.delete('phantom_callback');
     window.history.replaceState({}, document.title, url.toString());
 }
 
@@ -859,6 +834,9 @@ function deepCleanEmbeddedSession() {
 
 // ====================== DISCONNECT WALLET (Aggressive) ======================
 function disconnectWallet() {
+    // CRITICAL: Prevent the load listener from auto-reconnecting
+    sessionStorage.setItem('user_explicitly_disconnected', 'true');
+
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
@@ -990,7 +968,7 @@ async function handleAppleSignIn() {
             try {
                 await sdk.disconnect();
                 console.log("🧹 Force disconnected previous session");
-            } catch (e) {}
+            } catch (e) { }
         }
 
         const { addresses } = await sdk.connect({
