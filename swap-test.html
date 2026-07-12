@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swap Engine Testbed - All Pairs</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
+
+    <!-- IMPORT WALLET.JS (loads the full Phantom SDK) -->
+    <script type="module" src="assets/js/webapp/wallet.js"></script>
+
     <!-- Shared Swap Utilities -->
     <script src="assets/js/webapp/swapUtils.js"></script>
     <style>
-        body { font-family: system-ui, sans-serif; }
+        body {
+            font-family: system-ui, sans-serif;
+        }
+
         select {
             background-color: #18181b !important;
             color: white !important;
             border: 1px solid #3f3f46;
         }
+
         select option {
             background-color: #18181b;
             color: white;
         }
+
         .status-dot {
             display: inline-block;
             width: 10px;
             height: 10px;
             border-radius: 50%;
         }
+
         #diagnostic-console {
             background-color: #18181b;
             border: 1px solid #3f3f46;
         }
-        .log-entry { font-family: monospace; }
+
+        .log-entry {
+            font-family: monospace;
+        }
     </style>
     <script>
         // ==================== VITE + RAILWAY CONFIG ====================
@@ -57,7 +71,6 @@
                 updateServerStatus();
                 return '';
             }
-            // Normal flow when not using Vite
             logger("🔍 Testing Railway Production...", false);
             try {
                 const controller = new AbortController();
@@ -87,7 +100,6 @@
             const statusContainer = document.getElementById('serverStatus');
             if (!statusContainer) return;
             if (isViteDev) {
-                // Vite mode - unified dark style
                 statusContainer.innerHTML = `
                     <div class="bg-black border border-purple-500/30 rounded-2xl p-4 text-xs space-y-2">
                         <div class="flex items-center gap-2">
@@ -102,7 +114,6 @@
                     </div>`;
                 return;
             }
-            // Normal mode
             const statusHTML = `
                 <div class="bg-black border border-zinc-700 rounded-2xl p-4 text-xs space-y-2">
                     <div class="flex items-center gap-2">
@@ -123,6 +134,7 @@
         }
     </script>
 </head>
+
 <body class="bg-zinc-950 text-zinc-100 min-h-screen">
     <div class="max-w-7xl mx-auto p-6">
         <header class="flex flex-col sm:flex-row justify-between items-start border-b border-zinc-800 pb-6 mb-8 gap-6">
@@ -133,27 +145,32 @@
             <div class="flex flex-col items-start gap-3">
                 <div class="flex flex-wrap gap-2">
                     <button onclick="connectWithSDK()"
-                            class="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 font-semibold rounded-2xl transition-all text-sm">
+                        class="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 font-semibold rounded-2xl transition-all text-sm">
                         SDK Connect
                     </button>
                     <button onclick="connectWithWindowSolana()"
-                            class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-2xl transition-all text-sm">
+                        class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-2xl transition-all text-sm">
                         window.solana
                     </button>
                     <button onclick="checkConnectionStatus()"
-                            class="flex items-center gap-2 px-5 py-2.5 bg-zinc-700 hover:bg-zinc-600 font-semibold rounded-2xl transition-all text-sm">
+                        class="flex items-center gap-2 px-5 py-2.5 bg-zinc-700 hover:bg-zinc-600 font-semibold rounded-2xl transition-all text-sm">
                         Status
                     </button>
                     <button onclick="disconnectAll()"
-                            class="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 font-semibold rounded-2xl transition-all text-sm">
+                        class="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 font-semibold rounded-2xl transition-all text-sm">
                         Disconnect All
+                    </button>
+                    <button onclick="quickSolToUsdcTest()"
+                        class="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-2xl transition-all text-sm">
+                        Small SOL → USDC Test
                     </button>
                 </div>
                 <div id="walletBadge"
                     class="hidden flex items-center gap-2 bg-zinc-900 border border-emerald-500 px-4 py-2 rounded-2xl w-fit">
                     <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
                     <span id="walletAddressDisplay" class="font-mono text-sm text-purple-400"></span>
-                    <span id="modeDisplay" class="ml-2 text-[10px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full bg-zinc-800"></span>
+                    <span id="modeDisplay"
+                        class="ml-2 text-[10px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full bg-zinc-800"></span>
                 </div>
             </div>
         </header>
@@ -163,11 +180,19 @@
                     <h2 class="font-bold text-lg text-purple-400 mb-4">Jupiter Diagnostic Console</h2>
                     <div id="serverStatus" class="mb-4"></div>
                     <div class="flex flex-wrap gap-2 mb-4">
-                        <button onclick="checkEndpoint('ultra')" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Ultra</button>
-                        <button onclick="checkEndpoint('v1')" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1 Proxy</button>
-                        <button onclick="testKinnected()" class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test Kinnected</button>
+                        <button onclick="checkEndpoint('ultra')"
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test
+                            Ultra</button>
+                        <button onclick="checkEndpoint('v1')"
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test v1
+                            Proxy</button>
+                        <button onclick="testKinnected()"
+                            class="flex-1 bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl text-sm font-medium">Test
+                            Kinnected</button>
                     </div>
-                    <div id="logWindow" class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4"></div>
+                    <div id="logWindow"
+                        class="h-80 bg-black rounded-2xl p-4 text-[10px] font-mono overflow-y-auto border border-zinc-700 mb-4">
+                    </div>
                     <div class="text-xs text-zinc-400 space-y-1">
                         <p><span class="text-purple-400">Ultra:</span> <span id="ultraUrl" class="break-all"></span></p>
                         <p><span class="text-purple-400">v1 Proxy:</span> <span id="v1Url" class="break-all"></span></p>
@@ -177,10 +202,14 @@
             <div class="xl:col-span-8 space-y-8">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-8">
                     <h2 class="text-2xl font-bold mb-2">Quick Swap</h2>
-                    <div class="flex flex-col sm:flex-row items-center gap-2 mb-6 bg-zinc-950 border border-zinc-700 rounded-3xl p-2">
-                        <select id="fromToken" onchange="handleDropdownChange('from')" class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
-                        <div class="text-2xl sm:text-3xl text-purple-400 font-light rotate-90 sm:rotate-0 my-1 sm:my-0">→</div>
-                        <select id="toToken" onchange="handleDropdownChange('to')" class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
+                    <div
+                        class="flex flex-col sm:flex-row items-center gap-2 mb-6 bg-zinc-950 border border-zinc-700 rounded-3xl p-2">
+                        <select id="fromToken" onchange="handleDropdownChange('from')"
+                            class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
+                        <div class="text-2xl sm:text-3xl text-purple-400 font-light rotate-90 sm:rotate-0 my-1 sm:my-0">
+                            →</div>
+                        <select id="toToken" onchange="handleDropdownChange('to')"
+                            class="w-full sm:flex-1 bg-zinc-900 text-white font-medium text-lg px-4 py-3 rounded-2xl focus:outline-none"></select>
                     </div>
                     <p id="pairDisplay" class="text-emerald-400 mb-6 text-center font-medium text-sm">eXPB → USDC</p>
                     <div class="grid grid-cols-2 gap-3 mb-6" id="amountButtons"></div>
@@ -192,22 +221,50 @@
                 <div id="walletInfo" class="hidden bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-bold">Your Live Wallet Balances</h3>
-                        <button onclick="fetchWalletBalances()" class="text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl flex items-center gap-1.5">
+                        <button onclick="fetchWalletBalances()"
+                            class="text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl flex items-center gap-1.5">
                             <span>🔄</span> Refresh Balances
                         </button>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">SOL Balance</span><span id="bal-SOL" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">USDC Balance</span><span id="bal-USDC" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">EXPB Balance</span><span id="bal-EXPB" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span class="text-xs text-zinc-500 block font-semibold">GIDDY Balance</span><span id="bal-GIDDY" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">ONE Balance</span><span id="bal-ONE" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">KIN Balance</span><span id="bal-KIN" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">DOBBY Balance</span><span id="bal-DOBBY" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">MYLO Balance</span><span id="bal-MYLO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">DUNO Balance</span><span id="bal-DUNO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">CPT Balance</span><span id="bal-CPT" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
-                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span class="text-xs text-yellow-400 block font-semibold">SINU Balance</span><span id="bal-SINU" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">SOL Balance</span><span id="bal-SOL"
+                                class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">USDC Balance</span><span id="bal-USDC"
+                                class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">EXPB Balance</span><span id="bal-EXPB"
+                                class="text-xl font-black text-purple-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80"><span
+                                class="text-xs text-zinc-500 block font-semibold">GIDDY Balance</span><span
+                                id="bal-GIDDY" class="text-xl font-black text-purple-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">ONE Balance</span><span id="bal-ONE"
+                                class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">KIN Balance</span><span id="bal-KIN"
+                                class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">DOBBY Balance</span><span
+                                id="bal-DOBBY" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">MYLO Balance</span><span
+                                id="bal-MYLO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">DUNO Balance</span><span
+                                id="bal-DUNO" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">CPT Balance</span><span id="bal-CPT"
+                                class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span></div>
+                        <div class="bg-zinc-950 p-4 rounded-xl border border-yellow-500/30"><span
+                                class="text-xs text-yellow-400 block font-semibold">SINU Balance</span><span
+                                id="bal-SINU" class="text-xl font-black text-yellow-300 mt-1 block">Loading...</span>
+                        </div>
                     </div>
                 </div>
                 <div>
@@ -258,43 +315,44 @@
         let currentOutputMint = TOKEN_CONFIG.USDC.mint;
         let currentInputSymbol = "eXPB";
         let currentInputDecimals = 6;
+
         function logger(msg, isErr = false) {
             const log = document.getElementById('logWindow');
             const cssClass = isErr ? 'text-red-400' : 'text-emerald-400';
             log.innerHTML += `<div class="log-entry ${cssClass}">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
             log.scrollTop = log.scrollHeight;
         }
-        // ==================== SDK HELPERS ====================
-        async function getPhantomSDK() {
-            if (window.PhantomBrowserSDK) return window.PhantomBrowserSDK;
-            await new Promise(r => setTimeout(r, 150));
-            return window.PhantomBrowserSDK;
-        }
+
+        // ==================== SDK HELPERS (UPDATED FOR YOUR wallet.js) ====================
         async function connectWithSDK() {
-            logger("🚀 Connecting with Phantom SDK...", false);
+            logger("🚀 Connecting with Phantom SDK (wallet.js)...", false);
             isUsingSDK = true;
             try {
-                const SDKClass = await getPhantomSDK();
-                if (!SDKClass) throw new Error("SDK library not loaded");
-                const sdk = new SDKClass({
-                    providers: ["injected"],
-                    addressTypes: ["solana"],
-                    appId: "62ccac9b-8746-42db-8a6d-45e2c97f7f58",
-                    autoConnect: true,
-                });
-                window._phantomSDK = sdk;
+                let sdk = null;
+                // Wait for wallet.js to load
+                for (let i = 0; i < 30; i++) {
+                    if (typeof window.getPhantomSDK === 'function') {
+                        sdk = await window.getPhantomSDK();
+                        break;
+                    }
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                if (!sdk) throw new Error("SDK not loaded - check wallet.js");
+
                 const result = await sdk.connect({ provider: "injected" });
                 connectedWallet = result.addresses?.[0]?.address;
-                currentSigner = sdk.solana;
+                currentSigner = sdk.solana || sdk;
                 provider = currentSigner;
+
                 updateWalletUI();
-                logger(`✅ SDK Connected: ${connectedWallet.slice(0,8)}...${connectedWallet.slice(-4)}`, false);
+                logger(`✅ SDK Connected: ${connectedWallet.slice(0, 8)}...${connectedWallet.slice(-4)}`, false);
                 fetchWalletBalances();
             } catch (e) {
                 logger(`❌ SDK Connect failed: ${e.message}`, true);
                 console.error(e);
             }
         }
+
         async function connectWithWindowSolana() {
             logger("🚀 Connecting with window.solana...", false);
             isUsingSDK = false;
@@ -308,12 +366,13 @@
                 connectedWallet = resp.publicKey.toString();
                 currentSigner = provider;
                 updateWalletUI();
-                logger(`✅ window.solana Connected: ${connectedWallet.slice(0,8)}...${connectedWallet.slice(-4)}`, false);
+                logger(`✅ window.solana Connected: ${connectedWallet.slice(0, 8)}...${connectedWallet.slice(-4)}`, false);
                 fetchWalletBalances();
             } catch (e) {
                 logger(`❌ window.solana failed: ${e.message}`, true);
             }
         }
+
         function updateWalletUI() {
             const badge = document.getElementById('walletBadge');
             if (!connectedWallet) return;
@@ -325,17 +384,19 @@
             document.getElementById('swapBtn').disabled = false;
             document.getElementById('walletInfo').classList.remove('hidden');
         }
+
         async function checkConnectionStatus() {
             logger("🔍 Checking connection status...", false);
-            logger(`Mode: ${isUsingSDK ? 'Phantom SDK' : 'window.solana'}`, false);
+            logger(`Mode: ${isUsingSDK ? 'Phantom SDK (wallet.js)' : 'window.solana'}`, false);
             logger(`Wallet: ${connectedWallet || 'None'}`, false);
             logger(`Signer ready: ${!!currentSigner}`, false);
         }
+
         function disconnectAll() {
             logger("🔌 Disconnecting all...", false);
-            if (window._phantomSDK) window._phantomSDK.disconnect().catch(() => {});
-            if (window.solana) window.solana.disconnect().catch(() => {});
-            if (window.phantom?.solana) window.phantom.solana.disconnect().catch(() => {});
+            if (window._phantomSDK) window._phantomSDK.disconnect().catch(() => { });
+            if (window.solana) window.solana.disconnect().catch(() => { });
+            if (window.phantom?.solana) window.phantom.solana.disconnect().catch(() => { });
             connectedWallet = null;
             currentSigner = null;
             provider = null;
@@ -345,7 +406,43 @@
             document.getElementById('swapBtn').disabled = true;
             logger("✅ All disconnected", false);
         }
-        // ==================== TOKEN UI ====================
+
+        // ==================== QUICK SOL → USDC TEST (Fixed) ====================
+        async function quickSolToUsdcTest() {
+            if (!connectedWallet) {
+                alert("Please connect a wallet first");
+                return;
+            }
+
+            logger("🧪 Quick SOL → USDC Test started (0.005 SOL)...", false);
+
+            // Save current selection
+            const prevFrom = document.getElementById('fromToken').value;
+            const prevTo = document.getElementById('toToken').value;
+            const prevAmount = selectedUiAmount;
+
+            try {
+                // Force SOL → USDC
+                document.getElementById('fromToken').value = TOKEN_CONFIG.SOL.mint;
+                document.getElementById('toToken').value = TOKEN_CONFIG.USDC.mint;
+                updatePair();           // This updates currentInput* variables
+                selectedUiAmount = 0.005;
+
+                // Small delay to let UI + variables settle
+                await new Promise(r => setTimeout(r, 50));
+
+                await performSwap();
+
+            } finally {
+                // Optional: Restore previous selection after test
+                document.getElementById('fromToken').value = prevFrom;
+                document.getElementById('toToken').value = prevTo;
+                updatePair();
+                selectedUiAmount = prevAmount;
+            }
+        }
+
+        // ==================== TOKEN UI + SWAP (unchanged) ====================
         function populateTokenSelects() {
             const from = document.getElementById('fromToken'), to = document.getElementById('toToken');
             from.innerHTML = '';
@@ -405,7 +502,7 @@
             btn.className = 'amount-btn py-4 rounded-2xl font-medium transition-all ring-2 ring-purple-500 bg-purple-900/30';
             selectedUiAmount = amount;
         }
-        // ==================== SWAP & BALANCES ====================
+
         async function executeSelectedSwap() {
             if (!connectedWallet) return alert("Connect wallet first");
             await performSwap();
@@ -461,6 +558,7 @@
                 btn.textContent = "Execute Selected Swap";
             }
         }
+
         async function testKinnected() {
             logger("🧪 Testing Kinnected Redeem API...");
             const testPayload = {
@@ -527,21 +625,17 @@
                 return;
             }
             try {
-                logger(`🔄 Fetching balances for ${connectedWallet.slice(0,8)}...`);
+                logger(`🔄 Fetching balances for ${connectedWallet.slice(0, 8)}...`);
                 const res = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const data = await res.json();
-               
                 ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'].forEach(t => {
                     const el = document.getElementById(`bal-${t}`);
-                    if (el) {
-                        el.innerText = `${data[t] || 0} ${t}`;
-                    }
+                    if (el) el.innerText = `${data[t] || 0} ${t}`;
                 });
                 logger("✅ Balances updated", false);
             } catch (e) {
                 logger(`❌ Balance fetch failed: ${e.message}`, true);
-                console.warn("Balance fetch failed", e);
             }
         }
         async function fetchTokenPrices() {
@@ -562,8 +656,9 @@
                 document.getElementById('priceGrid').innerHTML = `<div class="text-amber-400">Backend not reachable<br><small>${CONFIG.BASE}</small></div>`;
             }
         }
+
         // INIT
-        logger("🚀 Swap Testbed + SDK Test Functions Loaded", false);
+        logger("🚀 Swap Testbed + wallet.js SDK Loaded", false);
         populateTokenSelects();
         updatePair();
         (async () => {
@@ -574,4 +669,5 @@
         console.log("%cCurrent full config:", "color: orange; font-weight: bold", CONFIG);
     </script>
 </body>
+
 </html>
