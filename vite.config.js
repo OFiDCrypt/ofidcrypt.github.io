@@ -31,6 +31,7 @@ export default defineConfig(({ command }) => {
                     wallet: resolve(__dirname, 'wallet.html'),
                     shop: resolve(__dirname, 'shop.html'),
                     callback: resolve(__dirname, 'callback.html'),
+                    'swap-test': resolve(__dirname, 'swap-test.html'),
                 }
             }
         },
