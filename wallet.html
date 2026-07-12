@@ -562,6 +562,20 @@
             font-size: 1.1rem;
         }
     }
+
+    @media (max-width: 768px) {
+
+        #dynamic-quantity-display,
+        #swap-quantity-display {
+            font-size: clamp(1.8rem, 6.5vw, 1.4rem) !important;
+        }
+
+        /* Right panel breathing room */
+        .w-36 {
+            width: 118px !important;
+            padding: 12px 6px !important;
+        }
+    }
 </style>
 
 <body>
@@ -2274,16 +2288,13 @@
 
             <!-- Top Bar -->
             <div class="flex items-center justify-between mb-6">
-
-                <!-- Title -->
                 <div id="modal-top-heading" class="text-lg font-semibold tracking-tight"
                     style="color: var(--text-color); opacity: 0.85;">
                     Swap Bouncy Ball <span class="text-purple-400">⟶</span> Giddy
                 </div>
 
-                <!-- Close Button - Perfectly Aligned -->
                 <span onclick="closeValueLockModal()" class="text-3xl text-zinc-400 hover:text-white cursor-pointer transition-colors 
-                       flex items-center justify-center w-8 h-8 -mt-0.5 leading-none">
+                   flex items-center justify-center w-8 h-8 -mt-0.5 leading-none">
                     ×
                 </span>
             </div>
@@ -2335,14 +2346,18 @@
                     </div>
                 </div>
 
-                <!-- RIGHT INFO PANEL - Better Vertical Centering -->
+                <!-- RIGHT INFO PANEL -->
                 <div
                     class="w-36 flex-shrink-0 bg-[var(--card-bg-color,#1e0f33)] border border-purple-500/30 rounded-3xl p-5 flex flex-col justify-center shadow-inner min-h-[280px]">
-
                     <div class="text-center">
+                        <!-- DYNAMIC IMAGE -->
+                        <img id="right-panel-image" src=""
+                            style="width: 100%; height: auto; border-radius: 12px; margin-bottom: 12px;"
+                            alt="Mode Icon">
+
                         <div id="right-panel-label"
                             class="text-[10px] uppercase font-bold tracking-widest text-purple-300 mb-3">
-                            BOUNCY BALL<br>QUANTITY TO LOCK
+                            QUANTITY TO LOCK
                         </div>
                         <div id="dynamic-quantity-display" class="text-4xl font-black mb-6"
                             style="color: var(--text-color);">

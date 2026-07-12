@@ -1099,6 +1099,7 @@ function openValueLockModal(mode = 'expb') {
     const switchSection = document.getElementById('switch-section');
     const rightLabel = document.getElementById('right-panel-label');
     const topHeading = document.getElementById('modal-top-heading');
+    const rightImage = document.getElementById('right-panel-image');
 
     document.querySelectorAll('.lock-percent-btn, .switch-percent-btn').forEach(btn => btn.classList.remove('active'));
     lockSection.classList.remove('dimmed');
@@ -1110,9 +1111,12 @@ function openValueLockModal(mode = 'expb') {
         switchSection.classList.add('dimmed');
 
         document.getElementById('lock-heading').textContent = "Lock Value";
-        rightLabel.innerHTML = "BOUNCY BALL<br>QUANTITY TO LOCK";
+        rightLabel.innerHTML = "LOCK QUANTITY";
 
         if (topHeading) topHeading.innerHTML = `Swap Bouncy Ball <span class="text-purple-400">⟶</span> GIDDY`;
+
+        // Dynamic image for Bouncy Ball (lock)
+        if (rightImage) rightImage.src = "assets/images/webp/duality-lock.webp";
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0');
         currentLockBaseValueUSD = parseFloat(document.getElementById('value-EXPB')?.textContent?.replace(/[^0-9.]/g, '') || '0')
@@ -1124,9 +1128,12 @@ function openValueLockModal(mode = 'expb') {
         switchSection.classList.remove('dimmed');
 
         document.getElementById('switch-heading').textContent = "Unlock Value";
-        rightLabel.innerHTML = "GIDDY<br>QUANTITY TO UNLOCK";
+        rightLabel.innerHTML = "UNLOCK QUANTITY";
 
         if (topHeading) topHeading.innerHTML = `Swap Giddy <span class="text-purple-400">⟶</span> BOUNCY BALL`;
+
+        // Dynamic image for GIDDY (unlock)
+        if (rightImage) rightImage.src = "assets/images/webp/duality-unlock.webp";
 
         currentLockBaseQty = parseFloat(document.getElementById('qty-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0');
         currentLockBaseValueUSD = parseFloat(document.getElementById('value-GIDDY')?.textContent?.replace(/[^0-9.]/g, '') || '0')
