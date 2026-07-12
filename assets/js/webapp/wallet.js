@@ -261,11 +261,12 @@ window.getPhantomSDK = getPhantomSDK;
 // ====================== LOAD LISTENER - SINGLE SOURCE OF TRUTH ======================
 window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
+    
+    await getPhantomSDK();
 
     // 1. Handle OAuth Handshake
     if (urlParams.get('code')) {
         console.log("⚠️ OAuth callback detected — Initializing SDK handshake");
-        await getPhantomSDK();
         return; // The 'connect' listener in getPhantomSDK will handle the UI update
     }
 
@@ -275,10 +276,6 @@ window.addEventListener('load', async () => {
 
     if (savedAddr) {
         console.log(`🔄 Memory Recall: Restoring session for ${savedMethod}: ${savedAddr.slice(0, 6)}...`);
-
-        // Immediate UI Update (Prevent flicker)
-        setWalletState(true, savedAddr, savedMethod);
-        if (typeof updateWalletBalances === 'function') updateWalletBalances();
 
         // Background Verification: Don't await this, just trigger it
         getPhantomSDK().then(sdk => {
@@ -311,8 +308,31 @@ window.addEventListener('load', async () => {
             console.log("Injected connect attempt failed or dismissed");
         }
     }
+    
+    // 4) Mobile reconnect guard – verify with Phantom before we ever fall back to `false`
+if (savedMethod === 'phantom') {
+  try {
+    const provider = await getPhantomSDK();
 
-    // 4. Final Fallback: Default to Disconnected
+    // Only if Phantom actually says we're connected do we trust the cached address
+    const isConnected = provider?.isConnected?.();
+    if (isConnected && savedAddr) {
+      setWalletState(true, savedAddr, 'phantom');
+      await updateWalletBalances(savedAddr, 'phantom');
+    } else {
+      // Phantom not connected anymore – treat as fully disconnected
+      setWalletState(false);
+    }
+  } catch (err) {
+    console.warn('Phantom mobile reconnect check failed:', err);
+    setWalletState(false);
+  }
+
+  // We handled the Phantom branch explicitly, so bail out of the load listener here
+  return;
+}
+
+    // 5. Final Fallback: Default to Disconnected
     setWalletState(false);
 });
 
