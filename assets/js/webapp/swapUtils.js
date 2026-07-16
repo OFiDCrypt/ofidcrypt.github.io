@@ -3,8 +3,8 @@
 // Helper to handle user cancellations
 const handleCancel = (err) => {
     const msg = err?.message || "";
-    if (msg.includes("rejected") || msg.includes("cancelled") || msg.includes("user declined")) {
-        console.log("[Swap] Cancelled by user");
+    if (msg.includes("rejected") || msg.includes("cancelled") || msg.includes("user declined") || msg.includes("403")) {
+        console.log("[Swap] Cancelled or 403 Forbidden");
         throw new Error("USER_REJECTED");
     }
     return false;
@@ -39,23 +39,21 @@ async function performUltraSwap(inputMint, outputMint, rawAmount, provider, conn
     }
 }
 
-// ==================== SMART SIGNING (Mobile-Friendly) ====================
+// ==================== SMART SIGNING (Phantom SDK Best Practices) ====================
 async function executeUltraTransaction(quote, providerParam) {
     const connectionMethod = window.connectionMethod || localStorage.getItem('connection_method') || 'injected';
     console.log(`[Ultra] Connection: ${connectionMethod} | Wallet: ${window.connectedWallet?.slice(0,8)}...`);
 
     let signer = null;
 
-    // Smart routing based on wallet type
+    // Smart embedded detection
     if (connectionMethod === 'google' || connectionMethod === 'apple') {
-        // Google / Apple MUST use SDK
-        console.log("[Ultra] Embedded wallet detected → using SDK");
+        console.log("[Ultra] Embedded wallet detected → using SDK.solana");
         const sdk = await window.getPhantomSDK?.();
-        if (sdk?.solana) {
-            signer = sdk.solana;
-        }
-    } else {
-        // Injected (Phantom extension / app) → prefer legacy
+        signer = sdk?.solana;
+    } 
+    // Injected fallback
+    else {
         if (providerParam && typeof providerParam.signTransaction === 'function') {
             signer = providerParam;
             console.log("✅ Using injected provider");
@@ -64,7 +62,7 @@ async function executeUltraTransaction(quote, providerParam) {
             console.log("✅ Using window.solana");
         } else {
             const sdk = await window.getPhantomSDK?.();
-            if (sdk?.solana) signer = sdk.solana;
+            signer = sdk?.solana;
         }
     }
 
@@ -76,29 +74,11 @@ async function executeUltraTransaction(quote, providerParam) {
             Buffer.from(quote.transaction, 'base64')
         );
 
-        console.log("[Ultra] Signing transaction...");
-        const signed = await signer.signTransaction(vtx);
+        console.log("[Ultra] Signing & sending with signAndSendTransaction...");
+        const result = await signer.signAndSendTransaction(vtx);
 
-        // Safe base64 encoding
-        const signedTx = btoa(String.fromCharCode(...new Uint8Array(signed.serialize())));
-
-        const executeRes = await fetch('https://lite-api.jup.ag/ultra/v1/execute', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                signedTransaction: signedTx,
-                requestId: quote.requestId
-            })
-        });
-
-        if (!executeRes.ok) {
-            const errText = await executeRes.text().catch(() => '');
-            throw new Error(`Ultra Execute 400: ${executeRes.status} ${errText}`);
-        }
-
-        const result = await executeRes.json();
-        console.log(`✅ Ultra Success! TX: ${result.signature}`);
-        return { success: true, txid: result.signature, router: "Ultra" };
+        console.log(`✅ Ultra Success! TX: ${result.signature || result.hash}`);
+        return { success: true, txid: result.signature || result.hash, router: "Ultra" };
 
     } catch (error) {
         console.warn("[Ultra] Direct execute failed, falling back to v1 proxy...", error.message);
@@ -115,7 +95,7 @@ async function executeUltraTransaction(quote, providerParam) {
     }
 }
 
-// ==================== V1 PROXY FALLBACK (Most Reliable on Mobile) ====================
+// ==================== V1 PROXY FALLBACK ====================
 async function performV1Swap(inputMint, outputMint, rawAmount, provider, connectedWallet) {
     try {
         console.log("[V1 Proxy] Using backend proxy for reliable signing");
@@ -132,7 +112,6 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
             Buffer.from(data.swapTransaction, "base64")
         );
 
-        // Re-resolve signer for v1 path
         const connectionMethod = window.connectionMethod || localStorage.getItem('connection_method') || 'injected';
         let signer = null;
 
@@ -140,14 +119,16 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
             const sdk = await window.getPhantomSDK?.();
             signer = sdk?.solana;
         } else {
-            signer = provider || window.solana || (await window.getPhantomSDK?.())?.solana;
+            signer = provider || window.phantom?.solana || window.solana || (await window.getPhantomSDK?.())?.solana;
         }
 
         if (!signer) throw new Error("No signer available for v1 fallback");
 
+        console.log("[V1 Proxy] Signing & sending...");
         const result = await signer.signAndSendTransaction(tx);
-        console.log(`✅ v1 Proxy Success! TX: ${result.signature}`);
-        return { success: true, txid: result.signature, version: "v1" };
+
+        console.log(`✅ v1 Proxy Success! TX: ${result.signature || result.hash}`);
+        return { success: true, txid: result.signature || result.hash, version: "v1" };
 
     } catch (error) {
         if (!handleCancel(error)) console.error("[V1 Proxy] Failed:", error.message);

@@ -22,6 +22,21 @@ if (typeof Buffer === 'undefined') {
     };
 }
 
+// Dynamic SDK Import
+let BrowserSDK, AddressType;
+
+async function loadPhantomSDKModule() {
+    if (BrowserSDK) return;
+    try {
+        const module = await import("@phantom/browser-sdk");
+        BrowserSDK = module.BrowserSDK;
+        AddressType = module.AddressType;
+        console.log("✅ Phantom SDK module loaded dynamically");
+    } catch (e) {
+        console.error("❌ Failed to load Phantom SDK module:", e);
+    }
+}
+
 // 2. Global Variables
 let phantomSDK = null;
 let connectedWallet = null;
@@ -179,9 +194,9 @@ function toggleWorldwideCurrencies() {
 function saveEmbeddedSession(addr, method) {
     const sessionData = {
         address: addr,
-        method: method,           // "google" or "apple"
+        method: method,
         timestamp: Date.now(),
-        expiresIn: 7 * 24 * 60 * 60 * 1000 // 7 days
+        expiresIn: 7 * 24 * 60 * 60 * 1000
     };
     localStorage.setItem('giddy_embedded_session', JSON.stringify(sessionData));
     console.log(`💾 Saved embedded session: ${method} → ${addr.slice(0, 8)}...`);
@@ -206,7 +221,6 @@ function getValidEmbeddedSession() {
 }
 
 // ====================== PHANTOM SDK & API CONFIG ======================
-import { BrowserSDK, AddressType } from "@phantom/browser-sdk";
 
 // Helper for unified session storage
 function saveSession(addr, method) {
@@ -221,6 +235,8 @@ function saveSession(addr, method) {
 async function getPhantomSDK() {
     if (!phantomSDK) {
         console.log("🔧 Initializing Phantom BrowserSDK (once globally)");
+        await loadPhantomSDKModule();
+
         phantomSDK = new BrowserSDK({
             providers: ["injected", "google", "apple"],
             addressTypes: [AddressType.solana],
@@ -246,7 +262,6 @@ async function getPhantomSDK() {
 
         phantomSDK.on("disconnect", () => {
             console.log("🔌 Phantom SDK Disconnected event");
-            // Only update UI if NOT an intentional manual disconnect
             const isExplicit = sessionStorage.getItem('user_explicitly_disconnected') === 'true';
             if (!isExplicit) {
                 setWalletState(false);
@@ -267,7 +282,7 @@ window.addEventListener('load', async () => {
     // 1. Handle OAuth Handshake
     if (urlParams.get('code')) {
         console.log("⚠️ OAuth callback detected — Initializing SDK handshake");
-        return; // The 'connect' listener in getPhantomSDK will handle the UI update
+        return;
     }
 
     // 2. Memory Recall: Check Local Storage FIRST
@@ -277,14 +292,14 @@ window.addEventListener('load', async () => {
     if (savedAddr) {
         console.log(`🔄 Memory Recall: Restoring session for ${savedMethod}: ${savedAddr.slice(0, 6)}...`);
 
-        // Background Verification: Don't await this, just trigger it
+        setWalletState(true, savedAddr, savedMethod);
+
         getPhantomSDK().then(sdk => {
             if (savedMethod === 'injected') {
-                // For injected, verify trust without prompting
                 const injected = window.phantom?.solana || window.solana;
-                injected?.connect({ onlyIfTrusted: true }).catch(() => { });
+                injected?.connect({ onlyIfTrusted: true }).catch(() => {});
             } else {
-                sdk.autoConnect().catch(() => { });
+                sdk.autoConnect().catch(() => {});
             }
         });
         return;
@@ -294,7 +309,6 @@ window.addEventListener('load', async () => {
     const injected = window.phantom?.solana || window.solana;
     if (injected?.isPhantom) {
         try {
-            // Only attempt if not already explicitly disconnected/handled
             const resp = await injected.connect({ onlyIfTrusted: false });
             const addr = resp.publicKey.toString();
 
@@ -309,30 +323,7 @@ window.addEventListener('load', async () => {
         }
     }
     
-    // 4) Mobile reconnect guard – verify with Phantom before we ever fall back to `false`
-if (savedMethod === 'phantom') {
-  try {
-    const provider = await getPhantomSDK();
-
-    // Only if Phantom actually says we're connected do we trust the cached address
-    const isConnected = provider?.isConnected?.();
-    if (isConnected && savedAddr) {
-      setWalletState(true, savedAddr, 'phantom');
-      await updateWalletBalances(savedAddr, 'phantom');
-    } else {
-      // Phantom not connected anymore – treat as fully disconnected
-      setWalletState(false);
-    }
-  } catch (err) {
-    console.warn('Phantom mobile reconnect check failed:', err);
-    setWalletState(false);
-  }
-
-  // We handled the Phantom branch explicitly, so bail out of the load listener here
-  return;
-}
-
-    // 5. Final Fallback: Default to Disconnected
+    // 4. Final Fallback: Default to Disconnected
     setWalletState(false);
 });
 
