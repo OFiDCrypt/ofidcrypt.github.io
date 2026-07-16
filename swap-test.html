@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,36 +13,12 @@
     <!-- Shared Swap Utilities -->
     <script src="assets/js/webapp/swapUtils.js"></script>
     <style>
-        body {
-            font-family: system-ui, sans-serif;
-        }
-
-        select {
-            background-color: #18181b !important;
-            color: white !important;
-            border: 1px solid #3f3f46;
-        }
-
-        select option {
-            background-color: #18181b;
-            color: white;
-        }
-
-        .status-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        #diagnostic-console {
-            background-color: #18181b;
-            border: 1px solid #3f3f46;
-        }
-
-        .log-entry {
-            font-family: monospace;
-        }
+        body { font-family: system-ui, sans-serif; }
+        select { background-color: #18181b !important; color: white !important; border: 1px solid #3f3f46; }
+        select option { background-color: #18181b; color: white; }
+        .status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+        #diagnostic-console { background-color: #18181b; border: 1px solid #3f3f46; }
+        .log-entry { font-family: monospace; }
     </style>
     <script>
         // ==================== VITE + RAILWAY CONFIG ====================
@@ -134,7 +109,6 @@
         }
     </script>
 </head>
-
 <body class="bg-zinc-950 text-zinc-100 min-h-screen">
     <div class="max-w-7xl mx-auto p-6">
         <header class="flex flex-col sm:flex-row justify-between items-start border-b border-zinc-800 pb-6 mb-8 gap-6">
@@ -146,7 +120,15 @@
                 <div class="flex flex-wrap gap-2">
                     <button onclick="connectWithSDK()"
                         class="flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 font-semibold rounded-2xl transition-all text-sm">
-                        SDK Connect
+                        SDK Injected Connect
+                    </button>
+                    <button onclick="handleCreateWallet()" 
+                        class="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-semibold rounded-2xl transition-all text-sm">
+                        Google Sign In (Embedded)
+                    </button>
+                    <button onclick="handleAppleSignIn()" 
+                        class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-2xl transition-all text-sm">
+                        Apple Sign In (Embedded)
                     </button>
                     <button onclick="connectWithWindowSolana()"
                         class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 font-semibold rounded-2xl transition-all text-sm">
@@ -323,13 +305,12 @@
             log.scrollTop = log.scrollHeight;
         }
 
-        // ==================== SDK HELPERS (UPDATED FOR YOUR wallet.js) ====================
+        // ==================== SDK HELPERS ====================
         async function connectWithSDK() {
             logger("🚀 Connecting with Phantom SDK (wallet.js)...", false);
             isUsingSDK = true;
             try {
                 let sdk = null;
-                // Wait for wallet.js to load
                 for (let i = 0; i < 30; i++) {
                     if (typeof window.getPhantomSDK === 'function') {
                         sdk = await window.getPhantomSDK();
@@ -353,9 +334,54 @@
             }
         }
 
+               async function handleCreateWallet() {
+            logger("🚀 Google Sign In (Embedded) triggered...", false);
+            try {
+                const sdk = await window.getPhantomSDK();
+                const { addresses } = await sdk.connect({
+                    provider: "google",
+                    authOptions: { force: true }
+                });
+                const addr = addresses?.[0]?.address;
+                if (addr) {
+                    logger(`✅ Google Connected: ${addr.slice(0,8)}...`, false);
+                    connectedWallet = addr;
+                    isUsingSDK = true;
+                    window.connectionMethod = 'google';           // ← Important
+                    localStorage.setItem('connection_method', 'google');
+                    updateWalletUI();
+                }
+            } catch (e) {
+                logger(`❌ Google Sign In failed: ${e.message}`, true);
+            }
+        }
+
+        async function handleAppleSignIn() {
+            logger("🚀 Apple Sign In (Embedded) triggered...", false);
+            try {
+                const sdk = await window.getPhantomSDK();
+                const { addresses } = await sdk.connect({
+                    provider: "apple",
+                    authOptions: { force: true }
+                });
+                const addr = addresses?.[0]?.address;
+                if (addr) {
+                    logger(`✅ Apple Connected: ${addr.slice(0,8)}...`, false);
+                    connectedWallet = addr;
+                    isUsingSDK = true;
+                    window.connectionMethod = 'apple';            // ← Important
+                    localStorage.setItem('connection_method', 'apple');
+                    updateWalletUI();
+                }
+            } catch (e) {
+                logger(`❌ Apple Sign In failed: ${e.message}`, true);
+            }
+        }
+
         async function connectWithWindowSolana() {
             logger("🚀 Connecting with window.solana...", false);
             isUsingSDK = false;
+            window.connectionMethod = 'injected';                 // ← Ensure fallback
             try {
                 provider = window.phantom?.solana || window.solana;
                 if (!provider?.isPhantom) {
@@ -379,10 +405,24 @@
             badge.classList.remove('hidden');
             document.getElementById('walletAddressDisplay').textContent = connectedWallet.slice(0, 8) + "..." + connectedWallet.slice(-4);
             const modeEl = document.getElementById('modeDisplay');
-            modeEl.textContent = isUsingSDK ? "SDK" : "WINDOW";
-            modeEl.className = `ml-2 text-[10px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full ${isUsingSDK ? 'bg-violet-500/20 text-violet-400' : 'bg-blue-500/20 text-blue-400'}`;
+            modeEl.textContent = isUsingSDK ? "SDK (Google/Apple)" : "WINDOW";
+            modeEl.className = `ml-2 text-[10px] uppercase tracking-widest font-mono px-2 py-0.5 rounded-full ${isUsingSDK ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'}`;
             document.getElementById('swapBtn').disabled = false;
             document.getElementById('walletInfo').classList.remove('hidden');
+
+            // CRITICAL: Ensure signer is set for embedded wallets
+            if (isUsingSDK && !currentSigner) {
+                (async () => {
+                    const sdk = await window.getPhantomSDK?.();
+                    if (sdk) {
+                        currentSigner = sdk.solana || sdk;
+                        provider = currentSigner;
+                        logger("✅ Signer set for embedded wallet", false);
+                    }
+                })();
+            }
+
+            logger(`✅ UI Updated — Wallet: ${connectedWallet.slice(0,8)}...`, false);
         }
 
         async function checkConnectionStatus() {
@@ -407,7 +447,7 @@
             logger("✅ All disconnected", false);
         }
 
-        // ==================== QUICK SOL → USDC TEST (Fixed) ====================
+        // ==================== QUICK SOL → USDC TEST ====================
         async function quickSolToUsdcTest() {
             if (!connectedWallet) {
                 alert("Please connect a wallet first");
@@ -416,25 +456,21 @@
 
             logger("🧪 Quick SOL → USDC Test started (0.005 SOL)...", false);
 
-            // Save current selection
             const prevFrom = document.getElementById('fromToken').value;
             const prevTo = document.getElementById('toToken').value;
             const prevAmount = selectedUiAmount;
 
             try {
-                // Force SOL → USDC
                 document.getElementById('fromToken').value = TOKEN_CONFIG.SOL.mint;
                 document.getElementById('toToken').value = TOKEN_CONFIG.USDC.mint;
-                updatePair();           // This updates currentInput* variables
+                updatePair();
                 selectedUiAmount = 0.005;
 
-                // Small delay to let UI + variables settle
                 await new Promise(r => setTimeout(r, 50));
 
                 await performSwap();
 
             } finally {
-                // Optional: Restore previous selection after test
                 document.getElementById('fromToken').value = prevFrom;
                 document.getElementById('toToken').value = prevTo;
                 updatePair();
@@ -442,7 +478,7 @@
             }
         }
 
-        // ==================== TOKEN UI + SWAP (unchanged) ====================
+        // ==================== TOKEN UI + SWAP ====================
         function populateTokenSelects() {
             const from = document.getElementById('fromToken'), to = document.getElementById('toToken');
             from.innerHTML = '';
@@ -657,7 +693,7 @@
             }
         }
 
-        // INIT
+        // INIT + Callback Handler
         logger("🚀 Swap Testbed + wallet.js SDK Loaded", false);
         populateTokenSelects();
         updatePair();
@@ -666,8 +702,39 @@
             fetchTokenPrices();
             setInterval(fetchTokenPrices, 15000);
         })();
+
+        // Enhanced callback / resume handler
+        window.addEventListener('load', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('code')) {
+                logger("🔄 OAuth callback detected — waiting for SDK handshake...", false);
+                setTimeout(async () => {
+                    const sdk = await window.getPhantomSDK?.();
+                    if (sdk) {
+                        logger("✅ SDK handshake complete on callback", false);
+                        const savedAddr = localStorage.getItem('wallet_address');
+                        const savedMethod = localStorage.getItem('connection_method');
+                        if (savedAddr) {
+                            connectedWallet = savedAddr;
+                            isUsingSDK = true;
+                            updateWalletUI();
+                            fetchWalletBalances();
+                        }
+                    }
+                }, 1200);
+            } else {
+                // Normal load - memory recall
+                const savedAddr = localStorage.getItem('wallet_address');
+                if (savedAddr) {
+                    connectedWallet = savedAddr;
+                    isUsingSDK = true;
+                    updateWalletUI();
+                }
+            }
+        });
+
         console.log("%cCurrent full config:", "color: orange; font-weight: bold", CONFIG);
     </script>
 </body>
-
 </html>
