@@ -287,63 +287,53 @@ window.getPhantomSDK = getPhantomSDK;
 window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     
-    // 1. Handle OAuth callback
+    await getPhantomSDK();
+
+    // 1. Handle OAuth Handshake
     if (urlParams.get('code')) {
-        console.log("⚠️ OAuth callback detected — letting SDK handle handshake");
+        console.log("⚠️ OAuth callback detected — Initializing SDK handshake");
         return;
     }
 
-    const sdk = await getPhantomSDK();
-
-    // 2. Check for valid injected connection FIRST (highest priority)
-    const injected = window.phantom?.solana || window.solana;
-    
-    if (injected?.isPhantom && injected.isConnected) {
-        try {
-            const addr = injected.publicKey.toString();
-            console.log("✅ Injected wallet already connected");
-            clearEmbeddedMemory(true);
-            setWalletState(true, addr, "injected");
-            return;
-        } catch (e) {
-            console.warn("Injected wallet reported connected but failed to read address");
-        }
-    }
-
-    // 3. Check for saved embedded session (Google/Apple)
+    // 2. Memory Recall: Check Local Storage FIRST
     const savedAddr = localStorage.getItem('wallet_address');
     const savedMethod = localStorage.getItem('connection_method');
 
-    if (savedAddr && (savedMethod === 'google' || savedMethod === 'apple')) {
-        console.log(`🔄 Found saved ${savedMethod} session, validating...`);
+    if (savedAddr) {
+        console.log(`🔄 Memory Recall: Restoring session for ${savedMethod}: ${savedAddr.slice(0, 6)}...`);
 
-        try {
-            // Let SDK validate if the session is still alive
-            await sdk.autoConnect();
-            
-            if (sdk.isConnected()) {
-                const addresses = await sdk.getAddresses();
-                const currentAddr = addresses?.[0]?.address;
-                
-                if (currentAddr) {
-                    console.log(`✅ Valid embedded session restored: ${savedMethod}`);
-                    setWalletState(true, currentAddr, savedMethod);
-                    return;
-                }
+        setWalletState(true, savedAddr, savedMethod);
+
+        getPhantomSDK().then(sdk => {
+            if (savedMethod === 'injected') {
+                const injected = window.phantom?.solana || window.solana;
+                injected?.connect({ onlyIfTrusted: true }).catch(() => {});
+            } else {
+                sdk.autoConnect().catch(() => {});
             }
-            
-            // If we get here, session is expired or invalid
-            console.log("⚠️ Saved embedded session is no longer valid — cleaning up");
-            deepCleanEmbeddedSession();
-            
-        } catch (err) {
-            console.warn("Embedded session validation failed:", err);
-            deepCleanEmbeddedSession();
-        }
+        });
+        return;
     }
 
-    // 4. Final fallback — fully disconnected
-    console.log("🔌 No valid wallet session found");
+    // 3. First-time connection attempt (Injected)
+    const injected = window.phantom?.solana || window.solana;
+    if (injected?.isPhantom) {
+        try {
+            const resp = await injected.connect({ onlyIfTrusted: false });
+            const addr = resp.publicKey.toString();
+
+            clearEmbeddedMemory(true);
+            setWalletState(true, addr, "injected");
+            localStorage.setItem('wallet_address', addr);
+            localStorage.setItem('connection_method', 'injected');
+            console.log("✅ First-time injected connection established");
+            return;
+        } catch (e) {
+            console.log("Injected connect attempt failed or dismissed");
+        }
+    }
+    
+    // 4. Final Fallback: Default to Disconnected
     setWalletState(false);
 });
 
