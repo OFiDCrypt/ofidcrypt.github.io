@@ -86,7 +86,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     const connectOpt = document.getElementById('connectOption');
     const createContainer = document.getElementById('createSignInContainer');
     const disconnectOpt = document.getElementById('disconnectOption');
-    
+
     // New Get Started Container
     const getStartedContainer = document.getElementById('getStartedContainer');
 
@@ -109,7 +109,7 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (connectOpt) connectOpt.classList.add('hidden');
         if (createContainer) createContainer.classList.add('hidden');
         if (disconnectOpt) disconnectOpt.classList.remove('hidden');
-        
+
         // Hide "Get Started" button when connected
         if (getStartedContainer) getStartedContainer.classList.add('hidden');
 
@@ -147,10 +147,10 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (statusBar) statusBar.classList.add('hidden');
         if (connectOpt) connectOpt.classList.remove('hidden');
         if (createContainer) createContainer.classList.remove('hidden');
-        
+
         // Show "Get Started" button when disconnected
         if (getStartedContainer) getStartedContainer.classList.remove('hidden');
-        
+
         if (disconnectOpt) disconnectOpt.classList.add('hidden');
 
         // Shop Status
@@ -286,7 +286,7 @@ window.getPhantomSDK = getPhantomSDK;
 // ====================== LOAD LISTENER - SINGLE SOURCE OF TRUTH ======================
 window.addEventListener('load', async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     await getPhantomSDK();
 
     // 1. Handle OAuth Handshake
@@ -307,9 +307,9 @@ window.addEventListener('load', async () => {
         getPhantomSDK().then(sdk => {
             if (savedMethod === 'injected') {
                 const injected = window.phantom?.solana || window.solana;
-                injected?.connect({ onlyIfTrusted: true }).catch(() => {});
+                injected?.connect({ onlyIfTrusted: true }).catch(() => { });
             } else {
-                sdk.autoConnect().catch(() => {});
+                sdk.autoConnect().catch(() => { });
             }
         });
         return;
@@ -332,7 +332,7 @@ window.addEventListener('load', async () => {
             console.log("Injected connect attempt failed or dismissed");
         }
     }
-    
+
     // 4. Final Fallback: Default to Disconnected
     setWalletState(false);
 });
@@ -599,7 +599,7 @@ function clearBalancesOnDisconnect() {
     // Clear the message and variance
     const totalValueEl = document.getElementById('totalValue');
     const varianceEl = document.getElementById('variance'); // Assuming your variance element has this ID
-    
+
     if (totalValueEl) totalValueEl.innerHTML = "";
     if (varianceEl) varianceEl.textContent = "";
 
@@ -643,7 +643,7 @@ function getBestSigner() {
 }
 
 // ====================== UNIVERSAL WALLET TOGGLE ======================
-window.toggleWalletDropdown = function() {
+window.toggleWalletDropdown = function () {
     const dropdown = document.getElementById('walletDropdown');
     const chevron = document.getElementById('chevron');
 
@@ -677,13 +677,13 @@ document.addEventListener('DOMContentLoaded', () => {
         getStartedBtn.onclick = null;
         getStartedBtn.removeEventListener('click', window.toggleWalletDropdown);
         getStartedBtn.addEventListener('click', window.toggleWalletDropdown);
-        
+
         // Ensure state is checked immediately
         if (window.connectedWallet) {
             getStartedBtn.parentElement.classList.add('hidden');
         }
     }
-    
+
     console.log("Wallet buttons bound and visibility synced.");
 });
 
@@ -979,7 +979,7 @@ async function handleCreateWallet() {
             localStorage.setItem('connection_method', 'google');
             saveEmbeddedSession(publicKey, 'google');
             setWalletState(true, publicKey, "google");
-            
+
             await updateWalletBalances(); // Performs initial fetch with "Calculating"
         }
     } catch (err) {
@@ -1016,7 +1016,7 @@ async function handleAppleSignIn() {
             localStorage.setItem('connection_method', 'apple');
             saveEmbeddedSession(publicKey, 'apple');
             setWalletState(true, publicKey, "apple");
-            
+
             await updateWalletBalances();
         }
     } catch (err) {
@@ -1037,7 +1037,7 @@ async function fetchTokenPrices() {
         const response = await fetch(getApiUrl('/api/prices'));
         if (!response.ok) throw new Error("Price server error");
         const dataMatrix = await response.json();
-        
+
         console.log("✅ [PriceFetch] Data received, updating cache...");
 
         TARGET_SYMBOLS.forEach(symbol => {
@@ -1052,7 +1052,7 @@ async function fetchTokenPrices() {
         // Ensure price updates are applied to the UI before we calculate wallet balances
         if (connectedWallet) {
             console.log("💰 [PriceFetch] Prices updated, triggering silent balance refresh...");
-            await updateWalletBalances(true); 
+            await updateWalletBalances(true);
         } else {
             console.log("ℹ️ [PriceFetch] No wallet connected, skipping balance refresh.");
         }
@@ -1070,7 +1070,7 @@ async function updateWalletBalances(isSilent = false) {
         console.warn("⚠️ [Balances] Update skipped: already in progress.");
         return;
     }
-    
+
     const totalValueEl = document.getElementById('totalValue');
     if (!totalValueEl) return;
 
@@ -1099,7 +1099,7 @@ async function updateWalletBalances(isSilent = false) {
             const valueEl = document.getElementById(`value-${sym}`);
             const rawQty = parseFloat(String(balances[sym] || 0).replace(/,/g, ''));
             const usdValue = rawQty * (latestPrices[sym] || 0);
-            
+
             if (qtyEl) {
                 const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
                 qtyEl.textContent = (communityTokens.includes(sym) && rawQty >= 1000) ? formatLargeNumber(rawQty) : (rawQty > 0 ? rawQty.toLocaleString() : "0");
@@ -1321,6 +1321,69 @@ function selectSwapPercent(btn, group) {
 
     const percent = parseInt(btn.textContent);
     updateSelectedSwapQuantity(percent);
+}
+
+// ====================== ON-OFF RAMP MODAL (Dynamic Content + Logo) ======================
+function openOnOffRampModal(mode = 'default') {
+    console.log("✅ openOnOffRampModal called with mode:", mode);
+    const modal = document.getElementById('on-off-ramp-modal');
+    if (!modal) {
+        console.error("❌ On-Off Ramp Modal element not found");
+        return;
+    }
+
+    const titleEl = modal.querySelector('h2');
+    const descEl = modal.querySelector('p');
+    const mainBtn = modal.querySelector('button[onclick="buyFromExchange()"]');
+    const secondaryBtn = modal.querySelector('button[onclick="buyWithUSDC()"]');
+    const logoEl = modal.querySelector('img');   // Targets the main logo image
+
+    // Default (Buy SOL)
+    let title = "GET SOLANA";
+    let description = "Solana pays transaction fees on the Solana Network. It is the entry point to our perfect loop.";
+    let mainBtnText = "BUY FROM EXCHANGE";
+    let secondaryBtnText = "BUY WITH USDC";
+    let logoSrc = "/assets/images/webp/solana-rnd-300.webp";
+
+    if (mode === 'usdc-sell' || mode === 'sell-usdc') {
+        title = "SELL USDC";
+        description = "USDC is the worlds most renowned stablecoin by Circle. It is a payment method for purchases or store of value.";
+        mainBtnText = "SELL FOR CASH";
+        secondaryBtnText = "SELL FOR SOLANA";
+        logoSrc = "/assets/images/webp/usdc-rnd-300.webp";
+    }
+
+    if (titleEl) titleEl.textContent = title;
+    if (descEl) descEl.textContent = description;
+    if (mainBtn) mainBtn.textContent = mainBtnText;
+    if (secondaryBtn) secondaryBtn.textContent = secondaryBtnText;
+    if (logoEl) logoEl.src = logoSrc;
+
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+    console.log("✅ On-Off Ramp Modal opened with mode:", mode);
+}
+
+function closeOnOffRampModal() {
+    const modal = document.getElementById('on-off-ramp-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+}
+
+function buyFromExchange() {
+    alert("Redirecting to exchange partner...");
+    closeOnOffRampModal();
+}
+
+function buyWithUSDC() {
+    alert("Opening USDC swap flow...");
+    closeOnOffRampModal();
+}
+
+function showExchangeInfo() {
+    alert("An exchange is a platform where you can buy Solana with fiat or other tokens.");
 }
 
 // ====================== TX SUCCESS MODAL ======================
@@ -1904,6 +1967,8 @@ window.openValueLockModal = openValueLockModal;
 window.closeValueLockModal = closeValueLockModal;
 window.openGiddySwapModal = openGiddySwapModal;
 window.closeGiddySwapModal = closeGiddySwapModal;
+window.openOnOffRampModal = openOnOffRampModal;
+window.closeOnOffRampModal = closeOnOffRampModal;
 window.confirmValueLock = confirmValueLock;
 window.confirmGiddySwap = confirmGiddySwap;
 window.selectPercent = selectPercent;
@@ -1916,4 +1981,8 @@ window.scanQRCode = scanQRCode;
 
 window.getPhantomSDK = getPhantomSDK;
 window.isMobileDevice = isMobileDevice;
-window.toggleWalletDropdown = toggleWalletDropdown;
+
+// On-Off Ramp
+window.buyFromExchange = buyFromExchange;
+window.buyWithUSDC = buyWithUSDC;
+window.showExchangeInfo = showExchangeInfo;

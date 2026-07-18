@@ -596,186 +596,233 @@
         <!-- Background Layer -->
         <div class="bg fixed"></div>
 
-       <!-- PAGE HEADER -->
-<header class="header-subpage">
-    <div class="header-carousel">
+        <!-- PAGE HEADER -->
+        <header class="header-subpage">
+            <div class="header-carousel">
 
-        <!-- Left Arrow -->
-        <button class="scroll-btn left" aria-label="Scroll left to receive">
-            <div class="chevron-container">
-                <span class="arrow-label">RECEIVE</span>
-                <div class="chevron-row">
-                    <div class="chevron"></div>
-                    <div class="chevron"></div>
-                    <div class="chevron"></div>
+                <!-- Left Arrow -->
+                <button class="scroll-btn left" aria-label="Scroll left to receive">
+                    <div class="chevron-container">
+                        <span class="arrow-label">RECEIVE</span>
+                        <div class="chevron-row">
+                            <div class="chevron"></div>
+                            <div class="chevron"></div>
+                            <div class="chevron"></div>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- Horizontal Scroll Container -->
+                <div class="header-scroll" id="headerScroll">
+                    <div class="header-slide" data-slide="receive">
+                        <img src="/assets/images/webp/giddy-receive.webp" alt="Giddy Receive" class="header-image">
+                    </div>
+                    <div class="header-slide active" data-slide="logo">
+                        <a href="/index.html">
+                            <img src="/assets/images/webp/giddy-key-logo-2.webp" alt="Giddys Key Logo"
+                                class="header-logo">
+                        </a>
+                    </div>
+                    <div class="header-slide" data-slide="send">
+                        <img src="/assets/images/webp/giddy-send.webp" alt="Giddy Send" class="header-image">
+                    </div>
                 </div>
+
+                <!-- Right Arrow -->
+                <button class="scroll-btn right" aria-label="Scroll right to send">
+                    <div class="chevron-container">
+                        <span class="arrow-label">SEND</span>
+                        <div class="chevron-row">
+                            <div class="chevron"></div>
+                            <div class="chevron"></div>
+                            <div class="chevron"></div>
+                        </div>
+                    </div>
+                </button>
+
             </div>
-        </button>
+        </header>
 
-        <!-- Horizontal Scroll Container -->
-        <div class="header-scroll" id="headerScroll">
-            <div class="header-slide" data-slide="receive">
-                <img src="/assets/images/webp/giddy-receive.webp" alt="Giddy Receive" class="header-image">
-            </div>
-            <div class="header-slide active" data-slide="logo">
-                <a href="/index.html">
-                    <img src="/assets/images/webp/giddy-key-logo-2.webp" alt="Giddys Key Logo" class="header-logo">
-                </a>
-            </div>
-            <div class="header-slide" data-slide="send">
-                <img src="/assets/images/webp/giddy-send.webp" alt="Giddy Send" class="header-image">
-            </div>
-        </div>
+        <style>
+            .header-subpage {
+                position: relative;
+                overflow: hidden;
+            }
 
-        <!-- Right Arrow -->
-        <button class="scroll-btn right" aria-label="Scroll right to send">
-            <div class="chevron-container">
-                <span class="arrow-label">SEND</span>
-                <div class="chevron-row">
-                    <div class="chevron"></div>
-                    <div class="chevron"></div>
-                    <div class="chevron"></div>
-                </div>
-            </div>
-        </button>
+            .header-carousel {
+                position: relative;
+                width: 100%;
+                display: flex;
+                align-items: center;
+            }
 
-    </div>
-</header>
+            .header-scroll {
+                flex: 1;
+                display: flex;
+                overflow-x: auto;
+                scrollbar-width: none;
+                scroll-snap-type: x mandatory;
+            }
 
-<style>
-    .header-subpage {
-        position: relative;
-        overflow: hidden;
-    }
+            .header-scroll::-webkit-scrollbar {
+                display: none;
+            }
 
-    .header-carousel {
-        position: relative;
-        width: 100%;
-        display: flex;
-        align-items: center;
-    }
+            .header-slide {
+                flex: 0 0 100%;
+                min-width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                scroll-snap-align: center;
+            }
 
-    .header-scroll {
-        flex: 1;
-        display: flex;
-        overflow-x: auto;
-        scrollbar-width: none;
-        scroll-snap-type: x mandatory;
-    }
+            .header-logo {
+                visibility: visible;
+                width: 200px;
+                max-width: 100%;
+                height: auto;
+                margin: 1rem auto 0;
+                padding: 10px;
+                transition: opacity .5s, visibility .5s, transform .5s;
+            }
 
-    .header-scroll::-webkit-scrollbar {
-        display: none;
-    }
+            .header-image {
+                visibility: visible;
+                width: 200px;
+                max-width: 100%;
+                height: auto;
+                padding: 10px;
+                transition: opacity .5s, visibility .5s, transform .5s;
+            }
 
-    .header-slide {
-        flex: 0 0 100%;
-        min-width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        scroll-snap-align: center;
-    }
+            /* === BUTTONS - NO BOX SHADOW, NO FOCUS HIGHLIGHT === */
+            .scroll-btn {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 30;
+                background: transparent;
+                cursor: pointer;
+                padding: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.3s ease, transform 0.2s ease;
 
-    .header-logo, .header-image {
-        width: 180px;
-        max-width: 100%;
-        height: auto;
-    }
+                /* Remove all shadows and borders */
+                box-shadow: none !important;
+                border: none !important;
+                outline: none !important;
+            }
 
-    /* === BUTTONS - NO BOX SHADOW, NO FOCUS HIGHLIGHT === */
-    .scroll-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 30;
-        background: transparent;
-        cursor: pointer;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.3s ease, transform 0.2s ease;
+            /* Force removal of any highlight on focus / active */
+            .scroll-btn:focus,
+            .scroll-btn:active,
+            .scroll-btn:focus-visible {
+                outline: none !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
 
-        /* Remove all shadows and borders */
-        box-shadow: none !important;
-        border: none !important;
-        outline: none !important;
-    }
+            .scroll-btn.left {
+                left: 5px;
+            }
 
-    /* Force removal of any highlight on focus / active */
-    .scroll-btn:focus,
-    .scroll-btn:active,
-    .scroll-btn:focus-visible {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-    }
+            .scroll-btn.right {
+                right: 5px;
+            }
 
-    .scroll-btn.left { left: 5px; }
-    .scroll-btn.right { right: 5px; }
+            /* === TEXT LABEL === */
+            .chevron-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+            }
 
-    /* === TEXT LABEL === */
-    .chevron-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-    }
+            .arrow-label {
+                font-family: sans-serif;
+                font-size: 10px;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                pointer-events: none;
+                text-shadow: none;
+                box-shadow: none;
+            }
 
-    .arrow-label {
-        font-family: sans-serif;
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        pointer-events: none;
-        text-shadow: none;
-        box-shadow: none;
-    }
+            .scroll-btn.left .arrow-label {
+                color: #00d4ff;
+            }
 
-    .scroll-btn.left .arrow-label { color: #00d4ff; }
-    .scroll-btn.right .arrow-label { color: #ff85c1; }
+            .scroll-btn.right .arrow-label {
+                color: #ff85c1;
+            }
 
-    /* === ANIMATED CHEVRONS === */
-    .chevron-row {
-        display: flex;
-        gap: 2px;
-    }
+            /* === ANIMATED CHEVRONS === */
+            .chevron-row {
+                display: flex;
+                gap: 2px;
+            }
 
-    .chevron {
-        width: 12px;
-        height: 12px;
-        border-right: 3px solid;
-        border-bottom: 3px solid;
-        animation: bounce 1.5s infinite ease-in-out;
-        box-shadow: none;
-    }
+            .chevron {
+                width: 12px;
+                height: 12px;
+                border-right: 3px solid;
+                border-bottom: 3px solid;
+                animation: bounce 1.5s infinite ease-in-out;
+                box-shadow: none;
+            }
 
-    .scroll-btn.left .chevron {
-        border-color: #00d4ff;
-        transform: rotate(135deg);
-        animation-name: bounceLeft;
-    }
+            .scroll-btn.left .chevron {
+                border-color: #00d4ff;
+                transform: rotate(135deg);
+                animation-name: bounceLeft;
+            }
 
-    .scroll-btn.right .chevron {
-        border-color: #ff85c1;
-        transform: rotate(-45deg);
-        animation-name: bounceRight;
-    }
+            .scroll-btn.right .chevron {
+                border-color: #ff85c1;
+                transform: rotate(-45deg);
+                animation-name: bounceRight;
+            }
 
-    .chevron:nth-child(2) { animation-delay: 0.1s; }
-    .chevron:nth-child(3) { animation-delay: 0.2s; }
+            .chevron:nth-child(2) {
+                animation-delay: 0.1s;
+            }
 
-    @keyframes bounceLeft {
-        0%, 100% { transform: rotate(135deg) translateX(0); opacity: 0.5; }
-        50% { transform: rotate(135deg) translateX(-4px); opacity: 1; }
-    }
+            .chevron:nth-child(3) {
+                animation-delay: 0.2s;
+            }
 
-    @keyframes bounceRight {
-        0%, 100% { transform: rotate(-45deg) translateX(0); opacity: 0.5; }
-        50% { transform: rotate(-45deg) translateX(4px); opacity: 1; }
-    }
-</style>
+            @keyframes bounceLeft {
+
+                0%,
+                100% {
+                    transform: rotate(135deg) translateX(0);
+                    opacity: 0.5;
+                }
+
+                50% {
+                    transform: rotate(135deg) translateX(-4px);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes bounceRight {
+
+                0%,
+                100% {
+                    transform: rotate(-45deg) translateX(0);
+                    opacity: 0.5;
+                }
+
+                50% {
+                    transform: rotate(-45deg) translateX(4px);
+                    opacity: 1;
+                }
+            }
+        </style>
 
         <script>
             // Load already centered on logo + dynamic arrow visibility
@@ -1932,8 +1979,7 @@
                         <!-- Canopy Header -->
                         <div
                             class="h-14 bg-gradient-to-r from-purple-600 via-fuchsia-500 to-cyan-400 rounded-t-3xl flex items-center px-6">
-                            <span class="text-white font-bold text-lg tracking-tight">Get Started with New
-                                Money.</span>
+                            <span class="text-white font-bold text-lg tracking-tight">Get Started with New Money.</span>
                         </div>
 
                         <!-- SOL Token Card - Joined to header -->
@@ -1946,7 +1992,8 @@
                                         <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color);">
                                             SOL</div>
                                         <div class="flex gap-1.5 ml-2">
-                                            <button onclick="buyToken(); event.stopPropagation();"
+                                            <!-- BUY SOL opens On-Off Ramp -->
+                                            <button onclick="openOnOffRampModal('default'); event.stopPropagation();"
                                                 class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">Buy</button>
                                             <button onclick="openGiddySwapModal('sell-sol'); event.stopPropagation();"
                                                 class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">
@@ -2010,11 +2057,13 @@
                                         <div class="text-3xl sm:text-4xl font-bold" style="color: var(--text-color);">
                                             USDC</div>
                                         <div class="flex gap-1.5 ml-2">
+                                            <!-- BUY USDC remains the same (swap modal) -->
                                             <button onclick="openGiddySwapModal('usdc-buy'); event.stopPropagation();"
                                                 class="w-14 py-1 flex justify-center items-center bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl transition-all">
                                                 Buy
                                             </button>
-                                            <button onclick="sellToken(); event.stopPropagation();"
+                                            <!-- SELL USDC now opens On-Off Ramp Modal with USDC Sell mode -->
+                                            <button onclick="openOnOffRampModal('usdc-sell'); event.stopPropagation();"
                                                 class="w-14 py-1 flex justify-center items-center bg-zinc-700 hover:bg-zinc-600 text-white text-xs font-bold rounded-xl transition-all">Sell</button>
                                         </div>
                                     </div>
@@ -2444,6 +2493,59 @@
                 class="confirm-btn w-full mt-7 text-2xl font-black tracking-tight rounded-3xl text-white shadow-xl transition-all active:scale-[0.97]"
                 style="background: linear-gradient(to right, #9333ea, #ec4899);">
                 Confirm Swap
+            </button>
+        </div>
+    </div>
+
+    <!-- ON-OFF RAMP MODAL (Get Solana) -->
+    <div id="on-off-ramp-modal" class="modal hidden">
+        <div class="modal-content"
+            style="max-width: 380px; width: 92%; padding: 28px 24px; border-radius: 24px; text-align: center; position: relative;">
+
+            <!-- Logo -->
+            <div class="flex justify-center mb-6">
+                <div
+                    class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                    <img src="/assets/images/webp/solana-rnd-300.webp" alt="Giddy Key" class="w-14 h-14 object-contain">
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-3xl font-bold tracking-tight mb-2 text-white">GET SOLANA</h2>
+
+            <p class="text-zinc-400 text-sm mb-8 px-4 leading-relaxed">
+                Solana pays transaction fees on the Solana Network. It is the entry point to our perfect loop.
+            </p>
+
+            <!-- Buy from Exchange -->
+            <button onclick="buyFromExchange()"
+                class="w-full py-4 px-6 mb-4 rounded-2xl font-semibold text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all shadow-lg flex items-center justify-center">
+                BUY FROM EXCHANGE
+            </button>
+
+            <!-- Buy with USDC -->
+            <button onclick="buyWithUSDC()"
+                class="w-full py-4 px-6 rounded-2xl font-semibold text-lg border-2 border-zinc-700 hover:border-zinc-600 bg-zinc-800 hover:bg-zinc-700 text-white transition-all flex items-center justify-center gap-3">
+                <div
+                    class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    $</div>
+                BUY WITH USDC
+            </button>
+
+            <div class="text-xs text-zinc-400 mt-4">
+                Swap your USDC or purchase fresh Solana.
+            </div>
+
+            <!-- Lower link with no-style-link class -->
+            <a href="#" onclick="showExchangeInfo(); return false;"
+                class="no-style-link block text-blue-400 text-sm mt-6">
+                What is an exchange?
+            </a>
+
+            <!-- Close Button with box-shadow none and hover red -->
+            <button onclick="closeOnOffRampModal()" style="box-shadow: none; text-decoration: none;"
+                class="absolute top-4 right-4 text-3xl text-zinc-400 hover:text-red-500 transition-colors">
+                ×
             </button>
         </div>
     </div>
