@@ -46,20 +46,14 @@ async function executeUltraTransaction(quote, providerParam) {
 
     let signer = null;
 
-    // Smart embedded detection
     if (connectionMethod === 'google' || connectionMethod === 'apple') {
-        console.log("[Ultra] Embedded wallet detected → using SDK.solana");
         const sdk = await window.getPhantomSDK?.();
         signer = sdk?.solana;
-    } 
-    // Injected fallback
-    else {
+    } else {
         if (providerParam && typeof providerParam.signTransaction === 'function') {
             signer = providerParam;
-            console.log("✅ Using injected provider");
         } else if (window.solana?.isPhantom) {
             signer = window.solana;
-            console.log("✅ Using window.solana");
         } else {
             const sdk = await window.getPhantomSDK?.();
             signer = sdk?.solana;
@@ -69,12 +63,17 @@ async function executeUltraTransaction(quote, providerParam) {
     if (!signer) throw new Error("No valid signer found for this wallet type");
 
     try {
-        console.log("[Ultra] Deserializing transaction...");
-        const vtx = solanaWeb3.VersionedTransaction.deserialize(
-            Buffer.from(quote.transaction, 'base64')
-        );
+        // FIX: Extract base64 string safely. If it's an object, try to find the transaction key
+        const txData = typeof quote.transaction === 'string' 
+            ? quote.transaction 
+            : (quote.transaction.swapTransaction || quote.transaction.data);
+            
+        if (!txData) throw new Error("Invalid transaction data format");
 
-        console.log("[Ultra] Signing & sending with signAndSendTransaction...");
+        console.log("[Ultra] Deserializing transaction...");
+        const vtx = solanaWeb3.VersionedTransaction.deserialize(Buffer.from(txData, 'base64'));
+
+        console.log("[Ultra] Signing & sending...");
         const result = await signer.signAndSendTransaction(vtx);
 
         console.log(`✅ Ultra Success! TX: ${result.signature || result.hash}`);
@@ -98,7 +97,7 @@ async function executeUltraTransaction(quote, providerParam) {
 // ==================== V1 PROXY FALLBACK ====================
 async function performV1Swap(inputMint, outputMint, rawAmount, provider, connectedWallet) {
     try {
-        console.log("[V1 Proxy] Using backend proxy for reliable signing");
+        console.log("[V1 Proxy] Using backend proxy");
         const proxyRes = await fetch('https://giddy-key-swaps-production.up.railway.app/api/swap/v1', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -108,9 +107,9 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
         const data = await proxyRes.json();
         if (!data.success) throw new Error(data.error || "Proxy failed");
 
-        const tx = solanaWeb3.VersionedTransaction.deserialize(
-            Buffer.from(data.swapTransaction, "base64")
-        );
+        // FIX: Safe extraction for V1 proxy as well
+        const txData = typeof data.swapTransaction === 'string' ? data.swapTransaction : data.swapTransaction.data;
+        const tx = solanaWeb3.VersionedTransaction.deserialize(Buffer.from(txData, "base64"));
 
         const connectionMethod = window.connectionMethod || localStorage.getItem('connection_method') || 'injected';
         let signer = null;
@@ -124,9 +123,7 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
 
         if (!signer) throw new Error("No signer available for v1 fallback");
 
-        console.log("[V1 Proxy] Signing & sending...");
         const result = await signer.signAndSendTransaction(tx);
-
         console.log(`✅ v1 Proxy Success! TX: ${result.signature || result.hash}`);
         return { success: true, txid: result.signature || result.hash, version: "v1" };
 
@@ -136,8 +133,6 @@ async function performV1Swap(inputMint, outputMint, rawAmount, provider, connect
     }
 }
 
-// Global exports
 window.performUltraSwap = performUltraSwap;
 window.performV1Swap = performV1Swap;
-
-console.log("✅ swapUtils.js loaded — Mobile-optimized (Smart signer + Ultra + v1 fallback)");
+console.log("✅ swapUtils.js loaded (Fixed Serialization Error)");
