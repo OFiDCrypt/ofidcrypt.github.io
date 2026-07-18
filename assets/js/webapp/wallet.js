@@ -86,6 +86,9 @@ function setWalletState(isConnected, publicKey = null, method = null) {
     const connectOpt = document.getElementById('connectOption');
     const createContainer = document.getElementById('createSignInContainer');
     const disconnectOpt = document.getElementById('disconnectOption');
+    
+    // New Get Started Container
+    const getStartedContainer = document.getElementById('getStartedContainer');
 
     // Shop UI elements
     const shopDot = document.getElementById('status-dot');
@@ -106,6 +109,9 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (connectOpt) connectOpt.classList.add('hidden');
         if (createContainer) createContainer.classList.add('hidden');
         if (disconnectOpt) disconnectOpt.classList.remove('hidden');
+        
+        // Hide "Get Started" button when connected
+        if (getStartedContainer) getStartedContainer.classList.add('hidden');
 
         // Shop Status
         if (shopDot) shopDot.style.backgroundColor = "#10b981";
@@ -141,6 +147,10 @@ function setWalletState(isConnected, publicKey = null, method = null) {
         if (statusBar) statusBar.classList.add('hidden');
         if (connectOpt) connectOpt.classList.remove('hidden');
         if (createContainer) createContainer.classList.remove('hidden');
+        
+        // Show "Get Started" button when disconnected
+        if (getStartedContainer) getStartedContainer.classList.remove('hidden');
+        
         if (disconnectOpt) disconnectOpt.classList.add('hidden');
 
         // Shop Status
@@ -583,27 +593,26 @@ function clearBalancesOnDisconnect() {
         const valueEl = document.getElementById(`value-${sym}`);
 
         if (qtyEl) qtyEl.textContent = '—';
-
-        if (valueEl) {
-            if (sym === 'EXPB' || sym === 'GIDDY') {
-                valueEl.innerHTML = `${symbolChar}0.00`;
-            } else {
-                valueEl.innerHTML = `${symbolChar}0.00 <span class="text-base">${currentCurrency}</span>`;
-            }
-        }
+        if (valueEl) valueEl.innerHTML = `${symbolChar}0.00`;
     });
 
+    // Clear the message and variance
     const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl) {
-        totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
-    }
+    const varianceEl = document.getElementById('variance'); // Assuming your variance element has this ID
+    
+    if (totalValueEl) totalValueEl.innerHTML = "";
+    if (varianceEl) varianceEl.textContent = "";
+
+    // Optional: Hide the total value container to remove extra whitespace
+    const totalContainer = document.getElementById('totalValueContainer');
+    if (totalContainer) totalContainer.classList.add('hidden');
 }
 
 function showAddWalletPrompt() {
-    const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl) {
-        totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
-    }
+    // This function is now effectively a placeholder or can be used 
+    // to handle any additional "Connect" call-to-actions if needed.
+    const totalContainer = document.getElementById('totalValueContainer');
+    if (totalContainer) totalContainer.classList.add('hidden');
 }
 
 // ====================== HELPER: Device Detection ======================
@@ -633,19 +642,53 @@ function getBestSigner() {
     return null;
 }
 
-// ====================== PHANTOM WALLET INTEGRATION (SDK) ======================
-
-// Main Wallet Dropdown (Add Wallet)
-function toggleWalletDropdown() {
+// ====================== UNIVERSAL WALLET TOGGLE ======================
+window.toggleWalletDropdown = function() {
     const dropdown = document.getElementById('walletDropdown');
     const chevron = document.getElementById('chevron');
-    if (dropdown) dropdown.classList.toggle('hidden');
-    if (chevron) chevron.classList.toggle('rotate-180');
-}
+
+    // 1. Toggle visibility
+    if (dropdown) {
+        dropdown.classList.toggle('hidden');
+    }
+
+    // 2. Rotate chevron (only exists on upper button)
+    if (chevron) {
+        chevron.classList.toggle('rotate-180');
+    }
+
+    // 3. Close other UI components
+    if (typeof closeValueLockModal === 'function') closeValueLockModal();
+    if (typeof closeGiddySwapModal === 'function') closeGiddySwapModal();
+};
+
+// ====================== BIND BOTH BUTTONS ======================
+document.addEventListener('DOMContentLoaded', () => {
+    const addBtn = document.getElementById('addWalletBtn');
+    const getStartedBtn = document.getElementById('getStartedBtn');
+
+    if (addBtn) {
+        addBtn.onclick = null;
+        addBtn.removeEventListener('click', window.toggleWalletDropdown);
+        addBtn.addEventListener('click', window.toggleWalletDropdown);
+    }
+
+    if (getStartedBtn) {
+        getStartedBtn.onclick = null;
+        getStartedBtn.removeEventListener('click', window.toggleWalletDropdown);
+        getStartedBtn.addEventListener('click', window.toggleWalletDropdown);
+        
+        // Ensure state is checked immediately
+        if (window.connectedWallet) {
+            getStartedBtn.parentElement.classList.add('hidden');
+        }
+    }
+    
+    console.log("Wallet buttons bound and visibility synced.");
+});
 
 // ====================== CREATE / SIGN IN MODAL ======================
 
-// Open Create/Sign In Modal
 function openCreateSignInModal() {
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
@@ -654,19 +697,16 @@ function openCreateSignInModal() {
     if (modal) modal.style.display = 'flex';
 }
 
-// Close Create/Sign In Modal
 function closeCreateSignInModal() {
     const modal = document.getElementById('create-signin-modal');
     if (modal) modal.style.display = 'none';
 }
 
-// Google from Modal
 function handleCreateWalletFromModal() {
     closeCreateSignInModal();
     handleCreateWallet();
 }
 
-// Apple from Modal
 function handleAppleSignInFromModal() {
     closeCreateSignInModal();
     handleAppleSignIn();
@@ -674,19 +714,22 @@ function handleAppleSignInFromModal() {
 
 // ====================== CLICK OUTSIDE HANDLER ======================
 
-// Unified Click Outside Handler (only handles main wallet dropdown now)
 document.addEventListener('click', (e) => {
     const addBtn = document.getElementById('addWalletBtn');
+    const getStartedBtn = document.getElementById('getStartedBtn');
     const walletDropdown = document.getElementById('walletDropdown');
 
-    // Close main wallet dropdown when clicking outside
-    if (addBtn && walletDropdown &&
-        !addBtn.contains(e.target) &&
-        !walletDropdown.contains(e.target)) {
+    // Logic: Close only if the click is NOT on the AddBtn, NOT on the GetStartedBtn, AND NOT inside the dropdown
+    const clickedOnAddBtn = addBtn && addBtn.contains(e.target);
+    const clickedOnGetStartedBtn = getStartedBtn && getStartedBtn.contains(e.target);
+    const clickedInsideDropdown = walletDropdown && walletDropdown.contains(e.target);
 
-        walletDropdown.classList.add('hidden');
-        const mainChevron = document.getElementById('chevron');
-        if (mainChevron) mainChevron.classList.remove('rotate-180');
+    if (walletDropdown && !walletDropdown.classList.contains('hidden')) {
+        if (!clickedOnAddBtn && !clickedOnGetStartedBtn && !clickedInsideDropdown) {
+            walletDropdown.classList.add('hidden');
+            const mainChevron = document.getElementById('chevron');
+            if (mainChevron) mainChevron.classList.remove('rotate-180');
+        }
     }
 });
 
@@ -739,7 +782,6 @@ function initShareWalletButton() {
 // ====================== STATE PROTECTION ======================
 let lastFetchWallet = null;
 
-// ====================== CONNECT PHANTOM (HYBRID - DESKTOP + iOS FALLBACK) ======================
 // ====================== CONNECT BUTTON (Injected Priority + Embedded Toggle) ======================
 async function handlePhantomConnect() {
     const dropdown = document.getElementById('walletDropdown');
@@ -899,173 +941,90 @@ function disconnectWallet() {
     console.log("✅ Disconnected — ALL state cleared (aggressive)");
 }
 
-/// ====================== CREATE WALLET (Google) ======================
+// ====================== GLOBAL STATE LOCKS ======================
+let isUpdating = false;
+
+function updateStatus(text, colorClass = "text-purple-400") {
+    const el = document.getElementById('totalValue');
+    if (!el) return;
+    // Only update if we aren't already showing a balance (starts with currency symbol)
+    const isShowingBalance = /[\$\€\£]/.test(el.textContent);
+    if (!isShowingBalance) {
+        el.innerHTML = `<span class="${colorClass}">${text}</span>`;
+    }
+}
+
+// ====================== CREATE WALLET (Google) ======================
 async function handleCreateWallet() {
+    if (window.__isConnecting) return;
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl) totalValueEl.textContent = 'Google Sign in...';
-
-    if (window.__isConnecting) return;
     window.__isConnecting = true;
+    updateStatus("Connecting to Google...");
 
     try {
-        console.log("🚀 [Google] Forcing full disconnect before new auth...");
-
         await disconnectWallet();
         await new Promise(r => setTimeout(r, 700));
 
         const sdk = await getPhantomSDK();
-
         deepCleanEmbeddedSession();
 
-        const { addresses } = await sdk.connect({
-            provider: "google",
-            authOptions: { force: true }
-        });
-
+        const { addresses } = await sdk.connect({ provider: "google", authOptions: { force: true } });
         const publicKey = addresses?.[0]?.address;
 
         if (publicKey) {
-            console.log("✅ [Google] Wallet address received:", publicKey);
             clearUrlParams();
             localStorage.setItem('wallet_address', publicKey);
             localStorage.setItem('connection_method', 'google');
             saveEmbeddedSession(publicKey, 'google');
-
             setWalletState(true, publicKey, "google");
-
-            setTimeout(() => {
-                if (typeof updateWalletBalances === 'function') updateWalletBalances();
-            }, 800);
-        } else {
-            console.warn("⚠️ [Google] No address returned from SDK");
+            
+            await updateWalletBalances(); // Performs initial fetch with "Calculating"
         }
     } catch (err) {
-        console.error("❌ [Google] Create Wallet error:", err);
-        alert("Google login failed or was cancelled.\n\nPlease try again.");
+        console.error("❌ [Google] Error:", err);
         if (typeof showAddWalletPrompt === 'function') showAddWalletPrompt();
     } finally {
         window.__isConnecting = false;
-        if (totalValueEl && !connectedWallet) {
-            totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
-        }
+        if (!connectedWallet) updateStatus("Sign-In with Google", "text-zinc-500 text-[22px]");
     }
 }
 
 // ====================== CREATE WALLET (Apple) ======================
 async function handleAppleSignIn() {
+    if (window.__isConnecting) return;
     const dropdown = document.getElementById('walletDropdown');
     if (dropdown) dropdown.classList.add('hidden');
 
-    const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl) totalValueEl.textContent = 'Apple Sign in...';
-
-    if (window.__isConnecting) return;
     window.__isConnecting = true;
+    updateStatus("Connecting to Apple...");
 
     try {
-        console.log("🚀 [Apple] Forcing full disconnect before new auth...");
-
         await disconnectWallet();
         await new Promise(r => setTimeout(r, 700));
 
         const sdk = await getPhantomSDK();
-
         deepCleanEmbeddedSession();
 
-        if (sdk.isLoggedIn) {
-            try {
-                await sdk.disconnect();
-                console.log("🧹 Force disconnected previous session");
-            } catch (e) { }
-        }
-
-        const { addresses } = await sdk.connect({
-            provider: "apple",
-            authOptions: { force: true }
-        });
-
+        const { addresses } = await sdk.connect({ provider: "apple", authOptions: { force: true } });
         const publicKey = addresses?.[0]?.address;
 
         if (publicKey) {
-            console.log("✅ [Apple] Wallet address received:", publicKey);
             clearUrlParams();
             localStorage.setItem('wallet_address', publicKey);
             localStorage.setItem('connection_method', 'apple');
             saveEmbeddedSession(publicKey, 'apple');
-
             setWalletState(true, publicKey, "apple");
-
-            setTimeout(() => {
-                if (typeof updateWalletBalances === 'function') updateWalletBalances();
-            }, 800);
-        } else {
-            console.warn("⚠️ [Apple] No address returned from SDK");
+            
+            await updateWalletBalances();
         }
     } catch (err) {
-        console.error("❌ [Apple] Sign-in error:", err);
-        alert("Apple sign-in failed. Please ensure you are not logged into another Phantom session.");
+        console.error("❌ [Apple] Error:", err);
         if (typeof showAddWalletPrompt === 'function') showAddWalletPrompt();
     } finally {
         window.__isConnecting = false;
-        if (totalValueEl && !connectedWallet) {
-            totalValueEl.innerHTML = `<span class="text-purple-400">↖ Add Wallet</span>`;
-        }
-    }
-}
-
-// ====================== BALANCES + TOTAL ======================
-async function updateWalletBalances() {
-    if (!connectedWallet) return;
-    if (!document.getElementById('totalValue')) return;
-
-    // Assign fetch ID to prevent leaks
-    const fetchId = connectedWallet;
-    lastFetchWallet = fetchId;
-
-    const totalValueEl = document.getElementById('totalValue');
-    if (totalValueEl && totalValueEl.textContent.includes('Add Wallet')) {
-        totalValueEl.textContent = 'Calculating...';
-    }
-
-    const currencySpan = document.getElementById('totalCurrency');
-
-    try {
-        const response = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
-        const balances = await response.json();
-
-        // CHECK TOKEN: If wallet was switched during fetch, ignore result
-        if (lastFetchWallet !== fetchId) return;
-
-        const allTokens = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
-        let totalValueUSD = 0;
-
-        allTokens.forEach(sym => {
-            const qtyEl = document.getElementById(`qty-${sym}`);
-            const valueEl = document.getElementById(`value-${sym}`);
-            let rawQty = parseFloat(String(balances[sym] || 0).replace(/,/g, ''));
-
-            const usdValue = rawQty * (latestPrices[sym] || 0);
-            const displayValue = usdValue * getConversionRate(currentCurrency);
-            const symbolChar = getCurrencySymbol(currentCurrency);
-
-            if (qtyEl) {
-                const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
-                qtyEl.textContent = (communityTokens.includes(sym) && rawQty >= 1000) ? formatLargeNumber(rawQty) : (rawQty > 0 ? rawQty.toLocaleString() : "0");
-            }
-            if (valueEl) valueEl.innerHTML = `${symbolChar}${(displayValue).toFixed(2)}`;
-            totalValueUSD += usdValue;
-        });
-
-        if (totalValueEl) {
-            totalValueEl.textContent = `${getCurrencySymbol(currentCurrency)}${(totalValueUSD * getConversionRate(currentCurrency)).toFixed(2)}`;
-        }
-        if (currencySpan) currencySpan.textContent = currentCurrency;
-
-    } catch (e) {
-        console.error("Balance fetch failed", e);
+        if (!connectedWallet) updateStatus("Sign-In with Apple", "text-zinc-500 text-[22px]");
     }
 }
 
@@ -1073,26 +1032,91 @@ async function updateWalletBalances() {
 const TARGET_SYMBOLS = ['SOL', 'USDC', 'EXPB', 'GIDDY', 'ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
 
 async function fetchTokenPrices() {
-    if (!document.getElementById('totalValue')) return;
-
+    console.log("📊 [PriceFetch] Starting fetch...");
     try {
         const response = await fetch(getApiUrl('/api/prices'));
         if (!response.ok) throw new Error("Price server error");
         const dataMatrix = await response.json();
+        
+        console.log("✅ [PriceFetch] Data received, updating cache...");
 
         TARGET_SYMBOLS.forEach(symbol => {
-            const tokenData = dataMatrix[symbol];
-            if (tokenData && tokenData.price !== null && tokenData.price !== undefined) {
-                latestPrices[symbol] = tokenData.price;
+            if (dataMatrix[symbol]?.price != null) {
+                latestPrices[symbol] = dataMatrix[symbol].price;
             }
         });
 
         updateAllPriceDisplays();
-        if (connectedWallet) updateWalletBalances();
         updateCommunityCurrencyLabels();
 
+        // Ensure price updates are applied to the UI before we calculate wallet balances
+        if (connectedWallet) {
+            console.log("💰 [PriceFetch] Prices updated, triggering silent balance refresh...");
+            await updateWalletBalances(true); 
+        } else {
+            console.log("ℹ️ [PriceFetch] No wallet connected, skipping balance refresh.");
+        }
     } catch (error) {
-        console.error("Failed pulling pricing metrics:", error);
+        console.error("❌ [PriceFetch] Failed:", error);
+    }
+}
+
+// ====================== BALANCES ======================
+async function updateWalletBalances(isSilent = false) {
+    // FIX: If isSilent is true, we allow it to bypass the 'isUpdating' lock 
+    // to ensure the price-refresh data is applied.
+    if (!connectedWallet) return;
+    if (isUpdating && !isSilent) {
+        console.warn("⚠️ [Balances] Update skipped: already in progress.");
+        return;
+    }
+    
+    const totalValueEl = document.getElementById('totalValue');
+    if (!totalValueEl) return;
+
+    // Show "Calculating" only if no balance is currently displayed and it's not a silent poll
+    if (!isSilent && !/[\$\€\£]/.test(totalValueEl.textContent)) {
+        totalValueEl.innerHTML = `<span class="text-purple-400">Calculating...</span>`;
+    }
+
+    isUpdating = true;
+    const fetchId = connectedWallet;
+    lastFetchWallet = fetchId;
+
+    try {
+        console.log(`🔄 [Balances] Fetching balances for: ${connectedWallet}`);
+        const response = await fetch(getApiUrl(`/api/balances/${connectedWallet}`));
+        const balances = await response.json();
+
+        if (lastFetchWallet !== fetchId) {
+            console.warn("⚠️ [Balances] Wallet switched during fetch, discarding result.");
+            return;
+        }
+
+        let totalValueUSD = 0;
+        TARGET_SYMBOLS.forEach(sym => {
+            const qtyEl = document.getElementById(`qty-${sym}`);
+            const valueEl = document.getElementById(`value-${sym}`);
+            const rawQty = parseFloat(String(balances[sym] || 0).replace(/,/g, ''));
+            const usdValue = rawQty * (latestPrices[sym] || 0);
+            
+            if (qtyEl) {
+                const communityTokens = ['ONE', 'KIN', 'DOBBY', 'MYLO', 'DUNO', 'CPT', 'SINU'];
+                qtyEl.textContent = (communityTokens.includes(sym) && rawQty >= 1000) ? formatLargeNumber(rawQty) : (rawQty > 0 ? rawQty.toLocaleString() : "0");
+            }
+            if (valueEl) valueEl.innerHTML = `${getCurrencySymbol(currentCurrency)}${(usdValue * getConversionRate(currentCurrency)).toFixed(2)}`;
+            totalValueUSD += usdValue;
+        });
+
+        if (totalValueEl) {
+            totalValueEl.textContent = `${getCurrencySymbol(currentCurrency)}${(totalValueUSD * getConversionRate(currentCurrency)).toFixed(2)}`;
+        }
+        console.log("✅ [Balances] Update successful.");
+    } catch (e) {
+        console.error("❌ [Balances] Failed:", e);
+        if (!isSilent) updateStatus("Failed to load balances", "text-amber-400");
+    } finally {
+        isUpdating = false;
     }
 }
 
@@ -1456,7 +1480,9 @@ async function confirmGiddySwap() {
     } catch (e) {
         console.log(`[Swap Status] ${e.message === "USER_REJECTED" ? "Swap cancelled" : "Swap failed"}`);
 
-        if (e.message !== "USER_REJECTED") {
+        if (e.message.includes("Market not found") || e.message.includes("No route") || e.message.includes("Quote Error")) {
+            alert("This swap direction currently has no good route on Jupiter. Try a different pair or smaller amount.");
+        } else if (e.message !== "USER_REJECTED") {
             console.error(e);
             alert(`❌ Swap failed: ${e.message}`);
         }
@@ -1749,6 +1775,12 @@ document.addEventListener('DOMContentLoaded', () => {
         addBtn.addEventListener('click', toggleWalletDropdown);
     }
 
+    // ====================== GET STARTED BUTTON (New) ======================
+    const getStartedBtn = document.getElementById('getStartedBtn');
+    if (getStartedBtn) {
+        getStartedBtn.addEventListener('click', toggleWalletDropdown);
+    }
+
     // ====================== LEGACY PHANTOM INIT ======================
     if (provider && provider.isPhantom) {
         const wasDisconnected = localStorage.getItem('phantomWasDisconnected') === 'true';
@@ -1884,3 +1916,4 @@ window.scanQRCode = scanQRCode;
 
 window.getPhantomSDK = getPhantomSDK;
 window.isMobileDevice = isMobileDevice;
+window.toggleWalletDropdown = toggleWalletDropdown;
