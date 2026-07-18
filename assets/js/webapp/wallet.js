@@ -285,56 +285,132 @@ window.getPhantomSDK = getPhantomSDK;
 
 // ====================== LOAD LISTENER - SINGLE SOURCE OF TRUTH ======================
 window.addEventListener('load', async () => {
+  try {
+    // 1. URL Params – handle magic links / deep links
     const urlParams = new URLSearchParams(window.location.search);
-    
-    await getPhantomSDK();
+    const urlAddress = urlParams.get('address');
+    const urlMethod  = urlParams.get('method');
+    const urlSource  = urlParams.get('source'); // e.g. 'phantom', 'magic-link', etc.
 
-    // 1. Handle OAuth Handshake
-    if (urlParams.get('code')) {
-        console.log("⚠️ OAuth callback detected — Initializing SDK handshake");
-        return;
+    if (urlAddress && urlMethod) {
+      console.log(
+        `URL params detected. Address: ${urlAddress.slice(0, 6)}..., Method: ${urlMethod}, Source: ${urlSource || 'unknown'}`
+      );
+
+      // Save incoming session from URL so future loads can recall it
+      localStorage.setItem('walletAddress', urlAddress);
+      localStorage.setItem('connectionMethod', urlMethod);
+
+      // Immediately update UI to reflect this connection
+      updateWalletUI({
+        connected: true,
+        address: urlAddress,
+        method: urlMethod,
+        source: urlSource || null,
+      });
+    } else {
+      console.log('No URL-based wallet session detected.');
     }
 
-    // 2. Memory Recall: Check Local Storage FIRST
-    const savedAddr = localStorage.getItem('wallet_address');
-    const savedMethod = localStorage.getItem('connection_method');
+    // 2. Memory Recall + Session Validation (runs when no fresh URL session overrides it)
+    const savedAddr   = localStorage.getItem('walletAddress');
+    const savedMethod = localStorage.getItem('connectionMethod');
 
-    if (savedAddr) {
-        console.log(`🔄 Memory Recall: Restoring session for ${savedMethod}: ${savedAddr.slice(0, 6)}...`);
+    if (!urlAddress && !urlMethod) {
+      if (!savedAddr || !savedMethod) {
+        console.log('No saved wallet session found in localStorage.');
+      } else {
+        console.log(
+          `Memory Recall: Verifying session for ${savedMethod}, ${savedAddr.slice(0, 6)}...`
+        );
 
-        setWalletState(true, savedAddr, savedMethod);
+        let isValid = true;
 
-        getPhantomSDK().then(sdk => {
-            if (savedMethod === 'injected') {
-                const injected = window.phantom?.solana || window.solana;
-                injected?.connect({ onlyIfTrusted: true }).catch(() => {});
-            } else {
-                sdk.autoConnect().catch(() => {});
+        // If it's an embedded session, verify it's actually valid
+        if (savedMethod === 'google' || savedMethod === 'apple') {
+          try {
+            const verifiedSession = await getValidEmbeddedSession();
+
+            if (!verifiedSession || !verifiedSession.address) {
+              console.log('Embedded session invalid or missing. Clearing ghost session.');
+              isValid = false;
+            } else if (
+              verifiedSession.address.toLowerCase() !== savedAddr.toLowerCase()
+            ) {
+              console.log(
+                'Embedded session address mismatch. Clearing ghost session to avoid stale state.'
+              );
+              isValid = false;
             }
-        });
-        return;
-    }
-
-    // 3. First-time connection attempt (Injected)
-    const injected = window.phantom?.solana || window.solana;
-    if (injected?.isPhantom) {
-        try {
-            const resp = await injected.connect({ onlyIfTrusted: false });
-            const addr = resp.publicKey.toString();
-
-            clearEmbeddedMemory(true);
-            setWalletState(true, addr, "injected");
-            localStorage.setItem('wallet_address', addr);
-            localStorage.setItem('connection_method', 'injected');
-            console.log("✅ First-time injected connection established");
-            return;
-        } catch (e) {
-            console.log("Injected connect attempt failed or dismissed");
+          } catch (err) {
+            console.error('Error validating embedded session. Clearing ghost session.', err);
+            isValid = false;
+          }
         }
+
+        if (!isValid) {
+          // Nuke ghost session so Phantom (and others) don’t get lied to
+          localStorage.removeItem('walletAddress');
+          localStorage.removeItem('connectionMethod');
+          updateWalletUI({ connected: false, address: null, method: null });
+        } else {
+          // Session is valid. Restore UI state.
+          updateWalletUI({
+            connected: true,
+            address: savedAddr,
+            method: savedMethod,
+          });
+        }
+      }
+    } else {
+      console.log('Skipping memory recall because URL-based session took priority.');
     }
-    
-    // 4. Final Fallback: Default to Disconnected
-    setWalletState(false);
+
+    // 3. First‑time injected connection logic (runs when nothing is connected yet)
+    const currentState = getCurrentWalletState(); // your helper that reflects UI / app state
+
+    if (!currentState || !currentState.connected) {
+      console.log('No active wallet connection. Attempting first‑time injected connection.');
+
+      try {
+        const injected = await getInjectedWallet(); // e.g. Phantom / Solflare / etc.
+
+        if (injected) {
+          const injectedAddress = await connectInjectedWallet(injected);
+
+          if (injectedAddress) {
+            console.log(
+              `Injected wallet connected on first load: ${injectedAddress.slice(0, 6)}...`
+            );
+
+            localStorage.setItem('walletAddress', injectedAddress);
+            localStorage.setItem('connectionMethod', 'injected');
+
+            updateWalletUI({
+              connected: true,
+              address: injectedAddress,
+              method: 'injected',
+              source: 'phantom', // or whatever you infer from injected
+            });
+          } else {
+            console.log('Injected wallet available but user did not approve connection.');
+          }
+        } else {
+          console.log('No injected wallet detected on first‑time connection check.');
+        }
+      } catch (err) {
+        console.error('Error during first‑time injected connection attempt:', err);
+      }
+    } else {
+      console.log('Wallet already connected on load. Skipping first‑time injected connection.');
+    }
+  } catch (err) {
+    console.error('Error during load initialization + session handling:', err);
+    // Fail safe: show as logged out instead of risking a ghost session
+    localStorage.removeItem('walletAddress');
+    localStorage.removeItem('connectionMethod');
+    updateWalletUI({ connected: false, address: null, method: null });
+  }
 });
 
 // ====================== CURRENCY SYSTEM (CAD + USD + MXN + NGN) ======================
