@@ -1,0 +1,89 @@
+{
+  "name": "GIDDY Gold",
+  "symbol": "CADG",
+  "description": "Elastic partner token for the Giddy's ecosystem. Designed as an unlimited-supply support token to help maintain liquidity, incentives, and growth across Giddy's micro-economies. Works alongside GIDDY to power gifting, redemption, loyalty, and community flows. Not legal tender.",
+  "image": "https://ofidcrypt.github.io/cadg-logo.png",
+  "external_url": "https://ofidcrypt.github.io",
+  "seller_fee_basis_points": 500,
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Partner Token"
+    },
+    {
+      "trait_type": "Role",
+      "value": "Elastic ecosystem support token"
+    },
+    {
+      "trait_type": "Decimals",
+      "value": "6"
+    },
+    {
+      "trait_type": "Supply",
+      "value": "Unlimited"
+    },
+    {
+      "trait_type": "Purpose",
+      "value": "Liquidity, incentives, micro-economies support"
+    },
+    {
+      "trait_type": "GIDDY Theme",
+      "value": "Stability and value anchoring"
+    },
+    {
+      "trait_type": "CADG Theme",
+      "value": "Elastic growth and ecosystem maintenance"
+    },
+    {
+      "trait_type": "Legal Tender",
+      "value": "No"
+    }
+  ],
+  "collection": [
+    {
+      "name": "OFiDCrypt $GIDDY Stabletoken",
+      "family": "GIDDY'S Universe: Series & Shop"
+    },
+    {
+      "name": "OFiDCrypt $CADG Partner Token",
+      "family": "GIDDY'S Universe: Series & Shop"
+    },
+    {
+      "name": "OFiDCrypt $e𝕏PB Dynamic token",
+      "family": "GIDDY'S Universe: Series & Shop"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://ofidcrypt.github.io/cadg-logo.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image",
+    "creators": [
+      {
+        "address": "YOUR_CADG_CREATOR_WALLET_ADDRESS_HERE",
+        "verified": 1,
+        "share": 100
+      }
+    ],
+    "socials": {
+      "twitter": [
+        "https://twitter.com/OFiDCrypt",
+        "https://twitter.com/Giddys_CA"
+      ],
+      "tiktok": "https://tiktok.com/@Giddys_CA",
+      "youtube": "https://youtube.com/@OFiDCrypt",
+      "github": "https://github.com/OFiDCrypt",
+      "facebook": "https://facebook.com/OFiDCrypt",
+      "instagram": "https://instagram.com/OFiDCrypt",
+      "linkedin": "https://linkedin.com/company/OFiDCrypt",
+      "telegram": [
+        "https://t.me/ONEgiddy",
+        "https://t.me/OFiDBall"
+      ]
+    }
+  },
+  "animation_url": "https://youtube.com/@OFiDCrypt"
+}
