@@ -75,6 +75,7 @@ export default defineConfig(({ command }) => {
                             'index.html',
                             '404.html',
                             'bouncyball.html',
+                            'cadg.html',
                             'cashlinks.html',
                             'cashlinks-updater.html',
                             'discover.html',
